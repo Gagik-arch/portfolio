@@ -1,0 +1,55 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "useDefineForClassFields": true,
+        "module": "ESNext",
+        "baseUrl": ".",
+        "lib": [
+            "ES2022",
+            "DOM",
+            "DOM.Iterable"
+        ],
+        "types": [
+            "vite/client",
+        ],
+        "skipLibCheck": true,
+        /* Bundler mode */
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "verbatimModuleSyntax": true,
+        "moduleDetection": "force",
+        "noEmit": true,
+        /* Linting */
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "erasableSyntaxOnly": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedSideEffectImports": true,
+        "checkJs": false,
+        "paths": {
+            "$lib/*": [
+                "./lib/*"
+            ],
+            "$uikit/*": [
+                "./src/uikit/*"
+            ],
+            "$types/*": [
+                "./src/types/*"
+            ],
+            "$assets/*": [
+                "./src/assets/*"
+            ],
+        },
+    },
+    "include": [
+        "src",
+        "./declarations.d.ts",
+        "lib",
+    ],
+    "references": [
+        {
+            "path": "./tsconfig.node.json"
+        }
+    ]
+}

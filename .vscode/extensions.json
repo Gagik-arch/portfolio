@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "xabikos.javascriptsn",
+    "stylelint.vscode-stylelint",
+    "wayou.vscode-todo-highlight",
+    "thammami01.react-ts-code-snippets",
+    "vivaxy.vscode-conventional-commits",
+    "streetsidesoftware.code-spell-checker",
+    "dbaeumer.vscode-eslint", // INFO  required for code linting
+    "wayou.vscode-todo-highlight" // INFO  required for tag comment highlighting
+  ]
+}
