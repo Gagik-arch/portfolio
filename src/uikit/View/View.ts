@@ -1,12 +1,16 @@
-import Element from '$lib/Element';
+import Element, { type ElementPropsType } from '$lib/Element';
 
 class View extends Element {
     public constructor(
-        props:object,
+        props:ElementPropsType,
         tagName:keyof HTMLElementTagNameMap,
-        rootElement:HTMLElement
+        rootElement?:HTMLElement
     ) {
-        super(tagName, props, rootElement);
+        super({
+            tagName,
+            props,
+            rootElement,
+        });
     }
 }
 

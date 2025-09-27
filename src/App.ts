@@ -7,15 +7,16 @@ function App() {
         new View(
             {
                 children: [
-                    'test', new Button(
-                        {
-                            className: 'test-class',
-                            children: [ 'example button text' ],
-                            onclick: () => {
-                                console.info(1);
+                    'test',
+                    'asdasd',
+                    new Button({
+                        children: [ 'click' ],
+                        events: {
+                            click: (e) => {
+                                console.info(e, 1);
                             },
-                        }
-                    ).dom
+                        },
+                    }).dom
                 ],
             },
             'div',

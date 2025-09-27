@@ -35,7 +35,6 @@ export default [
 
             // NOTE:  stylelint
             '@stylistic/indent-binary-ops': [ 'error', 4 ],
-
             '@stylistic/indent': [
                 'error',
                 4,
@@ -46,7 +45,6 @@ export default [
                     ignoredNodes: [  ],
                 }
             ],
-
             '@/max-len': [
                 'error', {
                     code: 180,
@@ -55,7 +53,6 @@ export default [
                     ignoreStrings: true,
                 }
             ],
-
             '@stylistic/array-bracket-newline': [
                 'error',{ "multiline": true }
             ],
@@ -94,7 +91,7 @@ export default [
             '@stylistic/computed-property-spacing': [ 'error', 'never' ],
             '@stylistic/eol-last': [ 'error', 'always' ],
             '@stylistic/function-call-spacing': [ 'error', 'never' ],
-            '@stylistic/function-paren-newline': [ 'error', 'consistent' ],
+            '@stylistic/function-paren-newline': [ 'error','consistent'],
             '@stylistic/implicit-arrow-linebreak': [ 'error', 'beside' ],
             '@stylistic/quotes': [ 'error', 'single' ],
             '@stylistic/key-spacing': [

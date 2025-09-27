@@ -1,11 +1,15 @@
-import Element from '../../../lib/Element';
+import Element, { type ElementPropsType } from '$lib/Element';
 
 class Button extends Element {
     public constructor(
-        props:object,
-        rootElement?:HTMLElement
+        props: ElementPropsType,
+        rootElement?: HTMLElement
     ) {
-        super('button', props, rootElement);
+        super({
+            tagName: 'button',
+            props,
+            rootElement,
+        });
     }
 }
 
