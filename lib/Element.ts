@@ -1,8 +1,10 @@
-import type { ElementPropsType, ElementConstructorType } from './types';
+import type {
+    ElementPropsType, ElementConstructorType, HTMLElementValues, EventType
+} from './types';
 
-class Element {
-    public dom: HTMLElement;
-    public events: ElementPropsType['events'] = {};
+class Element <T extends HTMLElementValues = HTMLElement> {
+    public dom: T;
+    public events: EventType = {};
 
     public constructor({
         tagName,
@@ -13,14 +15,17 @@ class Element {
             ...props
         },
         rootElement,
-    }: ElementConstructorType) {
+    }: ElementConstructorType<T>) {
+
         if (events) {
             this.events = events;
         }
 
-        this.dom = document.createElement(tagName);
+        this.dom = document.createElement(tagName) as T;
 
-        this.dom?.append(...children);
+        if (children) {
+            this.dom?.append(...children);
+        }
 
         if (className) {
             this.dom.className = className;
@@ -28,7 +33,16 @@ class Element {
 
         if (rootElement) {
             rootElement.appendChild(this.dom);
+        } else {
+            document.getElementById('app')
+                ?.appendChild(this.dom);
         }
+
+        Object.entries(props)
+            .forEach(([ name, value ]) => {
+                this.dom.setAttribute(name, value);
+            });
+
         if (this.events) {
             Object.entries(this.events)
                 .forEach(([ type, listener ]) => {
@@ -54,6 +68,7 @@ class Element {
         const observer = new MutationObserver(() => {
             if (!document.body.contains(this.dom)) {
                 callback();
+
                 if (this.events) {
                     Object.entries(this.events)
                         .forEach(([ type, listener ]) => {
@@ -62,7 +77,6 @@ class Element {
 
                     observer.disconnect();
                 }
-
             }
         });
         observer.observe(document.body, {

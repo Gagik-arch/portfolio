@@ -1,17 +1,13 @@
-import Element, { type ElementPropsType } from '$lib/Element';
+import Element from '$lib/Element';
+import type { ViewProps } from './types';
 
-class View extends Element {
-    public constructor(
-        props:ElementPropsType,
-        tagName:keyof HTMLElementTagNameMap,
-        rootElement?:HTMLElement
-    ) {
-        super({
-            tagName,
+function View(props:ViewProps) {
+    return (
+        new Element<HTMLDivElement>({
+            tagName: 'div',
             props,
-            rootElement,
-        });
-    }
+        }).dom
+    );
 }
 
 export default View;

@@ -1,27 +1,32 @@
 import Button from '$uikit/Button';
 import View from '$uikit/View';
+import Input from '$uikit/Input';
 
 function App() {
 
     return (
-        new View(
-            {
-                children: [
-                    'test',
-                    'asdasd',
-                    new Button({
-                        children: [ 'click' ],
-                        events: {
-                            click: (e) => {
-                                console.info(e, 1);
-                            },
+        View({
+            children: [
+                'test',
+                'asdasd',
+
+                Button({
+                    children: [ 'click' ],
+                    events: {
+                        click: (e) => {
+                            console.info(e, 1);
                         },
-                    }).dom
-                ],
-            },
-            'div',
-            document.getElementById('app') as HTMLElement
-        )
+                    },
+                }),
+
+                Input({
+                    placeholder: 'test',
+                    id: 'email',
+                    autocomplete: 'off',
+                })
+
+            ],
+        })
     );
 }
 

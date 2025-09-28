@@ -1,16 +1,20 @@
-import Element, { type ElementPropsType } from '$lib/Element';
+import Element from '$lib/Element';
+import type { ButtonProps } from './types';
 
-class Button extends Element {
-    public constructor(
-        props: ElementPropsType,
-        rootElement?: HTMLElement
-    ) {
-        super({
+function Button({
+    type = 'button',
+    ...props
+}:ButtonProps) {
+
+    return (
+        new Element<HTMLButtonElement>({
             tagName: 'button',
-            props,
-            rootElement,
-        });
-    }
+            props: {
+                type,
+                ...props,
+            },
+        }).dom
+    );
 }
 
 export default Button;
