@@ -23,8 +23,12 @@ class Element <T extends HTMLElementValues = HTMLElement> {
 
         this.dom = document.createElement(tagName) as T;
 
-        if (children) {
+        if (Array.isArray(children)) {
             this.dom?.append(...children);
+        } else {
+            if (typeof children === 'string') {
+                this.dom?.append(children);
+            }
         }
 
         if (className) {

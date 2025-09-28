@@ -8,7 +8,6 @@ function App() {
         View({
             children: [
                 'test',
-                'asdasd',
 
                 Button({
                     children: [ 'click' ],
@@ -23,8 +22,11 @@ function App() {
                     placeholder: 'test',
                     id: 'email',
                     autocomplete: 'off',
-                })
+                }),
 
+                View({
+                    children: [ 'string', 'asd' ],
+                })
             ],
         })
     );
