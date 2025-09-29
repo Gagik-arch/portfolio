@@ -4,7 +4,7 @@ import type {
 
 class Element <T extends HTMLElementValues = HTMLElement> {
     public dom: T;
-    public events: EventType = {};
+    public events: EventType<T> = {};
 
     public constructor({
         tagName,
@@ -23,7 +23,7 @@ class Element <T extends HTMLElementValues = HTMLElement> {
 
         this.dom = document.createElement(tagName) as T;
 
-        if (Array.isArray(children)) {
+        if (children && Array.isArray(children)) {
             this.dom?.append(...children);
         } else {
             if (typeof children === 'string') {
@@ -42,15 +42,15 @@ class Element <T extends HTMLElementValues = HTMLElement> {
                 ?.appendChild(this.dom);
         }
 
-        Object.entries(props)
+        (Object.entries(props))
             .forEach(([ name, value ]) => {
-                this.dom.setAttribute(name, value);
+                this.dom.setAttribute(name, value as string);
             });
 
         if (this.events) {
-            Object.entries(this.events)
+            Object.entries<EventType<T>[keyof EventType<T>]>(this.events)
                 .forEach(([ type, listener ]) => {
-                    this.dom?.addEventListener(type, listener );
+                    this.dom?.addEventListener(type.replace('on', ''), listener as EventListener);
                 });
         }
     }
@@ -74,9 +74,9 @@ class Element <T extends HTMLElementValues = HTMLElement> {
                 callback();
 
                 if (this.events) {
-                    Object.entries(this.events)
+                    Object.entries<EventType<T>[keyof EventType<T>]>(this.events)
                         .forEach(([ type, listener ]) => {
-                            this.dom.removeEventListener(type, listener);
+                            this.dom.removeEventListener(type, listener as EventListener);
                         });
 
                     observer.disconnect();

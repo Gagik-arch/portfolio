@@ -1,6 +1,7 @@
 import Button from '$uikit/Button';
 import View from '$uikit/View';
 import Input from '$uikit/Input';
+import Element from '$lib/Element';
 
 function App() {
 
@@ -8,12 +9,21 @@ function App() {
         View({
             children: [
                 'test',
-
+                new Element<HTMLButtonElement>({
+                    tagName: 'button',
+                    props: {
+                        events: {
+                            oninput: (e) => {
+                                console.info(e);
+                            },
+                        },
+                    },
+                }).dom,
                 Button({
                     children: [ 'click' ],
                     events: {
-                        click: (e) => {
-                            console.info(e, 1);
+                        oninput: (e) => {
+                            console.info(e);
                         },
                     },
                 }),
