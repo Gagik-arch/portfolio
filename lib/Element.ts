@@ -1,10 +1,11 @@
 import type {
-    ElementPropsType, ElementConstructorType, HTMLElementValues, EventType
+    ElementPropsType, ElementConstructorType, HTMLElementTags, EventType
 } from './types';
 
-class Element <T extends HTMLElementValues = HTMLElement> {
+class Element <T extends HTMLElementTags = HTMLElement> {
     public dom: T;
-    public events: EventType<T> = {};
+    readonly #events: EventType<T> = {};
+    readonly #children: ElementPropsType<T>['children'] = [];
 
     public constructor({
         tagName,
@@ -18,41 +19,46 @@ class Element <T extends HTMLElementValues = HTMLElement> {
     }: ElementConstructorType<T>) {
 
         if (events) {
-            this.events = events;
+            this.#events = events;
         }
 
         this.dom = document.createElement(tagName) as T;
 
-        if (children && Array.isArray(children)) {
-            this.dom?.append(...children);
-        } else {
-            if (typeof children === 'string') {
-                this.dom?.append(children);
-            }
+        this.setProps( {
+            className,
+            children,
+            ...props,
+        } as ElementPropsType<T>);
+
+        if (rootElement) {
+            rootElement.appendChild(this.dom);
         }
 
+        if (this.#events) {
+            Object.entries<EventType<T>[keyof EventType<T>]>(this.#events)
+                .forEach(([ type, listener ]) => {
+                    this.dom?.addEventListener(type.replace('on', ''), listener as EventListener);
+                });
+        }
+    }
+
+    public setProps({
+        className,
+        children,
+        ...props
+    }:ElementPropsType<T> ) {
         if (className) {
             this.dom.className = className;
         }
 
-        if (rootElement) {
-            rootElement.appendChild(this.dom);
-        } else {
-            document.getElementById('app')
-                ?.appendChild(this.dom);
-        }
+        this.dom?.append(...(children || []));
 
         (Object.entries(props))
             .forEach(([ name, value ]) => {
                 this.dom.setAttribute(name, value as string);
             });
 
-        if (this.events) {
-            Object.entries<EventType<T>[keyof EventType<T>]>(this.events)
-                .forEach(([ type, listener ]) => {
-                    this.dom?.addEventListener(type.replace('on', ''), listener as EventListener);
-                });
-        }
+        return this;
     }
 
     public onMount(callback:()=>void) {
@@ -73,8 +79,8 @@ class Element <T extends HTMLElementValues = HTMLElement> {
             if (!document.body.contains(this.dom)) {
                 callback();
 
-                if (this.events) {
-                    Object.entries<EventType<T>[keyof EventType<T>]>(this.events)
+                if (this.#events) {
+                    Object.entries<EventType<T>[keyof EventType<T>]>(this.#events)
                         .forEach(([ type, listener ]) => {
                             this.dom.removeEventListener(type, listener as EventListener);
                         });

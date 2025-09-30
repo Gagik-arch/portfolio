@@ -1,13 +1,13 @@
 import Element from '$lib/Element';
 import type { ViewProps } from './types';
 
-function View(props:ViewProps) {
-    return (
-        new Element<HTMLDivElement>({
+class View extends Element<HTMLDivElement> {
+    public constructor(props:ViewProps) {
+        super({
             tagName: 'div',
             props,
-        }).dom
-    );
+        });
+    }
 }
 
 export default View;

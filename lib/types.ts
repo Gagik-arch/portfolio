@@ -1,4 +1,4 @@
-export type HTMLElementValues = HTMLElementTagNameMap[keyof HTMLElementTagNameMap];
+export type HTMLElementTags = HTMLElementTagNameMap[keyof HTMLElementTagNameMap];
 
 export type EventType<T extends HTMLElement> = {
     [K in keyof GlobalEventHandlers]?: GlobalEventHandlers[K] extends ((this: T, ev: infer E) => void) | null
@@ -6,13 +6,14 @@ export type EventType<T extends HTMLElement> = {
         : never;
 };
 
-export type ElementPropsType<T extends HTMLElementValues> = Partial<Omit<T, 'children'>> & {
-    children?: (string | HTMLElement)[] | string;
-    className?: string;
-    events?: EventType<T>;
-};
+export type ElementPropsType<T extends HTMLElementTags>
+    = Omit<Partial<T>, 'children' | 'className'> & {
+        children?: (string | HTMLElement)[] | undefined;
+        className?: string | undefined;
+        events?: EventType<T>;
+    };
 
-export interface ElementConstructorType<T extends HTMLElementValues > {
+export interface ElementConstructorType<T extends HTMLElementTags> {
     tagName: keyof HTMLElementTagNameMap;
     props: ElementPropsType<T>;
     rootElement?: HTMLElement;
