@@ -1,21 +1,21 @@
 import Element from '$lib/Element';
 import type { InputProps } from './types';
 
-function Input({
-    type = 'text',
-    autocomplete = 'off',
-    ...props
-}: InputProps ) {
-    return (
-        new Element<HTMLInputElement>({
+class Input extends Element<HTMLInputElement > {
+    public constructor({
+        type = 'text',
+        autocomplete = 'off',
+        ...props
+    }: InputProps) {
+        super({
             tagName: 'input',
             props: {
                 type,
                 autocomplete,
                 ...props,
             },
-        }).dom
-    );
+        });
+    }
 }
 
 export default Input;

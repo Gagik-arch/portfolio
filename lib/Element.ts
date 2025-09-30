@@ -2,14 +2,18 @@ import type {
     ElementPropsType, ElementConstructorType, HTMLElementTags, EventType
 } from './types';
 
+type Children = (string | HTMLElement)[];
+
 class Element <T extends HTMLElementTags = HTMLElement> {
     public dom: T;
     readonly #events: EventType<T> = {};
-    readonly #children: ElementPropsType<T>['children'] = [];
+    #children: Children = [];
+    readonly #key?: string | number;
 
     public constructor({
         tagName,
         props: {
+            key,
             children,
             className,
             events,
@@ -17,13 +21,13 @@ class Element <T extends HTMLElementTags = HTMLElement> {
         },
         rootElement,
     }: ElementConstructorType<T>) {
+        this.#key = key;
 
         if (events) {
             this.#events = events;
         }
 
         this.dom = document.createElement(tagName) as T;
-
         this.setProps( {
             className,
             children,
@@ -46,14 +50,20 @@ class Element <T extends HTMLElementTags = HTMLElement> {
         className,
         children,
         ...props
-    }:ElementPropsType<T> ) {
+    }: ElementPropsType<T>) {
+        const extractedChildren:Children = children?.filter(child => child !== undefined) as Children;
+
+        this.#children = extractedChildren;
+
+        console.info(this.#children, this.dom.childNodes[0] instanceof HTMLElement);
+
         if (className) {
             this.dom.className = className;
         }
 
-        this.dom?.append(...(children || []));
+        this.dom?.append(...(extractedChildren || []));
 
-        (Object.entries(props))
+        Object.entries(props)
             .forEach(([ name, value ]) => {
                 this.dom.setAttribute(name, value as string);
             });
@@ -61,7 +71,7 @@ class Element <T extends HTMLElementTags = HTMLElement> {
         return this;
     }
 
-    public onMount(callback:()=>void) {
+    public onMount(callback: () => void) {
         const check = () => {
             if (document.body.contains(this.dom)) {
                 callback();
@@ -89,9 +99,11 @@ class Element <T extends HTMLElementTags = HTMLElement> {
                 }
             }
         });
+
         observer.observe(document.body, {
             childList: true, subtree: true,
         });
+
         return this;
     }
 }

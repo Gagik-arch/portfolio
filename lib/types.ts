@@ -8,9 +8,10 @@ export type EventType<T extends HTMLElement> = {
 
 export type ElementPropsType<T extends HTMLElementTags>
     = Omit<Partial<T>, 'children' | 'className'> & {
-        children?: (string | HTMLElement)[] | undefined;
+        children?: (string | HTMLElement | undefined)[] | undefined;
         className?: string | undefined;
         events?: EventType<T>;
+        key?: string | number;
     };
 
 export interface ElementConstructorType<T extends HTMLElementTags> {

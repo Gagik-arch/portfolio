@@ -24,6 +24,10 @@ class Store <T> {
                 : newState;
         this.notify();
     }
+
+    public getState() {
+        return this.state;
+    }
 }
 
 export default Store;
