@@ -1,14 +1,13 @@
 import type {
     ElementPropsType, ElementConstructorType, HTMLElementTags, EventType
 } from './types';
+import { camelToKebab } from './utils';
 
 type Children = (string | HTMLElement)[];
 
 class Element <T extends HTMLElementTags = HTMLElement> {
     public dom: T;
     readonly #events: EventType<T> = {};
-    #children: Children = [];
-    readonly #key?: string | number;
 
     public constructor({
         tagName,
@@ -16,21 +15,23 @@ class Element <T extends HTMLElementTags = HTMLElement> {
             key,
             children,
             className,
+            style,
             events,
             ...props
         },
         rootElement,
     }: ElementConstructorType<T>) {
-        this.#key = key;
 
         if (events) {
             this.#events = events;
         }
 
         this.dom = document.createElement(tagName) as T;
+
         this.setProps( {
             className,
             children,
+            style,
             ...props,
         } as ElementPropsType<T>);
 
@@ -49,19 +50,26 @@ class Element <T extends HTMLElementTags = HTMLElement> {
     public setProps({
         className,
         children,
+        style,
         ...props
     }: ElementPropsType<T>) {
-        const extractedChildren:Children = children?.filter(child => child !== undefined) as Children;
+        if (style) {
+            Object.entries(style)
+                .forEach(([ property, value ]) => {
+                    if (!value) return;
 
-        this.#children = extractedChildren;
-
-        console.info(this.#children, this.dom.childNodes[0] instanceof HTMLElement);
+                    this.dom.style.setProperty(camelToKebab(property), value.toString());
+                });
+        }
 
         if (className) {
             this.dom.className = className;
         }
+        if (children) {
+            const extractedChildren:Children = children?.filter(child => !!child) as Children;
 
-        this.dom?.append(...(extractedChildren || []));
+            this.dom?.replaceChildren(...(extractedChildren || []));
+        }
 
         Object.entries(props)
             .forEach(([ name, value ]) => {
@@ -71,10 +79,24 @@ class Element <T extends HTMLElementTags = HTMLElement> {
         return this;
     }
 
-    public onMount(callback: () => void) {
+    public replaceChild(newChild: null | undefined | Element | string, index: number) {
+        if (!newChild) {
+            if (index > -1) this.dom.removeChild(this.dom.childNodes[index]);
+        } else {
+            const target = this.dom.childNodes[index];
+
+            if (newChild instanceof Element) {
+                this.dom.replaceChild(target, newChild.dom);
+            } else {
+                target.replaceWith( newChild);
+            }
+        }
+    }
+
+    public onMount(callback: (e:this) => void) {
         const check = () => {
             if (document.body.contains(this.dom)) {
-                callback();
+                callback(this);
             } else {
                 requestAnimationFrame(check);
             }

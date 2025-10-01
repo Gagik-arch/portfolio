@@ -7,11 +7,12 @@ export type EventType<T extends HTMLElement> = {
 };
 
 export type ElementPropsType<T extends HTMLElementTags>
-    = Omit<Partial<T>, 'children' | 'className'> & {
-        children?: (string | HTMLElement | undefined)[] | undefined;
+    = Omit<Partial<T>, 'children' | 'className' | 'style'> & {
+        children?: (string | HTMLElement | Node | undefined | null)[] | undefined;
         className?: string | undefined;
         events?: EventType<T>;
         key?: string | number;
+        style?: Partial<CSSStyleDeclaration> | undefined;
     };
 
 export interface ElementConstructorType<T extends HTMLElementTags> {

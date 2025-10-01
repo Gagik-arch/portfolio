@@ -1,20 +1,17 @@
 class Store <T> {
     private state: T;
-    private readonly listeners: ((state:T)=>void)[] = [];
+    private listeners: ((state:T)=>void)[] = [];
 
     public constructor(initialState:T) {
         this.state = initialState;
     }
 
-    public subscribe<K>(callback: (state: T) => K):K {
+    public subscribe<K>(callback: (state: T) => K):()=>void {
         this.listeners.push(callback);
-        return callback(this.state);
-    }
 
-    private notify() {
-        this.listeners.forEach((listener) => {
-            listener(this.state);
-        } );
+        return () => {
+            this.listeners = this.listeners.filter(l => l !== callback);
+        };
     }
 
     public setState(newState: T | ((prev: T) => T)) {
@@ -27,6 +24,12 @@ class Store <T> {
 
     public getState() {
         return this.state;
+    }
+
+    private notify() {
+        this.listeners.forEach((listener) => {
+            listener(this.state);
+        } );
     }
 }
 
