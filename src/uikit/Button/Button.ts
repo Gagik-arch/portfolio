@@ -11,7 +11,6 @@ class Button extends Element<HTMLButtonElement> {
             tagName: 'button',
             props: {
                 type,
-                className: styles.root,
                 ...props,
             },
         });

@@ -65,7 +65,7 @@ export default [
             ],
             '@stylistic/array-element-newline': [
                 'error', {
-                    minItems: 3,
+                    minItems: 2,
                 }
             ],
             '@stylistic/arrow-spacing': 'error',

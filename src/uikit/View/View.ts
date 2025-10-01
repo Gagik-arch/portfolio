@@ -7,7 +7,6 @@ class View extends Element<HTMLDivElement> {
         super({
             tagName: 'div',
             props: {
-                className: styles.root,
                 ...props,
             },
         });

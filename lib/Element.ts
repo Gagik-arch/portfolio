@@ -21,12 +21,15 @@ class Element <T extends HTMLElementTags = HTMLElement> {
         },
         rootElement,
     }: ElementConstructorType<T>) {
+        this.dom = document.createElement(tagName) as T;
+
+        if (rootElement) {
+            rootElement.appendChild(this.dom);
+        }
 
         if (events) {
             this.#events = events;
         }
-
-        this.dom = document.createElement(tagName) as T;
 
         this.setProps( {
             className,
@@ -35,13 +38,12 @@ class Element <T extends HTMLElementTags = HTMLElement> {
             ...props,
         } as ElementPropsType<T>);
 
-        if (rootElement) {
-            rootElement.appendChild(this.dom);
-        }
-
         if (this.#events) {
             Object.entries<EventType<T>[keyof EventType<T>]>(this.#events)
-                .forEach(([ type, listener ]) => {
+                .forEach(([
+                    type,
+                    listener
+                ]) => {
                     this.dom?.addEventListener(type.replace('on', ''), listener as EventListener);
                 });
         }
@@ -52,10 +54,15 @@ class Element <T extends HTMLElementTags = HTMLElement> {
         children,
         style,
         ...props
-    }: ElementPropsType<T>) {
+    }: Omit<ElementPropsType<T>, 'className'> & {
+        className?: ((classList:string[] )=>string[] | undefined) | string | undefined;
+    }) {
         if (style) {
             Object.entries(style)
-                .forEach(([ property, value ]) => {
+                .forEach(([
+                    property,
+                    value
+                ]) => {
                     if (!value) return;
 
                     this.dom.style.setProperty(camelToKebab(property), value.toString());
@@ -63,8 +70,16 @@ class Element <T extends HTMLElementTags = HTMLElement> {
         }
 
         if (className) {
-            this.dom.className = className;
+            if (typeof className === 'function') {
+                const cl = className(this.dom.className.split(' '));
+                if (cl) {
+                    this.dom.className = cl.join(' ');
+                }
+            } else {
+                this.dom.className = className;
+            }
         }
+
         if (children) {
             const extractedChildren:Children = children?.filter(child => !!child) as Children;
 
@@ -72,23 +87,29 @@ class Element <T extends HTMLElementTags = HTMLElement> {
         }
 
         Object.entries(props)
-            .forEach(([ name, value ]) => {
+            .forEach(([
+                name,
+                value
+            ]) => {
                 this.dom.setAttribute(name, value as string);
+                this.dom[name as keyof T] = value;
             });
 
         return this;
     }
 
-    public replaceChild(newChild: null | undefined | Element | string, index: number) {
-        if (!newChild) {
-            if (index > -1) this.dom.removeChild(this.dom.childNodes[index]);
-        } else {
-            const target = this.dom.childNodes[index];
+    public replaceChild(index: number, newChild: null | undefined | HTMLElement | string) {
+        const currentChild = this.dom.childNodes[index];
 
-            if (newChild instanceof Element) {
-                this.dom.replaceChild(target, newChild.dom);
+        if (currentChild === newChild) return;
+
+        if (!newChild) {
+            if (index > -1) this.dom.removeChild(currentChild);
+        } else {
+            if (!currentChild) {
+                this.dom.append(newChild);
             } else {
-                target.replaceWith( newChild);
+                currentChild.replaceWith(newChild);
             }
         }
     }
@@ -113,7 +134,10 @@ class Element <T extends HTMLElementTags = HTMLElement> {
 
                 if (this.#events) {
                     Object.entries<EventType<T>[keyof EventType<T>]>(this.#events)
-                        .forEach(([ type, listener ]) => {
+                        .forEach(([
+                            type,
+                            listener
+                        ]) => {
                             this.dom.removeEventListener(type, listener as EventListener);
                         });
 
