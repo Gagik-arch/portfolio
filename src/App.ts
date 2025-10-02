@@ -5,23 +5,13 @@ import testStore from './store/test.store';
 
 function App() {
     const a = new View({
+        className: 'r',
         children: [
             'test',
             new Button({
                 children: [ 'test button' ],
             }).dom
         ],
-    });
-
-    const i = new Input({
-        id: 'input',
-        className: 'late',
-        events: {
-            onkeyup: (e) => {
-                const t = (e.target as HTMLInputElement);
-                console.log(t.value);
-            },
-        },
     });
 
     return (
@@ -32,12 +22,7 @@ function App() {
                     children: [ 'asd' ],
                     events: {
                         onclick: () => {
-
                             testStore.setState(prev => {
-                                a.replaceChild(
-                                    1,
-                                    prev % 2 === 0 ? i.dom : undefined
-                                );
                                 return prev + 1;
                             });
                         },
@@ -54,8 +39,18 @@ function App() {
                 })
                     .onMount(() => {
                         testStore.subscribe((state) => {
-                            i.setProps({
-                                value: state + '',
+                            a.setProps({
+                                className: (cx) => {
+
+                                    if (state % 2 === 0) {
+                                        cx.delete('r');
+                                        cx.add('b');
+                                    } else {
+                                        cx.delete('b');
+                                        cx.add('r');
+                                    }
+                                    return cx;
+                                },
                             });
                         });
                     }).dom

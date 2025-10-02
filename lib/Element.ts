@@ -55,7 +55,7 @@ class Element <T extends HTMLElementTags = HTMLElement> {
         style,
         ...props
     }: Omit<ElementPropsType<T>, 'className'> & {
-        className?: ((classList:string[] )=>string[] | undefined) | string | undefined;
+        className?: ((classList:Set<string> )=>Set<string> | undefined) | string | undefined;
     }) {
         if (style) {
             Object.entries(style)
@@ -71,9 +71,10 @@ class Element <T extends HTMLElementTags = HTMLElement> {
 
         if (className) {
             if (typeof className === 'function') {
-                const cl = className(this.dom.className.split(' '));
+                const cl = className(new Set(this.dom.className.split(' ')));
                 if (cl) {
-                    this.dom.className = cl.join(' ');
+                    this.dom.className = Array.from(cl)
+                        .join(' ');
                 }
             } else {
                 this.dom.className = className;
