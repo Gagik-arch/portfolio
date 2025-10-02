@@ -6,18 +6,20 @@ export type EventType<T extends HTMLElement> = {
         : never;
 };
 
+export type Children = string | ChildNode | undefined | null;
+
 export type ElementPropsType<T extends HTMLElementTags>
     = Omit<Partial<T>, 'children' | 'className' | 'style'> & {
-        children?: (string | HTMLElement | Node | undefined | null)[] | undefined;
+        children?: (Children)[] | undefined;
         className?: string | undefined;
         events?: EventType<T>;
-        key?: string | number;
+        key?: string | number | undefined;
         style?: Partial<CSSStyleDeclaration> | undefined;
     };
 
 export interface ElementConstructorType<T extends HTMLElementTags> {
     tagName: keyof HTMLElementTagNameMap;
     props: ElementPropsType<T>;
-    rootElement?: HTMLElement;
+    rootElement?: HTMLElement | null;
 }
 

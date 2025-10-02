@@ -1,13 +1,16 @@
 import type {
-    ElementPropsType, ElementConstructorType, HTMLElementTags, EventType
+    ElementPropsType, ElementConstructorType, HTMLElementTags, EventType,
+    Children
 } from './types';
-import { camelToKebab } from './utils';
-
-type Children = (string | HTMLElement)[];
+import {
+    setupChildren,
+    setupClassName, setupStyle
+} from './utils';
 
 class Element <T extends HTMLElementTags = HTMLElement> {
     public dom: T;
     readonly #events: EventType<T> = {};
+    public key?: string | number | undefined = undefined;
 
     public constructor({
         tagName,
@@ -21,6 +24,8 @@ class Element <T extends HTMLElementTags = HTMLElement> {
         },
         rootElement,
     }: ElementConstructorType<T>) {
+        this.key = key;
+
         this.dom = document.createElement(tagName) as T;
 
         if (rootElement) {
@@ -31,12 +36,18 @@ class Element <T extends HTMLElementTags = HTMLElement> {
             this.#events = events;
         }
 
-        this.setProps( {
-            className,
-            children,
-            style,
-            ...props,
-        } as ElementPropsType<T>);
+        this.setProps(
+            {
+                className,
+                children,
+                style,
+                ...props,
+            } as Omit<ElementPropsType<T>, 'className' | 'children'> & {
+                className?: ((classList: DOMTokenList) => void) | string | undefined;
+                children: ((childNodes:Set<ChildNode>)=>Set<ChildNode>) | Children[] | undefined;
+            },
+            true
+        );
 
         if (this.#events) {
             Object.entries<EventType<T>[keyof EventType<T>]>(this.#events)
@@ -49,43 +60,23 @@ class Element <T extends HTMLElementTags = HTMLElement> {
         }
     }
 
-    public setProps({
-        className,
-        children,
-        style,
-        ...props
-    }: Omit<ElementPropsType<T>, 'className'> & {
-        className?: ((classList:Set<string> )=>Set<string> | undefined) | string | undefined;
-    }) {
-        if (style) {
-            Object.entries(style)
-                .forEach(([
-                    property,
-                    value
-                ]) => {
-                    if (!value) return;
+    public setProps(
+        {
+            className,
+            children,
+            style,
+            ...props
+        }: Omit<ElementPropsType<T>, 'className' | 'children'> & {
+            className?: ((classList: DOMTokenList) => void) | string | undefined;
+            children: ((childNodes:Set<ChildNode>)=>Set<ChildNode>) | Children[] | undefined;
+        },
+        isForceUpdate = false
+    ) {
 
-                    this.dom.style.setProperty(camelToKebab(property), value.toString());
-                });
-        }
+        setupStyle<T>(style, this.dom);
+        setupClassName(className, this.dom);
 
-        if (className) {
-            if (typeof className === 'function') {
-                const cl = className(new Set(this.dom.className.split(' ')));
-                if (cl) {
-                    this.dom.className = Array.from(cl)
-                        .join(' ');
-                }
-            } else {
-                this.dom.className = className;
-            }
-        }
-
-        if (children) {
-            const extractedChildren:Children = children?.filter(child => !!child) as Children;
-
-            this.dom?.replaceChildren(...(extractedChildren || []));
-        }
+        setupChildren(children, this.dom, isForceUpdate);
 
         Object.entries(props)
             .forEach(([
@@ -123,15 +114,20 @@ class Element <T extends HTMLElementTags = HTMLElement> {
                 requestAnimationFrame(check);
             }
         };
+
         check();
 
         return this;
     }
 
-    public onUnMount(callback:()=>void) {
+    public remove() {
+        this.dom.remove();
+    }
+
+    public onUnMount(callback:(e:this)=>void) {
         const observer = new MutationObserver(() => {
             if (!document.body.contains(this.dom)) {
-                callback();
+                callback(this);
 
                 if (this.#events) {
                     Object.entries<EventType<T>[keyof EventType<T>]>(this.#events)

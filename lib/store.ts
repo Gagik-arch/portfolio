@@ -6,7 +6,7 @@ class Store <T> {
         this.state = initialState;
     }
 
-    public subscribe<K>(callback: (state: T) => K):()=>void {
+    public subscribe(callback: (state: T) => void):()=>void {
         this.listeners.push(callback);
 
         return () => {
@@ -19,6 +19,7 @@ class Store <T> {
             = typeof newState === 'function'
                 ? (newState as (prev: T) => T)(this.state)
                 : newState;
+
         this.notify();
     }
 

@@ -4,59 +4,45 @@ import Input from '$uikit/Input';
 import testStore from './store/test.store';
 
 function App() {
-    const a = new View({
-        className: 'r',
+
+    const v = new View({
+        className: 'old View',
         children: [
-            'test',
-            new Button({
-                children: [ 'test button' ],
-            }).dom
+            'asd',
+            new Input({ id: 'asd' }).dom
         ],
     });
-
-    return (
-        new View({
-            children: [
-                'test ',
-                new Button({
-                    children: [ 'asd' ],
-                    events: {
-                        onclick: () => {
-                            testStore.setState(prev => {
-                                return prev + 1;
-                            });
+    const z = new View({
+        children: [ 'new child' ],
+    });
+    return ([
+        'asdasdasd',
+        'asdasdasd',
+        'asdasdasd',
+        'asdasdasd',
+        new Button({
+            children: [ 'asd' ],
+            events: {
+                onclick: () => {
+                    v.setProps({
+                        children: (e) => {
+                            if (e.has(z.dom)) {
+                                e.delete(z.dom);
+                                return e;
+                            }
+                            const a = new Set([
+                                z.dom,
+                                ...e
+                            ]);
+                            return a;
                         },
-                    },
-                }).dom,
+                    });
+                },
+            },
+        }).dom,
 
-                new View({
-                    key: '111',
-                    children: [
-                        testStore.getState()
-                            .toString(),
-                        a.dom
-                    ],
-                })
-                    .onMount(() => {
-                        testStore.subscribe((state) => {
-                            a.setProps({
-                                className: (cx) => {
-
-                                    if (state % 2 === 0) {
-                                        cx.delete('r');
-                                        cx.add('b');
-                                    } else {
-                                        cx.delete('b');
-                                        cx.add('r');
-                                    }
-                                    return cx;
-                                },
-                            });
-                        });
-                    }).dom
-            ],
-        }).dom
-    );
+        v.dom
+    ] );
 }
 
 export default App;
