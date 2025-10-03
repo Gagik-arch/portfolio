@@ -1,4 +1,4 @@
-export const createRoot = (rootElement: HTMLElement, app: HTMLElement | HTMLElement[]): void => {
+export const createRoot = (rootElement: HTMLElement, app: (string | HTMLElement)[]): void => {
 
     if (Array.isArray(app)) {
         rootElement.append(...app);
