@@ -51,5 +51,4 @@ export function setupChildren<T extends HTMLElementTags = HTMLElement>(
             dom?.replaceChildren(...extractedChildren);
         }
     }
-
 }

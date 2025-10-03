@@ -7,14 +7,13 @@ function App() {
 
     const v = new View({
         className: 'old View',
-        children: [
-            'asd',
-            new Input({ id: 'asd' }).dom
-        ],
+        children: [ 'asd' ],
     });
+
     const z = new View({
         children: [ 'new child' ],
     });
+
     return ([
         'asdasdasd',
         'asdasdasd',

@@ -24,10 +24,8 @@ class Element <T extends HTMLElementTags = HTMLElement> {
         },
         rootElement,
     }: ElementConstructorType<T>) {
-        this.key = key;
 
         this.dom = document.createElement(tagName) as T;
-
         if (rootElement) {
             rootElement.appendChild(this.dom);
         }
