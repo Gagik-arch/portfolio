@@ -2,7 +2,7 @@ import Store from '$lib/store';
 
 class TestStore extends Store<number> {
     public constructor() {
-        super(2);
+        super(0);
     }
 }
 

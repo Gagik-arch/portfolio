@@ -1,12 +1,12 @@
 export type HTMLElementTags = HTMLElementTagNameMap[keyof HTMLElementTagNameMap];
 
+export type Children = string | ChildNode | undefined | null;
+
 export type EventType<T extends HTMLElement> = {
     [K in keyof GlobalEventHandlers]?: GlobalEventHandlers[K] extends ((this: T, ev: infer E) => void) | null
         ? (ev: E) => void
         : never;
 };
-
-export type Children = string | ChildNode | undefined | null;
 
 export type ElementPropsType<T extends HTMLElementTags>
     = Omit<Partial<T>, 'children' | 'className' | 'style'> & {
