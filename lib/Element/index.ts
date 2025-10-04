@@ -3,9 +3,9 @@ import type {
     Children
 } from './types';
 import {
-    setupChildren,
     setupClassName, setupStyle
-} from './utils';
+} from '../utils';
+import { setupChildren } from './utils';
 
 class Element <T extends HTMLElementTags > {
     public dom: T;
@@ -15,7 +15,6 @@ class Element <T extends HTMLElementTags > {
     public constructor({
         tagName,
         props: {
-            key,
             children,
             className,
             style,
@@ -71,7 +70,7 @@ class Element <T extends HTMLElementTags > {
         isForceUpdate = false
     ) {
 
-        setupStyle<T>(style, this.dom);
+        setupStyle(style, this.dom);
         setupClassName(className, this.dom);
 
         setupChildren(children, this.dom, isForceUpdate);
@@ -81,7 +80,8 @@ class Element <T extends HTMLElementTags > {
                 name,
                 value
             ]) => {
-                this.dom.setAttribute(name, value as string);
+
+                //  FIX: this.dom.setAttribute(name, value as string);
                 this.dom[name as keyof T] = value;
             });
 

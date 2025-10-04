@@ -1,4 +1,4 @@
-import Element from '$lib/Element';
+import { Element } from '$lib/index';
 import type { InputProps } from './types';
 
 class Input extends Element<HTMLInputElement> {

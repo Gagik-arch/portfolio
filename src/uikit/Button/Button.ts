@@ -1,4 +1,4 @@
-import Element from '$lib/Element';
+import { Element } from '$lib/index';
 import type { ButtonProps } from './types';
 import styles from './style.module.css';
 

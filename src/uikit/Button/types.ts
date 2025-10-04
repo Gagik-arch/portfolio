@@ -1,3 +1,3 @@
-import type { ElementPropsType } from '$lib/types';
+import type { ElementPropsType } from '$lib/Element/types';
 
 export type ButtonProps = ElementPropsType<HTMLButtonElement>;

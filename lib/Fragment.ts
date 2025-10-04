@@ -1,4 +1,4 @@
-const Fragment = (children:(HTMLElement | string)[]):DocumentFragment => {
+const Fragment = (children:(HTMLElement | SVGElement | string)[]):DocumentFragment => {
     const fragment = document.createDocumentFragment();
 
     fragment.append(...children);

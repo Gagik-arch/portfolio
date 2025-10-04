@@ -1,6 +1,8 @@
 export type HTMLTags = keyof HTMLElementTagNameMap;
 
-export type HTMLElementTags = HTMLElement & HTMLElementTagNameMap[HTMLTags];
+export type HTMLElementTags = HTMLElementTagNameMap[HTMLTags];
+
+export type Tags = HTMLElementTagNameMap[HTMLTags];
 
 export type Children = string | ChildNode | undefined | null | DocumentFragment | HTMLElement;
 
@@ -17,7 +19,6 @@ export type ElementPropsType<T extends HTMLElementTags>
         children?: (Children)[] | undefined;
         className?: string | undefined;
         events?: EventType<T>;
-        key?: string | number | undefined;
         style?: Partial<CSSStyleDeclaration> | undefined;
     };
 
