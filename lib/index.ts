@@ -1,4 +1,6 @@
-export const createRoot = (rootElement: HTMLElement, app: (string | HTMLElement)[]): void => {
+import Element from './Element';
+
+export const createRoot = (rootElement: HTMLElement, app: (string | HTMLElement)[] | DocumentFragment): void => {
 
     if (Array.isArray(app)) {
         rootElement.append(...app);
@@ -6,3 +8,5 @@ export const createRoot = (rootElement: HTMLElement, app: (string | HTMLElement)
         rootElement?.appendChild(app);
     }
 };
+
+export { Element };

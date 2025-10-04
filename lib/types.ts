@@ -1,9 +1,11 @@
 export type HTMLElementTags = HTMLElementTagNameMap[keyof HTMLElementTagNameMap];
 
-export type Children = string | ChildNode | undefined | null;
+export type Children = string | ChildNode | undefined | null | DocumentFragment | HTMLElement;
+
+type Handlers = Omit<GlobalEventHandlers, 'addEventListener' | 'removeEventListener'>;
 
 export type EventType<T extends HTMLElement> = {
-    [K in keyof GlobalEventHandlers]?: GlobalEventHandlers[K] extends ((this: T, ev: infer E) => void) | null
+    [K in keyof Handlers]?: Handlers[K] extends ((this: T, ev: infer E) => void) | null
         ? (ev: E) => void
         : never;
 };
