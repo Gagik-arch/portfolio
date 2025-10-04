@@ -7,7 +7,7 @@ import {
     setupClassName, setupStyle
 } from './utils';
 
-class Element <T extends HTMLElementTags = HTMLElement> {
+class Element <T extends HTMLElementTags > {
     public dom: T;
     readonly #events: EventType<T> = {};
     public key?: string | number | undefined = undefined;

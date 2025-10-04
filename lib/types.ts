@@ -1,4 +1,6 @@
-export type HTMLElementTags = HTMLElementTagNameMap[keyof HTMLElementTagNameMap];
+export type HTMLTags = keyof HTMLElementTagNameMap;
+
+export type HTMLElementTags = HTMLElement & HTMLElementTagNameMap[HTMLTags];
 
 export type Children = string | ChildNode | undefined | null | DocumentFragment | HTMLElement;
 
@@ -20,7 +22,7 @@ export type ElementPropsType<T extends HTMLElementTags>
     };
 
 export interface ElementConstructorType<T extends HTMLElementTags> {
-    tagName: keyof HTMLElementTagNameMap;
+    tagName: HTMLTags;
     props: ElementPropsType<T>;
     rootElement?: HTMLElement | null;
 }
