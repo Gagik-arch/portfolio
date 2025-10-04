@@ -1,7 +1,9 @@
 import Element from './Element';
+import Fragment from './Fragment';
+import Text from './Text';
+import Store from './store';
 
 export const createRoot = (rootElement: HTMLElement, app: (string | HTMLElement)[] | DocumentFragment): void => {
-
     if (Array.isArray(app)) {
         rootElement.append(...app);
     } else {
@@ -9,4 +11,6 @@ export const createRoot = (rootElement: HTMLElement, app: (string | HTMLElement)
     }
 };
 
-export { Element };
+export {
+    Element, Store, Fragment, Text
+};

@@ -1,4 +1,3 @@
-
 const Fragment = (children:(HTMLElement | string)[]):DocumentFragment => {
     const fragment = document.createDocumentFragment();
 
