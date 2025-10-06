@@ -41,7 +41,7 @@ class Element <T extends HTMLElementTags > {
                 ...props,
             } as Omit<ElementPropsType<T>, 'className' | 'children'> & {
                 className?: ((classList: DOMTokenList) => void) | string | undefined;
-                children: ((childNodes:Set<ChildNode>)=>Set<ChildNode>) | Children[] | undefined;
+                children?: ((childNodes:Set<ChildNode>)=>Set<ChildNode>) | Children[] | undefined;
             },
             true
         );
@@ -65,7 +65,7 @@ class Element <T extends HTMLElementTags > {
             ...props
         }: Omit<ElementPropsType<T>, 'className' | 'children'> & {
             className?: ((classList: DOMTokenList) => void) | string | undefined;
-            children: ((childNodes:Set<ChildNode>)=>Set<ChildNode>) | Children[] | undefined;
+            children?: ((childNodes:Set<ChildNode>)=>Set<ChildNode>) | Children[] | undefined;
         },
         isForceUpdate = false
     ) {
