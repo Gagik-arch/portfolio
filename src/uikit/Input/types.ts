@@ -1,3 +1,3 @@
-import type { ElementPropsType } from '$lib/types';
+import type { ElementPropsType } from '$lib/Element';
 
 export type InputProps = ElementPropsType<HTMLInputElement>;
