@@ -1,8 +1,9 @@
 import Button from '$uikit/Button';
 import View from '$uikit/View';
 import {
-    Element, SVGElement, Fragment
+    Element, Fragment
 } from '$lib/index';
+import Icon from '$uikit/Icon';
 
 function App() {
 
@@ -26,15 +27,8 @@ function App() {
                 children: [ 'asdasdasdasdasasdggdfghdf' ],
             }).dom,
 
-            new SVGElement<SVGSVGElement >({
-                tagName: 'svg',
-                props: {
-                    ariaHidden: 'true',
-                    width: '100px',
-                    height: '200px',
-                    viewBox: '0 0 24 24',
-
-                },
+            new Icon('MinLogo', {
+                size: 30,
             }).dom
         ])
     );
