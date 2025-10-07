@@ -1,0 +1,76 @@
+.largeTitle {
+    font-size: calc(26px * 1.5);
+    line-height: calc(32px * 1.5);
+}
+
+.title1 {
+    font-size: calc(22px * 1.5);
+    line-height: calc(26px * 1.5);
+}
+
+.title2 {
+    font-size: calc(17px * 1.5);
+    line-height: calc(22px * 1.5);
+}
+
+.title3 {
+    font-size: calc(15px * 1.5);
+    line-height: calc(20px * 1.5);
+}
+
+.headline {
+    font-size: calc(13px * 1.5);
+    line-height: calc(16px * 1.5);
+}
+
+.body {
+    font-size: calc(13px * 1.5);
+    line-height: calc(16px * 1.5);
+}
+
+.callout {
+    font-size: calc(12px * 1.5);
+    line-height: calc(15px * 1.5);
+}
+
+.subheadline {
+    font-size: calc(11px * 1.5);
+    line-height: calc(14px * 1.5);
+}
+
+.footnote {
+    font-size: calc(10px * 1.5);
+    line-height: calc(13px * 1.5);
+}
+
+.caption1 {
+    @extend .footnote;
+}
+
+.caption2 {
+    @extend .footnote;
+}
+
+.heavy {
+    font-weight: 900
+}
+
+.bold {
+    font-weight: bold
+}
+
+.semibold {
+    font-weight: 600
+}
+
+.medium {
+    font-weight: 500
+}
+
+.regular {
+    font-weight: normal
+}
+
+.light {
+    font-weight: 200
+}

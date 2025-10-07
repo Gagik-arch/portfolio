@@ -6,11 +6,10 @@ import styles from './style.module.css';
 class Icon extends Element<HTMLSpanElement> {
     public constructor(
         name: keyof typeof Icons,
-        {
-            size = 22,
-            ...props
-        }: IconProps
+        props?: IconProps
     ) {
+        const size = props?.size ?? 24;
+
         super({
             tagName: 'span',
             props: {

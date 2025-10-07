@@ -6,11 +6,20 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+html,
+body,
+#app {
+    height: 100%
+}
 
 body {
     margin: 0;
-    display: flex;
+    background-image: url(../assets/images/wallpaper.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover
 }
+
 
 #app {
     min-width: 1920px;
