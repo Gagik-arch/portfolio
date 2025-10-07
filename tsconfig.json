@@ -40,6 +40,12 @@
             "$assets/*": [
                 "./src/assets/*"
             ],
+            "$store/*": [
+                "./src/store/*"
+            ],
+            "$components/*": [
+                "./src/components/*"
+            ],
         },
     },
     "include": [

@@ -1,4 +1,35 @@
 .root {
     display: flex;
-    justify-content: space-between
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    gap: 98px;
+    isolation: isolate;
+    position: relative;
 }
+
+.group_leading {
+    place-items: center;
+    place-content: center;
+    display: flex;
+}
+
+.group_trailing {
+    place-items: center;
+    display: flex;
+}
+
+.icon {
+    padding: 0 10px;
+}
+
+.app_name {
+    /* padding: */
+}
+
+.item {
+    padding: 4px 11px;
+}
+
+/* width: 45px; */
+/* height: 24px; */

@@ -13,19 +13,60 @@ function MenuBar() {
                 className: styles.root,
                 children: [
                     new Element<HTMLDivElement>({
-                        tagName: 'div', props: {
+                        tagName: 'div',
+                        props: {
+                            className: styles.group_leading,
                             children: [
                                 new Button({
+                                    className: styles.icon,
                                     children: [ new Icon('MinLogo').dom ],
                                 }).dom,
-                                new Typography('AppName', 'headline-regular').dom,
-                                new Typography('item', 'body-emphasized').dom
+
+                                new Button({
+                                    className: styles.item,
+                                    children: [ new Typography('AppName', 'headline-regular').dom ],
+                                }).dom,
+
+                                ...Array.from({ length: 5 }, (_, k) => new Button({
+                                    className: styles.item,
+                                    children: [ new Typography('item' + (k + 1), 'body-emphasized').dom ],
+                                }).dom)
                             ],
                         },
                     }).dom,
+
                     new Element<HTMLDivElement>({
-                        tagName: 'div', props: {
-                            children: [],
+                        tagName: 'div',
+                        props: {
+                            className: styles.group_trailing,
+                            children: [
+
+                                new Button({
+                                    className: styles.item,
+                                    children: [ new Icon('Wifi', { size: 20 } ).dom ],
+                                }).dom,
+
+                                new Button({
+                                    className: styles.item,
+                                    children: [ new Icon('Search', { size: 20 } ).dom ],
+                                }).dom,
+
+                                new Button({
+                                    className: styles.item,
+                                    children: [ new Icon('UserCircle', { size: 20 } ).dom ],
+                                }).dom,
+
+                                new Button({
+                                    className: styles.item,
+                                    children: [ new Icon('ControlCenter', { size: 20 } ).dom ],
+                                }).dom,
+
+                                new Button({
+                                    className: styles.item,
+                                    children: [ new Typography('Mon Jun 10  9:41 AM', 'body-emphasized').dom ],
+                                }).dom
+
+                            ],
                         },
                     }).dom
                 ],

@@ -1,9 +1,13 @@
-import MenuBar from './components/MenuBar';
+import MenuBar from '$components/MenuBar';
+import Dock from './components/Dock';
 
 function App() {
 
     return (
-        [ MenuBar() ]
+        [
+            MenuBar(),
+            Dock()
+        ]
     );
 }
 
