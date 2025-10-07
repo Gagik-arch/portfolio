@@ -43,17 +43,17 @@ function MenuBar() {
 
                                 new Button({
                                     className: styles.item,
-                                    children: [ new Icon('Wifi', { size: 20 } ).dom ],
+                                    children: [ new Icon('Wifi', { size: 18 } ).dom ],
                                 }).dom,
 
                                 new Button({
                                     className: styles.item,
-                                    children: [ new Icon('Search', { size: 20 } ).dom ],
+                                    children: [ new Icon('Search', { size: 18 } ).dom ],
                                 }).dom,
 
                                 new Button({
                                     className: styles.item,
-                                    children: [ new Icon('UserCircle', { size: 20 } ).dom ],
+                                    children: [ new Icon('UserCircle', { size: 18 } ).dom ],
                                 }).dom,
 
                                 new Button({
