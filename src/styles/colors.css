@@ -16,11 +16,11 @@
     --grays-white: #fff;
     --grays-gray: #8E8E93;
 
-    --fills-opaque-primary: rgba(142, 142, 147, 0.9);
-    --fills-opaque-secondary: rgba(0, 0, 0, 0.92);
-    --fills-opaque-tertiary: rgba(0, 0, 0, 0.95);
-    --fills-opaque-quaternary: rgba(0, 0, 0, 0.97);
-    --fills-opaque-quinary: rgba(0, 0, 0, 0.98);
+    --fills-opaque-primary: #8e8e93e6;
+    --fills-opaque-secondary: #000000eb;
+    --fills-opaque-tertiary: #000000f2;
+    --fills-opaque-quaternary: #000000f7;
+    --fills-opaque-quinary: #000000fa;
 
     /* use theme lighter dark  */
     --fills-vibrant-primary: #D9D9D9;
@@ -45,5 +45,4 @@
     --labels-vibrant-quinary: #FAFAFA;
     /* use theme lighter dark  */
 
-    --asd: #F6F6F6;
 }

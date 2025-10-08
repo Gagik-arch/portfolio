@@ -4,11 +4,10 @@ import finder from '$assets/images/app-icons/finder/finder256.png';
 import trash from '$assets/images/app-icons/trash/trash256.png';
 import folder from '$assets/images/app-icons/folder/folder256.png';
 import settings from '$assets/images/app-icons/settings/settings256.png';
-import launchpad from '$assets/images/app-icons/launchpad/lanchpad256.png';
+import launchpad from '$assets/images/app-icons/launchpad/launchpad256.png';
 import calculator from '$assets/images/app-icons/calculator/calculator256.png';
 import notes from '$assets/images/app-icons/notes/notes256.png';
 import Button from '$uikit/Button';
-import Squircle from '$lib/Squircle';
 
 function Dock() {
     return (
@@ -17,7 +16,6 @@ function Dock() {
             props: {
                 className: styles.root,
                 children: [
-
                     new Button({
                         className: styles.button,
                         children: [
@@ -62,6 +60,7 @@ function Dock() {
                             }).dom
                         ],
                     }).dom,
+
                     new Button({
                         className: styles.button,
                         children: [
@@ -73,6 +72,30 @@ function Dock() {
                             }).dom
                         ],
                     }).dom,
+                    ...Array.from({ length: 10 }, () => {
+                        return (
+                            new Button({
+                                className: styles.button,
+                                children: [
+                                    new Element<HTMLImageElement>({
+                                        tagName: 'img',
+                                        props: {
+                                            src: folder,
+                                        },
+                                    }).dom
+                                ],
+                            }).dom
+                        );
+                    }),
+
+                    new Element<HTMLHRElement>({
+                        tagName: 'hr',
+                        props: {
+                            className: styles.separator,
+                            children: [],
+                        },
+                    }).dom,
+
                     new Button({
                         className: styles.button,
                         children: [
@@ -84,6 +107,7 @@ function Dock() {
                             }).dom
                         ],
                     }).dom,
+
                     new Button({
                         className: styles.button,
                         children: [
@@ -94,10 +118,7 @@ function Dock() {
                                 },
                             }).dom
                         ],
-                    }).dom,
-                    Squircle({
-                        className: styles.backdrop,
-                    })
+                    }).dom
                 ],
             },
         }).dom

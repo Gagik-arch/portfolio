@@ -2,11 +2,57 @@ import SVGElement from '../SVGElement';
 import styles from './style.module.css';
 import type { SquircleProps } from './types';
 
+function generateSquirclePath(
+    width: number,
+    height: number,
+    power = 4,
+    segments = 256
+): string {
+    if (width <= 0 || height <= 0) throw new Error('width/height must be > 0');
+    if (segments < 8) segments = 8;
+
+    const a = width / 2;
+    const b = height / 2;
+    const cx = a;
+    const cy = b;
+
+    const p = power;
+    const exp = 2 / p;
+
+    const points: [number, number][] = [];
+    for (let i = 0; i <= segments; i++) {
+        const t = (i / segments) * Math.PI * 2;
+        const cosT = Math.cos(t);
+        const sinT = Math.sin(t);
+
+        const xRel = a * Math.sign(cosT) * Math.pow(Math.abs(cosT), exp);
+        const yRel = b * Math.sign(sinT) * Math.pow(Math.abs(sinT), exp);
+        const x = cx + xRel;
+        const y = cy + yRel;
+        points.push([
+            x,
+            y
+        ]);
+    }
+
+    let d = '';
+    for (let i = 0; i < points.length; i++) {
+        const [
+            x,
+            y
+        ] = points[i];
+        const cmd = i === 0 ? 'M' : 'L';
+
+        d += `${cmd}${+x.toFixed(3)},${+y.toFixed(3)} `;
+    }
+    d += 'Z';
+    return d;
+}
+
 function Squircle({
-    radius = 20,
     className = '',
 }:SquircleProps) {
-    const tension = 0.7;
+    const tension = 0.8;
 
     const svg = new SVGElement({
         tagName: 'svg',
@@ -22,35 +68,15 @@ function Squircle({
             const width = parentElement.clientWidth;
             const height = parentElement.clientHeight;
 
-            let rC = Math.min(radius, 50); //  NOTE: Corner radius control point
-
-            const lineHLength = width - rC * 2; //  NOTE: Horizontal line segment length
-            const lineVLength = height - rC * 2; //  NOTE: Vertical line segment length
-
-            //  NOTE: Ensure borderRadius doesn't exceed half of width or height
-            if (rC > width / 2 || rC > height / 2) {
-                rC = Math.min(width, height) / 3; //  NOTE: Adjust if too large
-            }
-
             e.dom.style.width = width + 'px';
             e.dom.style.height = height + 'px';
 
-            const d = `
-            M ${rC} 0
-            h ${lineHLength}
-            c ${rC * tension} 0 ${rC} ${rC * (1 - tension)} ${rC} ${rC}
-            v ${lineVLength}
-            c 0 ${rC * tension} -${rC * (1 - tension)} ${rC} -${rC} ${rC}
-            h -${lineHLength}
-            c -${rC * tension} 0 -${rC} -${rC * (1 - tension)} -${rC} -${rC}
-            v -${lineVLength}
-            c 0 -${rC * tension} ${rC * (1 - tension)} -${rC} ${rC} -${rC}
-            Z
-        `;
+            const d = generateSquirclePath(height, height, 6);
+
             const path = new SVGElement<SVGPathElement>({
                 tagName: 'path',
                 props: {
-                    d,
+                    d: d,
                 },
             });
 

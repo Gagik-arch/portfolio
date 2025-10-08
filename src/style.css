@@ -31,3 +31,7 @@ body {
 svg {
     pointer-events: none
 }
+
+* {
+    box-sizing: border-box
+}
