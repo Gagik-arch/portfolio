@@ -1,0 +1,49 @@
+:root {
+    --accents-red: #FF383C;
+    --accents-orange: #FF8D28;
+    --accents-yellow: #FFCC00;
+    --accents-green: #34C759;
+    --accents-mint: #00C8B3;
+    --accents-teal: #00C3D0;
+    --accents-cyan: #00C0E8;
+    --accents-blue: #0088FF;
+    --accents-indigo: #6155F5;
+    --accents-purple: #CB30E0;
+    --accents-pink: #FF2D55;
+    --accents-brown: #AC7F5E;
+
+    --grays-black: #000;
+    --grays-white: #fff;
+    --grays-gray: #8E8E93;
+
+    --fills-opaque-primary: rgba(142, 142, 147, 0.9);
+    --fills-opaque-secondary: rgba(0, 0, 0, 0.92);
+    --fills-opaque-tertiary: rgba(0, 0, 0, 0.95);
+    --fills-opaque-quaternary: rgba(0, 0, 0, 0.97);
+    --fills-opaque-quinary: rgba(0, 0, 0, 0.98);
+
+    /* use theme lighter dark  */
+    --fills-vibrant-primary: #D9D9D9;
+    --fills-vibrant-secondary: #E6E6E6;
+    --fills-vibrant-tertiary: #F2F2F2;
+    --fills-vibrant-quaternary: #F7F7F7;
+    --fills-vibrant-quinary: #FBFBFB;
+    /* use theme lighter dark  */
+
+    --labels-primary: oklab(0% 0 0 / 0.85);
+    --labels-secondary: oklab(0% 0 0 / 0.5);
+    --labels-tertiary: oklab(0% 0 0 / 0.25);
+    --labels-quaternary: oklab(0% 0 0 / 0.1);
+    --labels-seximal: oklab(0% 0 0 / 0.03);
+    --labels-white: oklab(100% 0 -0.00011);
+
+    /* use theme lighter dark  */
+    --labels-vibrant-primary: #4C4C4C;
+    --labels-vibrant-secondary: #808080;
+    --labels-vibrant-tertiary: #C6C6C6;
+    --labels-vibrant-quaternary: #E6E6E6;
+    --labels-vibrant-quinary: #FAFAFA;
+    /* use theme lighter dark  */
+
+    --asd: #F6F6F6;
+}

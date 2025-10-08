@@ -40,7 +40,6 @@ function MenuBar() {
                         props: {
                             className: styles.group_trailing,
                             children: [
-
                                 new Button({
                                     className: styles.item,
                                     children: [ new Icon('Wifi', { size: 18 } ).dom ],

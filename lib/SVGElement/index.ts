@@ -47,7 +47,9 @@ class SVGElement <T extends SVGTags > {
             ...props
         }: SVGElementConstructorType['props']
     ) {
-        setupClassName(className, this.dom);
+        if (className) {
+            this.dom.setAttribute('class', className);
+        }
 
         if (children) {
             this.dom.replaceChildren(...children);
@@ -60,6 +62,34 @@ class SVGElement <T extends SVGTags > {
             ]) => {
                 this.dom.setAttribute(name, value as string);
             });
+
+        return this;
+    }
+
+    public onMount(callback: (e:this) => void) {
+        const check = () => {
+            if (document.body.contains(this.dom)) {
+                callback(this);
+            } else {
+                requestAnimationFrame(check);
+            }
+        };
+
+        check();
+
+        return this;
+    }
+
+    public onUnMount(callback:(e:this)=>void) {
+        const observer = new MutationObserver(() => {
+            if (!document.body.contains(this.dom)) {
+                callback(this);
+            }
+        });
+
+        observer.observe(document.body, {
+            childList: true, subtree: true,
+        });
 
         return this;
     }

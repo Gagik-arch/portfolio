@@ -8,7 +8,7 @@ export default defineConfig({
             $lib: resolve(__dirname, './lib'),
             $uikit: resolve(__dirname, './src/uikit'),
             $types: resolve(__dirname, './src/types'),
-            $assets: resolve(__dirname, './src/assets'),
+            $assets: resolve(__dirname, './assets'),
             $store: resolve(__dirname, './src/store'),
             $components: resolve(__dirname, './src/components'),
         },

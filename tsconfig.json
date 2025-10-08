@@ -38,7 +38,7 @@
                 "./src/types/*"
             ],
             "$assets/*": [
-                "./src/assets/*"
+                "./assets/*"
             ],
             "$store/*": [
                 "./src/store/*"

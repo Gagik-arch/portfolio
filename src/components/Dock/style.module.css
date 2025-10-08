@@ -1,0 +1,23 @@
+.root {
+    display: flex;
+    margin: 0 auto;
+    position: relative;
+}
+
+.backdrop {
+    color: oklab(97.315% 0 -0.00011 / 0.36);
+    filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.5))
+}
+
+.button {
+    width: 96px;
+    height: 96px;
+    display: flex;
+    place-items: center;
+    place-content: center;
+
+    img {
+        width: inherit;
+        height: inherit;
+    }
+}
