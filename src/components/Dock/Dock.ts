@@ -10,10 +10,13 @@ import notes from '$assets/images/app-icons/notes/notes256.png';
 import Button from '$uikit/Button';
 
 function Dock() {
+
     return (
         new Element<HTMLDivElement>({
             tagName: 'div',
             props: {
+                events: {
+                },
                 className: styles.root,
                 children: [
                     new Button({
