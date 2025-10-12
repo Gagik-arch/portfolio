@@ -35,3 +35,9 @@ svg {
 * {
     box-sizing: border-box
 }
+
+img {
+    user-select: none;
+    -webkit-user-drag: none;
+    -moz-user-select: none
+}

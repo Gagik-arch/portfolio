@@ -8,58 +8,62 @@ import launchpad from '$assets/images/app-icons/launchpad/launchpad256.png';
 import calculator from '$assets/images/app-icons/calculator/calculator256.png';
 import notes from '$assets/images/app-icons/notes/notes256.png';
 import Button from '$uikit/Button';
+import Image from '$uikit/Image';
 
 function Dock() {
+    const onMouseOver = (e:MouseEvent) => {
+
+        // console.log(e);
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+        const target = e.currentTarget as HTMLDivElement;
+
+        const button = (e.target as HTMLButtonElement).closest('.' + styles.button);
+        const rect = target.getBoundingClientRect();
+
+        console.log();
+    };
 
     return (
         new Element<HTMLDivElement>({
             tagName: 'div',
             props: {
                 events: {
+                    onmouseover: onMouseOver,
+                    onmousemove: onMouseMove,
                 },
                 className: styles.root,
                 children: [
                     new Button({
                         className: styles.button,
                         children: [
-                            new Element<HTMLImageElement>({
-                                tagName: 'img',
-                                props: {
-                                    src: finder,
-                                },
+                            new Image({
+                                src: finder,
                             }).dom
                         ],
                     }).dom,
                     new Button({
                         className: styles.button,
                         children: [
-                            new Element<HTMLImageElement>({
-                                tagName: 'img',
-                                props: {
-                                    src: launchpad,
-                                },
+                            new Image({
+                                src: launchpad,
                             }).dom
                         ],
                     }).dom,
                     new Button({
                         className: styles.button,
                         children: [
-                            new Element<HTMLImageElement>({
-                                tagName: 'img',
-                                props: {
-                                    src: calculator,
-                                },
+                            new Image({
+                                src: calculator,
                             }).dom
                         ],
                     }).dom,
                     new Button({
                         className: styles.button,
                         children: [
-                            new Element<HTMLImageElement>({
-                                tagName: 'img',
-                                props: {
-                                    src: notes,
-                                },
+                            new Image({
+                                src: notes,
                             }).dom
                         ],
                     }).dom,
@@ -67,11 +71,8 @@ function Dock() {
                     new Button({
                         className: styles.button,
                         children: [
-                            new Element<HTMLImageElement>({
-                                tagName: 'img',
-                                props: {
-                                    src: settings,
-                                },
+                            new Image({
+                                src: settings,
                             }).dom
                         ],
                     }).dom,
@@ -80,11 +81,8 @@ function Dock() {
                             new Button({
                                 className: styles.button,
                                 children: [
-                                    new Element<HTMLImageElement>({
-                                        tagName: 'img',
-                                        props: {
-                                            src: folder,
-                                        },
+                                    new Image({
+                                        src: folder,
                                     }).dom
                                 ],
                             }).dom
@@ -102,11 +100,8 @@ function Dock() {
                     new Button({
                         className: styles.button,
                         children: [
-                            new Element<HTMLImageElement>({
-                                tagName: 'img',
-                                props: {
-                                    src: folder,
-                                },
+                            new Image({
+                                src: folder,
                             }).dom
                         ],
                     }).dom,
@@ -114,11 +109,8 @@ function Dock() {
                     new Button({
                         className: styles.button,
                         children: [
-                            new Element<HTMLImageElement>({
-                                tagName: 'img',
-                                props: {
-                                    src: trash,
-                                },
+                            new Image({
+                                src: trash,
                             }).dom
                         ],
                     }).dom
