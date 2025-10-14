@@ -1,10 +1,35 @@
 .root {
     position: fixed;
-    background-color: aqua;
-
+    border-radius: 26px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.23), 0 16px 48px 0 rgba(0, 0, 0, 0.35);
 }
 
-.window_controls {
+.window_control_container {
     display: inline-flex;
+    position: absolute;
+    z-index: 2;
+    left: 13px;
+    top: 13px;
+    gap: 8px;
 
+    &>button {
+        width: calc(14px * var(--scale));
+        height: calc(14px * var(--scale));
+        border-radius: 50%;
+        border: 1px solid rgba(0, 0, 0, 0.1)
+    }
+}
+
+#close {
+    background-color: #FF736A;
+    border: 1px solid rgba(0, 0, 0, 0.1)
+}
+
+#minimize {
+    background-color: #FEBC2E;
+    border: 1px solid rgba(0, 0, 0, 0.1)
+}
+
+#maximize {
+    background-color: #19C332;
 }

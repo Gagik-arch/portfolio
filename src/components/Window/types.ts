@@ -1,1 +1,5 @@
-export type WindowProps = object;
+export interface WindowProps {
+    width?: number;
+    height?: number;
+    backgroundColor?: 'string';
+}
