@@ -32,17 +32,17 @@
     }
 
     :has(+ hr) {
-        padding-right: 30px;
+        padding-right: 20px;
     }
 
     &>hr+* {
-        padding-left: 30px;
+        padding-left: 20px;
     }
 
     :has(+ hr),
     &>hr+* {
         &::after {
-            width: calc(var(--width) + 80px);
+            width: calc(var(--width) + 62px);
         }
     }
 }
