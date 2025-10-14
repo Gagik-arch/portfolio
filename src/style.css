@@ -41,3 +41,7 @@ img {
     -webkit-user-drag: none;
     -moz-user-select: none
 }
+
+hr {
+    margin: 0;
+}

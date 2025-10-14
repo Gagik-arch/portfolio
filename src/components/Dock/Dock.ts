@@ -10,19 +10,37 @@ import notes from '$assets/images/app-icons/notes/notes256.png';
 import Button from '$uikit/Button';
 import Image from '$uikit/Image';
 
+const scaleValue = (
+    value: number,
+    from: [number, number],
+    to: [number, number]
+) => {
+    const scale = (to[1] - to[0]) / (from[1] - from[0]);
+    const capped = Math.min(from[1], Math.max(from[0], value)) - from[0];
+    return Math.floor(capped * scale + to[0]);
+};
+
 function Dock() {
-    const onMouseOver = (e:MouseEvent) => {
-
-        // console.log(e);
-    };
-
     const onMouseMove = (e: MouseEvent) => {
         const target = e.currentTarget as HTMLDivElement;
 
         const button = (e.target as HTMLButtonElement).closest('.' + styles.button);
-        const rect = target.getBoundingClientRect();
 
-        console.log();
+        if (!button) return;
+
+        const buttonRect = button.getBoundingClientRect();
+        const cursorDistance = e.clientX - buttonRect.x;
+        const value = Math.abs(+(cursorDistance / 16).toFixed(0)) - 3;
+
+        target.style.setProperty(
+            '--offset-left',
+            `${value * -1}px`
+        );
+
+        target.style.setProperty(
+            '--offset-right',
+            `${value}px`
+        );
     };
 
     return (
@@ -30,7 +48,6 @@ function Dock() {
             tagName: 'div',
             props: {
                 events: {
-                    onmouseover: onMouseOver,
                     onmousemove: onMouseMove,
                 },
                 className: styles.root,

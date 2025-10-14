@@ -7,6 +7,7 @@ export default defineConfig({
         alias: {
             $lib: resolve(__dirname, './lib'),
             $uikit: resolve(__dirname, './src/uikit'),
+            $utils: resolve(__dirname, './src/utils'),
             $types: resolve(__dirname, './src/types'),
             $assets: resolve(__dirname, './assets'),
             $store: resolve(__dirname, './src/store'),
