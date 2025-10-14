@@ -1,0 +1,10 @@
+.root {
+    position: fixed;
+    background-color: aqua;
+
+}
+
+.window_controls {
+    display: inline-flex;
+
+}

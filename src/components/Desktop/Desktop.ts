@@ -1,5 +1,6 @@
 import Element from '$lib/Element';
 import styles from './style.module.css';
+import Window from '$components/Window';
 
 function Desktop() {
     return (
@@ -7,7 +8,7 @@ function Desktop() {
             tagName: 'div',
             props: {
                 className: styles.root,
-                children: [ 'Desktop ' ],
+                children: [ new Window().dom ],
             },
         }).dom
     );
