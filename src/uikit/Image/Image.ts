@@ -6,6 +6,7 @@ import styles from './style.module.css';
 
 class Image extends Element<HTMLImageElement> {
     public constructor({
+        alt = 'image',
         ...props
     }: ImageProps) {
 
@@ -13,6 +14,7 @@ class Image extends Element<HTMLImageElement> {
             tagName: 'img',
             props: {
                 className: styles.root,
+                alt,
                 ...props,
             },
         });
