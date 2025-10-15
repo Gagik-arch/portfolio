@@ -13,8 +13,8 @@
     gap: 8px;
 
     &>button {
-        width: calc(14px * var(--scale));
-        height: calc(14px * var(--scale));
+        width: calc(14px * 1);
+        height: calc(14px * 1);
         border-radius: 50%;
         border: 1px solid rgba(0, 0, 0, 0.1)
     }
