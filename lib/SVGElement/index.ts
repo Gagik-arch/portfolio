@@ -1,7 +1,6 @@
 import type {
     SVGElementConstructorType, SVGTags, SVGElementPropsType
 } from './types';
-import { setupClassName } from '../utils';
 
 const svgNS = 'http://www.w3.org/2000/svg';
 
@@ -20,10 +19,6 @@ class SVGElement <T extends SVGTags > {
         rootElement,
     }: SVGElementConstructorType) {
         this.dom = document.createElementNS(svgNS, tagName) as T;
-
-        if (rootElement) {
-            rootElement.appendChild(this.dom);
-        }
 
         if (rootElement) {
             rootElement.appendChild(this.dom);

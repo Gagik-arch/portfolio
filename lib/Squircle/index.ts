@@ -52,7 +52,8 @@ function generateSquirclePath(
 function Squircle({
     className = '',
 }:SquircleProps) {
-    const tension = 0.8;
+
+    //  NOTE:  const tension = 0.8;
 
     const svg = new SVGElement({
         tagName: 'svg',
