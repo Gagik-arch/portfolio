@@ -23,12 +23,7 @@ function Dock() {
         const value = Math.abs(+(cursorDistance / 16).toFixed(0)) - 3;
 
         target.style.setProperty(
-            '--offset-left',
-            `${value * -1}px`
-        );
-
-        target.style.setProperty(
-            '--offset-right',
+            '--offset',
             `${value}px`
         );
     };
