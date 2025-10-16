@@ -6,6 +6,7 @@
     gap: 98px;
     isolation: isolate;
     position: relative;
+    user-select: none
 }
 
 .group_leading {

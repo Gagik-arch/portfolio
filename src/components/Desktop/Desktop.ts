@@ -7,6 +7,7 @@ function Desktop() {
         new Element<HTMLDivElement>({
             tagName: 'div',
             props: {
+                id: 'desktop',
                 className: styles.root,
                 children: [ new Window().dom ],
             },

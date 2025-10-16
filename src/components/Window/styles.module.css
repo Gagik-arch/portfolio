@@ -2,19 +2,20 @@
     position: fixed;
     border-radius: 26px;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.23), 0 16px 48px 0 rgba(0, 0, 0, 0.35);
+    resize: both;
 }
 
 .window_control_container {
     display: inline-flex;
     position: absolute;
     z-index: 2;
-    left: 13px;
-    top: 13px;
+    left: 22px;
+    top: 22px;
     gap: 8px;
 
     &>button {
-        width: calc(14px * 1);
-        height: calc(14px * 1);
+        width: calc(14px * var(--scale));
+        height: calc(14px * var(--scale));
         border-radius: 50%;
         border: 1px solid rgba(0, 0, 0, 0.1)
     }

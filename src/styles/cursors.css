@@ -1,3 +1,23 @@
 .pointer {
     cursor: url('../../assets/images/cursors/pointer.png'), pointer;
 }
+
+.n-resize {
+    cursor: n-resize
+}
+
+.e-resize {
+    cursor: e-resize
+}
+
+.ne-resize {
+    cursor: ne-resize
+}
+
+.ns-resize {
+    cursor: ns-resize
+}
+
+.nw-resize {
+    cursor: nw-resize
+}

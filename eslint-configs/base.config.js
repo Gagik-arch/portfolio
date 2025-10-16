@@ -155,7 +155,10 @@ export default [
                     max: 1, maxEOF: 1,
                 }
             ],
-            '@stylistic/no-trailing-spaces': 'error',
+            '@stylistic/lines-between-class-members': ["error",'always', {
+                exceptAfterSingleLine: true,
+                "exceptAfterOverload": false 
+             }],
             '@stylistic/no-whitespace-before-property': 'error',
             '@stylistic/nonblock-statement-body-position': [ 'error', 'beside' ],
             '@stylistic/object-curly-newline': [
