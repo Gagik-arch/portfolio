@@ -41,22 +41,23 @@ class Window extends Element<HTMLDivElement> {
             window?.removeEventListener('mousedown', this.onMouseDown);
             window?.removeEventListener('mousemove', this.onMove);
             window?.removeEventListener('mouseup', this.onMouseUp);
-
         });
-
     }
 
     private readonly onMove = (e: MouseEvent) => {
         const desktop = this.dom.parentElement?.getBoundingClientRect();
 
         this.onResize(e);
+        
+        if (this.dom !== e.target) { 
+            this.dom.className = styles.root;
+        }
 
         if (!this.isMouseDowned || !desktop ) return;
 
         const rect = this.dom.getBoundingClientRect();
 
         this.dom.style.left = (clampNumber(rect.x + e.movementX, 0, window.innerWidth - rect.width)) + 'px';
-
         this.dom.style.top = (clampNumber(rect.y + e.movementY, desktop.top, desktop.bottom - rect.height)) + 'px';
     };
 
@@ -79,49 +80,38 @@ class Window extends Element<HTMLDivElement> {
     
     private readonly onResize = (e: MouseEvent) => {
         this.changeCursorAnchorHover(e);
-
-        if (!this.resizeAnchor) return;
-  
+        
+        const desktop = this.dom.parentElement?.getBoundingClientRect();
+        if (!this.resizeAnchor || !desktop) return;
+        
         const rect = this.dom.getBoundingClientRect();
- 
+   
         switch (this.resizeAnchor) {
                 case 'top':
-                    if (rect.height < this.height ) {
-                        this.dom.style.height = this.height + 'px';
-                        return;
-                    }
                     const height = rect.height - e.movementY;
-                    if (height <= this.height) return; 
+                    if (height <= this.height ) return; 
                 
-                    this.dom.style.top = (rect.top + e.movementY) + 'px';
-                    this.dom.style.height = height + 'px';
-                    break;
-      
-                case 'bottom':
-                    if (rect.height < this.height ) {
-                        this.dom.style.height = this.height + 'px';
-                        return;
+                    this.dom.style.top = Math.max((rect.top + e.movementY), desktop.top) + 'px';
+                    if (rect.top > desktop.top) { 
+                        this.dom.style.height = Math.max(height, this.height) + 'px';
                     }
-                    this.dom.style.height = (rect.height + e.movementY) + 'px';
+                    break;
+                case 'bottom':
+
+                    //  TODO: if (rect.bottom < desktop.bottom) { 
+                    this.dom.style.height = Math.max(rect.height + e.movementY, this.height) + 'px';
+
+                    //  TODO:  }
                     break;
                 case 'left':
-                    if (rect.width < this.width ) {
-                        this.dom.style.width = this.width + 'px';
-                        return;
-                    }
                     const width = rect.width - e.movementX;
                     if (width <= this.width) return; 
                 
-                    this.dom.style.width = width + 'px';
+                    this.dom.style.width = (Math.max( width, this.width)) + 'px';
                     this.dom.style.left = (rect.left + e.movementX) + 'px';
                     break;
                 case 'right':
-                    if (rect.width < this.width ) {
-                        this.dom.style.width = this.width + 'px';
-                        return;
-                    }
-                  
-                    this.dom.style.width = (rect.width + e.movementX) + 'px';
+                    this.dom.style.width = (Math.max( rect.width + e.movementX, this.width)) + 'px';
                     break;
                 default:
                     break;
@@ -148,6 +138,7 @@ class Window extends Element<HTMLDivElement> {
 
     private readonly changeCursorAnchorHover = (e:MouseEvent) => {
         const anchor = this.detectAnchorSide(e);
+        
         switch (anchor) {
                 case 'right':
                 case 'left':
