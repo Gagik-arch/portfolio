@@ -47,6 +47,11 @@
     }
 }
 
+
+div:has([data-resizing="true"]) .root {
+    pointer-events: none
+}
+
 .button {
     width: var(--width);
     height: var(--width);

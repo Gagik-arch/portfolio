@@ -15,17 +15,13 @@ function Dock() {
         const target = e.currentTarget as HTMLDivElement;
 
         const button = (e.target as HTMLButtonElement).closest('.' + styles.button);
-
         if (!button) return;
 
         const buttonRect = button.getBoundingClientRect();
         const cursorDistance = e.clientX - buttonRect.x;
         const value = Math.abs(+(cursorDistance / 16).toFixed(0)) - 3;
 
-        target.style.setProperty(
-            '--offset',
-            `${value}px`
-        );
+        target.style.setProperty('--offset', `${value}px`);
     };
 
     return (
@@ -35,7 +31,7 @@ function Dock() {
                 events: {
                     onmousemove: onMouseMove,
                 },
-                className: styles.root,
+                className: `${styles.root} dock`,
                 children: [
                     new Button({
                         className: styles.button,

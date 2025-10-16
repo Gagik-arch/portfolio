@@ -81,7 +81,7 @@ class Element <T extends HTMLElementTags > {
                 value
             ]) => {
 
-                //  FIX: this.dom.setAttribute(name, value as string);
+                this.dom.setAttribute(name, value as string);
                 this.dom[name as keyof T] = value;
             });
 
