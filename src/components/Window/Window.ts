@@ -155,4 +155,5 @@ class Window extends Element<HTMLDivElement> {
 
     };
 }
+
 export default Window;
