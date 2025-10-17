@@ -47,9 +47,10 @@
 }
 
 .left_bottom {
-    left: 0;
-    bottom: 0;
+    left: 0px;
+    bottom: 0px;
     border-radius: 0 0 0 20px;
+
 }
 
 .right_top {
@@ -65,10 +66,10 @@
 }
 
 .anchor {
-    width: 20px;
+    width: 16px;
+    height: 16px;
     position: absolute;
-    height: 20px;
     user-select: none;
     -webkit-user-drag: none;
-    background-color: transparent
+    background-color: transparent;
 }

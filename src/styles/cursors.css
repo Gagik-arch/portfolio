@@ -1,23 +1,27 @@
+.default {
+    cursor: url('../../assets/images/cursors/default.png'), default;
+}
+
 .pointer {
     cursor: url('../../assets/images/cursors/pointer.png'), pointer;
 }
 
 .n-resize {
-    cursor: n-resize
+    cursor: url('../../assets/images/cursors/n-resize.png')5 5, n-resize;
 }
 
 .e-resize {
-    cursor: e-resize
+    cursor: url('../../assets/images/cursors/e-resize.png') 5 5, e-resize;
 }
 
 .ne-resize {
-    cursor: ne-resize
-}
-
-.ns-resize {
-    cursor: ns-resize
+    cursor: url('../../assets/images/cursors/ne-resize.png') 5 5, ne-resize;
 }
 
 .nw-resize {
-    cursor: nw-resize
+    cursor: url('../../assets/images/cursors/nw-resize.png') 5 5, nw-resize;
+}
+
+.grabbing {
+    cursor: url('../../assets/images/cursors/grabbing.png') 5 5, grabbing;
 }

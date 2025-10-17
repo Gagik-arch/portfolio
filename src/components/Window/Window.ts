@@ -112,8 +112,8 @@ class Window extends Element<HTMLDivElement> {
     private readonly onMouseUp = () => {
         this.isMouseDowned = false;
         this.resizeAnchor = undefined;
-        this.dom.className = styles.root;
-        
+        this.dom.className = `window default ${styles.root}`;
+
         this.setProps({
             'data-resizing': !!this.resizeAnchor + '',
         });
@@ -230,7 +230,7 @@ class Window extends Element<HTMLDivElement> {
                     this.dom.classList.add('n-resize');
                     break;
                 default:
-                    this.dom.className = styles.root;
+                    this.dom.className = `${styles.root} ${this.isMouseDowned ? 'grabbing' : 'default'}  window`;
                     break;
         }
 
