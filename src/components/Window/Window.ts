@@ -6,7 +6,7 @@ import { clampNumber, getCssVariable } from '$utils/index';
 
 class Window extends Element<HTMLDivElement> {
     private isMouseDowned = false;
-    private resizeAnchor: 'top' | 'left' | 'right' | 'bottom' | 'right_bottom' | undefined = undefined;
+    private resizeAnchor: 'top' | 'left' | 'right' | 'bottom' | 'right-bottom' | 'right-top' | 'left-top' | 'left-bottom' | undefined = undefined;
     private readonly borderSize = 6 * getCssVariable<number>();
     private readonly width: number;
     private readonly height: number;
@@ -17,15 +17,35 @@ class Window extends Element<HTMLDivElement> {
             props: {
                 className: styles.root,
                 children: [
-                    Controls()
-
-                    // new Element<HTMLSpanElement>({
-                    //     tagName: 'span',
-                    //     props: {
-                    //         className: `${styles.right_bottom} nw-resize`,
-                    //         children: [],
-                    //     },
-                    // }).dom
+                    Controls(),
+                    new Element<HTMLSpanElement>({
+                        tagName: 'span',
+                        props: {
+                            className: `${styles.left_top} nw-resize ${styles.anchor}`,
+                            children: [],
+                        },
+                    }).dom,
+                    new Element<HTMLSpanElement>({
+                        tagName: 'span',
+                        props: {
+                            className: `${styles.left_bottom} ne-resize ${styles.anchor}`,
+                            children: [],
+                        },
+                    }).dom,
+                    new Element<HTMLSpanElement>({
+                        tagName: 'span',
+                        props: {
+                            className: `${styles.right_top} ne-resize ${styles.anchor}`,
+                            children: [],
+                        },
+                    }).dom,
+                    new Element<HTMLSpanElement>({
+                        tagName: 'span',
+                        props: {
+                            className: `${styles.right_bottom} nw-resize ${styles.anchor}`,
+                            children: [],
+                        },
+                    }).dom
                 ],
                 style: {
                     width: `calc(${props?.width || 500}px * var(--scale))`,
@@ -34,6 +54,7 @@ class Window extends Element<HTMLDivElement> {
                 },
             },
         });
+        
         this.width = (props?.width || 500) * getCssVariable<number>();
         this.height = props?.height || 300 * getCssVariable<number>();
         const isResizable = props?.isResizable || true;
@@ -72,14 +93,17 @@ class Window extends Element<HTMLDivElement> {
     };
 
     private readonly onMouseDown = (e: MouseEvent) => {
-        if (e.target !== this.dom ) return;
+        const target = e.target as HTMLElement;
+
+        if (target !== this.dom && !target.classList.contains(styles.anchor)) return;
         this.dom.focus();
-
+        
         this.resizeAnchor = this.detectAnchorSide(e);
-
+     
         this.setProps({
             'data-resizing': !!this.resizeAnchor + '',
         });
+
         if (this.resizeAnchor) return; 
       
         this.isMouseDowned = true;
@@ -99,6 +123,7 @@ class Window extends Element<HTMLDivElement> {
         this.changeCursorAnchorHover(e);
         
         const desktop = this.dom.parentElement?.getBoundingClientRect();
+     
         if (!this.resizeAnchor || !desktop) return;
         
         const rect = this.dom.getBoundingClientRect();
@@ -136,7 +161,7 @@ class Window extends Element<HTMLDivElement> {
                  
             this.dom.style.width = `${rect.right <= desktop.right ? width : desktop.width - rect.left}px`;
         };
-        console.log(12312312, this.resizeAnchor);
+    
         switch (this.resizeAnchor) {
                 case 'top':
                     onTop();
@@ -150,11 +175,22 @@ class Window extends Element<HTMLDivElement> {
                 case 'right':
                     onRight();
                     break;
-
-                // case 'right_bottom':
-                //     onRight();
-                //     onBottom();
-                    // break;
+                case 'left-top':
+                    onLeft();
+                    onTop();
+                    break;
+                case 'left-bottom':
+                    onLeft();
+                    onBottom();
+                    break;
+                case 'right-top':
+                    onRight();
+                    onTop();
+                    break;
+                case 'right-bottom':
+                    onRight();
+                    onBottom();
+                    break;
                 default:
                     break;
         }
@@ -164,11 +200,11 @@ class Window extends Element<HTMLDivElement> {
         const rect = this.dom.getBoundingClientRect();
    
         const target = e.target as HTMLElement;
-        
-        if (
-            e.offsetX > rect.width - this.borderSize 
-            && e.offsetY > rect.height - this.borderSize
-        ) return 'right_bottom';
+    
+        if ( target.classList.contains(styles.right_bottom)) return 'right-bottom';
+        if ( target.classList.contains(styles.right_top)) return 'right-top';
+        if ( target.classList.contains(styles.left_top)) return 'left-top';
+        if ( target.classList.contains(styles.left_bottom)) return 'left-bottom';
 
         if (e.offsetX < this.borderSize) return 'left';
         
@@ -192,9 +228,6 @@ class Window extends Element<HTMLDivElement> {
                 case 'top':
                 case 'bottom':
                     this.dom.classList.add('n-resize');
-                    break;
-                case 'right_bottom':
-                    this.dom.classList.add('nw-resize');
                     break;
                 default:
                     this.dom.className = styles.root;

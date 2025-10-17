@@ -3,6 +3,10 @@
     border-radius: 26px;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.23), 0 16px 48px 0 rgba(0, 0, 0, 0.35);
     resize: both;
+
+    &::after {
+        content: ''
+    }
 }
 
 .window_control_container {
@@ -34,4 +38,37 @@
 
 #maximize {
     background-color: #19C332;
+}
+
+.left_top {
+    left: 0;
+    top: 0;
+    border-radius: 20px 0 0 0;
+}
+
+.left_bottom {
+    left: 0;
+    bottom: 0;
+    border-radius: 0 0 0 20px;
+}
+
+.right_top {
+    right: 0;
+    top: 0;
+    border-radius: 0 20px 0 0;
+}
+
+.right_bottom {
+    right: 0;
+    bottom: 0;
+    border-radius: 0 0 20px 0;
+}
+
+.anchor {
+    width: 20px;
+    position: absolute;
+    height: 20px;
+    user-select: none;
+    -webkit-user-drag: none;
+    background-color: transparent
 }
