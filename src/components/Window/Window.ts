@@ -45,7 +45,9 @@ class Window extends Element<HTMLDivElement> {
                             className: `${styles.right_bottom} nw-resize ${styles.anchor}`,
                             children: [],
                         },
-                    }).dom
+                    }).dom,
+
+                    ...(props?.children ?? [])
                 ],
                 style: {
                     width: `calc(${props?.width || 500}px * var(--scale))`,
