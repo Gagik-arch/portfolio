@@ -9,7 +9,11 @@ function Desktop() {
             props: {
                 id: 'desktop',
                 className: styles.root,
-                children: [ new Window().dom ],
+                children: [
+                    new Window({
+                        children: [],
+                    }).dom 
+                ],
             },
         }).dom
     );

@@ -11,7 +11,13 @@ class Window extends Element<HTMLDivElement> {
     private readonly width: number;
     private readonly height: number;
 
-    public constructor(props?: WindowProps) {
+    public constructor({ 
+        children,
+        width = 500,
+        height = 300,
+        backgroundColor,
+        isResizable = true,
+    }: WindowProps) {
         super({
             tagName: 'div',
             props: {
@@ -47,19 +53,18 @@ class Window extends Element<HTMLDivElement> {
                         },
                     }).dom,
 
-                    ...(props?.children ?? [])
+                    ...(children ?? [])
                 ],
                 style: {
-                    width: `calc(${props?.width || 500}px * var(--scale))`,
-                    height: `calc(${props?.height || 300}px * var(--scale))`,
-                    backgroundColor: props?.backgroundColor || '#fff',
+                    width: `calc(${width}px * var(--scale))`,
+                    height: `calc(${height}px * var(--scale))`,
+                    backgroundColor: backgroundColor || '#fff',
                 },
             },
         });
         
-        this.width = (props?.width || 500) * getCssVariable<number>();
-        this.height = props?.height || 300 * getCssVariable<number>();
-        const isResizable = props?.isResizable || true;
+        this.width = width * getCssVariable<number>();
+        this.height = height * getCssVariable<number>();
 
         this.onMount(() => {
             if (!isResizable) return;
