@@ -1,8 +1,18 @@
 .root {
+    --left: 50%;
+    --top: 50%;
+    --width: 0;
+    --height: 0;
+    --left: 0;
+
     position: fixed;
     border-radius: 26px;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.23), 0 16px 48px 0 rgba(0, 0, 0, 0.35);
     resize: both;
+    left: var(--left);
+    top: var(--top);
+    width: var(--width);
+    height: var(--height);
 
     &::after {
         content: ''

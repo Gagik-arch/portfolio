@@ -2,12 +2,14 @@ import Element from '$lib/Element';
 import styles from './styles.module.css';
 import type { WindowProps } from './types';
 import Controls from './Controls';
-import { clampNumber, getCssVariable } from '$utils/index';
+import {
+    clampNumber, getCssVariable  
+} from '$utils/index';
 
 class Window extends Element<HTMLDivElement> {
     private isMouseDowned = false;
     private resizeAnchor: 'top' | 'left' | 'right' | 'bottom' | 'right-bottom' | 'right-top' | 'left-top' | 'left-bottom' | undefined = undefined;
-    private readonly borderSize = 6 * getCssVariable<number>();
+    private readonly borderSize = 6 * getCssVariable<number>('--scale');
     private readonly width: number;
     private readonly height: number;
 
@@ -56,15 +58,14 @@ class Window extends Element<HTMLDivElement> {
                     ...(children ?? [])
                 ],
                 style: {
-                    width: `calc(${width}px * var(--scale))`,
-                    height: `calc(${height}px * var(--scale))`,
                     backgroundColor: backgroundColor || '#fff',
                 },
             },
         });
-        
-        this.width = width * getCssVariable<number>();
-        this.height = height * getCssVariable<number>();
+        this.width = width * getCssVariable<number>('--scale');
+        this.height = height * getCssVariable<number>('--scale');
+        this.dom.style.setProperty('--width', this.width + 'px');
+        this.dom.style.setProperty('--height', this.height + 'px');
 
         this.onMount(() => {
             if (!isResizable) return;
@@ -95,8 +96,8 @@ class Window extends Element<HTMLDivElement> {
    
         const rect = this.dom.getBoundingClientRect();
 
-        this.dom.style.left = (clampNumber(rect.x + e.movementX, 0, window.innerWidth - rect.width)) + 'px';
-        this.dom.style.top = (clampNumber(rect.y + e.movementY, desktop.top, desktop.bottom - rect.height)) + 'px';
+        this.dom.style.setProperty( '--left', Math.round(clampNumber(rect.x + e.movementX, 0, window.innerWidth - rect.width)) + 'px');
+        this.dom.style.setProperty( '--top', Math.round(clampNumber(rect.y + e.movementY, desktop.top, desktop.bottom - rect.height)) + 'px');
     };
 
     private readonly onMouseDown = (e: MouseEvent) => {
@@ -140,10 +141,10 @@ class Window extends Element<HTMLDivElement> {
             if (height <= this.height) return; 
                 
             const top = Math.floor(Math.max((rect.top + e.movementY), desktop.top));
-            this.dom.style.top = top + 'px';
-                
+            this.dom.style.setProperty('--top', top + 'px');
+
             if (top > desktop.top) {
-                this.dom.style.height = Math.floor(Math.max(height, this.height)) + 'px';
+                this.dom.style.setProperty('--height', Math.floor(Math.max(height, this.height)) + 'px');
             }
         };
 
@@ -153,20 +154,20 @@ class Window extends Element<HTMLDivElement> {
                 
             if (width <= this.width || left === 0) return; 
             
-            this.dom.style.width = Math.floor(Math.max( width, this.width)) + 'px';
-            this.dom.style.left = left + 'px';
+            this.dom.style.setProperty('--width', Math.floor(Math.max(width, this.width)) + 'px');
+            this.dom.style.setProperty('--left', left + 'px');
         };
 
         const onBottom = () => { 
             const height = Math.max(rect.height + e.movementY, this.height);
-            this.dom.style.height = `${Math.floor(rect.bottom < desktop.bottom ? height : desktop.height - rect.top + desktop.top )}px`;
-                  
+
+            this.dom.style.setProperty('--height', `${Math.floor(rect.bottom < desktop.bottom ? height : desktop.height - rect.top + desktop.top )}px`);
         };
 
         const onRight = () => {
             const width = Math.floor(Math.max(rect.width + e.movementX, this.width));
                  
-            this.dom.style.width = `${rect.right <= desktop.right ? width : desktop.width - rect.left}px`;
+            this.dom.style.setProperty('--width', `${rect.right <= desktop.right ? width : desktop.width - rect.left}px`);
         };
     
         switch (this.resizeAnchor) {
