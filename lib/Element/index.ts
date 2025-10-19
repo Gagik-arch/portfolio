@@ -80,9 +80,10 @@ class Element <T extends HTMLElementTags > {
                 name,
                 value
             ]) => {
-
-                this.dom.setAttribute(name, value as string);
-                this.dom[name as keyof T] = value;
+                if (this.dom[name as keyof T] !== value) { 
+                    this.dom.setAttribute(name, value as string);
+                    this.dom[name as keyof T] = value;
+                }
             });
 
         return this;

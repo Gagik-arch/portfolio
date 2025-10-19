@@ -48,7 +48,7 @@
 }
 
 
-div:has([data-resizing="true"]) .root {
+div:has([data-resizing="true"], [data-dragging="true"]) .root {
     pointer-events: none
 }
 

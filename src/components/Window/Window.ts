@@ -23,7 +23,7 @@ class Window extends Element<HTMLDivElement> {
         super({
             tagName: 'div',
             props: {
-                className: styles.root,
+                className: `window default ${styles.root}`,
                 children: [
                     Controls(),
                     new Element<HTMLSpanElement>({
@@ -60,6 +60,8 @@ class Window extends Element<HTMLDivElement> {
                 style: {
                     backgroundColor: backgroundColor || '#fff',
                 },
+                'data-resizing': false,
+                'data-dragging': false,
             },
         });
         this.width = width * getCssVariable<number>('--scale');
@@ -87,11 +89,7 @@ class Window extends Element<HTMLDivElement> {
         const desktop = this.dom.parentElement?.getBoundingClientRect();
 
         this.onResize(e);
-        
-        if (this.dom !== e.target) { 
-            this.dom.className = `window ${styles.root}`;
-        }
-    
+
         if (!this.isMouseDowned || !desktop ) return;
    
         const rect = this.dom.getBoundingClientRect();
@@ -102,28 +100,30 @@ class Window extends Element<HTMLDivElement> {
 
     private readonly onMouseDown = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
+   
+        if (e.button !== 0 || target !== this.dom && !target.classList.contains(styles.anchor)) return;
 
-        if (target !== this.dom && !target.classList.contains(styles.anchor)) return;
         this.dom.focus();
         
         this.resizeAnchor = this.detectAnchorSide(e);
      
-        this.setProps({
-            'data-resizing': !!this.resizeAnchor + '',
-        });
+        this.setProps({ 'data-resizing': !!this.resizeAnchor + '' });
 
         if (this.resizeAnchor) return; 
-      
         this.isMouseDowned = true;
+
+        this.setProps({ 'data-dragging': this.isMouseDowned });
     };
 
     private readonly onMouseUp = () => {
-        this.isMouseDowned = false;
         this.resizeAnchor = undefined;
+        this.isMouseDowned = false;
+
         this.dom.className = `window default ${styles.root}`;
 
         this.setProps({
             'data-resizing': !!this.resizeAnchor + '',
+            'data-dragging': false,
         });
     };
     
@@ -214,6 +214,8 @@ class Window extends Element<HTMLDivElement> {
         if ( target.classList.contains(styles.left_top)) return 'left-top';
         if ( target.classList.contains(styles.left_bottom)) return 'left-bottom';
 
+        if (!target.classList.contains(styles.root)) return undefined;
+
         if (e.offsetX < this.borderSize) return 'left';
         
         if (e.offsetX > rect.width - this.borderSize) return 'right';
@@ -227,7 +229,7 @@ class Window extends Element<HTMLDivElement> {
 
     private readonly changeCursorAnchorHover = (e:MouseEvent) => {
         const anchor = this.detectAnchorSide(e);
-
+    
         switch (anchor) {
                 case 'right':
                 case 'left':
@@ -238,7 +240,7 @@ class Window extends Element<HTMLDivElement> {
                     this.dom.classList.add('n-resize');
                     break;
                 default:
-                    this.dom.className = `${styles.root} ${this.isMouseDowned ? 'grabbing' : 'default'}  window`;
+                    this.dom.className = `window ${styles.root} ${this.isMouseDowned ? 'grabbing' : 'default'}`;
                     break;
         }
 
