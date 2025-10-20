@@ -1,9 +1,9 @@
 import './style.css';
-import App from './App';
+import Root from './Root';
 import { createRoot } from '$lib/index';
 
 const root = document.getElementById('app');
 
 if (root) {
-    createRoot(root, App());
+    createRoot(root, Root());
 }

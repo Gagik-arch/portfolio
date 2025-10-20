@@ -12,6 +12,7 @@ export default defineConfig({
             $assets: resolve(__dirname, './assets'),
             $store: resolve(__dirname, './src/store'),
             $components: resolve(__dirname, './src/components'),
+            $apps: resolve(__dirname, './src/apps'),
         },
     },
 });

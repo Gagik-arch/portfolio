@@ -49,6 +49,9 @@
             "$utils/*": [
                 "./src/utils/*"
             ],
+            "$apps/*": [
+                "./src/apps/*"
+            ],
         },
     },
     "include": [

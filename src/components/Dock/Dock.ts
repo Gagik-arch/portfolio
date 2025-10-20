@@ -9,6 +9,7 @@ import calculator from '$assets/images/app-icons/calculator/calculator256.png';
 import notes from '$assets/images/app-icons/notes/notes256.png';
 import Button from '$uikit/Button';
 import Image from '$uikit/Image';
+import Calculator from '$apps/Calculator';
 
 function Dock() {
     const onMouseMove = (e: MouseEvent) => {
