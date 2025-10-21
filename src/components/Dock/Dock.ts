@@ -36,7 +36,7 @@ function Dock() {
         target.classList.add(styles.on_open_animate);
     };
 
-    const onOpenAnimationEnd = (e: AnimationEvent, app: App) => {
+    const onOpenAnimationEnd = ( app: App) => {
         appsStore.updateApps(app);
     };
 
@@ -53,8 +53,8 @@ function Dock() {
                         className: styles.button,
                         events: {
                             onclick: onClick,
-                            onanimationend: (e) => {
-                                onOpenAnimationEnd(e, Finder()); 
+                            onanimationend: () => {
+                                onOpenAnimationEnd( Finder()); 
                             },
                         },
                         children: [
@@ -93,8 +93,8 @@ function Dock() {
                         className: styles.button,
                         events: {
                             onclick: onClick,
-                            onanimationend: (e) => {
-                                onOpenAnimationEnd(e, Calculator()); 
+                            onanimationend: () => {
+                                onOpenAnimationEnd( Calculator()); 
                             },
                         },
                         children: [
@@ -116,8 +116,8 @@ function Dock() {
                         className: styles.button,
                         events: {
                             onclick: onClick,
-                            onanimationend: (e) => {
-                                onOpenAnimationEnd(e, Notes()); 
+                            onanimationend: () => {
+                                onOpenAnimationEnd( Notes()); 
                             },
                         },
                         children: [
@@ -139,8 +139,8 @@ function Dock() {
                         className: styles.button,
                         events: {
                             onclick: onClick,
-                            onanimationend: (e) => {
-                                onOpenAnimationEnd(e, Settings()); 
+                            onanimationend: () => {
+                                onOpenAnimationEnd( Settings()); 
                             },
                         },
                         children: [

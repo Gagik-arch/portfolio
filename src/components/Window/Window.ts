@@ -5,7 +5,6 @@ import Controls from './Controls';
 import {
     clampNumber, genRandomNumber, getCssVariable  
 } from '$utils/index';
-import appsStore from '$store/apps.store';
 
 class Window extends Element<HTMLDivElement> {
     private isMouseDowned = false;
@@ -65,7 +64,7 @@ class Window extends Element<HTMLDivElement> {
                 'data-resizing': false,
                 'data-dragging': false,
                 events: {
-                    onblur: (e) => {
+                    onblur: () => {
                         this.dom.style.zIndex = '1';
                     },
                 },
