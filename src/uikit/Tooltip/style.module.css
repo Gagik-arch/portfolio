@@ -1,0 +1,27 @@
+.root {
+    position: absolute;
+    /* display: none; */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(242, 242, 242, 0.8);
+    backdrop-filter: blur(10px);
+    width: auto;
+    height: auto;
+    color: var(--labels-vibrant-primary);
+    padding: 8px 14px;
+    border-radius: 20px;
+    text-align: center;
+    bottom: calc(100% + 20px);
+
+    &>svg {
+        position: absolute;
+        top: calc(100% - 0px);
+        left: 50%;
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+
+    }
+}

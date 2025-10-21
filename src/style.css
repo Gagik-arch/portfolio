@@ -1,4 +1,5 @@
 @import './styles/cursors.css';
+@import './styles/tooltip.css';
 
 :root {
     font-family: SFProText, sans-serif;

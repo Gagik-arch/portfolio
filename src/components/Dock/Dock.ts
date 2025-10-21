@@ -10,6 +10,7 @@ import notes from '$assets/images/app-icons/notes/notes256.png';
 import Button from '$uikit/Button';
 import Image from '$uikit/Image';
 import Calculator from '$apps/Calculator';
+import Tooltip from './Tooltip';
 
 function Dock() {
     const onMouseMove = (e: MouseEvent) => {
@@ -36,33 +37,66 @@ function Dock() {
                 children: [
                     new Button({
                         className: styles.button,
+                        'data-tooltip': 'Numbers',
                         children: [
-                            new Image({
-                                src: finder,
+                            new Element<HTMLDivElement>({
+                                tagName: 'div',
+                                props: {
+                                    children: [
+                                        new Image({
+                                            src: finder,
+                                        }).dom,
+                                        Tooltip( 'Finder' )
+                                    ],
+                                },
                             }).dom
                         ],
                     }).dom,
                     new Button({
                         className: styles.button,
                         children: [
-                            new Image({
-                                src: launchpad,
+                            new Element<HTMLDivElement>({
+                                tagName: 'div',
+                                props: {
+                                    children: [
+                                        new Image({
+                                            src: launchpad,
+                                        }).dom,
+                                        Tooltip('Launchpad')
+                                    ],
+                                },
                             }).dom
                         ],
                     }).dom,
                     new Button({
                         className: styles.button,
                         children: [
-                            new Image({
-                                src: calculator,
+                            new Element<HTMLDivElement>({
+                                tagName: 'div',
+                                props: {
+                                    children: [
+                                        new Image({
+                                            src: calculator,
+                                        }).dom,
+                                        Tooltip('Calculator')
+                                    ],
+                                },
                             }).dom
                         ],
                     }).dom,
                     new Button({
                         className: styles.button,
                         children: [
-                            new Image({
-                                src: notes,
+                            new Element<HTMLDivElement>({
+                                tagName: 'div',
+                                props: {
+                                    children: [
+                                        new Image({
+                                            src: notes,
+                                        }).dom,
+                                        Tooltip( 'Notes' )
+                                    ],
+                                },
                             }).dom
                         ],
                     }).dom,
@@ -70,46 +104,59 @@ function Dock() {
                     new Button({
                         className: styles.button,
                         children: [
-                            new Image({
-                                src: settings,
+                            new Element<HTMLDivElement>({
+                                tagName: 'div',
+                                props: {
+                                    children: [
+                                        Tooltip( 'Settings' ),
+                                        new Image({
+                                            src: settings,
+                                        }).dom
+                                    ],
+                                },
                             }).dom
                         ],
                     }).dom,
-                    ...Array.from({ length: 10 }, () => {
-                        return (
-                            new Button({
-                                className: styles.button,
-                                children: [
-                                    new Image({
-                                        src: folder,
-                                    }).dom
-                                ],
-                            }).dom
-                        );
-                    }),
 
                     new Element<HTMLHRElement>({
                         tagName: 'hr',
                         props: {
                             className: styles.separator,
-                            children: [],
                         },
                     }).dom,
 
                     new Button({
                         className: styles.button,
                         children: [
-                            new Image({
-                                src: folder,
+                            new Element<HTMLDivElement>({
+                                tagName: 'div',
+                                props: {
+                                    children: [
+                                        new Image({
+                                            src: folder,
+                          
+                                        }).dom,
+                                        Tooltip( 'Downloads' )
+                                    ],
+                                },
                             }).dom
+                       
                         ],
                     }).dom,
 
                     new Button({
                         className: styles.button,
                         children: [
-                            new Image({
-                                src: trash,
+                            new Element<HTMLDivElement>({
+                                tagName: 'div',
+                                props: {
+                                    children: [
+                                        new Image({
+                                            src: trash,
+                                        }).dom,
+                                        Tooltip( 'Trash' )
+                                    ],
+                                },
                             }).dom
                         ],
                     }).dom

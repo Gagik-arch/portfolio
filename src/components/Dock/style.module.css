@@ -61,7 +61,8 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     transition: all 180ms cubic-bezier(0.25, 1, 0.5, 1);
     padding: 0 8px;
     box-sizing: content-box;
-    overflow: hidden;
+    position: relative;
+    /* overflow: hidden; */
 
     &::after {
         content: '';
@@ -71,9 +72,23 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
         width: calc(var(--width) + 40px);
     }
 
+    &::before {
+        content: '';
+        position: absolute;
+        height: calc(100% + 6px);
+        background-color: transparent;
+        width: calc(var(--width) + 40px);
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+
     &>* {
         width: 100%;
         height: 100%;
+        position: relative;
     }
 
     &:first-child {
@@ -87,6 +102,10 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     &:hover {
         width: calc(var(--width) * 1.5);
         height: calc(var(--width) * 1.5);
+
+        .tooltip {
+            display: inline-block
+        }
 
         /* left */
         :has(+ &):is(button) {
@@ -126,4 +145,32 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     pointer-events: none;
     border-color: oklab(35.885% 0.00326 -0.01157 / 0.61);
     height: 100%;
+}
+
+.tooltip {
+    position: absolute;
+    display: none;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(242, 242, 242, 0.8);
+    backdrop-filter: blur(10px);
+    width: auto;
+    height: auto;
+    color: var(--labels-vibrant-primary);
+    padding: 8px 14px;
+    border-radius: 20px;
+    text-align: center;
+    bottom: calc(100% + 20px);
+
+    &:after {
+        content: '';
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        clip-path: path("M 0 0 C 4 1 5 2 10 6 C 12 7 13 7 15 6 C 20 2 21 1 25 0");
+        background-color: rgba(242, 242, 242, 0.8);
+        top: 100%;
+        left: 50%;
+        transform: translate(-50%)
+    }
 }
