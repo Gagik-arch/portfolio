@@ -189,7 +189,7 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     }
 
     25% {
-        transform: translateY(-60px)
+        transform: translateY(-50px)
     }
 
     50% {

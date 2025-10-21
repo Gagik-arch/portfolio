@@ -3,8 +3,9 @@ import styles from './styles.module.css';
 import type { WindowProps } from './types';
 import Controls from './Controls';
 import {
-    clampNumber, getCssVariable  
+    clampNumber, genRandomNumber, getCssVariable  
 } from '$utils/index';
+import appsStore from '$store/apps.store';
 
 class Window extends Element<HTMLDivElement> {
     private isMouseDowned = false;
@@ -60,14 +61,31 @@ class Window extends Element<HTMLDivElement> {
                 style: {
                     backgroundColor: backgroundColor || '#fff',
                 },
+                tabIndex: -1,
                 'data-resizing': false,
                 'data-dragging': false,
+                events: {
+                    onblur: (e) => {
+                        this.dom.style.zIndex = '1';
+                    },
+                },
             },
         });
         this.width = width * getCssVariable<number>('--scale');
         this.height = height * getCssVariable<number>('--scale');
         this.dom.style.setProperty('--width', this.width + 'px');
         this.dom.style.setProperty('--height', this.height + 'px');
+        
+        const desktop = document.getElementById('desktop')
+            ?.getBoundingClientRect();
+        
+        if (!desktop) return; 
+        
+        const x = genRandomNumber(desktop.left, desktop.right - this.width);
+        const y = genRandomNumber(desktop.top, desktop.bottom - this.height);
+
+        this.dom.style.setProperty('--left', x + 'px');
+        this.dom.style.setProperty('--top', y + 'px');
 
         this.onMount(() => {
             if (!isResizable) return;
@@ -100,10 +118,8 @@ class Window extends Element<HTMLDivElement> {
 
     private readonly onMouseDown = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
-   
+     
         if (e.button !== 0 || target !== this.dom && !target.classList.contains(styles.anchor)) return;
-
-        this.dom.focus();
         
         this.resizeAnchor = this.detectAnchorSide(e);
      
@@ -111,8 +127,12 @@ class Window extends Element<HTMLDivElement> {
 
         if (this.resizeAnchor) return; 
         this.isMouseDowned = true;
+        this.dom.focus();
 
-        this.setProps({ 'data-dragging': this.isMouseDowned });
+        this.setProps({
+            'data-dragging': this.isMouseDowned,
+            tabIndex: 0,
+        });
     };
 
     private readonly onMouseUp = () => {
@@ -126,7 +146,7 @@ class Window extends Element<HTMLDivElement> {
             'data-dragging': false,
         });
     };
-    
+
     private readonly onResize = (e: MouseEvent) => {
         this.changeCursorAnchorHover(e);
         
@@ -240,7 +260,7 @@ class Window extends Element<HTMLDivElement> {
                     this.dom.classList.add('n-resize');
                     break;
                 default:
-                    this.dom.className = `window ${styles.root} ${this.isMouseDowned ? 'grabbing' : 'default'}`;
+                    this.dom.className = `window ${this.isMouseDowned ? 'grabbing' : 'default'} ${styles.root}`;
                     break;
         }
 

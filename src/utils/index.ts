@@ -12,3 +12,9 @@ export const getCssVariable = <T extends string | number>(key:string, element: H
 
     return (isNaN(+variable) ? variable : +variable ) as T;
 };
+
+export const genRandomNumber = (min = 0, max = 10) => {
+    if (min > max) throw new Error('max num must be greater than min');
+
+    return min + Math.floor(Math.random() * (max - min) );
+};

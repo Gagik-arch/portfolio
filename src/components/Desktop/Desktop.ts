@@ -1,6 +1,6 @@
 import Element from '$lib/Element';
 import styles from './style.module.css';
-import Window from '$components/Window';
+import appsStore from '$store/apps.store';
 
 function Desktop() {
     return (
@@ -9,13 +9,19 @@ function Desktop() {
             props: {
                 id: 'desktop',
                 className: styles.root,
-                children: [
-                    new Window({
-                        children: [],
-                    }).dom 
-                ],
+                children: [ 'asdasd' ],
             },
-        }).dom
+        })
+            .onMount((e) => {
+                appsStore.subscribe(({ apps }) => {
+                    e.setProps({
+                        children: apps.map(item => { 
+                            return item.window.dom;
+                        }),
+                    });
+                });
+            })
+            .dom
     );
 }
 

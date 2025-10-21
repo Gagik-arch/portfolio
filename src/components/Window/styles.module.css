@@ -8,14 +8,20 @@
     position: fixed;
     border-radius: 26px;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.23), 0 16px 48px 0 rgba(0, 0, 0, 0.35);
-    resize: both;
     left: var(--left);
     top: var(--top);
     width: var(--width);
     height: var(--height);
+    user-select: none;
+    -webkit-user-drag: none;
+    z-index: 1;
 
     &::after {
         content: ''
+    }
+
+    &:focus-within {
+        z-index: 9999 !important;
     }
 }
 

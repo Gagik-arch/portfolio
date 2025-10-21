@@ -2,16 +2,16 @@ import App from '$components/App';
 import Window from '$components/Window';
 import appIcon from '$assets/images/app-icons/calculator/calculator256.png';
 
-function Calculator() { 
+function Calendar() { 
     return (
         new App({
-            name: 'Calculator',
+            name: 'Calendar',
             appIcon,
             window: new Window({
-                children: [ 'Calculator' ],
+                children: [ 'Calendar' ],
             }),
         })
     );
 }
 
-export default Calculator;
+export default Calendar;

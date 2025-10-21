@@ -1,12 +1,12 @@
 class Store <T> {
     private state: T;
-    private listeners: ((state:T)=>T)[] = [];
+    private listeners: ((state:T)=>void)[] = [];
 
     public constructor(initialState:T) {
         this.state = initialState;
     }
 
-    public subscribe(callback: (state: T) => T):()=>void {
+    public subscribe(callback: (state: T) => void):()=>void {
         this.listeners.push(callback);
 
         return () => {

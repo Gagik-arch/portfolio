@@ -9,8 +9,13 @@ import calculator from '$assets/images/app-icons/calculator/calculator256.png';
 import notes from '$assets/images/app-icons/notes/notes256.png';
 import Button from '$uikit/Button';
 import Image from '$uikit/Image';
-import Calculator from '$apps/Calculator';
 import Tooltip from './Tooltip';
+import appsStore from '$store/apps.store';
+import type App from '$components/App';
+import Calculator from '$apps/Calculator';
+import Notes from '$apps/Notes';
+import Settings from '$apps/Settings';
+import Finder from '$apps/Finder';
 
 function Dock() {
     const onMouseMove = (e: MouseEvent) => {
@@ -31,6 +36,10 @@ function Dock() {
         target.classList.add(styles.on_open_animate);
     };
 
+    const onOpenAnimationEnd = (e: AnimationEvent, app: App) => {
+        appsStore.updateApps(app);
+    };
+
     return (
         new Element<HTMLDivElement>({
             tagName: 'div',
@@ -42,7 +51,12 @@ function Dock() {
                 children: [
                     new Button({
                         className: styles.button,
-                        onclick: onClick,
+                        events: {
+                            onclick: onClick,
+                            onanimationend: (e) => {
+                                onOpenAnimationEnd(e, Finder()); 
+                            },
+                        },
                         children: [
                             new Element<HTMLDivElement>({
                                 tagName: 'div',
@@ -77,6 +91,12 @@ function Dock() {
 
                     new Button({
                         className: styles.button,
+                        events: {
+                            onclick: onClick,
+                            onanimationend: (e) => {
+                                onOpenAnimationEnd(e, Calculator()); 
+                            },
+                        },
                         children: [
                             new Element<HTMLDivElement>({
                                 tagName: 'div',
@@ -94,6 +114,12 @@ function Dock() {
                      
                     new Button({
                         className: styles.button,
+                        events: {
+                            onclick: onClick,
+                            onanimationend: (e) => {
+                                onOpenAnimationEnd(e, Notes()); 
+                            },
+                        },
                         children: [
                             new Element<HTMLDivElement>({
                                 tagName: 'div',
@@ -111,6 +137,12 @@ function Dock() {
 
                     new Button({
                         className: styles.button,
+                        events: {
+                            onclick: onClick,
+                            onanimationend: (e) => {
+                                onOpenAnimationEnd(e, Settings()); 
+                            },
+                        },
                         children: [
                             new Element<HTMLDivElement>({
                                 tagName: 'div',
