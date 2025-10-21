@@ -26,6 +26,11 @@ function Dock() {
         target.style.setProperty('--offset', `${value}px`);
     };
 
+    const onClick = (e:MouseEvent) => {
+        const target = e.currentTarget as HTMLButtonElement; 
+        target.classList.add(styles.on_open_animate);
+    };
+
     return (
         new Element<HTMLDivElement>({
             tagName: 'div',
@@ -37,7 +42,7 @@ function Dock() {
                 children: [
                     new Button({
                         className: styles.button,
-                        'data-tooltip': 'Numbers',
+                        onclick: onClick,
                         children: [
                             new Element<HTMLDivElement>({
                                 tagName: 'div',
@@ -51,7 +56,8 @@ function Dock() {
                                 },
                             }).dom
                         ],
-                    }).dom,
+                    }).dom, 
+                    
                     new Button({
                         className: styles.button,
                         children: [
@@ -68,6 +74,7 @@ function Dock() {
                             }).dom
                         ],
                     }).dom,
+
                     new Button({
                         className: styles.button,
                         children: [
@@ -84,6 +91,7 @@ function Dock() {
                             }).dom
                         ],
                     }).dom,
+                     
                     new Button({
                         className: styles.button,
                         children: [

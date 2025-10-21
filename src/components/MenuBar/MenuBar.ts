@@ -24,12 +24,20 @@ function MenuBar() {
 
                                 new Button({
                                     className: styles.item,
-                                    children: [ new Typography('AppName', 'headline-regular').dom ],
+                                    children: [
+                                        new Typography({
+                                            text: 'AppName', variant: 'headline-regular',
+                                        }).dom 
+                                    ],
                                 }).dom,
 
                                 ...Array.from({ length: 5 }, (_, k) => new Button({
                                     className: styles.item,
-                                    children: [ new Typography('item' + (k + 1), 'body-emphasized').dom ],
+                                    children: [
+                                        new Typography({
+                                            text: 'item' + (k + 1), variant: 'body-emphasized',
+                                        }).dom 
+                                    ],
                                 }).dom)
                             ],
                         },
@@ -62,7 +70,12 @@ function MenuBar() {
 
                                 new Button({
                                     className: styles.item,
-                                    children: [ new Typography('Mon Jun 10  9:41 AM', 'body-emphasized').dom ],
+                                    children: [
+                                        new Typography({
+                                            text: 'Mon Jun 10  9:41 AM',
+                                            variant: 'body-emphasized',
+                                        }).dom 
+                                    ],
                                 }).dom
 
                             ],

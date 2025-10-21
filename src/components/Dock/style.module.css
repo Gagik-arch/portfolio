@@ -62,7 +62,6 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     padding: 0 8px;
     box-sizing: content-box;
     position: relative;
-    /* overflow: hidden; */
 
     &::after {
         content: '';
@@ -172,5 +171,36 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
         top: 100%;
         left: 50%;
         transform: translate(-50%)
+    }
+}
+
+.on_open_animate {
+    transform: scale(1.2);
+    animation-name: open;
+    animation-duration: 1000ms;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(0.46, 0.03, 0.52, 0.96)
+}
+
+@keyframes open {
+    0% {
+        transform: translateY(0px)
+    }
+
+    25% {
+        transform: translateY(-60px)
+    }
+
+    50% {
+        transform: translateY(0)
+    }
+
+    75% {
+        transform: translateY(-20px)
+    }
+
+    100% {
+        transform: translateY(0px)
     }
 }
