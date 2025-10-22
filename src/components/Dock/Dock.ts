@@ -34,10 +34,34 @@ function Dock() {
     const onClick = (e:MouseEvent) => {
         const target = e.currentTarget as HTMLButtonElement; 
         target.classList.add(styles.on_open_animate);
+        const app = appsStore.getState().apps?.find(a => a.name === target.id);
+        if (!app) return; 
+
+        appsStore.setFocusApp(app.id);
     };
 
-    const onOpenAnimationEnd = ( app: App) => {
+    const onOpenAnimationEnd = (e: AnimationEvent, app: App) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        target.id = app.name;
+
         appsStore.updateApps(app);
+    };
+
+    const onDockAppMount = (e: Button) => {
+   
+        appsStore.subscribe((state) => { 
+            const app = state.apps?.find(a => a.name === e.dom.id);
+            
+            e.setProps({
+                className: (cx) => {
+                    if (app) {
+                        cx.add(styles.is_opened);
+                    } else { 
+                        cx.remove(styles.is_opened);
+                    }
+                },
+            });
+        });
     };
 
     return (
@@ -53,8 +77,8 @@ function Dock() {
                         className: styles.button,
                         events: {
                             onclick: onClick,
-                            onanimationend: () => {
-                                onOpenAnimationEnd( Finder()); 
+                            onanimationend: (e) => {
+                                onOpenAnimationEnd(e, Finder()); 
                             },
                         },
                         children: [
@@ -65,12 +89,13 @@ function Dock() {
                                         new Image({
                                             src: finder,
                                         }).dom,
-                                        Tooltip( 'Finder' )
+                                        Tooltip('Finder' )
                                     ],
                                 },
                             }).dom
                         ],
-                    }).dom, 
+                    })
+                        .onMount(onDockAppMount).dom, 
                     
                     new Button({
                         className: styles.button,
@@ -93,8 +118,8 @@ function Dock() {
                         className: styles.button,
                         events: {
                             onclick: onClick,
-                            onanimationend: () => {
-                                onOpenAnimationEnd( Calculator()); 
+                            onanimationend: (e) => {
+                                onOpenAnimationEnd(e, Calculator()); 
                             },
                         },
                         children: [
@@ -110,14 +135,15 @@ function Dock() {
                                 },
                             }).dom
                         ],
-                    }).dom,
+                    })
+                        .onMount(onDockAppMount).dom,
                      
                     new Button({
                         className: styles.button,
                         events: {
                             onclick: onClick,
-                            onanimationend: () => {
-                                onOpenAnimationEnd( Notes()); 
+                            onanimationend: (e) => {
+                                onOpenAnimationEnd(e, Notes()); 
                             },
                         },
                         children: [
@@ -133,14 +159,15 @@ function Dock() {
                                 },
                             }).dom
                         ],
-                    }).dom,
+                    })
+                        .onMount(onDockAppMount).dom,
 
                     new Button({
                         className: styles.button,
                         events: {
                             onclick: onClick,
-                            onanimationend: () => {
-                                onOpenAnimationEnd( Settings()); 
+                            onanimationend: (e) => {
+                                onOpenAnimationEnd(e, Settings()); 
                             },
                         },
                         children: [
@@ -156,7 +183,8 @@ function Dock() {
                                 },
                             }).dom
                         ],
-                    }).dom,
+                    })
+                        .onMount(onDockAppMount).dom,
 
                     new Element<HTMLHRElement>({
                         tagName: 'hr',
@@ -182,7 +210,8 @@ function Dock() {
                             }).dom
                        
                         ],
-                    }).dom,
+                    })
+                        .onMount(onDockAppMount).dom,
 
                     new Button({
                         className: styles.button,
@@ -199,7 +228,8 @@ function Dock() {
                                 },
                             }).dom
                         ],
-                    }).dom
+                    })
+                        .onMount(onDockAppMount).dom
                 ],
             },
         }).dom

@@ -9,7 +9,7 @@ function Desktop() {
             props: {
                 id: 'desktop',
                 className: styles.root,
-                children: [ 'asdasd' ],
+                children: [ ],
             },
         })
             .onMount((e) => {

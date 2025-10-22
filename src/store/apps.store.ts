@@ -2,7 +2,7 @@ import Store from '$lib/store';
 import type App from '$components/App';
 
 interface AppsState {
-    focusedAppId: number | undefined;
+    focusedAppId: string | undefined;
     apps: App[];
 }
 
@@ -16,13 +16,20 @@ class AppsStore extends Store<AppsState> {
 
     public updateApps(app:App) { 
         this.setState((state) => ({
-            ...state,
+            focusedAppId: app.id,
             apps: [
                 ...state.apps,
                 app 
             ],
         }));
+    }
 
+    public setFocusApp(id: AppsState['focusedAppId']) { 
+        this.setState((state) => ({
+            ...state,
+
+            focusedAppId: id,
+        }));
     }
 }
 

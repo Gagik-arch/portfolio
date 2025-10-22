@@ -5,6 +5,7 @@ import Controls from './Controls';
 import {
     clampNumber, genRandomNumber, getCssVariable  
 } from '$utils/index';
+import appsStore from '$store/apps.store';
 
 class Window extends Element<HTMLDivElement> {
     private isMouseDowned = false;
@@ -119,8 +120,12 @@ class Window extends Element<HTMLDivElement> {
 
     private readonly onMouseDown = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
-        this.dom.focus();
-        
+
+        if (target === this.dom) { 
+            this.dom.focus();
+            appsStore.setFocusApp(this.dom.id);
+        }
+  
         if (e.button !== 0 || (target !== this.dom ) && !target.classList.contains(styles.anchor)) return;
       
         this.resizeAnchor = this.detectAnchorSide(e);
@@ -251,7 +256,7 @@ class Window extends Element<HTMLDivElement> {
     private readonly changeCursorAnchorHover = (e:MouseEvent) => {
         const anchor = this.detectAnchorSide(e);
     
-        if (this.isMouseDowned && this.dom.dataset.resizing === 'false') { 
+        if (this.dom.dataset.grabbing === 'false' && this.dom.dataset.resizing === 'false') { 
             return; 
         }
 

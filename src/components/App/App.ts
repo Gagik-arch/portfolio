@@ -1,5 +1,6 @@
 import type { AppProps } from './types';
 import { genRandomNumber } from '$utils/index';
+
 class App { 
     public name: AppProps['name'];
     public appIcon: AppProps['appIcon'];
@@ -20,6 +21,7 @@ class App {
         this.window.setProps({
             id: this.id + '',
         });
+       
     }
 }
 

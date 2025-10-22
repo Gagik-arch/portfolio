@@ -7,9 +7,10 @@
     padding: 20px 15px;
     margin: auto auto 10px auto;
     height: calc(var(--width) + 40px);
+    z-index: 900;
 
     &:hover {
-        &>.button::after {
+        &>.button::before {
             transform: translateY(6px)
         }
     }
@@ -62,14 +63,6 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     padding: 0 8px;
     box-sizing: content-box;
     position: relative;
-
-    &::after {
-        content: '';
-        position: absolute;
-        height: calc(100% + 6px);
-        background-color: transparent;
-        width: calc(var(--width) + 40px);
-    }
 
     &::before {
         content: '';
@@ -202,5 +195,21 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
 
     100% {
         transform: translateY(0px)
+    }
+}
+
+.is_opened {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &::after {
+        content: '';
+        position: absolute;
+        height: calc(4px * var(--scale)) !important;
+        width: calc(4px * var(--scale)) !important;
+        background-color: rgba(0, 0, 0, 0.5);
+        bottom: -10px;
+        border-radius: 50%
     }
 }

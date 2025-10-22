@@ -10,7 +10,7 @@ class Typography extends Element<HTMLSpanElement> {
     public constructor({
         text,
         variant = 'body-regular',
-        className,
+        className = '',
     }:TooltipProps) {
         const size = variants[variant.split('-')[0] as Size];
 

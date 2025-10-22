@@ -3,9 +3,10 @@ import Button from '$uikit/Button';
 import Icon from '$uikit/Icon';
 import Typography from '$uikit/Typography';
 import styles from './style.module.css';
+import appsStore from '$store/apps.store';
 
 function MenuBar() {
-
+    
     return (
         new Element<HTMLDivElement>({
             tagName: 'div',
@@ -26,8 +27,19 @@ function MenuBar() {
                                     className: styles.item,
                                     children: [
                                         new Typography({
-                                            text: 'AppName', variant: 'headline-regular',
-                                        }).dom 
+                                            text: 'AppName',
+                                            variant: 'headline-regular',
+                                        })
+                                            .onMount((e) => {
+                                                appsStore.subscribe((state) => {
+                                                    const app = state.apps.find(app => app.id === state.focusedAppId);
+                                                    if (!app) return; 
+
+                                                    e.setProps({
+                                                        children: [ app.name ],
+                                                    });
+                                                });
+                                            }).dom 
                                     ],
                                 }).dom,
 
