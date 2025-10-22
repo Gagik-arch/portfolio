@@ -91,7 +91,6 @@ class Window extends Element<HTMLDivElement> {
             window?.addEventListener('mousedown', this.onMouseDown);
             window?.addEventListener('mousemove', this.onMove);
             window?.addEventListener('mouseup', this.onMouseUp);
-
         });
 
         this.onUnMount(() => {
@@ -104,11 +103,14 @@ class Window extends Element<HTMLDivElement> {
 
     private readonly onMove = (e: MouseEvent) => {
         const desktop = this.dom.parentElement?.getBoundingClientRect();
+        this.changeCursorAnchorHover(e);
+     
+        if (!this.isMouseDowned || !desktop ) return;
 
         this.onResize(e);
-
-        if (!this.isMouseDowned || !desktop ) return;
    
+        if (this.resizeAnchor) return; 
+        
         const rect = this.dom.getBoundingClientRect();
 
         this.dom.style.setProperty( '--left', Math.round(clampNumber(rect.x + e.movementX, 0, window.innerWidth - rect.width)) + 'px');
@@ -117,16 +119,18 @@ class Window extends Element<HTMLDivElement> {
 
     private readonly onMouseDown = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
-     
-        if (e.button !== 0 || target !== this.dom && !target.classList.contains(styles.anchor)) return;
+        this.dom.focus();
         
+        if (e.button !== 0 || (target !== this.dom ) && !target.classList.contains(styles.anchor)) return;
+      
         this.resizeAnchor = this.detectAnchorSide(e);
-     
-        this.setProps({ 'data-resizing': !!this.resizeAnchor + '' });
+        this.isMouseDowned = true;
+
+        if (target === this.dom || (this.dom === target.closest('.' + styles.root) )) { 
+            this.setProps({ 'data-resizing': !!this.resizeAnchor + '' });
+        }
 
         if (this.resizeAnchor) return; 
-        this.isMouseDowned = true;
-        this.dom.focus();
 
         this.setProps({
             'data-dragging': this.isMouseDowned,
@@ -147,11 +151,9 @@ class Window extends Element<HTMLDivElement> {
     };
 
     private readonly onResize = (e: MouseEvent) => {
-        this.changeCursorAnchorHover(e);
-        
         const desktop = this.dom.parentElement?.getBoundingClientRect();
-     
-        if (!this.resizeAnchor || !desktop) return;
+    
+        if (!this.resizeAnchor || !desktop || this.dom.dataset.resizing === 'false') return;
         
         const rect = this.dom.getBoundingClientRect();
        
@@ -227,7 +229,7 @@ class Window extends Element<HTMLDivElement> {
         const rect = this.dom.getBoundingClientRect();
    
         const target = e.target as HTMLElement;
-    
+
         if ( target.classList.contains(styles.right_bottom)) return 'right-bottom';
         if ( target.classList.contains(styles.right_top)) return 'right-top';
         if ( target.classList.contains(styles.left_top)) return 'left-top';
@@ -249,6 +251,10 @@ class Window extends Element<HTMLDivElement> {
     private readonly changeCursorAnchorHover = (e:MouseEvent) => {
         const anchor = this.detectAnchorSide(e);
     
+        if (this.isMouseDowned && this.dom.dataset.resizing === 'false') { 
+            return; 
+        }
+
         switch (anchor) {
                 case 'right':
                 case 'left':
