@@ -20,42 +20,46 @@ class Window extends Element<HTMLDivElement> {
         height = 300,
         backgroundColor,
         isResizable = true,
+        className = '',
     }: WindowProps) {
         super({
             tagName: 'div',
             props: {
-                className: `window default ${styles.root}`,
+                className: `window default ${styles.root} ${className}`,
                 children: [
                     Controls(),
-                    new Element<HTMLSpanElement>({
-                        tagName: 'span',
-                        props: {
-                            className: `${styles.left_top} nw-resize ${styles.anchor}`,
-                            children: [],
-                        },
-                    }).dom,
-                    new Element<HTMLSpanElement>({
-                        tagName: 'span',
-                        props: {
-                            className: `${styles.left_bottom} ne-resize ${styles.anchor}`,
-                            children: [],
-                        },
-                    }).dom,
-                    new Element<HTMLSpanElement>({
-                        tagName: 'span',
-                        props: {
-                            className: `${styles.right_top} ne-resize ${styles.anchor}`,
-                            children: [],
-                        },
-                    }).dom,
-                    new Element<HTMLSpanElement>({
-                        tagName: 'span',
-                        props: {
-                            className: `${styles.right_bottom} nw-resize ${styles.anchor}`,
-                            children: [],
-                        },
-                    }).dom,
-
+                    ...(isResizable
+                        ? [
+                            new Element<HTMLSpanElement>({
+                                tagName: 'span',
+                                props: {
+                                    className: `${styles.left_top} nw-resize ${styles.anchor}`,
+                                    children: [],
+                                },
+                            }).dom,
+                            new Element<HTMLSpanElement>({
+                                tagName: 'span',
+                                props: {
+                                    className: `${styles.left_bottom} ne-resize ${styles.anchor}`,
+                                    children: [],
+                                },
+                            }).dom,
+                            new Element<HTMLSpanElement>({
+                                tagName: 'span',
+                                props: {
+                                    className: `${styles.right_top} ne-resize ${styles.anchor}`,
+                                    children: [],
+                                },
+                            }).dom,
+                            new Element<HTMLSpanElement>({
+                                tagName: 'span',
+                                props: {
+                                    className: `${styles.right_bottom} nw-resize ${styles.anchor}`,
+                                    children: [],
+                                },
+                            }).dom
+                        ]
+                        : []),
                     ...(children ?? [])
                 ],
                 style: {
@@ -71,6 +75,11 @@ class Window extends Element<HTMLDivElement> {
                 },
             },
         });
+       
+        this.setProps({
+            'data-is-resizable': isResizable,
+        });
+
         this.width = width * getCssVariable<number>('--scale');
         this.height = height * getCssVariable<number>('--scale');
         this.dom.style.setProperty('--width', this.width + 'px');
@@ -88,14 +97,12 @@ class Window extends Element<HTMLDivElement> {
         this.dom.style.setProperty('--top', y + 'px');
 
         this.onMount(() => {
-            if (!isResizable) return;
             window?.addEventListener('mousedown', this.onMouseDown);
             window?.addEventListener('mousemove', this.onMove);
             window?.addEventListener('mouseup', this.onMouseUp);
         });
 
         this.onUnMount(() => {
-            if (!isResizable) return;
             window?.removeEventListener('mousedown', this.onMouseDown);
             window?.removeEventListener('mousemove', this.onMove);
             window?.removeEventListener('mouseup', this.onMouseUp);
@@ -147,8 +154,8 @@ class Window extends Element<HTMLDivElement> {
         this.resizeAnchor = undefined;
         this.isMouseDowned = false;
 
-        this.dom.className = `window default ${styles.root}`;
-
+        this.dom.classList.remove('n-resize', 'e-resize', 'grabbing');
+        
         this.setProps({
             'data-resizing': !!this.resizeAnchor + '',
             'data-dragging': false,
@@ -234,7 +241,8 @@ class Window extends Element<HTMLDivElement> {
         const rect = this.dom.getBoundingClientRect();
    
         const target = e.target as HTMLElement;
-
+        if (target.dataset.isResizable === 'false') return undefined; 
+        
         if ( target.classList.contains(styles.right_bottom)) return 'right-bottom';
         if ( target.classList.contains(styles.right_top)) return 'right-top';
         if ( target.classList.contains(styles.left_top)) return 'left-top';
@@ -255,8 +263,8 @@ class Window extends Element<HTMLDivElement> {
 
     private readonly changeCursorAnchorHover = (e:MouseEvent) => {
         const anchor = this.detectAnchorSide(e);
-    
-        if (this.dom.dataset.grabbing === 'false' && this.dom.dataset.resizing === 'false') { 
+
+        if (this.dom.dataset.isResizable === 'false' || this.dom.dataset.grabbing === 'false' && this.dom.dataset.resizing === 'false') { 
             return; 
         }
 
@@ -270,7 +278,13 @@ class Window extends Element<HTMLDivElement> {
                     this.dom.classList.add('n-resize');
                     break;
                 default:
-                    this.dom.className = `window ${this.isMouseDowned ? 'grabbing' : 'default'} ${styles.root}`;
+                    this.dom.classList.remove('n-resize');
+                    this.dom.classList.remove('e-resize');
+                    if (this.isMouseDowned) {
+                        this.dom.classList.replace('default', 'grabbing');
+                    } else { 
+                        this.dom.classList.replace('grabbing', 'default');
+                    }
                     break;
         }
 

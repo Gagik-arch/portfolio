@@ -36,7 +36,10 @@ function Dock() {
         target.classList.add(styles.on_open_animate);
         const app = appsStore.getState().apps?.find(a => a.name === target.id);
         if (!app) return; 
-
+        app.window.setProps({
+            tabIndex: 0,
+        });
+        app.window.dom.focus();
         appsStore.setFocusApp(app.id);
     };
 
