@@ -21,7 +21,19 @@
     }
 
     &:focus-within {
-        z-index: 100 !important;
+        z-index: 2 !important;
+
+        .close:not(:disabled) {
+            background-color: #FF736A;
+        }
+
+        .minimize:not(:disabled) {
+            background-color: #FEBC2E;
+        }
+
+        .maximize:not(:disabled) {
+            background-color: #19C332;
+        }
     }
 }
 
@@ -37,24 +49,17 @@
         width: calc(14px * var(--scale));
         height: calc(14px * var(--scale));
         border-radius: 50%;
-        border: 1px solid rgba(0, 0, 0, 0.1)
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background-color: rgba(135, 135, 135, 0.5);
+
+        &>button:disabled {
+            background-color: rgba(0, 0, 0, 0.1) !important;
+        }
     }
 }
 
 
-#close {
-    background-color: #FF736A;
-    border: 1px solid rgba(0, 0, 0, 0.1)
-}
 
-#minimize {
-    background-color: #FEBC2E;
-    border: 1px solid rgba(0, 0, 0, 0.1)
-}
-
-#maximize {
-    background-color: #19C332;
-}
 
 .left_top {
     left: 0;

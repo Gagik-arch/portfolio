@@ -40,7 +40,7 @@ function Dock() {
             tabIndex: 0,
         });
         app.window.dom.focus();
-        appsStore.setFocusApp(app.id);
+        appsStore.setFocusApp(app.window.id);
     };
 
     const onOpenAnimationEnd = (e: AnimationEvent, app: App) => {

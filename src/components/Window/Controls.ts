@@ -1,8 +1,11 @@
 import Element from '$lib/Element';
 import Button from '$uikit/Button';
 import styles from './styles.module.css';
+import type { ControlProps } from './types';
 
-function Controls() {
+function Controls({ 
+    isResizable,
+}:ControlProps) {
 
     return (
         new Element<HTMLDivElement>({
@@ -11,16 +14,17 @@ function Controls() {
                 className: styles.window_control_container,
                 children: [
                     new Button({
-                        id: styles.close,
+                        className: styles.close,
                         children: [ ],
                     }).dom,
                     new Button({
-                        id: styles.minimize,
+                        className: styles.minimize,
                         children: [ ],
                     }).dom,
                     new Button({
-                        id: styles.maximize,
-                        children: [ ],
+                        className: styles.maximize,
+                        children: [],
+                        disabled: !isResizable,
                     }).dom
                 ],
             },

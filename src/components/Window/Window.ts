@@ -28,7 +28,7 @@ class Window extends Element<HTMLDivElement> {
             props: {
                 className: `window default ${styles.root} ${className}`,
                 children: [
-                    Controls(),
+                    Controls({ isResizable }),
                     ...(isResizable
                         ? [
                             new Element<HTMLSpanElement>({
@@ -76,7 +76,7 @@ class Window extends Element<HTMLDivElement> {
                 },
             },
         });
-        this.id = genRandomNumber(1_000_000, 10_000_000)
+        this.id = genRandomNumber(1_000_000, 90_000_000)
             .toString();
         this.setProps({
             'data-is-resizable': isResizable,

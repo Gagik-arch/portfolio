@@ -8,3 +8,8 @@ export interface WindowProps {
     children: ElementPropsType<HTMLDivElement>['children'];
     className?: ElementPropsType<HTMLDivElement>['className'];
 }
+
+export interface ControlProps {
+    isResizable?: boolean;
+    
+}
