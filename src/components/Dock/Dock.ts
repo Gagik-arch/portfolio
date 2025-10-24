@@ -31,27 +31,27 @@ function Dock() {
         target.style.setProperty('--offset', `${value}px`);
     };
 
-    const onClick = (e:MouseEvent) => {
+    const onclick = (e:MouseEvent) => {
         const target = e.currentTarget as HTMLButtonElement; 
         target.classList.add(styles.on_open_animate);
         const app = appsStore.getState().apps?.find(a => a.name === target.id);
         if (!app) return; 
-        app.window.setProps({
-            tabIndex: 0,
-        });
-        app.window.dom.focus();
+        
         appsStore.setFocusApp(app.window.id);
+        app.window.dom.focus();
     };
 
     const onOpenAnimationEnd = (e: AnimationEvent, app: App) => {
         const target = e.currentTarget as HTMLButtonElement;
         target.id = app.name;
-
+        
+        appsStore.setFocusApp(app.window.id);
         appsStore.updateApps(app);
+        app.window.dom.focus();
+     
     };
 
     const onDockAppMount = (e: Button) => {
-   
         appsStore.subscribe((state) => { 
             const app = state.apps?.find(a => a.name === e.dom.id);
             
@@ -78,8 +78,9 @@ function Dock() {
                 children: [
                     new Button({
                         className: styles.button,
+                        tabIndex: -1,
                         events: {
-                            onclick: onClick,
+                            onclick: onclick,
                             onanimationend: (e) => {
                                 onOpenAnimationEnd(e, Finder()); 
                             },
@@ -118,9 +119,10 @@ function Dock() {
                     }).dom,
 
                     new Button({
+                        tabIndex: -1,
                         className: styles.button,
                         events: {
-                            onclick: onClick,
+                            onclick: onclick,
                             onanimationend: (e) => {
                                 onOpenAnimationEnd(e, Calculator()); 
                             },
@@ -144,7 +146,7 @@ function Dock() {
                     new Button({
                         className: styles.button,
                         events: {
-                            onclick: onClick,
+                            onclick: onclick,
                             onanimationend: (e) => {
                                 onOpenAnimationEnd(e, Notes()); 
                             },
@@ -168,7 +170,7 @@ function Dock() {
                     new Button({
                         className: styles.button,
                         events: {
-                            onclick: onClick,
+                            onclick: onclick,
                             onanimationend: (e) => {
                                 onOpenAnimationEnd(e, Settings()); 
                             },

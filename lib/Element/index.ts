@@ -81,7 +81,7 @@ class Element <T extends HTMLElementTags > {
                 name,
                 value
             ]) => {
-                if (this.dom[name as keyof T] !== value) { 
+                if (this.dom[name as keyof T] !== value && typeof value !== 'function') { 
                     this.dom.setAttribute(name, value as string);
                     this.dom[name as keyof T] = value;
                 }

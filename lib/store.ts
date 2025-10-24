@@ -15,12 +15,15 @@ class Store <T> {
     }
 
     public setState(newState: T | ((prev: T) => T)) {
-        this.state
+        const state
             = typeof newState === 'function'
                 ? (newState as (prev: T) => T)(this.state)
                 : newState;
 
-        this.notify();
+        if (state !== this.state) { 
+            this.state = state;
+            this.notify();
+        }
     }
 
     public getState() {

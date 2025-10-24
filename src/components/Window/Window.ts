@@ -66,12 +66,12 @@ class Window extends Element<HTMLDivElement> {
                 style: {
                     backgroundColor: backgroundColor || '#fff',
                 },
-                tabIndex: -1,
+                tabIndex: 0,
                 'data-resizing': false,
                 'data-dragging': false,
                 events: {
                     onblur: () => {
-                        this.dom.style.zIndex = '1';
+                        this.dom.style.zIndex = '0';
                     },
                 },
             },
@@ -116,7 +116,11 @@ class Window extends Element<HTMLDivElement> {
     private readonly onMove = (e: MouseEvent) => {
         const desktop = this.dom.parentElement?.getBoundingClientRect();
         this.changeCursorAnchorHover(e);
-     
+        const target = e.target as HTMLElement;
+
+        if (target !== this.dom) { 
+            this.dom.classList.remove('n-resize', 'e-resize', 'grabbing');
+        }
         if (!this.isMouseDowned || !desktop ) return;
 
         this.onResize(e);
@@ -132,26 +136,26 @@ class Window extends Element<HTMLDivElement> {
     private readonly onMouseDown = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
 
-        if (target === this.dom) { 
-            this.dom.focus();
-            appsStore.setFocusApp(this.dom.id);
+        if (e.button !== 0 || target !== this.dom && !target.classList.contains(styles.anchor)) return;
 
-        }
-  
-        if (e.button !== 0 || (target !== this.dom ) && !target.classList.contains(styles.anchor)) return;
-      
         this.resizeAnchor = this.detectAnchorSide(e);
         this.isMouseDowned = true;
 
-        if (target === this.dom || (this.dom === target.closest('.' + styles.root) )) { 
+        if (target === this.dom || (this.dom === target.closest('.' + styles.root))) { 
+            
             this.setProps({ 'data-resizing': !!this.resizeAnchor + '' });
+            this.dom.focus();
+            appsStore.setFocusApp(this.dom.id);
+            
+            this.setProps({
+                tabIndex: 0,
+            });
         }
 
         if (this.resizeAnchor) return; 
 
         this.setProps({
             'data-dragging': this.isMouseDowned,
-            tabIndex: 0,
         });
     };
 
@@ -269,9 +273,9 @@ class Window extends Element<HTMLDivElement> {
     private readonly changeCursorAnchorHover = (e:MouseEvent) => {
         const anchor = this.detectAnchorSide(e);
 
-        if (this.dom.dataset.isResizable === 'false' || this.dom.dataset.grabbing === 'false' && this.dom.dataset.resizing === 'false') { 
-            return; 
-        }
+        const target = e.target as HTMLElement;
+
+        if (target !== this.dom) return; 
 
         switch (anchor) {
                 case 'right':
@@ -287,12 +291,9 @@ class Window extends Element<HTMLDivElement> {
                     this.dom.classList.remove('e-resize');
                     if (this.isMouseDowned) {
                         this.dom.classList.replace('default', 'grabbing');
-                    } else { 
-                        this.dom.classList.replace('grabbing', 'default');
-                    }
+                    } 
                     break;
         }
-
     };
 }
 
