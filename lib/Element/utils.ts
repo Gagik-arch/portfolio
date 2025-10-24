@@ -19,8 +19,9 @@ export function setupChildren<T extends HTMLElement>(
             for (let i = 0; i < Math.max(extractedChildren.length, dom.children.length); i++) {
                 const newChild = extractedChildren[i];
                 const oldChild = dom.childNodes[i];
+
                 if (oldChild) {
-                    if (newChild !== oldChild) {
+                    if (![ ...dom.childNodes ].includes(newChild)) {
                         oldChild.replaceWith(newChild);
                     }
                 } else { 
