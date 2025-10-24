@@ -10,13 +10,13 @@ export function setupChildren<T extends HTMLElement>(
     if (children) {
         const newChildren = typeof children === 'function' ? new Set(children(new Set(dom.childNodes))) : children;
 
-        const extractedChildren = ([ ...newChildren ])?.filter(child => !!child) as Node[];
+        const extractedChildren = ([ ...newChildren ])?.filter(child => !!child) as ChildNode[];
 
         const isEqual = extractedChildren.length && extractedChildren.every((item, index) => item === dom.childNodes[index]);
-
+       
         if (isForceUpdate || !isEqual) {
             dom?.replaceChildren(...extractedChildren);
-        }
+        } 
     }
 }
 

@@ -10,7 +10,6 @@ import { setupChildren } from './utils';
 class Element <T extends HTMLElementTags > {
     public dom: T;
     readonly #events: EventType<T> = {};
-    public key?: string | number | undefined = undefined;
 
     public constructor({
         tagName,
@@ -19,6 +18,7 @@ class Element <T extends HTMLElementTags > {
             className,
             style,
             events,
+            key,
             ...props
         },
         rootElement,
@@ -38,6 +38,7 @@ class Element <T extends HTMLElementTags > {
                 className,
                 children,
                 style,
+                key,
                 ...props,
             } as Omit<ElementPropsType<T>, 'className' | 'children'> & {
                 className?: ((classList: DOMTokenList) => void) | string | undefined;

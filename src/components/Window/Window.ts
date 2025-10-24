@@ -81,6 +81,7 @@ class Window extends Element<HTMLDivElement> {
         this.setProps({
             'data-is-resizable': isResizable,
             id: this.id,
+            key: this.id,
         });
 
         this.width = width * getCssVariable<number>('--scale');
