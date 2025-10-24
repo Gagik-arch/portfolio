@@ -26,7 +26,7 @@ class AppsStore extends Store<AppsState> {
 
     public setFocusApp(id: AppsState['focusedAppId']) { 
         this.setState((state) => {
-            const result = [];
+            const result:App[] = [];
             let target; 
 
             for (const app of state.apps) { 
@@ -36,7 +36,7 @@ class AppsStore extends Store<AppsState> {
                     result.push(app);
                 }
             }
-            result.push(target);
+            if (target) result.push(target);
 
             return ({
                 apps: result,
