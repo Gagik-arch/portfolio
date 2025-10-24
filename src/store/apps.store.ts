@@ -16,7 +16,7 @@ class AppsStore extends Store<AppsState> {
 
     public updateApps(app:App) { 
         this.setState((state) => ({
-            focusedAppId: app.id,
+            focusedAppId: app.name,
             apps: [
                 ...state.apps,
                 app 
@@ -25,11 +25,24 @@ class AppsStore extends Store<AppsState> {
     }
 
     public setFocusApp(id: AppsState['focusedAppId']) { 
-        this.setState((state) => ({
-            ...state,
+        this.setState((state) => {
+            const result = [];
+            let target; 
 
-            focusedAppId: id,
-        }));
+            for (const app of state.apps) { 
+                if (app.window.id === id) {
+                    target = app;
+                } else {
+                    result.push(app);
+                }
+            }
+            result.push(target);
+
+            return ({
+                apps: result,
+                focusedAppId: id,
+            } ); 
+        });
     }
 }
 

@@ -13,6 +13,7 @@ class Window extends Element<HTMLDivElement> {
     private readonly borderSize = 6 * getCssVariable<number>('--scale');
     private readonly width: number;
     private readonly height: number;
+    public id: string;
 
     public constructor({ 
         children,
@@ -75,9 +76,11 @@ class Window extends Element<HTMLDivElement> {
                 },
             },
         });
-       
+        this.id = genRandomNumber(1_000_000, 10_000_000)
+            .toString();
         this.setProps({
             'data-is-resizable': isResizable,
+            id: this.id,
         });
 
         this.width = width * getCssVariable<number>('--scale');
@@ -131,6 +134,7 @@ class Window extends Element<HTMLDivElement> {
         if (target === this.dom) { 
             this.dom.focus();
             appsStore.setFocusApp(this.dom.id);
+
         }
   
         if (e.button !== 0 || (target !== this.dom ) && !target.classList.contains(styles.anchor)) return;

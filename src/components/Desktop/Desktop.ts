@@ -15,9 +15,7 @@ function Desktop() {
             .onMount((e) => {
                 appsStore.subscribe(({ apps }) => {
                     e.setProps({
-                        children: apps.map(item => { 
-                            return item.window.dom;
-                        }),
+                        children: apps.map(item => item.window.dom),
                     });
                 });
             })

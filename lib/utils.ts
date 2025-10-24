@@ -11,7 +11,9 @@ export function setupClassName(
     if (typeof className === 'function') {
         className(dom.classList);
     } else {
-        dom.className = className;
+        if (dom.className !== className) { 
+            dom.className = className;
+        }
     }
 }
 
