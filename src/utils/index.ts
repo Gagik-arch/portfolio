@@ -18,3 +18,5 @@ export const genRandomNumber = (min = 0, max = 10) => {
 
     return min + Math.floor(Math.random() * (max - min) );
 };
+
+export const isObject = (val: unknown): val is Record<string, unknown> => val !== null && typeof val === 'object';

@@ -1,6 +1,6 @@
 import Element from '$lib/Element';
 import styles from './styles.module.css';
-import type { WindowProps } from './types';
+import type { WindowDimension, WindowProps } from './types';
 import Controls from './Controls';
 import {
     clampNumber, genRandomNumber, getCssVariable  
@@ -13,8 +13,11 @@ class Window extends Element<HTMLDivElement> {
     private readonly borderSize = 6 * getCssVariable<number>('--scale');
     private readonly width: number;
     private readonly height: number;
+    private x = 0;
+    private y = 0;
     public id: string;
 
+//  TODO:  needs key implementation
     public constructor({ 
         children,
         width = 500,
@@ -22,10 +25,15 @@ class Window extends Element<HTMLDivElement> {
         backgroundColor,
         isResizable = true,
         className = '',
+        x,
+        y,
+        key,
+        id,
     }: WindowProps) {
         super({
             tagName: 'div',
             props: {
+                key,
                 className: `window default ${styles.root} ${className}`,
                 children: [
                     Controls({ isResizable }),
@@ -76,14 +84,13 @@ class Window extends Element<HTMLDivElement> {
                 },
             },
         });
-        this.id = genRandomNumber(1_000_000, 90_000_000)
+        this.id = id || genRandomNumber(1_000_000, 90_000_000)
             .toString();
         this.setProps({
             'data-is-resizable': isResizable,
             id: this.id,
-            key: this.id,
         });
-
+     
         this.width = width * getCssVariable<number>('--scale');
         this.height = height * getCssVariable<number>('--scale');
         this.dom.style.setProperty('--width', this.width + 'px');
@@ -94,11 +101,11 @@ class Window extends Element<HTMLDivElement> {
         
         if (!desktop) return; 
         
-        const x = genRandomNumber(desktop.left, desktop.right - this.width);
-        const y = genRandomNumber(desktop.top, desktop.bottom - this.height);
+        this.x = x || Math.floor(genRandomNumber(desktop.left, desktop.right - this.width));
+        this.y = y || Math.floor(genRandomNumber(desktop.top, desktop.bottom - this.height));
 
-        this.dom.style.setProperty('--left', x + 'px');
-        this.dom.style.setProperty('--top', y + 'px');
+        this.dom.style.setProperty('--left', this.x + 'px');
+        this.dom.style.setProperty('--top', this.y + 'px');
 
         this.onMount(() => {
             window?.addEventListener('mousedown', this.onMouseDown);
@@ -128,9 +135,11 @@ class Window extends Element<HTMLDivElement> {
         if (this.resizeAnchor) return; 
         
         const rect = this.dom.getBoundingClientRect();
+        this.x = Math.round(clampNumber(rect.x + e.movementX, 0, window.innerWidth - rect.width));
+        this.y = Math.round(clampNumber(rect.y + e.movementY, desktop.top, desktop.bottom - rect.height));
 
-        this.dom.style.setProperty( '--left', Math.round(clampNumber(rect.x + e.movementX, 0, window.innerWidth - rect.width)) + 'px');
-        this.dom.style.setProperty( '--top', Math.round(clampNumber(rect.y + e.movementY, desktop.top, desktop.bottom - rect.height)) + 'px');
+        this.dom.style.setProperty( '--left', this.x + 'px');
+        this.dom.style.setProperty( '--top', this.y + 'px');
     };
 
     private readonly onMouseDown = (e: MouseEvent) => {
@@ -144,12 +153,9 @@ class Window extends Element<HTMLDivElement> {
         if (target === this.dom || (this.dom === target.closest('.' + styles.root))) { 
             
             this.setProps({ 'data-resizing': !!this.resizeAnchor + '' });
+         
             this.dom.focus();
             appsStore.setFocusApp(this.dom.id);
-            
-            this.setProps({
-                tabIndex: 0,
-            });
         }
 
         if (this.resizeAnchor) return; 
@@ -182,10 +188,11 @@ class Window extends Element<HTMLDivElement> {
             const height = rect.height - e.movementY;
             if (height <= this.height) return; 
                 
-            const top = Math.floor(Math.max((rect.top + e.movementY), desktop.top));
-            this.dom.style.setProperty('--top', top + 'px');
+            this.y = Math.floor(Math.max((rect.top + e.movementY), desktop.top));
+    
+            this.dom.style.setProperty('--top', this.y + 'px');
 
-            if (top > desktop.top) {
+            if ( this.y > desktop.top) {
                 this.dom.style.setProperty('--height', Math.floor(Math.max(height, this.height)) + 'px');
             }
         };
@@ -195,9 +202,9 @@ class Window extends Element<HTMLDivElement> {
             const left = Math.floor(Math.max(rect.left + e.movementX, 0));
                 
             if (width <= this.width || left === 0) return; 
-            
+            this.x = left;
             this.dom.style.setProperty('--width', Math.floor(Math.max(width, this.width)) + 'px');
-            this.dom.style.setProperty('--left', left + 'px');
+            this.dom.style.setProperty('--left', this.x + 'px');
         };
 
         const onBottom = () => { 
@@ -295,6 +302,18 @@ class Window extends Element<HTMLDivElement> {
                     break;
         }
     };
+
+    public getDimension(): WindowDimension { 
+        const rect = this.dom.getBoundingClientRect(); 
+  
+        return {
+            width: rect.width,
+            height: rect.height,
+            x: this.x,
+            y: this.y,
+            id: this.id,
+        };
+    }
 }
 
 export default Window;

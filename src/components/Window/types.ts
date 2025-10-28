@@ -7,9 +7,21 @@ export interface WindowProps {
     isResizable?: boolean;
     children: ElementPropsType<HTMLDivElement>['children'];
     className?: ElementPropsType<HTMLDivElement>['className'];
+    x?: number;
+    y?: number;
+    key?: ElementPropsType['key'];
+    id?: string;
 }
 
 export interface ControlProps {
     isResizable?: boolean;
     
+}
+
+export interface WindowDimension {
+    width: number;
+    height: number;
+    x: number;
+    y: number;
+    id: string;
 }

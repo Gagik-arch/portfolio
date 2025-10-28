@@ -1,4 +1,5 @@
 import type { AppProps } from './types';
+
 class App { 
     public name: AppProps['name'];
     public appIcon: AppProps['appIcon'];

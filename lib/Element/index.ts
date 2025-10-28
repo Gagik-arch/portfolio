@@ -23,7 +23,6 @@ class Element <T extends HTMLElementTags > {
         },
         rootElement,
     }: ElementConstructorType<T>) {
-
         this.dom = document.createElement(tagName) as T;
         if (rootElement) {
             rootElement.appendChild(this.dom);
@@ -106,22 +105,23 @@ class Element <T extends HTMLElementTags > {
         }
     }
 
+    public remove() {
+        this.dom.remove();
+    }
+    
     public onMount(callback: (e:this) => void) {
+
         const check = () => {
             if (document.body.contains(this.dom)) {
                 callback(this);
             } else {
+
                 requestAnimationFrame(check);
             }
         };
 
         check();
-
         return this;
-    }
-
-    public remove() {
-        this.dom.remove();
     }
 
     public onUnMount(callback:(e:this)=>void) {

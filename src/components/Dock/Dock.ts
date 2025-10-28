@@ -11,11 +11,7 @@ import Button from '$uikit/Button';
 import Image from '$uikit/Image';
 import Tooltip from './Tooltip';
 import appsStore from '$store/apps.store';
-import type App from '$components/App';
-import Calculator from '$apps/Calculator';
-import Notes from '$apps/Notes';
-import Settings from '$apps/Settings';
-import Finder from '$apps/Finder';
+import allApps from '$apps/index';
 
 function Dock() {
     const onMouseMove = (e: MouseEvent) => {
@@ -36,19 +32,21 @@ function Dock() {
         target.classList.add(styles.on_open_animate);
         const app = appsStore.getState().apps?.find(a => a.name === target.id);
         if (!app) return; 
-        
+
         appsStore.setFocusApp(app.window.id);
         app.window.dom.focus();
     };
 
-    const onOpenAnimationEnd = (e: AnimationEvent, app: App) => {
+    const onOpenAnimationEnd = (e: AnimationEvent, appName: keyof typeof allApps) => {
         const target = e.currentTarget as HTMLButtonElement;
-        target.id = app.name;
+        target.id = appName;
         
-        appsStore.setFocusApp(app.window.id);
+        const app = allApps[appName]();
+        const dimension = app.window.getDimension();
+
         appsStore.updateApps(app);
+
         app.window.dom.focus();
-     
     };
 
     const onDockAppMount = (e: Button) => {
@@ -82,7 +80,7 @@ function Dock() {
                         events: {
                             onclick: onclick,
                             onanimationend: (e) => {
-                                onOpenAnimationEnd(e, Finder()); 
+                                onOpenAnimationEnd(e, 'Finder'); 
                             },
                         },
                         children: [
@@ -124,7 +122,7 @@ function Dock() {
                         events: {
                             onclick: onclick,
                             onanimationend: (e) => {
-                                onOpenAnimationEnd(e, Calculator()); 
+                                onOpenAnimationEnd(e, 'Calculator'); 
                             },
                         },
                         children: [
@@ -148,7 +146,7 @@ function Dock() {
                         events: {
                             onclick: onclick,
                             onanimationend: (e) => {
-                                onOpenAnimationEnd(e, Notes()); 
+                                onOpenAnimationEnd(e, 'Notes'); 
                             },
                         },
                         children: [
@@ -172,7 +170,7 @@ function Dock() {
                         events: {
                             onclick: onclick,
                             onanimationend: (e) => {
-                                onOpenAnimationEnd(e, Settings()); 
+                                onOpenAnimationEnd(e, 'Settings'); 
                             },
                         },
                         children: [

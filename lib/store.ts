@@ -1,4 +1,6 @@
-class Store <T> {
+import { isObject } from '$utils/index';
+
+class Store<T> {
     private state: T;
     private listeners: ((state:T)=>void)[] = [];
 
@@ -19,8 +21,15 @@ class Store <T> {
             = typeof newState === 'function'
                 ? (newState as (prev: T) => T)(this.state)
                 : newState;
+    
+        if (isObject(this.state) && isObject(state)) {
+            if ( !this.state.isEqual(state)) { 
+                this.state = state;
+                this.notify();
+            }
+        } else { 
+            if (this.state === state) return; 
 
-        if (state !== this.state) { 
             this.state = state;
             this.notify();
         }
