@@ -1,7 +1,6 @@
 import Element from '$lib/Element';
 import styles from './style.module.css';
 import appsStore from '$store/apps.store';
-import allApps from '$apps/index';
 
 function Desktop() {
 
