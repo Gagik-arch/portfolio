@@ -32,43 +32,11 @@ class Vector {
         return new Vector(this.x / scalar, this.y / scalar);
     }
 
-    public dot(vector:Vector) {
-        return this.x * vector.x + this.y * vector.y;
-    }
-
-    public cross(vector:Vector) {
-        const a = this.magnitude();
-        const b = vector.magnitude();
-        const dotProduct = this.dot(vector);
-        return Math.acos(dotProduct / (a * b));
-    }
-
-    public normalize(vector = new Vector(0, 0)) {
-        const magnitude = this.magnitude(vector);
-        return new Vector(this.x / magnitude, this.y / magnitude);
-    }
-
     public magnitude(vector = new Vector(0, 0)) {
         const dx = vector.x - this.x;
         const dy = vector.y - this.y;
 
         return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    public heading(vector = new Vector(0, 0)) {
-        return Math.atan2(vector.y - this.y, vector.x - this.x);
-    }
-
-    public angle(vector = new Vector(0, 0)) {
-        const result
-            = (Math.atan2(this.y - vector.y, this.x - vector.x) * 180) / Math.PI;
-
-        return result > 0 ? result : 360 + result;
-    }
-
-    public getInvertedVector(vector:Vector) {
-        const zeroChanged = vector.subtract(this);
-        return this.add(new Vector(-zeroChanged.x, -zeroChanged.y));
     }
 
     public round() {
