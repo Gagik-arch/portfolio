@@ -17,7 +17,6 @@ class Window extends Element<HTMLDivElement> {
     private y = 0;
     public id: string;
 
-//  TODO:  needs key implementation
     public constructor({ 
         children,
         width = 500,
@@ -153,7 +152,6 @@ class Window extends Element<HTMLDivElement> {
         this.isMouseDowned = true;
 
         if (target === this.dom || (this.dom === target.closest('.' + styles.root))) { 
-            
             this.setProps({ 'data-resizing': !!this.resizeAnchor + '' });
          
             this.dom.focus();
@@ -299,9 +297,10 @@ class Window extends Element<HTMLDivElement> {
                 default:
                     this.dom.classList.remove('n-resize');
                     this.dom.classList.remove('e-resize');
+
                     if (this.isMouseDowned) {
-                        this.dom.classList.replace('default', 'grabbing');
-                    } 
+                        this.dom.classList.add('grabbing');
+                    }
                     break;
         }
     };

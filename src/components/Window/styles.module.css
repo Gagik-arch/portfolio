@@ -15,6 +15,7 @@
     user-select: none;
     -webkit-user-drag: none;
     z-index: 2;
+    outline: none;
 
     &::after {
         content: ''

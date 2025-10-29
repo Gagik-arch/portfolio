@@ -11,17 +11,24 @@ function Desktop() {
         props: {
             className: styles.window_container,
             children: [],
+        },
+    });
+   
+    const iconContainer = new Element<HTMLDivElement>({
+        tagName: 'div',
+        props: {
+            children: [],
+            className: styles.icon_container,
             events: {
                 onmousedown: (e) => {
                     const target = e.target as HTMLElement;
-                    if (!target.closest('.window')) { 
+                    if (target.closest('.' + styles.icon_container)) { 
                         isMouseDowned = true;
                     }
                 },
                 onmousemove: (e) => {
                     if (!isMouseDowned) return;
     
-                    const target = e.target as HTMLElement;
                     const currentTarget = e.currentTarget as HTMLElement;
                     const rootRect = currentTarget.getBoundingClientRect();
 
@@ -33,7 +40,6 @@ function Desktop() {
                         .divide(80)
                         .abs()
                         .floor();
-                  
                 },
             },
         },
@@ -47,18 +53,26 @@ function Desktop() {
                         children: [],
                     },
                 }).dom
-                
             ],
         });
 
-    const desktopElement = new Element<HTMLDivElement>({
+    const desktopContainer = new Element<HTMLDivElement>({
         tagName: 'div',
         props: {
             id: 'desktop',
             className: styles.root,
-            children: [ windowContainer.dom ],
+            children: [
+                windowContainer.dom,
+                iconContainer.dom 
+            ],
          
         },
+    });
+
+    appsStore.subscribe(({ apps }) => {
+        windowContainer.setProps({
+            children: apps.map(item => item.window.dom),
+        });
     });
 
     const windowMouseDown = () => {
@@ -67,14 +81,8 @@ function Desktop() {
 
     window.addEventListener('mouseup', windowMouseDown );
 
-    appsStore.subscribe(({ apps }) => {
-        windowContainer.setProps({
-            children: apps.map(item => item.window.dom),
-        });
-    });
-
     return (
-        desktopElement
+        desktopContainer
             .onUnMount(() => {
                 window.removeEventListener('mouseup', windowMouseDown );
             })
