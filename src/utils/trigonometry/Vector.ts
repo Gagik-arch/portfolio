@@ -75,6 +75,14 @@ class Vector {
         return new Vector(Math.round(this.x), Math.round(this.y));
     }
 
+    public floor() {
+        return new Vector(Math.floor(this.x), Math.floor(this.y));
+    }
+
+    public abs() {
+        return new Vector(Math.abs(this.x), Math.abs(this.y));
+    }
+
     public toFixed(scalar = 2) {
         return new Vector(+this.x.toFixed(scalar), +this.y.toFixed(scalar));
     }

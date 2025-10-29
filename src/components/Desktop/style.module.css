@@ -1,6 +1,22 @@
 .root {
+    --icon-size: 80px;
     flex: 1;
     position: relative;
     overflow: hidden;
     margin-bottom: 5px;
+    background-color: rgba(200, 30, 10, 0.6);
+    margin: 0 20px
+}
+
+.window_container {
+    z-index: 1;
+    position: absolute;
+    inset: 0;
+}
+
+.app_icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    background-color: red;
+    position: absolute;
 }

@@ -121,7 +121,9 @@ class Window extends Element<HTMLDivElement> {
     }
 
     private readonly onMove = (e: MouseEvent) => {
-        const desktop = this.dom.parentElement?.getBoundingClientRect();
+        const desktop = document.getElementById( 'desktop')
+            ?.getBoundingClientRect();
+
         this.changeCursorAnchorHover(e);
         const target = e.target as HTMLElement;
 
@@ -178,7 +180,8 @@ class Window extends Element<HTMLDivElement> {
     };
 
     private readonly onResize = (e: MouseEvent) => {
-        const desktop = this.dom.parentElement?.getBoundingClientRect();
+        const desktop = document.getElementById( 'desktop')
+            ?.getBoundingClientRect();
     
         if (!this.resizeAnchor || !desktop || this.dom.dataset.resizing === 'false') return;
         

@@ -14,7 +14,7 @@
     height: var(--height);
     user-select: none;
     -webkit-user-drag: none;
-    z-index: 1;
+    z-index: 2;
 
     &::after {
         content: ''
