@@ -29,7 +29,7 @@ function Desktop() {
                     if (target) {
                         const x = +(target.dataset.vx || 0);
                         const y = +(target.dataset.vy || 0);
-                        console.log(x, y);
+                    
                         const app:DesktopIconType | undefined = desktopIconStore.getState()
                             .find(a => a.x === x && a.y === y);
          
@@ -102,28 +102,26 @@ function Desktop() {
 
     const windowMouseUp = (e: MouseEvent) => {
         const element = iconContainer.dom.querySelector(`button[data-vx='${appIcon?.x}'][data-vy='${appIcon?.y}']`) as HTMLButtonElement;
-       
+        const rootRect = iconContainer.dom.getBoundingClientRect();
+        const virtual = convertRealToVirtual(new Vector(e.clientX, e.clientY), rootRect);
+        
         if (!appIcon && !element) return; 
 
         const x = +(element.dataset.vx || 0), 
                 y = +(element.dataset.vy || 0);
-
-        const rootRect = iconContainer.dom.getBoundingClientRect();
-        const virtual = convertRealToVirtual(new Vector(e.clientX, e.clientY), rootRect);
+  
         element.dataset.vx = `${virtual.x}`;
         element.dataset.vy = `${virtual.y}`;
      
         const app:DesktopIconType | undefined = desktopIconStore.getState()
             .find(a => a.x === x && a.y === y);
       
-        if (!app) { 
-            console.info('newApp is not defined');
-            return; 
-        }
+        if (!app) return; 
+        
         const clone:DesktopIconType = JSON.parse(JSON.stringify(app));
         clone.x = virtual.x;
         clone.y = virtual.y;
-        
+    
         if (clone.x === app.x && clone.y === app.y) {
             const real = convertVirtualToReal(virtual, rootRect);
             element.style.setProperty('--x', real.x + 'px');
@@ -131,24 +129,29 @@ function Desktop() {
         } else { 
             desktopIconStore.editIcon(clone);
         }
-
         element.classList.remove('grabbing');
+        element.style.zIndex = '1';
         appIcon = null;
     };
 
     const windowMouseMove = (e:MouseEvent) => {
         if (!appIcon) return;
         const element = iconContainer.dom.querySelector(`button[data-vx='${appIcon?.x}'][data-vy='${appIcon?.y}']`) as HTMLButtonElement;
+   
         if (!element) return; 
-        const elementRect = element.getBoundingClientRect();
+        const elementRect = element.getBoundingClientRect(),
+                rootRect = iconContainer.dom.getBoundingClientRect();
 
-        const rootRect = iconContainer.dom.getBoundingClientRect();
-        const x = (( elementRect.x - rootRect.x) + e.movementX);  
-        const y = ((elementRect.y - rootRect.y) + e.movementY);  
-                    
+        const movementV = new Vector(e.movementX, e.movementY);
+        const offset = new Vector(elementRect.x - rootRect.x, elementRect.y - rootRect.y);
+       
+        const cord = movementV.add(offset)
+            .floor();
+
         element.classList.add('grabbing');
-        element.style.setProperty('--x', clampNumber(x, 0, rootRect.right - elementRect.width) + 'px');
-        element.style.setProperty('--y', clampNumber(y, 0, rootRect.height - elementRect.height ) + 'px'); 
+        element.style.zIndex = desktopIconStore.getState().length + '';
+        element.style.setProperty('--x', Math.floor( clampNumber(cord.x, 0, rootRect.right - elementRect.width)) + 'px');
+        element.style.setProperty('--y', Math.floor( clampNumber(cord.y, 0, rootRect.height - elementRect.height ) ) + 'px'); 
     };
 
     window.addEventListener('mouseup', windowMouseUp );
