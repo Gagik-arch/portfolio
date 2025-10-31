@@ -16,7 +16,7 @@ class AppsStore extends Store<AppsState> {
 
     public updateApps(app:App) { 
         this.setState((state) => ({
-            focusedAppId: app.name,
+            focusedAppId: app.window.id,
             apps: [
                 ...state.apps,
                 app 

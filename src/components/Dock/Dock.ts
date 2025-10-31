@@ -42,7 +42,6 @@ function Dock() {
         target.id = appName;
         
         const app = allApps[appName]();
-        const dimension = app.window.getDimension();
 
         appsStore.updateApps(app);
 

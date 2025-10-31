@@ -25,9 +25,6 @@ export const convertRealToVirtual = (mouse: Vector, rootRect: DOMRect) => {
 };
 
 export const convertVirtualToReal = (virtual: Vector, rootRect:DOMRect) => { 
-    const a = virtual.multiply(100)
-        .subtract(new Vector(rootRect.width - iconSize, 0));
-
     return virtual.multiply(100)
         .subtract(new Vector(rootRect.width - iconSize, 0))
         .floor()

@@ -32,9 +32,8 @@ function MenuBar() {
                                         })
                                             .onMount((e) => {
                                                 appsStore.subscribe((state) => {
-                                                    const app = state.apps.find(a => { 
-                                                        return a.windowId === state.focusedAppId;
-                                                    });
+                                                    const app = state.apps.find(a => a.window.id === state.focusedAppId);
+                                                 
                                                     if (!app) return; 
                                                     e.setProps({
                                                         children: [ app.name ],
