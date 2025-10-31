@@ -2,60 +2,86 @@ import Element from '$lib/Element';
 import styles from './style.module.css';
 import appsStore from '$store/apps.store';
 import Vector from '$utils/trigonometry/Vector';
+import desktopIconStore from '$store/desktop-icons.store';
+import DesktopIcon from './DesktopIcon';
+import { convertRealToVirtual, convertVirtualToReal } from './utils';
+import type { DesktopIconType } from '$types/index';
+import { clampNumber } from '$utils/index';
 
 function Desktop() {
-    let isMouseDowned = false;
+    let appIcon:DesktopIconType | null = null;
 
     const windowContainer = new Element<HTMLDivElement>({
         tagName: 'div',
         props: {
             className: styles.window_container,
-            children: [],
         },
     });
    
     const iconContainer = new Element<HTMLDivElement>({
         tagName: 'div',
         props: {
-            children: [],
+            id: 'icon_container',
             className: styles.icon_container,
             events: {
                 onmousedown: (e) => {
-                    const target = e.target as HTMLElement;
-                    if (target.closest('.' + styles.icon_container)) { 
-                        isMouseDowned = true;
+                    const target = (e.target as HTMLElement).closest('.' + styles.app_icon) as HTMLButtonElement;
+                    if (target) {
+                        const x = +(target.dataset.vx || 0);
+                        const y = +(target.dataset.vy || 0);
+                        console.log(x, y);
+                        const app:DesktopIconType | undefined = desktopIconStore.getState()
+                            .find(a => a.x === x && a.y === y);
+         
+                        if (!app) return; 
+                        
+                        appIcon = app;
                     }
-                },
-                onmousemove: (e) => {
-                    if (!isMouseDowned) return;
-    
-                    const currentTarget = e.currentTarget as HTMLElement;
-                    const rootRect = currentTarget.getBoundingClientRect();
-
-                    const offset = new Vector(e.clientX - rootRect.x, e.clientY - rootRect.y)
-                        .floor();
-                    
-                    const virtual = offset.subtract(new Vector(rootRect.width, 0))
-                        .floor()
-                        .divide(80)
-                        .abs()
-                        .floor();
                 },
             },
         },
     })
-        .setProps({
-            children: [
-                new Element<HTMLDivElement>({
-                    tagName: 'div',
-                    props: {
-                        className: styles.app_icon,
-                        children: [],
-                    },
-                }).dom
-            ],
+        .onMount((e) => {
+            e.setProps({
+                children: desktopIconStore.getState()
+                    .map(item => {
+                        const real = convertVirtualToReal(
+                            new Vector(item.x, item.y),
+                            e.dom.getBoundingClientRect()
+                        );
+                        return DesktopIcon({
+                            x: real.x,
+                            y: real.y,
+                            vx: item.x,
+                            vy: item.y,
+                            title: item.title,
+                            appIcon: item.appIcon,
+                        });
+                    }),
+            });
+            
         });
+    
+    desktopIconStore.subscribe((icons) => {
+        iconContainer.setProps({
+            children: icons.map(item => {
+                const real = convertVirtualToReal(
+                    new Vector(item.x, item.y),
+                    iconContainer.dom.getBoundingClientRect()
+                );
 
+                return DesktopIcon({
+                    x: real.x,
+                    y: real.y,
+                    vx: item.x,
+                    vy: item.y,
+                    title: item.title,
+                    appIcon: item.appIcon,
+                });
+            }),
+        });
+    });
+    
     const desktopContainer = new Element<HTMLDivElement>({
         tagName: 'div',
         props: {
@@ -65,7 +91,6 @@ function Desktop() {
                 windowContainer.dom,
                 iconContainer.dom 
             ],
-         
         },
     });
 
@@ -75,16 +100,65 @@ function Desktop() {
         });
     });
 
-    const windowMouseDown = () => {
-        isMouseDowned = false;
+    const windowMouseUp = (e: MouseEvent) => {
+        const element = iconContainer.dom.querySelector(`button[data-vx='${appIcon?.x}'][data-vy='${appIcon?.y}']`) as HTMLButtonElement;
+       
+        if (!appIcon && !element) return; 
+
+        const x = +(element.dataset.vx || 0), 
+                y = +(element.dataset.vy || 0);
+
+        const rootRect = iconContainer.dom.getBoundingClientRect();
+        const virtual = convertRealToVirtual(new Vector(e.clientX, e.clientY), rootRect);
+        element.dataset.vx = `${virtual.x}`;
+        element.dataset.vy = `${virtual.y}`;
+     
+        const app:DesktopIconType | undefined = desktopIconStore.getState()
+            .find(a => a.x === x && a.y === y);
+      
+        if (!app) { 
+            console.info('newApp is not defined');
+            return; 
+        }
+        const clone:DesktopIconType = JSON.parse(JSON.stringify(app));
+        clone.x = virtual.x;
+        clone.y = virtual.y;
+        
+        if (clone.x === app.x && clone.y === app.y) {
+            const real = convertVirtualToReal(virtual, rootRect);
+            element.style.setProperty('--x', real.x + 'px');
+            element.style.setProperty('--y', real.y + 'px'); 
+        } else { 
+            desktopIconStore.editIcon(clone);
+        }
+
+        element.classList.remove('grabbing');
+        appIcon = null;
     };
 
-    window.addEventListener('mouseup', windowMouseDown );
+    const windowMouseMove = (e:MouseEvent) => {
+        if (!appIcon) return;
+        const element = iconContainer.dom.querySelector(`button[data-vx='${appIcon?.x}'][data-vy='${appIcon?.y}']`) as HTMLButtonElement;
+        if (!element) return; 
+        const elementRect = element.getBoundingClientRect();
+
+        const rootRect = iconContainer.dom.getBoundingClientRect();
+        const x = (( elementRect.x - rootRect.x) + e.movementX);  
+        const y = ((elementRect.y - rootRect.y) + e.movementY);  
+                    
+        element.classList.add('grabbing');
+        element.style.setProperty('--x', clampNumber(x, 0, rootRect.right - elementRect.width) + 'px');
+        element.style.setProperty('--y', clampNumber(y, 0, rootRect.height - elementRect.height ) + 'px'); 
+    };
+
+    window.addEventListener('mouseup', windowMouseUp );
+    window.addEventListener('mousemove', windowMouseMove );
 
     return (
         desktopContainer
             .onUnMount(() => {
-                window.removeEventListener('mouseup', windowMouseDown );
+                window.removeEventListener('mouseup', windowMouseUp );
+                window.removeEventListener('mousemove', windowMouseMove );
             })
             .dom
     );
