@@ -4,6 +4,7 @@ import Icon from '$uikit/Icon';
 import Typography from '$uikit/Typography';
 import styles from './style.module.css';
 import appsStore from '$store/apps.store';
+import Fragment from '$lib/Fragment';
 
 function MenuBar() {
     
@@ -27,30 +28,58 @@ function MenuBar() {
                                     className: styles.item,
                                     children: [
                                         new Typography({
-                                            text: 'AppName',
+                                            text: 'Finder',
                                             variant: 'headline-regular',
                                         })
                                             .onMount((e) => {
                                                 appsStore.subscribe((state) => {
                                                     const app = state.apps.find(a => a.window.id === state.focusedAppId);
                                                  
-                                                    if (!app) return; 
                                                     e.setProps({
-                                                        children: [ app.name ],
+                                                        children: [ app?.name || 'Finder' ],
                                                     });
                                                 });
                                             }).dom 
                                     ],
                                 }).dom,
 
-                                ...Array.from({ length: 5 }, (_, k) => new Button({
-                                    className: styles.item,
-                                    children: [
-                                        new Typography({
-                                            text: 'item' + (k + 1), variant: 'body-emphasized',
-                                        }).dom 
-                                    ],
-                                }).dom)
+                                Fragment([
+                                    new Button({
+                                        className: styles.item,
+                                        children: [
+                                            new Typography({
+                                                text: 'Edit', variant: 'body-emphasized',
+                                            }).dom 
+                                        ],
+                                    }).dom,
+
+                                    new Button({
+                                        className: styles.item,
+                                        children: [
+                                            new Typography({
+                                                text: 'View', variant: 'body-emphasized',
+                                            }).dom 
+                                        ],
+                                    }).dom,
+
+                                    new Button({
+                                        className: styles.item,
+                                        children: [
+                                            new Typography({
+                                                text: 'Window', variant: 'body-emphasized',
+                                            }).dom 
+                                        ],
+                                    }).dom,
+
+                                    new Button({
+                                        className: styles.item,
+                                        children: [
+                                            new Typography({
+                                                text: 'Help', variant: 'body-emphasized',
+                                            }).dom 
+                                        ],
+                                    }).dom
+                                ])
                             ],
                         },
                     }).dom,

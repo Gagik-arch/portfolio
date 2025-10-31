@@ -24,10 +24,17 @@ class AppsStore extends Store<AppsState> {
         }));
     }
 
-    public setFocusApp(id: AppsState['focusedAppId']) { 
+    public setFocusApp(id: AppsState['focusedAppId'] | undefined) { 
         this.setState((state) => {
             const result:App[] = [];
             let target; 
+
+            if (id === undefined) { 
+                return ({
+                    ...state,
+                    focusedAppId: undefined,
+                });
+            }
 
             for (const app of state.apps) { 
                 if (app.window.id === id) {

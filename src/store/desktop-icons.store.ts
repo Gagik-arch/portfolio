@@ -1,8 +1,8 @@
 import Store from '$lib/store';
 import advelitIcon from '$assets/images/app-icons/advelit.png';
+import fibiIcon from '$assets/images/app-icons/fibi.png';
 import type { DesktopIconType } from '$types/index';
 
-/*
 const initialState:DesktopIconType[] = [
     {
         x: 0,
@@ -13,18 +13,10 @@ const initialState:DesktopIconType[] = [
     {
         x: 0,
         y: 1,
-        title: 'Advelit2',
-        appIcon: advelitIcon,
+        title: 'Fibi',
+        appIcon: fibiIcon,
     }
 ];
-*/
-
-const initialState: DesktopIconType[] = Array.from({ length: 1 }, (_, k) => ({
-    x: 0,
-    y: k,
-    title: 'Advelit',
-    appIcon: advelitIcon,
-}));
 
 class DesktopIconStore extends Store<DesktopIconType[]> {
     public constructor() {

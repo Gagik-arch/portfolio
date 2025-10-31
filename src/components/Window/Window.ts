@@ -144,14 +144,19 @@ class Window extends Element<HTMLDivElement> {
     };
 
     private readonly onMouseDown = (e: MouseEvent) => {
+        if (e.button !== 0) return; 
+
         const target = e.target as HTMLElement;
 
-        if (e.button !== 0 || target !== this.dom && !target.classList.contains(styles.anchor)) return;
+        if ( !target.classList.contains(styles.anchor) && target.closest('.' + styles.root) !== this.dom ) { 
+            appsStore.setFocusApp(undefined);
+            return; 
+        }
 
         this.resizeAnchor = this.detectAnchorSide(e);
         this.isMouseDowned = true;
-
-        if (target === this.dom || (this.dom === target.closest('.' + styles.root))) { 
+    
+        if ( this.dom === target.closest('.' + styles.root)) {
             this.setProps({ 'data-resizing': !!this.resizeAnchor + '' });
          
             this.dom.focus();
