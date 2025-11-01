@@ -4,7 +4,6 @@ import Icon from '$uikit/Icon';
 import Typography from '$uikit/Typography';
 import styles from './style.module.css';
 import appsStore from '$store/apps.store';
-import Fragment from '$lib/Fragment';
 
 function MenuBar() {
     
