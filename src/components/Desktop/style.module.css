@@ -35,7 +35,7 @@
 
     &:focus-within {
         &>.image_container {
-            border: 3px solid rgba(128, 128, 128, 0.5);
+            border: 3px solid rgba(212, 212, 212, 0.9);
         }
     }
 }
