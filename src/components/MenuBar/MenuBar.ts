@@ -43,43 +43,41 @@ function MenuBar() {
                                     ],
                                 }).dom,
 
-                                Fragment([
-                                    new Button({
-                                        className: styles.item,
-                                        children: [
-                                            new Typography({
-                                                text: 'Edit', variant: 'body-emphasized',
-                                            }).dom 
-                                        ],
-                                    }).dom,
+                                new Button({
+                                    className: styles.item,
+                                    children: [
+                                        new Typography({
+                                            text: 'Edit', variant: 'body-emphasized',
+                                        }).dom 
+                                    ],
+                                }).dom,
 
-                                    new Button({
-                                        className: styles.item,
-                                        children: [
-                                            new Typography({
-                                                text: 'View', variant: 'body-emphasized',
-                                            }).dom 
-                                        ],
-                                    }).dom,
+                                new Button({
+                                    className: styles.item,
+                                    children: [
+                                        new Typography({
+                                            text: 'View', variant: 'body-emphasized',
+                                        }).dom 
+                                    ],
+                                }).dom,
 
-                                    new Button({
-                                        className: styles.item,
-                                        children: [
-                                            new Typography({
-                                                text: 'Window', variant: 'body-emphasized',
-                                            }).dom 
-                                        ],
-                                    }).dom,
+                                new Button({
+                                    className: styles.item,
+                                    children: [
+                                        new Typography({
+                                            text: 'Window', variant: 'body-emphasized',
+                                        }).dom 
+                                    ],
+                                }).dom,
 
-                                    new Button({
-                                        className: styles.item,
-                                        children: [
-                                            new Typography({
-                                                text: 'Help', variant: 'body-emphasized',
-                                            }).dom 
-                                        ],
-                                    }).dom
-                                ])
+                                new Button({
+                                    className: styles.item,
+                                    children: [
+                                        new Typography({
+                                            text: 'Help', variant: 'body-emphasized',
+                                        }).dom 
+                                    ],
+                                }).dom
                             ],
                         },
                     }).dom,
