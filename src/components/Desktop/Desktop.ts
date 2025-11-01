@@ -9,7 +9,8 @@ import type { DesktopIconType } from '$types/index';
 import { clampNumber } from '$utils/index';
 
 function Desktop() {
-    let appIcon:DesktopIconType | null = null;
+    let appIcon:DesktopIconType | null = null, 
+            timeout: number | undefined = undefined;
 
     const windowContainer = new Element<HTMLDivElement>({
         tagName: 'div',
@@ -25,17 +26,22 @@ function Desktop() {
             className: styles.icon_container,
             events: {
                 onmousedown: (e) => {
+                    clearTimeout(timeout);
+
                     const target = (e.target as HTMLElement).closest('.' + styles.app_icon) as HTMLButtonElement;
                     if (target) {
                         const x = +(target.dataset.vx || 0);
                         const y = +(target.dataset.vy || 0);
-                    
+
+                        target.classList.remove(styles.transition);
+
                         const app:DesktopIconType | undefined = desktopIconStore.getState()
                             .find(a => a.x === x && a.y === y);
          
                         if (!app) return; 
                         
                         appIcon = app;
+                        
                     }
                 },
             },
@@ -121,14 +127,15 @@ function Desktop() {
         const clone:DesktopIconType = JSON.parse(JSON.stringify(app));
         clone.x = virtual.x;
         clone.y = virtual.y;
-    
-        if (clone.x === app.x && clone.y === app.y) {
-            const real = convertVirtualToReal(virtual, rootRect);
-            element.style.setProperty('--x', real.x + 'px');
-            element.style.setProperty('--y', real.y + 'px'); 
-        } else { 
+        element.classList.add(styles.transition);
+        const real = convertVirtualToReal(virtual, rootRect);
+        element.style.setProperty('--x', real.x + 'px');
+        element.style.setProperty('--y', real.y + 'px'); 
+
+        timeout = setTimeout(() => {
             desktopIconStore.editIcon(clone);
-        }
+        }, 200);
+
         element.classList.remove('grabbing');
         element.style.zIndex = '1';
         appIcon = null;
