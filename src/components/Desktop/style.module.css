@@ -3,20 +3,16 @@
     position: relative;
     overflow: hidden;
     margin-bottom: 5px;
-
+    --icon-size: 100px;
 }
 
-.window_container {
+/* .window_container {
     z-index: 1;
     position: absolute;
-}
+} */
 
-.icon_container {
-    --icon-size: 100px;
-    inset: 0;
-    position: absolute;
-    z-index: 0;
-    display: flex;
+.root:has(.app_icon:focus-within) {
+    z-index: 2;
 }
 
 .app_icon {
@@ -32,8 +28,11 @@
     background-color: transparent;
     left: var(--x);
     top: var(--y);
+    z-index: 0;
 
     &:focus-within {
+        z-index: 3 !important;
+
         &>.image_container {
             border: 3px solid rgba(212, 212, 212, 0.9);
         }

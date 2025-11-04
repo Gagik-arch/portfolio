@@ -10,7 +10,7 @@ import notes from '$assets/images/app-icons/notes/notes256.png';
 import Button from '$uikit/Button';
 import Image from '$uikit/Image';
 import Tooltip from './Tooltip';
-import appsStore from '$store/apps.store';
+import desktopStore from '$store/desktop.store';
 import allApps from '$apps/index';
 
 function Dock() {
@@ -30,10 +30,10 @@ function Dock() {
     const onclick = (e:MouseEvent) => {
         const target = e.currentTarget as HTMLButtonElement; 
         target.classList.add(styles.on_open_animate);
-        const app = appsStore.getState().apps?.find(a => a.name === target.id);
+        const app = desktopStore.getState().activeApps?.find(a => a.name === target.id);
         if (!app) return; 
 
-        appsStore.setFocusApp(app.window.id);
+        desktopStore.setFocusApp(app.window.id);
         app.window.dom.focus();
     };
 
@@ -43,14 +43,14 @@ function Dock() {
         
         const app = allApps[appName]();
 
-        appsStore.updateApps(app);
+        desktopStore.updateApps(app);
 
         app.window.dom.focus();
     };
 
     const onDockAppMount = (e: Button) => {
-        appsStore.subscribe((state) => { 
-            const app = state.apps?.find(a => a.name === e.dom.id);
+        desktopStore.subscribe((state) => { 
+            const app = state.activeApps?.find(a => a.name === e.dom.id);
             
             e.setProps({
                 className: (cx) => {

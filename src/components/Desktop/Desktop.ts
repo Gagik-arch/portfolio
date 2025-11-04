@@ -1,8 +1,7 @@
 import Element from '$lib/Element';
 import styles from './style.module.css';
-import appsStore from '$store/apps.store';
+import desktopStore from '$store/desktop.store';
 import Vector from '$utils/trigonometry/Vector';
-import desktopIconStore from '$store/desktop-icons.store';
 import DesktopIcon from './DesktopIcon';
 import { convertRealToVirtual, convertVirtualToReal } from './utils';
 import type { DesktopIconType } from '$types/index';
@@ -11,19 +10,12 @@ import { clampNumber } from '$utils/index';
 function Desktop() {
     let appIcon:DesktopIconType | null = null, 
             timeout: number | undefined = undefined;
-
-    const windowContainer = new Element<HTMLDivElement>({
+    
+    const desktopContainer = new Element<HTMLDivElement>({
         tagName: 'div',
         props: {
-            className: styles.window_container,
-        },
-    });
-   
-    const iconContainer = new Element<HTMLDivElement>({
-        tagName: 'div',
-        props: {
-            id: 'icon_container',
-            className: styles.icon_container,
+            id: 'desktop',
+            className: styles.root,
             events: {
                 onmousedown: (e) => {
                     clearTimeout(timeout);
@@ -34,8 +26,8 @@ function Desktop() {
                         const y = +(target.dataset.vy || 0);
 
                         target.classList.remove(styles.transition);
-
-                        const app:DesktopIconType | undefined = desktopIconStore.getState()
+             
+                        const app:DesktopIconType | undefined = desktopStore.getState().appIcons
                             .find(a => a.x === x && a.y === y);
          
                         if (!app) return; 
@@ -49,7 +41,7 @@ function Desktop() {
     })
         .onMount((e) => {
             e.setProps({
-                children: desktopIconStore.getState()
+                children: desktopStore.getState().appIcons
                     .map(item => {
                         const real = convertVirtualToReal(
                             new Vector(item.x, item.y),
@@ -65,50 +57,37 @@ function Desktop() {
                         });
                     }),
             });
-            
         });
-    
-    desktopIconStore.subscribe((icons) => {
-        iconContainer.setProps({
-            children: icons.map(item => {
-                const real = convertVirtualToReal(
-                    new Vector(item.x, item.y),
-                    iconContainer.dom.getBoundingClientRect()
-                );
 
-                return DesktopIcon({
-                    x: real.x,
-                    y: real.y,
-                    vx: item.x,
-                    vy: item.y,
-                    title: item.title,
-                    appIcon: item.appIcon,
-                });
-            }),
-        });
-    });
-    
-    const desktopContainer = new Element<HTMLDivElement>({
-        tagName: 'div',
-        props: {
-            id: 'desktop',
-            className: styles.root,
+    desktopStore.subscribe(({
+        activeApps, appIcons, 
+    }) => {
+        
+        desktopContainer.setProps({
             children: [
-                windowContainer.dom,
-                iconContainer.dom 
-            ],
-        },
-    });
+                ...appIcons.map(item => {
+                    const real = convertVirtualToReal(
+                        new Vector(item.x, item.y),
+                        desktopContainer.dom.getBoundingClientRect()
+                    );
 
-    appsStore.subscribe(({ apps }) => {
-        windowContainer.setProps({
-            children: apps.map(item => item.window.dom),
+                    return DesktopIcon({
+                        x: real.x,
+                        y: real.y,
+                        vx: item.x,
+                        vy: item.y,
+                        title: item.title,
+                        appIcon: item.appIcon,
+                    });
+                }),
+                ...activeApps.map(item => item.window.dom)
+            ],
         });
     });
 
     const windowMouseUp = (e: MouseEvent) => {
-        const element = iconContainer.dom.querySelector(`button[data-vx='${appIcon?.x}'][data-vy='${appIcon?.y}']`) as HTMLButtonElement;
-        const rootRect = iconContainer.dom.getBoundingClientRect();
+        const element = desktopContainer.dom.querySelector(`button[data-vx='${appIcon?.x}'][data-vy='${appIcon?.y}']`) as HTMLButtonElement;
+        const rootRect = desktopContainer.dom.getBoundingClientRect();
         const virtual = convertRealToVirtual(new Vector(e.clientX, e.clientY), rootRect);
         
         if (!appIcon && !element) return; 
@@ -119,7 +98,7 @@ function Desktop() {
         element.dataset.vx = `${virtual.x}`;
         element.dataset.vy = `${virtual.y}`;
      
-        const app:DesktopIconType | undefined = desktopIconStore.getState()
+        const app:DesktopIconType | undefined = desktopStore.getState().appIcons
             .find(a => a.x === x && a.y === y);
       
         if (!app) return; 
@@ -133,30 +112,28 @@ function Desktop() {
         element.style.setProperty('--y', real.y + 'px'); 
 
         timeout = setTimeout(() => {
-            desktopIconStore.editIcon(clone);
+            desktopStore.editIcon(clone);
         }, 200);
 
         element.classList.remove('grabbing');
-        element.style.zIndex = '1';
         appIcon = null;
     };
 
     const windowMouseMove = (e:MouseEvent) => {
         if (!appIcon) return;
-        const element = iconContainer.dom.querySelector(`button[data-vx='${appIcon?.x}'][data-vy='${appIcon?.y}']`) as HTMLButtonElement;
+        const element = desktopContainer.dom.querySelector(`button[data-vx='${appIcon?.x}'][data-vy='${appIcon?.y}']`) as HTMLButtonElement;
    
         if (!element) return; 
         const elementRect = element.getBoundingClientRect(),
-                rootRect = iconContainer.dom.getBoundingClientRect();
+                rootRect = desktopContainer.dom.getBoundingClientRect();
 
         const movementV = new Vector(e.movementX, e.movementY);
         const offset = new Vector(elementRect.x - rootRect.x, elementRect.y - rootRect.y);
        
         const cord = movementV.add(offset)
             .floor();
-
         element.classList.add('grabbing');
-        element.style.zIndex = desktopIconStore.getState().length + '';
+        element.style.zIndex = desktopStore.getState().appIcons.length + '';
         element.style.setProperty('--x', Math.floor( clampNumber(cord.x, 0, rootRect.right - elementRect.width)) + 'px');
         element.style.setProperty('--y', Math.floor( clampNumber(cord.y, 0, rootRect.height - elementRect.height ) ) + 'px'); 
     };

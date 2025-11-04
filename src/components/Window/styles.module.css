@@ -14,7 +14,7 @@
     height: var(--height);
     user-select: none;
     -webkit-user-drag: none;
-    z-index: 2;
+    z-index: 0;
     outline: none;
 
     &::after {
@@ -41,7 +41,6 @@
 .window_control_container {
     display: inline-flex;
     position: absolute;
-    z-index: 2;
     left: 22px;
     top: 22px;
     gap: 8px;

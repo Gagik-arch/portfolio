@@ -3,7 +3,7 @@ import Button from '$uikit/Button';
 import Icon from '$uikit/Icon';
 import Typography from '$uikit/Typography';
 import styles from './style.module.css';
-import appsStore from '$store/apps.store';
+import desktopStore from '$store/desktop.store';
 
 function MenuBar() {
     
@@ -31,8 +31,8 @@ function MenuBar() {
                                             variant: 'headline-regular',
                                         })
                                             .onMount((e) => {
-                                                appsStore.subscribe((state) => {
-                                                    const app = state.apps.find(a => a.window.id === state.focusedAppId);
+                                                desktopStore.subscribe((state) => {
+                                                    const app = state.activeApps.find(a => a.window.id === state.focusedAppId);
                                                  
                                                     e.setProps({
                                                         children: [ app?.name || 'Finder' ],
@@ -115,7 +115,6 @@ function MenuBar() {
                                         }).dom 
                                     ],
                                 }).dom
-
                             ],
                         },
                     }).dom

@@ -5,7 +5,7 @@ import Controls from './Controls';
 import {
     clampNumber, genRandomNumber, getCssVariable  
 } from '$utils/index';
-import appsStore from '$store/apps.store';
+import appsStore from '$store/desktop.store';
 
 class Window extends Element<HTMLDivElement> {
     private isMouseDowned = false;
