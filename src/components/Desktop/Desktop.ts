@@ -102,10 +102,12 @@ function Desktop() {
       
         if (!app) return; 
         
+        element.classList.add(styles.transition);
+
         const clone:DesktopIconType = JSON.parse(JSON.stringify(app));
         clone.x = virtual.x;
         clone.y = virtual.y;
-        element.classList.add(styles.transition);
+        
         const real = convertVirtualToReal(virtual, rootRect);
         element.style.setProperty('--x', real.x + 'px');
         element.style.setProperty('--y', real.y + 'px'); 
@@ -128,13 +130,22 @@ function Desktop() {
 
         const movementV = new Vector(e.movementX, e.movementY);
         const offset = new Vector(elementRect.x - rootRect.x, elementRect.y - rootRect.y);
-       
+   
         const cord = movementV.add(offset)
             .floor();
+        
         element.classList.add('grabbing');
-        element.style.zIndex = desktopStore.getState().appIcons.length + '';
+        element.style.zIndex = ' 3';
+
         element.style.setProperty('--x', Math.floor( clampNumber(cord.x, 0, rootRect.right - elementRect.width)) + 'px');
         element.style.setProperty('--y', Math.floor( clampNumber(cord.y, 0, rootRect.height - elementRect.height ) ) + 'px'); 
+   
+        const virtual = convertRealToVirtual(new Vector(e.clientX, e.clientY), rootRect);
+
+        const element2 = desktopContainer.dom.querySelector(`button[data-vx='${virtual?.x}'][data-vy='${virtual?.y}']`) as HTMLButtonElement;
+        if (element2 === element) return; 
+        
+        console.log(element2);
     };
 
     window.addEventListener('mouseup', windowMouseUp );

@@ -31,10 +31,18 @@ function DesktopIcon({
                     ],
                 },
             }).dom,
-            new Typography({
-                text: title,
-                className: styles.title,
-                variant: 'body-emphasized',
+            new Element<HTMLDivElement>({
+                tagName: 'div',
+                props: {
+                    className: styles.title_wrapper,
+                    children: [
+                        new Typography({
+                            text: title,
+                            className: styles.title,
+                            variant: 'body-emphasized',
+                        }).dom
+                    ],
+                },
             }).dom
         ],
     });

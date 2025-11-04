@@ -6,11 +6,6 @@
     --icon-size: 100px;
 }
 
-/* .window_container {
-    z-index: 1;
-    position: absolute;
-} */
-
 .root:has(.app_icon:focus-within) {
     z-index: 2;
 }
@@ -39,13 +34,23 @@
     }
 }
 
+.title_wrapper {
+    width: 100%;
+}
+
 .title {
     text-align: center;
     margin-top: 6px;
     color: #fff;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5)
-}
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
 
+}
 
 .image_container {
     width: calc(100% - 30px);

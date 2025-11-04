@@ -16,6 +16,12 @@ const initialState:DesktopIconType[] = [
         y: 1,
         title: 'Fibi',
         appIcon: fibiIcon,
+    },
+    {
+        x: 1,
+        y: 0,
+        title: 'Fibi-2sd-testasdasdsadsdsdasd',
+        appIcon: fibiIcon,
     }
 ];
 
