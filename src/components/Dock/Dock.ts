@@ -30,10 +30,12 @@ function Dock() {
     const onclick = (e:MouseEvent) => {
         const target = e.currentTarget as HTMLButtonElement; 
         target.classList.add(styles.on_open_animate);
+        if (!target.id) return; 
+
         const app = desktopStore.getState().activeApps?.find(a => a.name === target.id);
         if (!app) return; 
-
         desktopStore.setFocusApp(app.window.id);
+
         app.window.dom.focus();
     };
 
@@ -45,7 +47,6 @@ function Dock() {
 
         desktopStore.updateApps(app);
 
-        app.window.dom.focus();
     };
 
     const onDockAppMount = (e: Button) => {

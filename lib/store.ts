@@ -23,7 +23,7 @@ class Store<T> {
                 : newState;
     
         if (isObject(this.state) && isObject(state)) {
-            if ( !this.state.isEqual(state)) { 
+            if (!this.state.isEqual(state)) { 
                 this.state = state;
                 this.notify();
             }

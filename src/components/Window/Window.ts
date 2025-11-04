@@ -5,7 +5,7 @@ import Controls from './Controls';
 import {
     clampNumber, genRandomNumber, getCssVariable  
 } from '$utils/index';
-import appsStore from '$store/desktop.store';
+import desktopStore from '$store/desktop.store';
 
 class Window extends Element<HTMLDivElement> {
     private isMouseDowned = false;
@@ -74,8 +74,6 @@ class Window extends Element<HTMLDivElement> {
                     backgroundColor: backgroundColor || '#fff',
                 },
                 tabIndex: 0,
-                'data-resizing': false,
-                'data-dragging': false,
                 events: {
                     onblur: () => {
                         this.dom.style.zIndex = '0';
@@ -95,25 +93,25 @@ class Window extends Element<HTMLDivElement> {
         this.dom.style.setProperty('--width', this.width + 'px');
         this.dom.style.setProperty('--height', this.height + 'px');
         
-        const desktop = document.getElementById('desktop')
-            ?.getBoundingClientRect();
+        const desktop = document.getElementById('desktop'); 
+        const desktopRect = desktop?.getBoundingClientRect();
         
-        if (!desktop) return; 
+        if (!desktopRect) return; 
         
-        this.x = x || Math.floor(genRandomNumber(desktop.left, desktop.right - this.width));
-        this.y = y || Math.floor(genRandomNumber(desktop.top, desktop.bottom - this.height));
+        this.x = x || Math.floor(genRandomNumber(desktopRect.left, desktopRect.right - this.width));
+        this.y = y || Math.floor(genRandomNumber(desktopRect.top, desktopRect.bottom - this.height));
 
         this.dom.style.setProperty('--left', this.x + 'px');
         this.dom.style.setProperty('--top', this.y + 'px');
 
         this.onMount(() => {
-            window?.addEventListener('mousedown', this.onMouseDown);
+            desktop?.addEventListener('mousedown', this.onMouseDown);
             window?.addEventListener('mousemove', this.onMove);
             window?.addEventListener('mouseup', this.onMouseUp);
         });
 
         this.onUnMount(() => {
-            window?.removeEventListener('mousedown', this.onMouseDown);
+            desktop?.removeEventListener('mousedown', this.onMouseDown);
             window?.removeEventListener('mousemove', this.onMove);
             window?.removeEventListener('mouseup', this.onMouseUp);
         });
@@ -129,7 +127,8 @@ class Window extends Element<HTMLDivElement> {
         if (target !== this.dom) { 
             this.dom.classList.remove('n-resize', 'e-resize', 'grabbing');
         }
-        if (!this.isMouseDowned || !desktop ) return;
+     
+        if (!this.isMouseDowned || !desktop) return;
 
         this.onResize(e);
    
@@ -147,27 +146,23 @@ class Window extends Element<HTMLDivElement> {
         if (e.button !== 0) return; 
 
         const target = e.target as HTMLElement;
-
-        if ( !target.classList.contains(styles.anchor) && target.closest('.' + styles.root) !== this.dom ) { 
-            appsStore.setFocusApp(undefined);
-            return; 
+        if ( target === e.currentTarget ) { 
+            desktopStore.setFocusApp(undefined);
+            return;
         }
 
         this.resizeAnchor = this.detectAnchorSide(e);
-        this.isMouseDowned = true;
+        this.isMouseDowned = this.dom === target.closest('.' + styles.root);
     
-        if ( this.dom === target.closest('.' + styles.root)) {
+        if (this.isMouseDowned) {
             this.setProps({ 'data-resizing': !!this.resizeAnchor + '' });
          
             this.dom.focus();
-            appsStore.setFocusApp(this.dom.id);
+
+            desktopStore.setFocusApp(this.dom.id);
         }
 
         if (this.resizeAnchor) return; 
-
-        this.setProps({
-            'data-dragging': this.isMouseDowned,
-        });
     };
 
     private readonly onMouseUp = () => {
@@ -176,10 +171,6 @@ class Window extends Element<HTMLDivElement> {
 
         this.dom.classList.remove('n-resize', 'e-resize', 'grabbing');
         
-        this.setProps({
-            'data-resizing': !!this.resizeAnchor + '',
-            'data-dragging': false,
-        });
     };
 
     private readonly onResize = (e: MouseEvent) => {

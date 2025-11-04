@@ -46,7 +46,7 @@ class DesktopStore extends Store<AppsState> {
     }
 
     public setFocusApp(id: AppsState['focusedAppId'] | undefined) { 
-
+     
         this.setState((state) => {
             const result:App[] = [];
             let target; 
@@ -66,10 +66,10 @@ class DesktopStore extends Store<AppsState> {
                 }
             }
             if (target) result.push(target);
-
+          
             return ({
                 ...state,
-                apps: result,
+                activeApps: result,
                 focusedAppId: id,
             } ); 
         });
