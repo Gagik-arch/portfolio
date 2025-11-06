@@ -24,6 +24,7 @@
     left: var(--x);
     top: var(--y);
     z-index: 0;
+    outline: none;
 
     &:focus-within {
         z-index: 3 !important;

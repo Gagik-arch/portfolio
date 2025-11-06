@@ -6,20 +6,17 @@ import fibiIcon from '$assets/images/app-icons/fibi.png';
 
 const initialState:DesktopIconType[] = [
     {
-        x: 0,
-        y: 0,
+        index: 0,
         title: 'Advelit',
         appIcon: advelitIcon,
     },
     {
-        x: 0,
-        y: 1,
+        index: 1,
         title: 'Fibi',
         appIcon: fibiIcon,
     },
     {
-        x: 1,
-        y: 0,
+        index: 11,
         title: 'Fibi-2sd-testasdasdsadsdsdasd',
         appIcon: fibiIcon,
     }
@@ -82,8 +79,9 @@ class DesktopStore extends Store<AppsState> {
     }
 
     public editIcon(app: DesktopIconType) { 
+
         const appIcons:DesktopIconType[] = JSON.parse(JSON.stringify(this.getState().appIcons));
-        appIcons.map((a) => {
+        const a = appIcons.map((a) => {
             if (a.title === app.title) {
                 a.x = app.x;
                 a.y = app.y;
@@ -93,7 +91,8 @@ class DesktopStore extends Store<AppsState> {
         });
         
         this.setState(prev => ({
-            ...prev, appIcons, 
+            ...prev,
+            appIcons: a, 
         }));
     }
 }

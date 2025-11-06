@@ -30,3 +30,17 @@ export const convertVirtualToReal = (virtual: Vector, rootRect:DOMRect) => {
         .floor()
         .abs();
 };
+
+export const convertVirtualToIndex = (virtual: Vector, rootRect: DOMRect) => { 
+    const heightBlocks = Math.floor(rootRect.height / 100);
+    return heightBlocks * virtual.x + virtual.y;
+}; 
+
+export const convertIndexTOVirtual = (index: number, rootRect: DOMRect) => { 
+    const heightBlocks = Math.floor(rootRect.height / 100);
+    
+    return new Vector(
+        Math.floor(index / heightBlocks),
+        index % heightBlocks
+    );
+}; 

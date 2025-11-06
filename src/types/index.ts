@@ -1,7 +1,8 @@
 
 export interface DesktopIconType {
-    x: number;
-    y: number;
+    x?: number;
+    y?: number;
     title: string;
     appIcon: string;
+    index: number;
 }
