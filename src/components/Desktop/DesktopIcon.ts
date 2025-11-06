@@ -8,17 +8,15 @@ import type { DesktopIconProps } from './types';
 function DesktopIcon({ 
     x,
     y,
-    vx,
-    vy,
     title,
+    index,
     appIcon,
 }: DesktopIconProps) { 
     const button = new Button({
         className: styles.app_icon,
         tabIndex: 0,
-        'data-vx': vx,
-        'data-vy': vy,
-        key: `${vx}/${vy}`,
+        'data-index': index,
+        key: `${index}`,
         children: [
             new Element<HTMLDivElement>({
                 tagName: 'div',
