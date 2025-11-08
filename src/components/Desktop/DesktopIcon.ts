@@ -16,7 +16,7 @@ function DesktopIcon({
         className: styles.app_icon,
         tabIndex: 0,
         'data-index': index,
-        key: `${index}`,
+        key: `${index}/${title}`,
         children: [
             new Element<HTMLDivElement>({
                 tagName: 'div',

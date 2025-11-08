@@ -1,6 +1,7 @@
  
 import Vector from '$utils/trigonometry/Vector';
 import { clampNumber } from '$utils/index';
+import type { DesktopIconType } from '$types/index';
 
 const iconSize = 100;
 
@@ -44,3 +45,17 @@ export const convertIndexTOVirtual = (index: number, rootRect: DOMRect) => {
         index % heightBlocks
     );
 }; 
+
+export const extractRangeFromIconToIcon = (startIndex: number, appsIcons: (DesktopIconType | null)[]) => {
+    const result: DesktopIconType[] = [];
+
+    for (let i = startIndex; i < appsIcons.length; i++) { 
+        const item: DesktopIconType | null = appsIcons[i]; 
+        
+        if (item === null) break;
+
+        result.push(item);
+    }
+
+    return result;
+};  

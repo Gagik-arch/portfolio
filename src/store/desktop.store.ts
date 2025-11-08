@@ -3,6 +3,7 @@ import type App from '$components/App';
 import type { DesktopIconType } from '$types/index';
 import advelitIcon from '$assets/images/app-icons/advelit.png';
 import fibiIcon from '$assets/images/app-icons/fibi.png';
+import { extractRangeFromIconToIcon } from '$components/Desktop/utils';
 
 const initialState:DesktopIconType[] = [
     {
@@ -78,22 +79,50 @@ class DesktopStore extends Store<AppsState> {
         });
     }
 
-    public editIcon(app: DesktopIconType) { 
-
-        const appIcons:DesktopIconType[] = JSON.parse(JSON.stringify(this.getState().appIcons));
-        const a = appIcons.map((a) => {
-            if (a.title === app.title) {
-                a.x = app.x;
-                a.y = app.y;
-                return a;
-            }
-            return a;
+    public editIcon(newIndex:number, prevIndex:number, count:number) { 
+        const prevState = this.getState();
+        const cloneAppIcons: (DesktopIconType | null)[] = Array.from({ length: count }, () => null);
+       
+        prevState.appIcons.forEach(item => {
+            cloneAppIcons[item.index] = item;
         });
-        
-        this.setState(prev => ({
-            ...prev,
-            appIcons: a, 
-        }));
+            
+        const element = structuredClone(cloneAppIcons[prevIndex]);
+        if (!element) return; 
+
+        if (cloneAppIcons[newIndex]) {
+            if (newIndex > prevIndex) {
+                const extractedRange = extractRangeFromIconToIcon(newIndex, cloneAppIcons);
+                const clone = structuredClone(extractedRange);
+                extractedRange.unshift(element);
+                cloneAppIcons[prevIndex] = null;
+                cloneAppIcons[newIndex] = element;
+                
+                for (let i = newIndex; i < newIndex + extractedRange.length; i++) { 
+                    const a = clone.splice(0, 1);
+                    cloneAppIcons[i + 1] = a[0];
+                }
+            } else {
+                cloneAppIcons.splice(prevIndex, 1);
+                cloneAppIcons.splice(newIndex, 0, element);
+
+            }
+        } else { 
+            cloneAppIcons[newIndex] = element;
+            cloneAppIcons.splice(prevIndex, 1, null);
+        }
+
+        const result: DesktopIconType [] = [];
+        cloneAppIcons.forEach((item, index) => {
+            if (item) {
+                item.index = index;
+                result[result.length] = item;
+            }
+        });
+
+        this.setState({
+            ...prevState, appIcons: result,
+        });
     }
 }
 

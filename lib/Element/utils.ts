@@ -10,14 +10,14 @@ export function setupChildren<T extends HTMLElement>(
     if (children) {
         const newChildren = typeof children === 'function' ? new Set(children(new Set(dom.childNodes))) : children;
 
-        const extractedChildren = ([ ...newChildren ])?.filter(child => !!child) as ChildNode[];
+        const extractedChildren = ([ ...newChildren ]).filter(child => !!child) as ChildNode[];
        
         if (isForceUpdate) {
-            dom?.replaceChildren(...extractedChildren);
+            dom.replaceChildren(...extractedChildren);
         } else { 
             for (let i = 0; i < Math.max(extractedChildren.length, dom.children.length); i++) {
                 const newChild = extractedChildren[i] as HTMLElement;
-                const oldChild = dom.childNodes[i] as HTMLElement;
+                const oldChild = dom.childNodes[i] as (HTMLElement | undefined);
          
                 if (oldChild) {
                     if (oldChild.nodeType === 1 && newChild.nodeType === 1) {

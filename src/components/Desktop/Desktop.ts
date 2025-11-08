@@ -23,20 +23,20 @@ function Desktop() {
                 onmousedown: (e) => {
                     clearTimeout(timeout);
 
-                    const target = (e.target as HTMLElement).closest('.' + styles.app_icon) as HTMLButtonElement;
-                    if (target) {
-                        const index = +(target.dataset.index || 0);
+                    const target = (e.target as HTMLElement).closest('.' + styles.app_icon) as HTMLButtonElement | undefined;
 
-                        target.classList.remove(styles.transition);
+                    if (!target) return; 
+                    const index = +(target.dataset.index || 0);
+
+                    target.classList.remove(styles.transition);
              
-                        const app:DesktopIconType | undefined = desktopStore.getState().appIcons
-                            .find(a => a.index === index);
+                    const app:DesktopIconType | undefined = desktopStore.getState().appIcons
+                        .find(a => a.index === index);
          
-                        if (!app) return; 
+                    if (!app) return; 
                         
-                        appIcon = app;
+                    appIcon = app;
                         
-                    }
                 },
             },
         },
@@ -75,7 +75,7 @@ function Desktop() {
                         virtual,
                         desktopContainer.dom.getBoundingClientRect()
                     );
-
+               
                     return DesktopIcon({
                         x: real.x,
                         y: real.y,
@@ -93,22 +93,22 @@ function Desktop() {
         if (!appIcon) return; 
 
         const element = desktopContainer.dom.querySelector(`button[data-index='${appIcon.index}']`) as HTMLButtonElement;
-        if (!element) return; 
         
         const rootRect = desktopContainer.dom.getBoundingClientRect();
         const newVirtual = convertRealToVirtual(new Vector(e.clientX, e.clientY), rootRect);
-
-        const clone:DesktopIconType = structuredClone(appIcon);
-        clone.x = newVirtual.x;
-        clone.y = newVirtual.y;
+        const newIndex = convertVirtualToIndex(newVirtual, rootRect);
         
         const real = convertVirtualToReal(newVirtual, rootRect);
         element.style.setProperty('--x', real.x + 'px');
         element.style.setProperty('--y', real.y + 'px'); 
         element.classList.add(styles.transition);
+        const prevIndex = appIcon.index;
+
+        const h = Math.floor(rootRect.height / 100);
+        const w = Math.floor(rootRect.width / 100);
 
         timeout = setTimeout(() => {
-            desktopStore.editIcon(clone);
+            desktopStore.editIcon(newIndex, prevIndex, w * h);
         }, 200);
 
         element.classList.remove('grabbing');
@@ -116,11 +116,10 @@ function Desktop() {
         appIcon = null;
     };
 
-    const windowMouseMove = (e:MouseEvent) => {
+    const windowMouseMove = (e: MouseEvent) => {
         if (!appIcon) return;
         
         const element = desktopContainer.dom.querySelector(`button[data-index='${appIcon.index}']`) as HTMLButtonElement;
-        if (!element) return; 
     
         const rootRect = desktopContainer.dom.getBoundingClientRect();
         const elementRect = element.getBoundingClientRect();

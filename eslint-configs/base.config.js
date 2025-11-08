@@ -218,8 +218,7 @@ export default [
                     allowRegExp: true,
                 }
             ],
-            // '@typescript-eslint/no-unnecessary-condition': 'error',
-            '@typescript-eslint/no-confusing-void-expression': 'error',
+            '@typescript-eslint/no-unnecessary-condition': 'error',
             '@typescript-eslint/explicit-member-accessibility': 'error',
             '@typescript-eslint/await-thenable': 'error',
             '@typescript-eslint/consistent-indexed-object-style': 'error',
