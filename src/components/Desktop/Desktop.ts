@@ -108,7 +108,7 @@ function Desktop() {
         const w = Math.floor(rootRect.width / 100);
 
         timeout = setTimeout(() => {
-            desktopStore.editIcon(newIndex, prevIndex, w * h);
+            desktopStore.replaceIcon(newIndex, prevIndex, w * h);
         }, 200);
 
         element.classList.remove('grabbing');

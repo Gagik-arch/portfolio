@@ -15,11 +15,6 @@ const initialState:DesktopIconType[] = [
         index: 1,
         title: 'Fibi',
         appIcon: fibiIcon,
-    },
-    {
-        index: 11,
-        title: 'Fibi-2sd-testasdasdsadsdsdasd',
-        appIcon: fibiIcon,
     }
 ];
 
@@ -79,7 +74,7 @@ class DesktopStore extends Store<AppsState> {
         });
     }
 
-    public editIcon(newIndex:number, prevIndex:number, count:number) { 
+    public replaceIcon(newIndex:number, prevIndex:number, count:number) { 
         const prevState = this.getState();
         const cloneAppIcons: (DesktopIconType | null)[] = Array.from({ length: count }, () => null);
        
@@ -97,17 +92,26 @@ class DesktopStore extends Store<AppsState> {
                 extractedRange.unshift(element);
                 cloneAppIcons[prevIndex] = null;
                 cloneAppIcons[newIndex] = element;
-                
+          
                 for (let i = newIndex; i < newIndex + extractedRange.length; i++) { 
                     const a = clone.splice(0, 1);
                     cloneAppIcons[i + 1] = a[0];
                 }
             } else {
-                cloneAppIcons.splice(prevIndex, 1);
-                cloneAppIcons.splice(newIndex, 0, element);
+                const extractedRange = extractRangeFromIconToIcon(newIndex + 1, cloneAppIcons);
 
+                if (extractedRange.length) {
+                    cloneAppIcons.splice(prevIndex, 1);
+                    cloneAppIcons.splice(newIndex, 0, element);
+                } else { 
+                    cloneAppIcons[prevIndex] = null;
+                    const prevElement = structuredClone( cloneAppIcons[newIndex]);
+
+                    cloneAppIcons[newIndex] = element;
+                    cloneAppIcons[newIndex + 1] = prevElement;
+                }
             }
-        } else { 
+        } else {
             cloneAppIcons[newIndex] = element;
             cloneAppIcons.splice(prevIndex, 1, null);
         }
