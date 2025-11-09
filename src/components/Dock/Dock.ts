@@ -31,21 +31,20 @@ function Dock() {
         const target = e.currentTarget as HTMLButtonElement; 
         target.classList.add(styles.on_open_animate);
         if (!target.id) return; 
-
         const app = desktopStore.getState().activeApps.find(a => a.name === target.id);
+
         if (!app) return; 
         desktopStore.setFocusApp(app.window.id);
-
         app.window.dom.focus();
     };
-
+    
     const onOpenAnimationEnd = (e: AnimationEvent, appName: keyof typeof allApps) => {
         const target = e.currentTarget as HTMLButtonElement;
         target.id = appName;
-        
         const app = allApps[appName]();
-
+        
         desktopStore.addApp(app);
+        app.window.dom.focus();
     };
 
     const onDockAppMount = (e: Button) => {
@@ -71,12 +70,12 @@ function Dock() {
         },
     });
 
-    desktopStore.subscribe(({
-        activeApps, appIcons,
-    }) => {
+    // desktopStore.subscribe(({
+    //     activeApps, appIcons,
+    // }) => {
 
-        // const isAppOpened = 
-    });
+    //     // const isAppOpened = 
+    // });
 
     return (
         new Element<HTMLDivElement>({
@@ -90,6 +89,7 @@ function Dock() {
                     new Button({
                         className: styles.button,
                         tabIndex: -1,
+                        id: 'Finder',
                         events: {
                             onclick: onclick,
                             onanimationend: (e) => {
@@ -114,6 +114,7 @@ function Dock() {
                     
                     new Button({
                         className: styles.button,
+                        id: 'Launchpad',
                         children: [
                             new Element<HTMLDivElement>({
                                 tagName: 'div',
@@ -132,6 +133,7 @@ function Dock() {
                     new Button({
                         tabIndex: -1,
                         className: styles.button,
+                        id: 'Calculator',
                         events: {
                             onclick: onclick,
                             onanimationend: (e) => {
