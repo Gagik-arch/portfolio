@@ -64,6 +64,20 @@ function Dock() {
         });
     };
 
+    const openedAppContainer = new Element<HTMLDivElement>({
+        tagName: 'div',
+        props: {
+            children: [ ],
+        },
+    });
+
+    desktopStore.subscribe(({
+        activeApps, appIcons,
+    }) => {
+
+        // const isAppOpened = 
+    });
+
     return (
         new Element<HTMLDivElement>({
             tagName: 'div',
@@ -214,6 +228,8 @@ function Dock() {
                         ],
                     })
                         .onMount(onDockAppMount).dom,
+                    
+                    openedAppContainer.dom,
 
                     new Button({
                         className: styles.button,

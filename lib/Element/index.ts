@@ -46,15 +46,13 @@ class Element <T extends HTMLElementTags > {
             true
         );
 
-        if (this.#events) {
-            Object.entries<EventType<T>[keyof EventType<T>]>(this.#events)
-                .forEach(([
-                    type,
-                    listener
-                ]) => {
-                    this.dom?.addEventListener(type.replace('on', ''), listener as EventListener);
-                });
-        }
+        Object.entries<EventType<T>[keyof EventType<T>]>(this.#events)
+            .forEach(([
+                type,
+                listener
+            ]) => {
+                this.dom.addEventListener(type.replace('on', ''), listener as EventListener);
+            });
     }
 
     public setProps(
@@ -74,7 +72,7 @@ class Element <T extends HTMLElementTags > {
         setupClassName(className, this.dom);
 
         setupChildren(children, this.dom, isForceUpdate);
-
+     
         Object.entries(props)
             .forEach(([
                 name,
@@ -90,17 +88,17 @@ class Element <T extends HTMLElementTags > {
     }
 
     public replaceChild(index: number, newChild: null | undefined | HTMLElement | string) {
-        const currentChild = this.dom.childNodes[index];
+        const oldChild = this.dom.childNodes[index] as (ChildNode | undefined);
 
-        if (currentChild === newChild) return;
-
+        if (oldChild === newChild) return;
+   
         if (!newChild) {
-            if (index > -1) this.dom.removeChild(currentChild);
+            if (index > -1 && oldChild) this.dom.removeChild(oldChild);
         } else {
-            if (!currentChild) {
-                this.dom.append(newChild);
+            if (oldChild !== undefined) {
+                oldChild.replaceWith(newChild);
             } else {
-                currentChild.replaceWith(newChild);
+                this.dom.append(newChild);
             }
         }
     }
@@ -129,17 +127,15 @@ class Element <T extends HTMLElementTags > {
             if (!document.body.contains(this.dom)) {
                 callback(this);
 
-                if (this.#events) {
-                    Object.entries<EventType<T>[keyof EventType<T>]>(this.#events)
-                        .forEach(([
-                            type,
-                            listener
-                        ]) => {
-                            this.dom.removeEventListener(type, listener as EventListener);
-                        });
+                Object.entries<EventType<T>[keyof EventType<T>]>(this.#events)
+                    .forEach(([
+                        type,
+                        listener
+                    ]) => {
+                        this.dom.removeEventListener(type, listener as EventListener);
+                    });
 
-                    observer.disconnect();
-                }
+                observer.disconnect();
             }
         });
 

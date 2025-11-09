@@ -45,7 +45,24 @@
     top: 22px;
     gap: 8px;
 
+    &:hover {
+        z-index: 2 !important;
+
+        .close:not(:disabled) {
+            background-color: #FF736A;
+        }
+
+        .minimize:not(:disabled) {
+            background-color: #FEBC2E;
+        }
+
+        .maximize:not(:disabled) {
+            background-color: #19C332;
+        }
+    }
+
     &>button {
+        transition: all 160ms ease;
         width: calc(14px * var(--scale));
         height: calc(14px * var(--scale));
         border-radius: 50%;
@@ -57,9 +74,6 @@
         }
     }
 }
-
-
-
 
 .left_top {
     left: 0;

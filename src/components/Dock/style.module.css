@@ -162,7 +162,7 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
         height: 25px;
         position: absolute;
         clip-path: path("M 0 0 C 4 1 5 2 10 6 C 12 7 13 7 15 6 C 20 2 21 1 25 0");
-        background-color: rgba(242, 242, 242, 0.8);
+        background-color: inherit;
         top: 100%;
         left: 50%;
         transform: translate(-50%)
