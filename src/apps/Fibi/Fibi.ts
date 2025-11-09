@@ -1,17 +1,17 @@
 import App from '$components/App';
 import Window from '$components/Window';
-import appIcon from '$assets/images/app-icons/advelit.png';
+import appIcon from '$assets/images/app-icons/fibi.png';
 import type { AppProps } from '$apps/types';
 import styles from './style.module.css';
 
-function Advelit(props?:AppProps) { 
+function Fibi(props?:AppProps) { 
     return (
         new App({
-            name: 'Advelit',
+            name: 'Fibi',
             appIcon,
             window: new Window({
                 className: styles.root,
-                children: [ 'Advelit' ],
+                children: [ 'Fibi' ],
                 width: props?.width || 500,
                 height: props?.height || 300,
                 x: props?.x,
@@ -23,4 +23,4 @@ function Advelit(props?:AppProps) {
     );
 }
 
-export default Advelit;
+export default Fibi;

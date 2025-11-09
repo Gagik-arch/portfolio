@@ -32,7 +32,7 @@ function Dock() {
         target.classList.add(styles.on_open_animate);
         if (!target.id) return; 
 
-        const app = desktopStore.getState().activeApps?.find(a => a.name === target.id);
+        const app = desktopStore.getState().activeApps.find(a => a.name === target.id);
         if (!app) return; 
         desktopStore.setFocusApp(app.window.id);
 
@@ -45,13 +45,12 @@ function Dock() {
         
         const app = allApps[appName]();
 
-        desktopStore.updateApps(app);
-
+        desktopStore.addApp(app);
     };
 
     const onDockAppMount = (e: Button) => {
         desktopStore.subscribe((state) => { 
-            const app = state.activeApps?.find(a => a.name === e.dom.id);
+            const app = state.activeApps.find(a => a.name === e.dom.id);
             
             e.setProps({
                 className: (cx) => {

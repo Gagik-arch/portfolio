@@ -70,6 +70,7 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
         height: calc(100% + 6px);
         background-color: transparent;
         width: calc(var(--width) + 40px);
+        z-index: 1;
     }
 
     img {
@@ -137,6 +138,7 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     pointer-events: none;
     border-color: oklab(35.885% 0.00326 -0.01157 / 0.61);
     height: 100%;
+    z-index: 0;
 }
 
 .tooltip {

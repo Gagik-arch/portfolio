@@ -9,11 +9,24 @@ import {
 } from './utils';
 import type { DesktopIconType } from '$types/index';
 import { clampNumber } from '$utils/index';
+import allApps from '$apps/index';
 
 function Desktop() {
     let appIcon:DesktopIconType | null = null, 
             timeout: number | undefined = undefined;
     
+    const onDoubleClickAppIcon = (title:keyof typeof allApps) => {
+        const app = allApps[title]();
+        
+        const isExistsApp = desktopStore.getState().activeApps.find(a => a.name === app.name);
+
+        if (isExistsApp) {
+            isExistsApp.window.dom.focus();
+        } else { 
+            desktopStore.addApp(app);
+        }
+    };
+
     const desktopContainer = new Element<HTMLDivElement>({
         tagName: 'div',
         props: {
@@ -58,6 +71,7 @@ function Desktop() {
                             index: item.index,
                             title: item.title,
                             appIcon: item.appIcon,
+                            onDoubleClick: () => onDoubleClickAppIcon(item.title),
                         });
                     }),
             });
@@ -82,6 +96,7 @@ function Desktop() {
                         index: item.index,
                         title: item.title,
                         appIcon: item.appIcon,
+                        onDoubleClick: () => onDoubleClickAppIcon(item.title),
                     });
                 }),
                 ...activeApps.map(item => item.window.dom)
@@ -131,7 +146,6 @@ function Desktop() {
             .floor();
         
         element.classList.add('grabbing');
-        element.style.zIndex = ' 3';
 
         element.style.setProperty('--x', Math.floor( clampNumber(cord.x, 0, rootRect.right - elementRect.width)) + 'px');
         element.style.setProperty('--y', Math.floor( clampNumber(cord.y, 0, rootRect.height - elementRect.height ) ) + 'px'); 

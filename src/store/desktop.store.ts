@@ -33,7 +33,7 @@ class DesktopStore extends Store<AppsState> {
         });
     }
 
-    public updateApps(app:App) { 
+    public addApp(app:App) { 
         this.setState((state) => ({
             ...state,
             focusedAppId: app.window.id,
@@ -123,6 +123,8 @@ class DesktopStore extends Store<AppsState> {
                 result[result.length] = item;
             }
         });
+        
+        if (prevIndex === newIndex) return; 
 
         this.setState({
             ...prevState, appIcons: result,

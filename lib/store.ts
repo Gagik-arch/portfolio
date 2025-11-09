@@ -36,7 +36,7 @@ class Store<T> {
     }
 
     public getState() {
-        return JSON.parse(JSON.stringify(this.state)) as T;
+        return this.state;
     }
 
     private notify() {
