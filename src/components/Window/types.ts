@@ -1,6 +1,6 @@
 import type { ElementPropsType } from '$lib/Element/types';
 
-export interface WindowProps {
+export type WindowProps = ElementPropsType & {
     width?: number;
     height?: number;
     backgroundColor?: string;
@@ -9,13 +9,14 @@ export interface WindowProps {
     className?: ElementPropsType<HTMLDivElement>['className'];
     x?: number;
     y?: number;
-    key?: ElementPropsType['key'];
     id?: string;
-}
+};
 
 export interface ControlProps {
     isResizable?: boolean;
-    
+    onClose?: ()=>void;
+    onMinimize?: ()=>void;
+    onMaximize?: ()=>void;
 }
 
 export interface WindowDimension {
@@ -24,4 +25,6 @@ export interface WindowDimension {
     x: number;
     y: number;
     id: string;
+    isResizable: WindowProps['isResizable'];
+    createdAt: number;
 }

@@ -33,10 +33,10 @@ class DesktopStore extends Store<AppsState> {
         });
     }
 
-    public addApp(app:App) { 
+    public addApp(app: App) { 
         this.setState((state) => ({
             ...state,
-            focusedAppId: app.window.id,
+            focusedAppId: app.window.dom.id,
             activeApps: [
                 ...state.activeApps,
                 app 
@@ -58,7 +58,7 @@ class DesktopStore extends Store<AppsState> {
             }
 
             for (const app of state.activeApps) { 
-                if (app.window.id === id) {
+                if (app.window.dom.id === id) {
                     target = app;
                 } else {
                     result.push(app);

@@ -5,6 +5,9 @@ import type { ControlProps } from './types';
 
 function Controls({ 
     isResizable,
+    onClose,
+    onMinimize,
+    onMaximize,
 }:ControlProps) {
 
     return (
@@ -15,15 +18,22 @@ function Controls({
                 children: [
                     new Button({
                         className: styles.close,
-                        children: [ ],
+                        events: {
+                            onclick: onClose,
+                        },
                     }).dom,
                     new Button({
                         className: styles.minimize,
-                        children: [ ],
+                        events: {
+                            onclick: onMinimize,
+                        },
                     }).dom,
                     new Button({
                         className: styles.maximize,
                         children: [],
+                        events: {
+                            onclick: onMaximize,
+                        },
                         disabled: !isResizable,
                     }).dom
                 ],

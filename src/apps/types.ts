@@ -1,5 +1,5 @@
-import type { WindowDimension } from '$components/Window/types';
+import type { ActiveAppType } from '$types/index';
 
-export type AppProps = WindowDimension & {
+export type AppProps = Partial<Omit<ActiveAppType, 'createdAt'>> & {
     key?: string;
 };

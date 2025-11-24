@@ -9,6 +9,7 @@ function Finder(props?:AppProps) {
         new App({
             name: 'Finder',
             appIcon,
+            isNative: true,
             window: new Window({
                 className: styles.root,
                 children: [ 'Macos Finder app coming soon.' ],

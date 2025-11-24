@@ -8,6 +8,7 @@ function Calendar(props?:AppProps) {
         new App({
             name: 'Calendar',
             appIcon,
+            isNative: true,
             window: new Window({
                 children: [ 'Calendar' ],
                 width: props?.width || 300,

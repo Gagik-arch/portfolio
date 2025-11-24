@@ -37,7 +37,7 @@ export const convertVirtualToIndex = (virtual: Vector, rootRect: DOMRect) => {
     return heightBlocks * virtual.x + virtual.y;
 }; 
 
-export const convertIndexTOVirtual = (index: number, rootRect: DOMRect) => { 
+export const convertIndexToVirtual = (index: number, rootRect: DOMRect) => { 
     const heightBlocks = Math.floor(rootRect.height / 100);
     
     return new Vector(

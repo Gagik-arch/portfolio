@@ -4,7 +4,7 @@ import desktopStore from '$store/desktop.store';
 import Vector from '$utils/trigonometry/Vector';
 import DesktopIcon from './DesktopIcon';
 import {
-    convertIndexTOVirtual,
+    convertIndexToVirtual,
     convertRealToVirtual, convertVirtualToIndex, convertVirtualToReal 
 } from './utils';
 import type { DesktopIconType } from '$types/index';
@@ -58,7 +58,7 @@ function Desktop() {
             e.setProps({
                 children: desktopStore.getState().appIcons
                     .map(item => {
-                        const virtual = convertIndexTOVirtual(item.index, e.dom.getBoundingClientRect());
+                        const virtual = convertIndexToVirtual(item.index, e.dom.getBoundingClientRect());
                         
                         const real = convertVirtualToReal(
                             virtual,
@@ -83,7 +83,7 @@ function Desktop() {
         desktopContainer.setProps({
             children: [
                 ...appIcons.map(item => {
-                    const virtual = convertIndexTOVirtual(item.index, desktopContainer.dom.getBoundingClientRect());
+                    const virtual = convertIndexToVirtual(item.index, desktopContainer.dom.getBoundingClientRect());
 
                     const real = convertVirtualToReal(
                         virtual,

@@ -9,6 +9,7 @@ function Settings(props?:AppProps) {
         new App({
             name: 'Settings',
             appIcon,
+            isNative: true,
             window: new Window({
                 className: styles.root,
                 children: [ 'Macos Settings app coming soon.' ],

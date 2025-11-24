@@ -10,12 +10,12 @@ import desktopStore from '$store/desktop.store';
 class Window extends Element<HTMLDivElement> {
     private isMouseDowned = false;
     private resizeAnchor: 'top' | 'left' | 'right' | 'bottom' | 'right-bottom' | 'right-top' | 'left-top' | 'left-bottom' | undefined = undefined;
-    private readonly borderSize = 6 * getCssVariable<number>('--scale');
+    private readonly borderSize = Math.round(6 * getCssVariable<number>('--scale'));
     private readonly width: number;
     private readonly height: number;
     private x = 0;
     private y = 0;
-    public id: string;
+    public createdAt: number;
 
     public constructor({ 
         children,
@@ -26,50 +26,14 @@ class Window extends Element<HTMLDivElement> {
         className = '',
         x,
         y,
-        key,
         id,
+        events,
+        ...props
     }: WindowProps) {
         super({
             tagName: 'div',
             props: {
-                key,
                 className: `window default ${styles.root} ${className}`,
-                children: [
-                    Controls({ isResizable }),
-                    ...(isResizable
-                        ? [
-                            new Element<HTMLSpanElement>({
-                                tagName: 'span',
-                                props: {
-                                    className: `${styles.left_top} nw-resize ${styles.anchor}`,
-                                    children: [],
-                                },
-                            }).dom,
-                            new Element<HTMLSpanElement>({
-                                tagName: 'span',
-                                props: {
-                                    className: `${styles.left_bottom} ne-resize ${styles.anchor}`,
-                                    children: [],
-                                },
-                            }).dom,
-                            new Element<HTMLSpanElement>({
-                                tagName: 'span',
-                                props: {
-                                    className: `${styles.right_top} ne-resize ${styles.anchor}`,
-                                    children: [],
-                                },
-                            }).dom,
-                            new Element<HTMLSpanElement>({
-                                tagName: 'span',
-                                props: {
-                                    className: `${styles.right_bottom} nw-resize ${styles.anchor}`,
-                                    children: [],
-                                },
-                            }).dom
-                        ]
-                        : []),
-                    ...(children ?? [])
-                ],
                 style: {
                     backgroundColor: backgroundColor || '#fff',
                 },
@@ -78,42 +42,90 @@ class Window extends Element<HTMLDivElement> {
                     onblur: () => {
                         this.dom.style.zIndex = '0';
                     },
+                    ...events,
                 },
+                ...props,
             },
         });
-        this.id = id || genRandomNumber(1_000_000, 90_000_000)
-            .toString();
+        this.createdAt = new Date()
+            .getTime();
+        
         this.setProps({
             'data-is-resizable': isResizable,
-            id: this.id,
+            id: id || genRandomNumber(1_000_000, 90_000_000)
+                .toString(),
+            children: [
+                Controls({
+                    isResizable,
+                    onClose: this.onClose,
+                    onMinimize: this.onMinimize,
+                    onMaximize: this.onMaximize,
+                }),
+                ...(isResizable
+                    ? [
+                        new Element<HTMLSpanElement>({
+                            tagName: 'span',
+                            props: {
+                                className: `${styles.left_top} nw-resize ${styles.anchor}`,
+                                children: [],
+                            },
+                        }).dom,
+                        new Element<HTMLSpanElement>({
+                            tagName: 'span',
+                            props: {
+                                className: `${styles.left_bottom} ne-resize ${styles.anchor}`,
+                                children: [],
+                            },
+                        }).dom,
+                        new Element<HTMLSpanElement>({
+                            tagName: 'span',
+                            props: {
+                                className: `${styles.right_top} ne-resize ${styles.anchor}`,
+                                children: [],
+                            },
+                        }).dom,
+                        new Element<HTMLSpanElement>({
+                            tagName: 'span',
+                            props: {
+                                className: `${styles.right_bottom} nw-resize ${styles.anchor}`,
+                                children: [],
+                            },
+                        }).dom
+                    ]
+                    : []),
+                ...(children ?? [])
+            ],
         });
-     
-        this.width = width * getCssVariable<number>('--scale');
-        this.height = height * getCssVariable<number>('--scale');
-        this.dom.style.setProperty('--width', this.width + 'px');
-        this.dom.style.setProperty('--height', this.height + 'px');
+  
+        this.width = width;
+        this.height = height;
+        const scaledWidth = width * getCssVariable<number>('--scale');
+        const scaledHeight = height * getCssVariable<number>('--scale');
+  
+        this.dom.style.setProperty('--width', scaledWidth + 'px');
+        this.dom.style.setProperty('--height', scaledHeight + 'px');
         
         const desktop = document.getElementById('desktop'); 
         const desktopRect = desktop?.getBoundingClientRect();
         
         if (!desktopRect) return; 
         
-        this.x = x || Math.floor(genRandomNumber(desktopRect.left, desktopRect.right - this.width));
-        this.y = y || Math.floor(genRandomNumber(desktopRect.top, desktopRect.bottom - this.height));
+        this.x = x ?? Math.floor(genRandomNumber(desktopRect.left, desktopRect.right - scaledWidth));
+        this.y = y ?? Math.floor(genRandomNumber(desktopRect.top, desktopRect.bottom - scaledHeight));
 
         this.dom.style.setProperty('--left', this.x + 'px');
         this.dom.style.setProperty('--top', this.y + 'px');
 
         this.onMount(() => {
             desktop?.addEventListener('mousedown', this.onMouseDown);
-            window?.addEventListener('mousemove', this.onMove);
-            window?.addEventListener('mouseup', this.onMouseUp);
+            window.addEventListener('mousemove', this.onMove);
+            window.addEventListener('mouseup', this.onMouseUp);
         });
 
         this.onUnMount(() => {
             desktop?.removeEventListener('mousedown', this.onMouseDown);
-            window?.removeEventListener('mousemove', this.onMove);
-            window?.removeEventListener('mouseup', this.onMouseUp);
+            window.removeEventListener('mousemove', this.onMove);
+            window.removeEventListener('mouseup', this.onMouseUp);
         });
     }
 
@@ -147,6 +159,7 @@ class Window extends Element<HTMLDivElement> {
 
         const target = e.target as HTMLElement;
         if ( target === e.currentTarget ) { 
+
             desktopStore.setFocusApp(undefined);
             return;
         }
@@ -170,7 +183,6 @@ class Window extends Element<HTMLDivElement> {
         this.isMouseDowned = false;
 
         this.dom.classList.remove('n-resize', 'e-resize', 'grabbing');
-        
     };
 
     private readonly onResize = (e: MouseEvent) => {
@@ -302,15 +314,28 @@ class Window extends Element<HTMLDivElement> {
     };
 
     public getDimension(): WindowDimension { 
-        const rect = this.dom.getBoundingClientRect(); 
-  
         return {
-            width: rect.width,
-            height: rect.height,
+            width: this.width,
+            height: this.height,
             x: this.x,
             y: this.y,
-            id: this.id,
+            id: this.dom.id,
+            isResizable: !!this.dom.dataset.isResizable,
+            createdAt: this.createdAt,
         };
+    }
+
+    public onClose = () => {
+
+        //  FIX: desktopStore.removeApp(this.dom.id);
+    };
+
+    public onMinimize () {
+        console.info('onMinimize');
+    }
+
+    public onMaximize () {
+        console.info('onMaximize');
     }
 }
 

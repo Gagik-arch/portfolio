@@ -215,3 +215,7 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
         border-radius: 50%
     }
 }
+
+.opened_app_container {
+    display: flex
+}

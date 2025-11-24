@@ -9,6 +9,7 @@ function Calculator(props?:AppProps) {
         new App({
             name: 'Calculator',
             appIcon,
+            isNative: true,
             window: new Window({
                 children: [ 'Macos Calculator app coming soon.' ],
                 className: styles.root,

@@ -9,6 +9,7 @@ function Notes(props?:AppProps) {
         new App({
             name: 'Notes',
             appIcon,
+            isNative: true,
             window: new Window({
                 className: styles.root,
                 children: [ 'Macos notes app coming soon.' ],

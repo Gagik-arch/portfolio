@@ -11,32 +11,35 @@ export function setupChildren<T extends HTMLElement>(
         const newChildren = typeof children === 'function' ? new Set(children(new Set(dom.childNodes))) : children;
 
         const extractedChildren = ([ ...newChildren ]).filter(child => !!child) as ChildNode[];
-       
+    
         if (isForceUpdate) {
             dom.replaceChildren(...extractedChildren);
         } else { 
             for (let i = 0; i < Math.max(extractedChildren.length, dom.children.length); i++) {
-                const newChild = extractedChildren[i] as HTMLElement;
+                const newChild = extractedChildren[i] as (HTMLElement | undefined );
                 const oldChild = dom.childNodes[i] as (HTMLElement | undefined);
-         
-                if (oldChild) {
+
+                if (newChild && !oldChild) {
+                    dom.append(newChild);
+                } 
+
+                if (newChild && oldChild) { 
                     if (oldChild.nodeType === 1 && newChild.nodeType === 1) {
                         if (oldChild.getAttribute('key') && newChild.getAttribute('key')) {
                             if (oldChild.getAttribute('key') !== newChild.getAttribute('key')) {
                                 oldChild.replaceWith(newChild);
                             }
-                        } else { 
+                        } else {
                             if (oldChild !== newChild) {
                                 oldChild.replaceWith(newChild);
                             }
                         }
-                    } else { 
+
+                    } else {
                         if (oldChild !== newChild) {
                             oldChild.replaceWith(newChild);
                         }
                     }
-                } else { 
-                    dom.append(newChild);
                 }
             }
         }
