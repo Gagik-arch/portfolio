@@ -32,7 +32,7 @@ function MenuBar() {
                                         })
                                             .onMount((e) => {
                                                 desktopStore.subscribe((state) => {
-                                                    const app = state.activeApps.find(a => a.id === state.focusedAppId);
+                                                    const app = state.activeApps.find(a => a.window.dom.id === state.focusedAppId);
                                                  
                                                     e.setProps({
                                                         children: [ app?.name || 'Finder' ],
