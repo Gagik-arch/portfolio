@@ -6,6 +6,7 @@ import {
     clampNumber, genRandomNumber, getCssVariable  
 } from '$utils/index';
 import desktopStore from '$store/desktop.store';
+import dockStyles from '../Dock/style.module.css';
 
 class Window extends Element<HTMLDivElement> {
     private isMouseDowned = false;
@@ -326,8 +327,13 @@ class Window extends Element<HTMLDivElement> {
     }
 
     public onClose = () => {
-
-        //  FIX: desktopStore.removeApp(this.dom.id);
+        const target = desktopStore.getState().activeApps.find(item => item.window.dom.id === this.dom.id);
+     
+        if (!target) return; 
+        const dockIcon = document.getElementById(target.name);   
+       
+        dockIcon?.classList.remove(dockStyles.on_open_animate);
+        desktopStore.removeApp(this.dom.id);
     };
 
     public onMinimize () {

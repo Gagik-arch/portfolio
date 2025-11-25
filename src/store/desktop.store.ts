@@ -130,6 +130,13 @@ class DesktopStore extends Store<AppsState> {
             ...prevState, appIcons: result,
         });
     }
+
+    public removeApp(id: string) { 
+        this.setState(prev => ( {
+            ...prev,
+            activeApps: prev.activeApps.filter(item => item.window.dom.id !== id),
+        }));
+    }
 }
 
 const desktopStore = new DesktopStore();

@@ -23,7 +23,7 @@ export function setupChildren<T extends HTMLElement>(
                     dom.append(newChild);
                 } 
 
-                if (newChild && oldChild) { 
+                if (newChild && oldChild) {
                     if (oldChild.nodeType === 1 && newChild.nodeType === 1) {
                         if (oldChild.getAttribute('key') && newChild.getAttribute('key')) {
                             if (oldChild.getAttribute('key') !== newChild.getAttribute('key')) {
@@ -40,6 +40,10 @@ export function setupChildren<T extends HTMLElement>(
                             oldChild.replaceWith(newChild);
                         }
                     }
+                } 
+
+                if (oldChild && !newChild ) { 
+                    dom.removeChild(oldChild);
                 }
             }
         }

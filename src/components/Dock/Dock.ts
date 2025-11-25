@@ -30,9 +30,9 @@ function Dock() {
     const onclick = (e:MouseEvent) => {
         const target = e.currentTarget as HTMLButtonElement; 
         target.classList.add(styles.on_open_animate);
+
         if (!target.id) return; 
         const app = desktopStore.getState().activeApps.find(a => a.name === target.id);
-
         if (!app) return; 
         desktopStore.setFocusApp(app.window.dom.id);
 
@@ -67,6 +67,7 @@ function Dock() {
     const dock = new Element<HTMLDivElement>({
         tagName: 'div',
         props: {
+            id: 'dock',
             events: {
                 onmousemove: onMouseMove,
             },
@@ -409,8 +410,9 @@ function Dock() {
                     .map(app => {
                         return (
                             new Button({
-                                className: `asd ${styles.button} ${styles.is_opened} ${styles.on_open_animate}`,
+                                className: `${styles.button} ${styles.is_opened} ${styles.on_open_animate}`,
                                 key: app.name,
+                                id: app.name,
                                 events: {
                                     onclick: onclick,
                                     onanimationend: () => {

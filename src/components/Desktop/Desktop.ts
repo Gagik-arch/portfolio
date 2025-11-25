@@ -80,6 +80,7 @@ function Desktop() {
     desktopStore.subscribe(({
         activeApps, appIcons, 
     }) => {
+    
         desktopContainer.setProps({
             children: [
                 ...appIcons.map(item => {
