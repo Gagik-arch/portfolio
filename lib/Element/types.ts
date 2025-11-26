@@ -22,6 +22,7 @@ export type ElementPropsType<T extends HTMLElementTags = HTMLElement>
         events?: EventType<T>;
         style?: Partial<CSSStyleDeclaration> | undefined;
         key?: string;
+        includeKey?: string;
     };
 
 export interface ElementConstructorType<T extends HTMLElementTags> {

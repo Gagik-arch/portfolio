@@ -100,8 +100,8 @@ class Window extends Element<HTMLDivElement> {
   
         this.width = width;
         this.height = height;
-        const scaledWidth = width * getCssVariable<number>('--scale');
-        const scaledHeight = height * getCssVariable<number>('--scale');
+        const scaledWidth = this.width * getCssVariable<number>('--scale');
+        const scaledHeight = this.height * getCssVariable<number>('--scale');
   
         this.dom.style.setProperty('--width', scaledWidth + 'px');
         this.dom.style.setProperty('--height', scaledHeight + 'px');
@@ -156,9 +156,9 @@ class Window extends Element<HTMLDivElement> {
     };
 
     private readonly onMouseDown = (e: MouseEvent) => {
-        if (e.button !== 0) return; 
-
         const target = e.target as HTMLElement;
+        if (e.button !== 0 || target.closest(`.${styles.window_control_container}`)) return; 
+
         if ( target === e.currentTarget ) { 
 
             desktopStore.setFocusApp(undefined);
@@ -188,6 +188,9 @@ class Window extends Element<HTMLDivElement> {
     };
 
     private readonly onResize = (e: MouseEvent) => {
+        const scaledWidth = this.width * getCssVariable<number>('--scale');
+        const scaledHeight = this.height * getCssVariable<number>('--scale');
+        
         const desktop = document.getElementById( 'desktop')
             ?.getBoundingClientRect();
     
@@ -197,14 +200,14 @@ class Window extends Element<HTMLDivElement> {
        
         const onTop = () => {
             const height = rect.height - e.movementY;
-            if (height <= this.height) return; 
+            if (height <= scaledHeight) return; 
                 
             this.y = Math.floor(Math.max((rect.top + e.movementY), desktop.top));
     
             this.dom.style.setProperty('--top', this.y + 'px');
 
             if ( this.y > desktop.top) {
-                this.dom.style.setProperty('--height', Math.floor(Math.max(height, this.height)) + 'px');
+                this.dom.style.setProperty('--height', Math.floor(Math.max(height, scaledHeight)) + 'px');
             }
         };
 
@@ -212,20 +215,20 @@ class Window extends Element<HTMLDivElement> {
             const width = rect.width - e.movementX;
             const left = Math.floor(Math.max(rect.left + e.movementX, 0));
                 
-            if (width <= this.width || left === 0) return; 
+            if (width <= scaledWidth || left === 0) return; 
             this.x = left;
-            this.dom.style.setProperty('--width', Math.floor(Math.max(width, this.width)) + 'px');
+            this.dom.style.setProperty('--width', Math.floor(Math.max(width, scaledWidth)) + 'px');
             this.dom.style.setProperty('--left', this.x + 'px');
         };
 
         const onBottom = () => { 
-            const height = Math.max(rect.height + e.movementY, this.height);
+            const height = Math.max(rect.height + e.movementY, scaledHeight);
 
             this.dom.style.setProperty('--height', `${Math.floor(rect.bottom < desktop.bottom ? height : desktop.height - rect.top + desktop.top )}px`);
         };
 
         const onRight = () => {
-            const width = Math.floor(Math.max(rect.width + e.movementX, this.width));
+            const width = Math.floor(Math.max(rect.width + e.movementX, scaledWidth));
                  
             this.dom.style.setProperty('--width', `${rect.right <= desktop.right ? width : desktop.width - rect.left}px`);
         };

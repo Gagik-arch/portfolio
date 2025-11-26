@@ -16,21 +16,22 @@ export function setupChildren<T extends HTMLElement>(
             dom.replaceChildren(...extractedChildren);
         } else { 
             for (let i = 0; i < Math.max(extractedChildren.length, dom.children.length); i++) {
-                const newChild = extractedChildren[i] as (HTMLElement | undefined );
-                const oldChild = dom.childNodes[i] as (HTMLElement | undefined);
+                const newChild = extractedChildren[i] as (HTMLElement | null );
+                const oldChild = dom.childNodes[i] as (HTMLElement | null);
 
-                if (newChild && !oldChild) {
+                if ( !oldChild && newChild ) {
                     dom.append(newChild);
                 } 
 
                 if (newChild && oldChild) {
                     if (oldChild.nodeType === 1 && newChild.nodeType === 1) {
+                       
                         if (oldChild.getAttribute('key') && newChild.getAttribute('key')) {
                             if (oldChild.getAttribute('key') !== newChild.getAttribute('key')) {
                                 oldChild.replaceWith(newChild);
                             }
                         } else {
-                            if (oldChild !== newChild) {
+                            if (!oldChild.isEqualNode(newChild)) {
                                 oldChild.replaceWith(newChild);
                             }
                         }

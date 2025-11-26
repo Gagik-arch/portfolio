@@ -19,6 +19,7 @@ class Element <T extends HTMLElementTags > {
             style,
             events,
             key,
+            includeKey,
             ...props
         },
         rootElement,
@@ -38,6 +39,7 @@ class Element <T extends HTMLElementTags > {
                 children,
                 style,
                 key,
+                includeKey,
                 ...props,
             } as Omit<ElementPropsType<T>, 'className' | 'children'> & {
                 className?: ((classList: DOMTokenList) => void) | string | undefined;
