@@ -2,7 +2,7 @@ import type Window from '$components/Window';
 
 export interface AppProps {
     name: string;
-    appIcon?: string;
+    appIcon: string;
     window: Window;
     isNative?: boolean;
 }

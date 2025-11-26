@@ -7,6 +7,7 @@ import {
 } from '$utils/index';
 import desktopStore from '$store/desktop.store';
 import dockStyles from '../Dock/style.module.css';
+import dockIconsStore, { type IconType } from '$store/dockIcons.store';
 
 class Window extends Element<HTMLDivElement> {
     private isMouseDowned = false;
@@ -337,7 +338,13 @@ class Window extends Element<HTMLDivElement> {
         const dockIcon = document.getElementById(target.name);   
        
         dockIcon?.classList.remove(dockStyles.on_open_animate);
+
+        const app = desktopStore.getState().activeApps.find(item => item.window.dom.id === this.dom.id);
+        
+        if (!app) return; 
+
         desktopStore.removeApp(this.dom.id);
+        dockIconsStore.removeIcon(app.name as IconType['title']);
     };
 
     public onMinimize () {

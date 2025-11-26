@@ -12,6 +12,7 @@ import Image from '$uikit/Image';
 import Tooltip from './Tooltip';
 import desktopStore from '$store/desktop.store';
 import allApps from '$apps/index';
+import dockIconsStore from '$store/dockIcons.store';
 
 function Dock() {
     const onMouseMove = (e: MouseEvent) => {
@@ -89,9 +90,7 @@ function Dock() {
                             tagName: 'div',
                             props: {
                                 children: [
-                                    new Image({
-                                        src: finder,
-                                    }).dom,
+                                    new Image({ src: finder }).dom,
                                     Tooltip('Finder' )
                                 ],
                             },
@@ -109,9 +108,7 @@ function Dock() {
                             tagName: 'div',
                             props: {
                                 children: [
-                                    new Image({
-                                        src: launchpad,
-                                    }).dom,
+                                    new Image({ src: launchpad }).dom,
                                     Tooltip('Launchpad')
                                 ],
                             },
@@ -135,9 +132,7 @@ function Dock() {
                             tagName: 'div',
                             props: {
                                 children: [
-                                    new Image({
-                                        src: calculator,
-                                    }).dom,
+                                    new Image({ src: calculator }).dom,
                                     Tooltip('Calculator')
                                 ],
                             },
@@ -247,9 +242,7 @@ function Dock() {
         },
     });
     
-    desktopStore.subscribe(({
-        activeApps,
-    }) => {
+    dockIconsStore.subscribe((appIcons) => {
 
         dock.setProps({
             children: [
@@ -405,18 +398,17 @@ function Dock() {
                 })
                     .onMount(onDockAppMount).dom,
                 
-                ...activeApps.filter(app => !app.isNative)
-                    .sort((a, b) => a.createdAt - b.createdAt)
-                    .map(app => {
+                ...appIcons
+                    .map(icon => {
                         return (
                             new Button({
-                                className: `${styles.button} ${styles.is_opened} ${styles.on_open_animate}`,
-                                key: app.name,
-                                id: app.name,
+                                className: styles.button,
+                                key: icon.title,
+                                id: icon.title,
                                 events: {
                                     onclick: onclick,
-                                    onanimationend: () => {
-                                        app.window.dom.focus();
+                                    onanimationend: (e) => {
+                                        onOpenAnimationEnd(e, icon.title); 
                                     },
                                 },
                                 children: [
@@ -425,16 +417,36 @@ function Dock() {
                                         props: {
                                             children: [
                                                 new Image({
-                                                    src: app.appIcon,
+                                                    src: icon.image,
                           
                                                 }).dom,
-                                                Tooltip(app.name)
+                                                Tooltip(icon.title)
                                             ],
                                         },
                                     }).dom
                        
                                 ],
-                            }).dom
+                            })
+                                .onMount((e) => {
+                                    const target = e.dom;
+                                    const appIsExists = desktopStore.getState().activeApps.find(item => item.name === target.id);
+                                
+                                    if (!appIsExists) {
+                                        e.setProps({
+                                            className: (cx) => {
+                                                cx.add(styles.on_open_animate);
+                                            },
+                                        });
+                                    } else { 
+                                        e.setProps({
+                                            className: (cx) => {
+                                                cx.add(styles.is_opened);
+                                            },
+                                        });
+                                    }
+                                   
+                                    onDockAppMount(e); 
+                                }).dom
                         );
                     }),
 

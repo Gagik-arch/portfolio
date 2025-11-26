@@ -10,6 +10,7 @@ import {
 import type { DesktopIconType } from '$types/index';
 import { clampNumber } from '$utils/index';
 import allApps from '$apps/index';
+import dockIconsStore from '$store/dockIcons.store';
 
 function Desktop() {
     let appIcon:DesktopIconType | null = null, 
@@ -23,7 +24,10 @@ function Desktop() {
         if (isExistsApp) {
             isExistsApp.window.dom.focus();
         } else { 
-            desktopStore.addApp(app);
+            dockIconsStore.setIcon({
+                title: app.name as keyof typeof allApps,
+                image: app.appIcon,
+            });
         }
     };
 
