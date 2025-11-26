@@ -13,7 +13,7 @@ export type EventType<T extends HTMLElement> = {
         ? (ev: E) => void
         : never;
 };
-export type Dataset = Record<`data-${string}`, string | number | boolean>;
+export type Dataset = Record<`data-${string}`, string>;
 
 export type ElementPropsType<T extends HTMLElementTags = HTMLElement>
     = Omit<Partial<T>, 'children' | 'className' | 'style'> & Dataset & {

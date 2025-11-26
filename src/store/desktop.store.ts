@@ -95,7 +95,7 @@ class DesktopStore extends Store<AppsState> {
           
                 for (let i = newIndex; i < newIndex + extractedRange.length; i++) { 
                     const a = clone.splice(0, 1);
-                    cloneAppIcons[i + 1] = a[0];
+                    cloneAppIcons[(i + 1) % count] = a[0];
                 }
             } else {
                 const extractedRange = extractRangeFromIconToIcon(newIndex + 1, cloneAppIcons);

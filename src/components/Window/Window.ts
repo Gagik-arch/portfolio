@@ -52,7 +52,7 @@ class Window extends Element<HTMLDivElement> {
             .getTime();
         
         this.setProps({
-            'data-is-resizable': isResizable,
+            'data-is-resizable': isResizable.toString(),
             id: id || genRandomNumber(1_000_000, 90_000_000)
                 .toString(),
             children: [
@@ -184,6 +184,7 @@ class Window extends Element<HTMLDivElement> {
         this.isMouseDowned = false;
 
         this.dom.classList.remove('n-resize', 'e-resize', 'grabbing');
+        this.setProps({ 'data-resizing': 'false' });
     };
 
     private readonly onResize = (e: MouseEvent) => {
