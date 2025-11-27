@@ -105,8 +105,8 @@ class Window extends Element<HTMLDivElement> {
         this.minWidth = minWidth;
         this.minHeight = minHeight;
 
-        this.width = width ?? this.minWidth; 
-        this.height = height ?? this.minHeight;
+        this.width = width ? Math.max(width, this.minWidth) : this.minWidth; 
+        this.height = height ? Math.max(height, this.minHeight) : this.minHeight;
  
         const scaledWidth = this.width * getCssVariable<number>('--scale');
         const scaledHeight = this.height * getCssVariable<number>('--scale');
