@@ -58,7 +58,7 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     display: flex;
     place-items: center;
     place-content: center;
-    transition: all 180ms cubic-bezier(0.25, 1, 0.5, 1);
+    transition: all 200ms cubic-bezier(0.25, 1, 0.5, 1);
     padding: 0 8px;
     box-sizing: content-box;
     position: relative;
@@ -70,6 +70,7 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
         background-color: transparent;
         width: calc(var(--width) + 40px);
         z-index: 1;
+        cursor: inherit;
     }
 
     img {
@@ -77,10 +78,11 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
         height: 100%;
     }
 
-    &>* {
+    &>div {
         width: 100%;
         height: 100%;
         position: relative;
+        cursor: inherit;
     }
 
     &:first-child {
@@ -100,33 +102,43 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
         }
 
         /* left */
-        :has(+ &):is(button) {
+        :has(+ &):is(button),
+        :has(+ * + &):is(button) {
             width: calc(var(--width) * 1.43 + var(--offset, 0px) * -1);
             height: calc(var(--width) * 1.43 + var(--offset, 0px) * -1);
         }
 
-        :has(+ * + &):is(button) {
+        :has(+ button + &):is(button),
+        :has(+ button + * + &):is(button),
+        :has(+ hr + button + &):is(button) {
             width: calc(var(--width)* 1.25 + var(--offset, 0px) * -1);
             height: calc(var(--width) * 1.25 + var(--offset, 0px) * -1);
         }
 
-        :has(+ * + * + &):is(button) {
+        :has(+ button + button + &):is(button),
+        :has(+ button + button + hr+ &):is(button),
+        :has(+ button + hr +button + &):is(button) {
             width: calc(var(--width)* 1.1 + var(--offset, 0px) * -1);
             height: calc(var(--width) * 1.1 + var(--offset, 0px) * -1);
         }
 
         /* right */
-        &+*:is(button) {
+        &+button:is(button),
+        &+*+button {
             width: calc(var(--width)* 1.43 + var(--offset, 0px));
             height: calc(var(--width) * 1.43 + var(--offset, 0px));
         }
 
-        &+*+*:is(button) {
+        &+button+button:is(button),
+        &+*+button:is(button)+button,
+        &+*+*+button {
             width: calc(var(--width)* 1.25 + var(--offset, 0px));
             height: calc(var(--width) * 1.25 + var(--offset, 0px));
         }
 
-        &+*+*+*:is(button) {
+        &+button+button+:is(button),
+        &+*+*+hr+:is(button),
+        &+*+hr+button+:is(button) {
             width: calc(var(--width)* 1.1 + var(--offset, 0px));
             height: calc(var(--width) * 1.1 + var(--offset, 0px));
         }

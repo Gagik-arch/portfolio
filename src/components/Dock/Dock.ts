@@ -202,7 +202,7 @@ function Dock() {
                 }).dom,
 
                 new Button({
-                    className: styles.button,
+                    className: `not-allowed ${styles.button}`,
                     key: 'Downloads',
                     children: [
                         new Element<HTMLDivElement>({
@@ -245,7 +245,6 @@ function Dock() {
     });
     
     dockIconsStore.subscribe((appIcons) => {
-
         dock.setProps({
             children: [
                 new Button({
