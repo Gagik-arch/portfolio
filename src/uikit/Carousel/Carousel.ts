@@ -58,7 +58,7 @@ function Carousel({
         },
     }); 
   
-    const mutation = onCssVariableChange(line.dom, (e) => {
+    const mutation = onCssVariableChange(line.dom, () => {
         const dotButtons = dots.dom.querySelectorAll('button');
 
         dotButtons.forEach((button, index) => {
