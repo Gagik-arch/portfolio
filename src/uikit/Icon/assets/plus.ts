@@ -14,7 +14,7 @@ function Plus(props: SVGElementPropsType) {
 
                 ...props,
                 children: [
-                    new SVGElement({
+                    new SVGElement<SVGPathElement>({
                         tagName: 'path',
                         props: {
                             d: 'M5,12H19M12,5V19',

@@ -1,7 +1,30 @@
 .root {
     display: flex;
+}
 
-    &>div {
-        flex: 1
-    }
+.carousel {
+    flex: 2
+}
+
+.content {
+    color: var(--fills-vibrant-primary);
+    margin: 20px 16px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.title {
+    text-align: center;
+    margin: 20px 0;
+    color: var(--accents-pink)
+}
+
+.subtitle {
+    margin: 10px 0;
+}
+
+.list {
+    padding-left: 16px;
+    display: grid;
+    gap: 10px;
 }

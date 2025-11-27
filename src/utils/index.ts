@@ -20,3 +20,18 @@ export const genRandomNumber = (min = 0, max = 10) => {
 };
 
 export const isObject = (val: unknown): val is Record<string, unknown> => val !== null && typeof val === 'object';
+
+export const onCssVariableChange = (element:HTMLElement, callback:(e:string)=>void) => {
+    const styleObserver = new MutationObserver((mutations) => {
+        const currentValue = getCssVariable<string>('--offset', mutations[0].target as HTMLElement);
+        
+        callback(currentValue);
+    });
+
+    styleObserver.observe(element, {
+        attributes: true,
+        attributeFilter: [ 'style' ],
+    });
+
+    return () => styleObserver.disconnect();
+};

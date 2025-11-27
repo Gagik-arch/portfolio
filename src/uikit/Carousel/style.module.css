@@ -1,0 +1,73 @@
+.root {
+    flex: 1;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.line {
+    --offset: 0;
+    display: grid;
+    height: 100%;
+    transition: all 260ms linear;
+    transform: translate(calc(var(--offset) * -100%));
+    grid-template-columns: repeat(3, 100%)
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain
+}
+
+.right {
+    left: 50%
+}
+
+.root {
+    &>button {
+        position: absolute;
+        flex: 1;
+        width: 50%;
+        bottom: 0;
+        top: 0;
+        opacity: 0;
+        transition: all 300ms ease;
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+            opacity: 1
+        }
+    }
+}
+
+.dots {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 0;
+    right: 0;
+    column-gap: 10px;
+    z-index: 1;
+
+    &>button {
+        width: 20px;
+        height: 8px;
+        background-color: rgba(135, 135, 135, 0.5);
+        backdrop-filter: blur(20px);
+        border-radius: 4px;
+        transition: all 160ms linear;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(135, 135, 135, 0.6);
+
+        &:hover {
+            background-color: rgba(135, 135, 135, 0.7);
+        }
+    }
+}
+
+.active {
+    background-color: rgba(135, 135, 135, 0.9) !important;
+}

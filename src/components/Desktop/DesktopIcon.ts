@@ -16,7 +16,7 @@ function DesktopIcon({
     const button = new Button({
         className: styles.app_icon,
         tabIndex: 0,
-        'data-index': index,
+        'data-index': index.toString(),
         key: `${index}/${title}`,
         events: {
             ondblclick: onDoubleClick,  

@@ -16,12 +16,16 @@
     -webkit-user-drag: none;
     z-index: 0;
     outline: none;
+    overflow: hidden;
 
     &::after {
         content: ''
     }
 
     &:focus-within {
+        backdrop-filter: blur(10px);
+
+
         .anchor {
             display: block
         }
@@ -42,18 +46,19 @@
     }
 }
 
-.window_control_container {
+.traffic_light_container {
     display: inline-flex;
     position: absolute;
     left: 22px;
     top: 22px;
     gap: 8px;
+    z-index: 56;
 
     &:hover {
         z-index: 2 !important;
 
 
-        .icon svg {
+        .traffic_light svg {
             opacity: 1;
         }
 
@@ -115,10 +120,11 @@
     user-select: none;
     -webkit-user-drag: none;
     background-color: transparent;
-    display: none
+    display: none;
+    z-index: 55;
 }
 
-.icon {
+.traffic_light {
     display: flex;
     justify-content: center;
     align-items: center;

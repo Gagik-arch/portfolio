@@ -1,6 +1,5 @@
 .root {
     display: flex;
-    background-color: #000 !important;
     justify-content: center;
     align-items: center;
     color: #fff

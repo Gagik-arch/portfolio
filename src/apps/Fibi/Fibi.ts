@@ -4,7 +4,11 @@ import appIcon from '$assets/images/app-icons/fibi.png';
 import type { AppProps } from '$apps/types';
 import styles from './style.module.css';
 import Element from '$lib/Element';
-import Carousel from '$uikit/Carusel';
+import Carousel from '$uikit/Carousel';
+import i1 from './images/splash.png';
+import i2 from './images/login.png';
+import i3 from './images/choose-avatar.jpg';
+import Typography from '$uikit/Typography';
 
 function Fibi(props?:AppProps) { 
     return (
@@ -13,17 +17,147 @@ function Fibi(props?:AppProps) {
             appIcon,
             window: new Window({
                 className: styles.root,
+                backgroundColor: 'rgba(0,0,0,0.9)',
                 children: [ 
                     new Element<HTMLDivElement>({
                         tagName: 'div',
                         props: {
-                            children: [ Carousel() ],
+                            className: styles.carousel,
+                            children: [
+                                Carousel({
+                                    images: [
+                                        i1,
+                                        i2,
+                                        i3
+                                    ],
+                                }) 
+                            ],
                         },
                     }).dom,
+                    
                     new Element<HTMLDivElement>({
                         tagName: 'div',
                         props: {
-                            children: [ 'right' ],
+                            className: styles.content,
+                            children: [ 
+                                new Typography({
+                                    text: 'Fibi', variant: 'title1-regular', className: styles.title,
+                                }).dom,
+
+                                new Typography({
+                                    text: 'React Native Engineer — Video Streaming Platform', variant: 'title3-regular',
+                                    className: styles.subtitle,
+                                }).dom,
+
+                                new Typography({
+                                    text: 'Android · iOS · WebOS · TizenOS', variant: 'headline-regular',
+                                    className: styles.subtitle,
+                                }).dom,
+                                
+                                new Typography({
+                                    text: 'Built and maintained a fully cross-platform video streaming application using React Native, delivering a smooth, high-performance experience across mobile devices (Android/iOS) and smart TVs (LG WebOS, Samsung Tizen).', 
+                                }).dom,
+                                
+                                new Typography({
+                                    text: 'Key contributions:', 
+                                    style: {
+                                        margin: '20px 0 10px 0', color: 'var(--accents-blue)', 
+                                    },
+                                }).dom,
+                                
+                                new Element<HTMLUListElement>({
+                                    tagName: 'ul',
+                                    props: {
+                                        className: styles.list,
+                                        children: [
+                                            new Element<HTMLLIElement>({
+                                                tagName: 'li',
+                                                props: {
+                                                    children: [
+                                                        new Typography({
+                                                            text: 'Advanced Video Playback: ', 
+                                                            isInline: true,
+                                                            variant: 'body-emphasized',
+                                                        }).dom,
+                                                        new Typography({
+                                                            text: 'Implemented custom video players with HLS/DASH, DRM support, adaptive streaming, and reliable offline playback.', 
+                                                            isInline: true,
+                                                        }).dom
+                                                    ],
+                                                },
+                                            }).dom,
+                                            new Element<HTMLLIElement>({
+                                                tagName: 'li',
+                                                props: {
+                                                    children: [
+                                                        new Typography({
+                                                            text: 'Native Integrations: ', 
+                                                            isInline: true,
+                                                            variant: 'body-emphasized',
+                                                        }).dom,
+                                                        new Typography({
+                                                            text: 'Developed platform-specific native modules to enhance performance, ensure compatibility, and unlock device-level features.', 
+                                                            isInline: true,
+                                                        }).dom
+                                                    ],
+                                                },
+                                            }).dom,
+
+                                            new Element<HTMLLIElement>({
+                                                tagName: 'li',
+                                                props: {
+                                                    children: [
+                                                        new Typography({
+                                                            text: 'TV UI/UX: ', 
+                                                            isInline: true,
+                                                            variant: 'body-emphasized',
+                                                        }).dom,
+                                                        new Typography({
+                                                            text: 'Designed intuitive, remote-friendly TV interfaces with smooth focus management, directional navigation, and layouts optimized for large screens.', 
+                                                            isInline: true,
+                                                        }).dom
+                                                    ],
+                                                },
+                                            }).dom,
+
+                                            new Element<HTMLLIElement>({
+                                                tagName: 'li',
+                                                props: {
+                                                    children: [
+                                                        new Typography({
+                                                            text: 'Backend Collaboration: ', 
+                                                            isInline: true,
+                                                            variant: 'body-emphasized',
+                                                        }).dom,
+                                                        new Typography({
+                                                            text: 'Integrated REST APIs for authentication, personalized recommendations, session management, and analytics tracking.', 
+                                                            isInline: true,
+                                                        }).dom
+                                                    ],
+                                                },
+                                            }).dom,
+
+                                            new Element<HTMLLIElement>({
+                                                tagName: 'li',
+                                                props: {
+                                                    children: [
+                                                        new Typography({
+                                                            text: 'Performance Optimization: ', 
+                                                            isInline: true,
+                                                            variant: 'body-emphasized',
+                                                        }).dom,
+                                                        new Typography({
+                                                            text: 'Reduced app startup time, improved memory usage, and resolved critical production issues to boost stability on all supported devices.', 
+                                                            isInline: true,
+                                                        }).dom
+                                                    ],
+                                                },
+                                            }).dom
+                                        ],
+                                    },
+                                }).dom
+                               
+                            ],
                         },
                     }).dom
 
@@ -34,7 +168,7 @@ function Fibi(props?:AppProps) {
                 y: props?.y,
                 id: props?.id,
                 key: props?.key,
-                minWidth: 800,
+                minWidth: 900,
                 minHeight: 500,
             }),
         })

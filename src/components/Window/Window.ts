@@ -41,7 +41,7 @@ class Window extends Element<HTMLDivElement> {
             props: {
                 className: `window default ${styles.root} ${className}`,
                 style: {
-                    backgroundColor: backgroundColor || '#fff',
+                    backgroundColor: backgroundColor || 'rgba(255,255,255,0.9)',
                 },
                 tabIndex: 0,
                 events: {
@@ -167,7 +167,7 @@ class Window extends Element<HTMLDivElement> {
 
     private readonly onMouseDown = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
-        if (e.button !== 0 || target.closest(`.${styles.window_control_container}`)) return; 
+        if (e.button !== 0 || target.closest(`.${styles.traffic_light}`)) return; 
 
         if ( target === e.currentTarget ) { 
 
