@@ -22,6 +22,10 @@
     }
 
     &:focus-within {
+        .anchor {
+            display: block
+        }
+
         z-index: 2 !important;
 
         .close:not(:disabled) {
@@ -49,10 +53,8 @@
         z-index: 2 !important;
 
 
-        &:hover {
-            .icon svg {
-                opacity: 1;
-            }
+        .icon svg {
+            opacity: 1;
         }
 
         .close:not(:disabled) {
@@ -113,6 +115,7 @@
     user-select: none;
     -webkit-user-drag: none;
     background-color: transparent;
+    display: none
 }
 
 .icon {

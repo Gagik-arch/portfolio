@@ -135,6 +135,8 @@ class Window extends Element<HTMLDivElement> {
         const desktop = document.getElementById( 'desktop')
             ?.getBoundingClientRect();
 
+        if (document.activeElement !== this.dom) return;
+        
         this.changeCursorAnchorHover(e);
         const target = e.target as HTMLElement;
 
@@ -293,6 +295,7 @@ class Window extends Element<HTMLDivElement> {
     };
 
     private readonly changeCursorAnchorHover = (e:MouseEvent) => {
+        
         const anchor = this.detectAnchorSide(e);
 
         const target = e.target as HTMLElement;
