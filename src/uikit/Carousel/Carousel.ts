@@ -5,7 +5,6 @@ import Image from '$uikit/Image';
 import Button from '$uikit/Button';
 import { getCssVariable, onCssVariableChange } from '$utils/index';
 import Icon from '$uikit/Icon';
-import Store from '$lib/store';
 
 function Carousel({
     images,
@@ -47,7 +46,6 @@ function Carousel({
             children: images.map((_, index) => {
                 return (
                     new Button({
-                        children: [],
                         className: getCssVariable<number>('--offset', line.dom) === index ? styles.active : undefined,
                         events: {
                             onclick: () => {

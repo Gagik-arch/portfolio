@@ -10,10 +10,6 @@ function App() {
     };
 
     window.addEventListener('contextmenu', onContextmenu);
-    
-    window.addEventListener('unload', () => {
-        window.removeEventListener('contextmenu', onContextmenu);
-    });
 
     return (
         [

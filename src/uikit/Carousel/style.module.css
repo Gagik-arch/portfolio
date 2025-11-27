@@ -46,20 +46,21 @@
     z-index: 1;
 
     &>button {
-        width: 10px;
-        height: 10px;
-        background-color: var(--grays-gray);
+        width: 14px;
+        height: 14px;
+        background-color: rgba(135, 135, 135, 0.5);
         backdrop-filter: blur(20px);
-        border-radius: 4px;
+        border-radius: 50%;
         transition: all 160ms linear;
         backdrop-filter: blur(10px);
+        border: 2px solid rgba(135, 135, 135, 0.6);
 
         &:hover {
-            background-color: var(--fills-opaque-primary);
+            background-color: rgba(135, 135, 135, 0.7);
         }
     }
 }
 
 .active {
-    background-color: var(--accents-blue) !important;
+    background-color: rgba(135, 135, 135, 0.9) !important;
 }
