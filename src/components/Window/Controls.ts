@@ -15,10 +15,10 @@ function Controls({
         new Element<HTMLDivElement>({
             tagName: 'div',
             props: {
-                className: styles.window_control_container,
+                className: styles.traffic_light_container,
                 children: [
                     new Button({
-                        className: `${styles.icon} ${styles.close}`,
+                        className: `${styles.traffic_light} ${styles.close}`,
                         children: [
                             new Icon( 'Plus', {
                                 size: 16, 
@@ -30,7 +30,7 @@ function Controls({
                         },
                     }).dom,
                     new Button({
-                        className: `${styles.icon} ${styles.minimize}`,
+                        className: `${styles.traffic_light} ${styles.minimize}`,
                         children: [
                             new Icon( 'Minus', {
                                 size: 14,
@@ -42,7 +42,7 @@ function Controls({
                         },
                     }).dom,
                     new Button({
-                        className: `${styles.icon} ${styles.maximize}`,
+                        className: `${styles.traffic_light} ${styles.maximize}`,
                         children: isResizable
                             ? [
                                 new Icon('Maximize', {

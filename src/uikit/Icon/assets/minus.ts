@@ -12,7 +12,7 @@ function Minus(props: SVGElementPropsType) {
                 stroke: 'currentColor',
                 ...props,
                 children: [
-                    new SVGElement({
+                    new SVGElement<SVGPathElement>({
                         tagName: 'path',
                         props: {
                             d: 'M2 7H12', 

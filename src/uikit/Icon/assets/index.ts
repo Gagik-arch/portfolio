@@ -6,6 +6,7 @@ import UserCircle from './user-circle';
 import Maximize from './maximize';
 import Plus from './plus';
 import Minus from './minus';
+import ChevronLeft from './chevron-left';
 
 export default {
     MinLogo,
@@ -16,4 +17,5 @@ export default {
     Maximize,
     Plus,
     Minus,
+    ChevronLeft,
 };

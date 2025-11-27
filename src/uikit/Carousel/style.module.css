@@ -1,0 +1,34 @@
+.root {
+    flex: 1;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.line {
+    --offset: 0;
+    display: flex;
+    height: 100%;
+    transition: all 300ms linear;
+    transform: translate(calc(var(--offset) * -100%))
+}
+
+.image {
+    width: 100%;
+    height: 100;
+    object-fit: contain
+}
+
+.right {
+    left: 50%
+}
+
+.root {
+    &>button {
+        position: absolute;
+        flex: 1;
+        width: 50%;
+        bottom: 0;
+        top: 0
+    }
+}
