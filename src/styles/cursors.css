@@ -25,3 +25,7 @@
 .grabbing {
     cursor: url('../../assets/images/cursors/grabbing.png') 5 5, grabbing;
 }
+
+.not-allowed {
+    cursor: url('../../assets/images/cursors/not-allowed.png') 5 5, not-allowed;
+}

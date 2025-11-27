@@ -48,6 +48,13 @@
     &:hover {
         z-index: 2 !important;
 
+
+        &:hover {
+            .icon svg {
+                opacity: 1;
+            }
+        }
+
         .close:not(:disabled) {
             background-color: #FF736A;
         }
@@ -106,4 +113,27 @@
     user-select: none;
     -webkit-user-drag: none;
     background-color: transparent;
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+        opacity: 0;
+        transition: all 120ms ease-in-out
+    }
+}
+
+.minimize {
+    svg {
+        stroke-width: 2px
+    }
+}
+
+.close {
+    svg {
+        stroke-width: 3px
+    }
 }

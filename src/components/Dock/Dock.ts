@@ -100,7 +100,7 @@ function Dock() {
                     .onMount(onDockAppMount).dom, 
                     
                 new Button({
-                    className: styles.button,
+                    className: `not-allowed ${styles.button}`,
                     id: 'Launchpad',
                     key: 'Launchpad',
                     children: [
@@ -221,7 +221,7 @@ function Dock() {
                     .onMount(onDockAppMount).dom,
                 
                 new Button({
-                    className: styles.button,
+                    className: `not-allowed ${styles.button}`,
                     key: 'Trash',
                     children: [
                         new Element<HTMLDivElement>({
