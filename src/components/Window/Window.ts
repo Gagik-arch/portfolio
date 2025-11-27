@@ -41,7 +41,7 @@ class Window extends Element<HTMLDivElement> {
             props: {
                 className: `window default ${styles.root} ${className}`,
                 style: {
-                    backgroundColor: backgroundColor || '#fff',
+                    backgroundColor: backgroundColor || 'rgba(255,255,255,0.9)',
                 },
                 tabIndex: 0,
                 events: {

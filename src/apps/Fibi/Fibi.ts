@@ -5,7 +5,9 @@ import type { AppProps } from '$apps/types';
 import styles from './style.module.css';
 import Element from '$lib/Element';
 import Carousel from '$uikit/Carousel';
-import splash from './images/splash.png';
+import i1 from './images/splash.png';
+import i2 from './images/login.png';
+import i3 from './images/choose-avatar.jpg';
 
 function Fibi(props?:AppProps) { 
     return (
@@ -14,16 +16,18 @@ function Fibi(props?:AppProps) {
             appIcon,
             window: new Window({
                 className: styles.root,
+                backgroundColor: 'rgba(0,0,0,0.9)',
                 children: [ 
                     new Element<HTMLDivElement>({
                         tagName: 'div',
                         props: {
+                            className: styles.carousel,
                             children: [
                                 Carousel({
                                     images: [
-                                        splash,
-                                        splash,
-                                        splash
+                                        i1,
+                                        i2,
+                                        i3
                                     ],
                                 }) 
                             ],
@@ -32,6 +36,7 @@ function Fibi(props?:AppProps) {
                     new Element<HTMLDivElement>({
                         tagName: 'div',
                         props: {
+                            className: styles.content,
                             children: [ 
                                 `
                                 React Native Engineer

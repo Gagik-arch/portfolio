@@ -120,6 +120,7 @@ function Carousel({
                         children: [
                             new Icon('ChevronLeft', {
                                 size: 50,
+                                stroke: 'rgba(255,255,255,0.6)',
                             }).dom 
                         ],
                         events: {
@@ -132,7 +133,12 @@ function Carousel({
 
                     new Button({
                         className: styles.right,
-                        children: [ 'right' ],
+                        children: [
+                            new Icon('ChevronRight', {
+                                size: 50,
+                                stroke: 'rgba(255,255,255,0.6)',
+                            }).dom 
+                        ],
                         events: {
                             onclick: () => {
                                 onRight();

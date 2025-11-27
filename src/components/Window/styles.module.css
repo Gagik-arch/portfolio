@@ -23,6 +23,9 @@
     }
 
     &:focus-within {
+        backdrop-filter: blur(10px);
+
+
         .anchor {
             display: block
         }

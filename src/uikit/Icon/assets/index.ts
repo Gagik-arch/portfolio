@@ -7,6 +7,7 @@ import Maximize from './maximize';
 import Plus from './plus';
 import Minus from './minus';
 import ChevronLeft from './chevron-left';
+import ChevronRight from './chevron-right';
 
 export default {
     MinLogo,
@@ -18,4 +19,5 @@ export default {
     Plus,
     Minus,
     ChevronLeft,
+    ChevronRight,
 };

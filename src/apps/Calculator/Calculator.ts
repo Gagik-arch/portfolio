@@ -13,13 +13,15 @@ function Calculator(props?:AppProps) {
             window: new Window({
                 children: [ 'Macos Calculator app coming soon.' ],
                 className: styles.root,
+                backgroundColor: 'rgba(0,0,0,0.9)',
                 isResizable: false,
-                width: props?.width,
-                height: props?.height,
+                minWidth: 300,
+                minHeight: 500,
                 x: props?.x,
                 y: props?.y,
                 id: props?.id,
                 key: props?.key,
+                
             }),
         })
     );

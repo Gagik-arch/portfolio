@@ -3,7 +3,7 @@ import {
 } from '$lib/index';
 import type { SVGElementPropsType } from '$lib/SVGElement';
 
-function ChevronLeft(props: SVGElementPropsType) {
+function ChevronRight(props: SVGElementPropsType) {
     return (
         new SVGElement({
             tagName: 'svg',
@@ -18,8 +18,7 @@ function ChevronLeft(props: SVGElementPropsType) {
                     new SVGElement<SVGPathElement>({
                         tagName: 'path',
                         props: {
-                            fillRule: 'evenodd',
-                            d: 'M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z',
+                            d: 'M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z',
                         },
                     }).dom
                 ],
@@ -28,4 +27,4 @@ function ChevronLeft(props: SVGElementPropsType) {
     );
 }
 
-export default ChevronLeft;
+export default ChevronRight;
