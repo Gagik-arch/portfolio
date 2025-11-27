@@ -8,7 +8,9 @@ class Icon extends Element<HTMLSpanElement> {
         name: keyof typeof Icons,
         props?: IconProps
     ) {
-        const size = props?.size ?? 24;
+        const {
+            size, ..._props 
+        } = props ?? { size: 24 };
 
         super({
             tagName: 'span',
@@ -22,7 +24,7 @@ class Icon extends Element<HTMLSpanElement> {
                     Icons[name]({
                         width: size,
                         height: size,
-                        ...props,
+                        ..._props,
                     })
                 ],
             },

@@ -9,7 +9,7 @@ function ChevronLeft(props: SVGElementPropsType) {
             tagName: 'svg',
             props: {
                 viewBox: '0 0 24 24',
-                fill: 'currentColor',
+                stroke: 'currentColor',
                 xmlns: 'http://www.w3.org/2000/svg',
                 strokeLinecap: 'round',
                 strokeLinejoin: 'round',
@@ -18,7 +18,7 @@ function ChevronLeft(props: SVGElementPropsType) {
                     new SVGElement<SVGPolygonElement>({
                         tagName: 'polyline',
                         props: {
-                            d: 'M5,12H19M12,5V19',
+                            points: '15 18 9 12 15 6',
                         },
                     }).dom
                 ],
