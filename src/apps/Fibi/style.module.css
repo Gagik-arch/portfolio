@@ -1,5 +1,7 @@
 .root {
     display: flex;
-    justify-content: center;
-    align-items: center;
+
+    &>div {
+        flex: 1
+    }
 }

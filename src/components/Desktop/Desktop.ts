@@ -22,6 +22,7 @@ function Desktop() {
         const isExistsApp = desktopStore.getState().activeApps.find(a => a.name === app.name);
 
         if (isExistsApp) {
+            desktopStore.setFocusApp( isExistsApp.window.dom.id);
             isExistsApp.window.dom.focus();
         } else { 
             dockIconsStore.setIcon({
