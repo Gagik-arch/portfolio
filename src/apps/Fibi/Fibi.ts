@@ -12,8 +12,8 @@ function Fibi(props?:AppProps) {
             window: new Window({
                 className: styles.root,
                 children: [ 'Fibi' ],
-                width: props?.width || 500,
-                height: props?.height || 300,
+                width: props?.width,
+                height: props?.height,
                 x: props?.x,
                 y: props?.y,
                 id: props?.id,

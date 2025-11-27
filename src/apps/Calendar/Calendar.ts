@@ -11,8 +11,8 @@ function Calendar(props?:AppProps) {
             isNative: true,
             window: new Window({
                 children: [ 'Calendar' ],
-                width: props?.width || 300,
-                height: props?.height || 500,
+                width: props?.width,
+                height: props?.height,
                 x: props?.x,
                 y: props?.y,
                 id: props?.id,

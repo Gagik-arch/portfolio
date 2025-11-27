@@ -150,6 +150,7 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     border-color: oklab(35.885% 0.00326 -0.01157 / 0.61);
     height: 100%;
     z-index: 0;
+    width: 0 !important;
 }
 
 .tooltip {

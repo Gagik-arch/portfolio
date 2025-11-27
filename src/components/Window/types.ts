@@ -10,6 +10,8 @@ export type WindowProps = ElementPropsType & {
     x?: number;
     y?: number;
     id?: string;
+    minWidth?: number;
+    minHeight?: number;
 };
 
 export interface ControlProps {

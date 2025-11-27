@@ -15,14 +15,18 @@ class Window extends Element<HTMLDivElement> {
     private readonly borderSize = Math.round(6 * getCssVariable<number>('--scale'));
     private readonly width: number;
     private readonly height: number;
+    private readonly minWidth: number;
+    private readonly minHeight: number;
     private x = 0;
     private y = 0;
     public createdAt: number;
 
     public constructor({ 
         children,
-        width = 500,
-        height = 300,
+        width,
+        height,
+        minWidth = 500,
+        minHeight = 300,
         backgroundColor,
         isResizable = true,
         className = '',
@@ -98,9 +102,12 @@ class Window extends Element<HTMLDivElement> {
                 ...(children ?? [])
             ],
         });
-  
-        this.width = width;
-        this.height = height;
+        this.minWidth = minWidth;
+        this.minHeight = minHeight;
+
+        this.width = width ?? this.minWidth; 
+        this.height = height ?? this.minHeight;
+ 
         const scaledWidth = this.width * getCssVariable<number>('--scale');
         const scaledHeight = this.height * getCssVariable<number>('--scale');
   
@@ -191,8 +198,8 @@ class Window extends Element<HTMLDivElement> {
     };
 
     private readonly onResize = (e: MouseEvent) => {
-        const scaledWidth = this.width * getCssVariable<number>('--scale');
-        const scaledHeight = this.height * getCssVariable<number>('--scale');
+        const scaledWidth = this.minWidth * getCssVariable<number>('--scale');
+        const scaledHeight = this.minHeight * getCssVariable<number>('--scale');
         
         const desktop = document.getElementById( 'desktop')
             ?.getBoundingClientRect();
