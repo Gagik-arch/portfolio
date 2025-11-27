@@ -1,9 +1,0 @@
-*[data-tooltip] {
-    /* position: relative; */
-    background-color: blue;
-
-    &:after {
-        content: attr(data-tooltip);
-        position: absolute;
-    }
-}

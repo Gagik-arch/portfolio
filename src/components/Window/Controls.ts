@@ -46,7 +46,7 @@ function Controls({
                         children: isResizable
                             ? [
                                 new Icon('Maximize', {
-                                    size: 14,
+                                    size: 13,
                                     fill: 'rgba(0,0,0,0.4)',
                                 }).dom 
                             ]

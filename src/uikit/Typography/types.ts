@@ -7,7 +7,8 @@ type Font = typeof variants[Size];
 
 export type Variant = `${Size}-${keyof Font}`;
 
-export type TooltipProps = ElementPropsType<HTMLSpanElement> & {
+export type TypographyProps = ElementPropsType<HTMLSpanElement> & {
     text: string; 
     variant?: Variant;
+    isInline?: boolean;
 };

@@ -8,6 +8,7 @@ import Carousel from '$uikit/Carousel';
 import i1 from './images/splash.png';
 import i2 from './images/login.png';
 import i3 from './images/choose-avatar.jpg';
+import Typography from '$uikit/Typography';
 
 function Fibi(props?:AppProps) { 
     return (
@@ -33,26 +34,129 @@ function Fibi(props?:AppProps) {
                             ],
                         },
                     }).dom,
+                    
                     new Element<HTMLDivElement>({
                         tagName: 'div',
                         props: {
                             className: styles.content,
                             children: [ 
-                                `
-                                React Native Engineer
-Video Streaming Application – Android, iOS, WebOS, Tizen
+                                new Typography({
+                                    text: 'Fibi', variant: 'title1-regular', className: styles.title,
+                                }).dom,
 
-Developed and maintained a cross-platform video streaming application using React Native, optimized for Android, iOS, LG WebOS, and Samsung Tizen smart TVs.
+                                new Typography({
+                                    text: 'React Native Engineer — Video Streaming Platform', variant: 'title3-regular',
+                                    className: styles.subtitle,
+                                }).dom,
 
-Implemented video playback features with custom players, adaptive streaming (HLS/DASH), DRM support, and offline playback.
+                                new Typography({
+                                    text: 'Android · iOS · WebOS · TizenOS', variant: 'headline-regular',
+                                    className: styles.subtitle,
+                                }).dom,
+                                
+                                new Typography({
+                                    text: 'Built and maintained a fully cross-platform video streaming application using React Native, delivering a smooth, high-performance experience across mobile devices (Android/iOS) and smart TVs (LG WebOS, Samsung Tizen).', 
+                                }).dom,
+                                
+                                new Typography({
+                                    text: 'Key contributions:', 
+                                    style: {
+                                        margin: '20px 0 10px 0', color: 'var(--accents-blue)', 
+                                    },
+                                }).dom,
+                                
+                                new Element<HTMLUListElement>({
+                                    tagName: 'ul',
+                                    props: {
+                                        className: styles.list,
+                                        children: [
+                                            new Element<HTMLLIElement>({
+                                                tagName: 'li',
+                                                props: {
+                                                    children: [
+                                                        new Typography({
+                                                            text: 'Advanced Video Playback: ', 
+                                                            isInline: true,
+                                                            variant: 'body-emphasized',
+                                                        }).dom,
+                                                        new Typography({
+                                                            text: 'Implemented custom video players with HLS/DASH, DRM support, adaptive streaming, and reliable offline playback.', 
+                                                            isInline: true,
+                                                        }).dom
+                                                    ],
+                                                },
+                                            }).dom,
+                                            new Element<HTMLLIElement>({
+                                                tagName: 'li',
+                                                props: {
+                                                    children: [
+                                                        new Typography({
+                                                            text: 'Native Integrations: ', 
+                                                            isInline: true,
+                                                            variant: 'body-emphasized',
+                                                        }).dom,
+                                                        new Typography({
+                                                            text: 'Developed platform-specific native modules to enhance performance, ensure compatibility, and unlock device-level features.', 
+                                                            isInline: true,
+                                                        }).dom
+                                                    ],
+                                                },
+                                            }).dom,
 
-Integrated platform-specific native modules for performance optimization and seamless compatibility across diverse devices.
+                                            new Element<HTMLLIElement>({
+                                                tagName: 'li',
+                                                props: {
+                                                    children: [
+                                                        new Typography({
+                                                            text: 'TV UI/UX: ', 
+                                                            isInline: true,
+                                                            variant: 'body-emphasized',
+                                                        }).dom,
+                                                        new Typography({
+                                                            text: 'Designed intuitive, remote-friendly TV interfaces with smooth focus management, directional navigation, and layouts optimized for large screens.', 
+                                                            isInline: true,
+                                                        }).dom
+                                                    ],
+                                                },
+                                            }).dom,
 
-Built responsive and intuitive TV user interfaces with remote navigation, focus management, and optimized layouts for large screens.
+                                            new Element<HTMLLIElement>({
+                                                tagName: 'li',
+                                                props: {
+                                                    children: [
+                                                        new Typography({
+                                                            text: 'Backend Collaboration: ', 
+                                                            isInline: true,
+                                                            variant: 'body-emphasized',
+                                                        }).dom,
+                                                        new Typography({
+                                                            text: 'Integrated REST APIs for authentication, personalized recommendations, session management, and analytics tracking.', 
+                                                            isInline: true,
+                                                        }).dom
+                                                    ],
+                                                },
+                                            }).dom,
 
-Collaborated with backend teams to integrate REST APIs, ensuring smooth authentication, personalized content, and analytics tracking.
-
-Improved app performance and stability by optimizing memory usage, reducing startup time, and fixing critical production issues.`
+                                            new Element<HTMLLIElement>({
+                                                tagName: 'li',
+                                                props: {
+                                                    children: [
+                                                        new Typography({
+                                                            text: 'Performance Optimization: ', 
+                                                            isInline: true,
+                                                            variant: 'body-emphasized',
+                                                        }).dom,
+                                                        new Typography({
+                                                            text: 'Reduced app startup time, improved memory usage, and resolved critical production issues to boost stability on all supported devices.', 
+                                                            isInline: true,
+                                                        }).dom
+                                                    ],
+                                                },
+                                            }).dom
+                                        ],
+                                    },
+                                }).dom
+                               
                             ],
                         },
                     }).dom
@@ -64,7 +168,7 @@ Improved app performance and stability by optimizing memory usage, reducing star
                 y: props?.y,
                 id: props?.id,
                 key: props?.key,
-                minWidth: 800,
+                minWidth: 900,
                 minHeight: 500,
             }),
         })
