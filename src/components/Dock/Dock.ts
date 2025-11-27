@@ -34,6 +34,7 @@ function Dock() {
 
         if (!target.id) return; 
         const app = desktopStore.getState().activeApps.find(a => a.name === target.id);
+       
         if (!app) return; 
         desktopStore.setFocusApp(app.window.dom.id);
 
@@ -46,6 +47,7 @@ function Dock() {
         const app = allApps[appName]();
       
         desktopStore.addApp(app);
+
         app.window.dom.focus();
     };
 

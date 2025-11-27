@@ -21,7 +21,7 @@ function Controls({
                         className: `${styles.icon} ${styles.close}`,
                         children: [
                             new Icon( 'Plus', {
-                                size: 14, 
+                                size: 16, 
                                 stroke: 'rgba(0,0,0,0.4)',
                             }).dom 
                         ],

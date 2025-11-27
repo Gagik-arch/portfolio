@@ -137,6 +137,8 @@
 
 .close {
     svg {
-        stroke-width: 3px
+        stroke-width: 3px;
+        transform: rotate(45deg)
     }
+
 }
