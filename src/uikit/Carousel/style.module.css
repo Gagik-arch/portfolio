@@ -48,13 +48,18 @@
     &>button {
         width: 10px;
         height: 10px;
-        background-color: rgba(135, 135, 135, 0.9);
+        background-color: var(--grays-gray);
         backdrop-filter: blur(20px);
         border-radius: 4px;
         transition: all 160ms linear;
+        backdrop-filter: blur(10px);
 
         &:hover {
-            background-color: red
+            background-color: var(--fills-opaque-primary);
         }
     }
+}
+
+.active {
+    background-color: var(--accents-blue) !important;
 }

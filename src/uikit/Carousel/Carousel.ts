@@ -11,7 +11,6 @@ function Carousel({
     images,
     timeout = 5000,
 }: CarouselProps) { 
-
     let timer: number | undefined;
     
     const line = new Element<HTMLDivElement>({
@@ -49,6 +48,7 @@ function Carousel({
                 return (
                     new Button({
                         children: [],
+                        className: getCssVariable<number>('--offset', line.dom) === index ? styles.active : undefined,
                         events: {
                             onclick: () => {
                                 line.dom.style.setProperty('--offset', index.toString());
@@ -61,8 +61,17 @@ function Carousel({
     }); 
   
     const mutation = onCssVariableChange(line.dom, (e) => {
-        const dotButton = dots.dom.querySelectorAll('button')[+e];
-        dotButton.style.backgroundColor = 'red';
+        const dotButtons = dots.dom.querySelectorAll('button');
+
+        dotButtons.forEach((button, index) => {
+            const savedIndex = getCssVariable<number>('--offset', line.dom);
+      
+            if (index === savedIndex) {
+                button.classList.add(styles.active);
+            } else { 
+                button.classList.remove(styles.active);
+            }
+        });
     });
     
     const onLeft = () => {
