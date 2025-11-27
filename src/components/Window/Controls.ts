@@ -43,12 +43,14 @@ function Controls({
                     }).dom,
                     new Button({
                         className: `${styles.icon} ${styles.maximize}`,
-                        children: [
-                            new Icon('Maximize', {
-                                size: 14,
-                                fill: 'rgba(0,0,0,0.4)',
-                            }).dom 
-                        ],
+                        children: isResizable
+                            ? [
+                                new Icon('Maximize', {
+                                    size: 14,
+                                    fill: 'rgba(0,0,0,0.4)',
+                                }).dom 
+                            ]
+                            : undefined,
                         events: {
                             onclick: onMaximize,
                         },

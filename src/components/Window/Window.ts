@@ -222,6 +222,9 @@ class Window extends Element<HTMLDivElement> {
             this.x = left;
             this.dom.style.setProperty('--width', Math.floor(Math.max(width, scaledWidth)) + 'px');
             this.dom.style.setProperty('--left', this.x + 'px');
+
+            this.dom.classList.add('e-resize');
+
         };
 
         const onBottom = () => { 
@@ -315,7 +318,7 @@ class Window extends Element<HTMLDivElement> {
                     this.dom.classList.remove('n-resize');
                     this.dom.classList.remove('e-resize');
 
-                    if (this.isMouseDowned) {
+                    if (this.isMouseDowned ) {
                         this.dom.classList.add('grabbing');
                     }
                     break;
