@@ -3,6 +3,7 @@ import type App from '$components/App';
 import type { DesktopIconType } from '$types/index';
 import advelitIcon from '$assets/images/app-icons/advelit.png';
 import fibiIcon from '$assets/images/app-icons/fibi.png';
+import datewiseIcon from '$assets/images/app-icons/datewise256.png';
 import { extractRangeFromIconToIcon } from '$components/Desktop/utils';
 
 const initialState:DesktopIconType[] = [
@@ -15,6 +16,11 @@ const initialState:DesktopIconType[] = [
         index: 1,
         title: 'Fibi',
         appIcon: fibiIcon,
+    },
+    {
+        index: 2,
+        title: 'Datewise',
+        appIcon: datewiseIcon,
     }
 ];
 
@@ -74,9 +80,11 @@ class DesktopStore extends Store<AppsState> {
         });
     }
 
-    public replaceIcon(newIndex:number, prevIndex:number, count:number) { 
+    public replaceIcon(newIndex: number, prevIndex: number, length: number) { 
+        if (prevIndex === newIndex) return; 
+        
         const prevState = this.getState();
-        const cloneAppIcons: (DesktopIconType | null)[] = Array.from({ length: count }, () => null);
+        const cloneAppIcons: (DesktopIconType | null)[] = Array.from({ length }, () => null);
        
         prevState.appIcons.forEach(item => {
             cloneAppIcons[item.index] = item;
@@ -87,15 +95,33 @@ class DesktopStore extends Store<AppsState> {
 
         if (cloneAppIcons[newIndex]) {
             if (newIndex > prevIndex) {
-                const extractedRange = extractRangeFromIconToIcon(newIndex, cloneAppIcons);
-                const clone = structuredClone(extractedRange);
-                extractedRange.unshift(element);
-                cloneAppIcons[prevIndex] = null;
-                cloneAppIcons[newIndex] = element;
           
-                for (let i = newIndex; i < newIndex + extractedRange.length; i++) { 
-                    const a = clone.splice(0, 1);
-                    cloneAppIcons[(i + 1) % count] = a[0];
+                if (newIndex === length - 1 && cloneAppIcons[0]) {
+                    const prev = structuredClone(cloneAppIcons[newIndex]);
+                    const extractedRange = extractRangeFromIconToIcon(0, cloneAppIcons);
+                    extractedRange.unshift(element);
+
+                    cloneAppIcons[0] = prev;
+                    cloneAppIcons[prevIndex] = null;
+                    cloneAppIcons[newIndex] = element;
+                   
+                    for (let i = 0; i < 0 + extractedRange.length; i++) { 
+                        const a = extractedRange.splice((i + 1) % length, 1);
+                    
+                        cloneAppIcons[(i + 1) % length] = a[0];
+                    }
+                } else { 
+                    const extractedRange = extractRangeFromIconToIcon(newIndex, cloneAppIcons);
+                    const clone = structuredClone(extractedRange);
+                    extractedRange.unshift(element);
+                    cloneAppIcons[prevIndex] = null;
+                    cloneAppIcons[newIndex] = element;
+
+                    for (let i = newIndex; i < newIndex + extractedRange.length; i++) { 
+                        const a = clone.splice(0, 1);
+                    
+                        cloneAppIcons[(i + 1) % length] = a[0];
+                    }
                 }
             } else {
                 const extractedRange = extractRangeFromIconToIcon(newIndex + 1, cloneAppIcons);
@@ -123,8 +149,6 @@ class DesktopStore extends Store<AppsState> {
                 result[result.length] = item;
             }
         });
-        
-        if (prevIndex === newIndex) return; 
 
         this.setState({
             ...prevState, appIcons: result,

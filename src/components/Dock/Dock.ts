@@ -445,7 +445,6 @@ function Dock() {
                                             },
                                         });
                                     }
-                                   
                                     onDockAppMount(e); 
                                 }).dom
                         );

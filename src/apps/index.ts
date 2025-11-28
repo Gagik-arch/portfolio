@@ -5,6 +5,7 @@ import Fibi from './Fibi';
 import Finder from './Finder';
 import Notes from './Notes';
 import Settings from './Settings';
+import Datewise from './Datewise';
     
 const apps = {
     Calculator,
@@ -14,6 +15,7 @@ const apps = {
     Finder,
     Advelit,
     Fibi,
+    Datewise,
 } as const;
     
 export default apps;

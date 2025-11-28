@@ -18,7 +18,6 @@ function Desktop() {
     
     const onDoubleClickAppIcon = (title:keyof typeof allApps) => {
         const app = allApps[title]();
-        
         const isExistsApp = desktopStore.getState().activeApps.find(a => a.name === app.name);
 
         if (isExistsApp) {
