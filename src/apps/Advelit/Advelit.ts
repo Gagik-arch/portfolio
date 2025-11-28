@@ -202,6 +202,23 @@ function Advelit(props?:AppProps) {
                                                                 }).dom
                                                             ],
                                                         },
+                                                    }).dom,
+                                                    new Element<HTMLDivElement>({
+                                                        tagName: 'div',
+                                                        props: {
+                                                            className: styles.toggle_container,
+                                                            children: [
+                                                                new Button({
+                                                                    children: [ 'View' ],
+                                                                    variant: 'primary',
+                                                                    events: {
+                                                                        onclick: () => {
+                                                                            window.open('https://www.advelit.com/', '_blank');
+                                                                        },
+                                                                    },
+                                                                }).dom
+                                                            ],
+                                                        },
                                                     }).dom
                                                   
                                                 ],
