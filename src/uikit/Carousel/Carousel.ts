@@ -98,7 +98,6 @@ function Carousel({
 
     line
         .onMount(() => {
-
             loop();
         })
         .onUnMount(() => {
@@ -124,7 +123,7 @@ function Carousel({
                             }).dom 
                         ],
                         events: {
-                            onclick: () => {
+                            onclick: (e) => {
                                 onLeft();
                                 loop();
                             },

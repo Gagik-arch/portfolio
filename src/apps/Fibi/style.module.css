@@ -7,11 +7,11 @@
 }
 
 .content {
+    flex: 1;
     color: var(--fills-vibrant-primary);
     margin: 20px 16px;
-    flex: 1;
-    overflow-y: auto;
 }
+
 
 .title {
     text-align: center;

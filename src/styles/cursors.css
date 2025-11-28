@@ -24,6 +24,10 @@
 
 .grabbing {
     cursor: url('../../assets/images/cursors/grabbing.png') 5 5, grabbing;
+
+    * {
+        cursor: url('../../assets/images/cursors/grabbing.png') 5 5, grabbing;
+    }
 }
 
 .not-allowed {
