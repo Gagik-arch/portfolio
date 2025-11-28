@@ -117,19 +117,31 @@ function Desktop() {
         const rootRect = desktopContainer.dom.getBoundingClientRect();
         const newVirtual = convertRealToVirtual(new Vector(e.clientX, e.clientY), rootRect);
         const newIndex = convertVirtualToIndex(newVirtual, rootRect);
-        
-        const real = convertVirtualToReal(newVirtual, rootRect);
-        element.style.setProperty('--x', real.x + 'px');
-        element.style.setProperty('--y', real.y + 'px'); 
-        element.classList.add(styles.transition);
+   
         const prevIndex = appIcon.index;
 
         const h = Math.floor(rootRect.height / 100);
         const w = Math.floor(rootRect.width / 100);
+        const length = w * h;
 
-        timeout = setTimeout(() => {
-            desktopStore.replaceIcon(newIndex, prevIndex, w * h);
-        }, 200);
+        const lastIcon = desktopStore.getState().appIcons.find(item => item.index === length - 1);
+
+        if (newIndex === length - 1 && lastIcon) {
+            const virtual = convertIndexToVirtual(prevIndex, rootRect);
+            const real = convertVirtualToReal(virtual, rootRect);
+
+            element.style.setProperty('--x', real.x + 'px');
+            element.style.setProperty('--y', real.y + 'px'); 
+            element.classList.add(styles.transition);
+        } else { 
+            const real = convertVirtualToReal(newVirtual, rootRect);
+            element.style.setProperty('--x', real.x + 'px');
+            element.style.setProperty('--y', real.y + 'px'); 
+            element.classList.add(styles.transition);
+            timeout = setTimeout(() => {
+                desktopStore.replaceIcon(newIndex, prevIndex, length);
+            }, 200);
+        }
 
         element.classList.remove('grabbing');
   

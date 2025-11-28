@@ -101,39 +101,23 @@ class DesktopStore extends Store<AppsState> {
 
         if (cloneAppIcons[newIndex]) {
             if (newIndex > prevIndex) {
-          
-                if (newIndex === length - 1 && cloneAppIcons[0]) {
-                    const prev = structuredClone(cloneAppIcons[newIndex]);
-                    const extractedRange = extractRangeFromIconToIcon(0, cloneAppIcons);
-                    extractedRange.unshift(element);
+                const extractedRange = extractRangeFromIconToIcon(newIndex, cloneAppIcons);
+                const clone = structuredClone(extractedRange);
+                extractedRange.unshift(element);
+                cloneAppIcons[prevIndex] = null;
+                cloneAppIcons[newIndex] = element;
 
-                    cloneAppIcons[0] = prev;
-                    cloneAppIcons[prevIndex] = null;
-                    cloneAppIcons[newIndex] = element;
-                   
-                    for (let i = 0; i < 0 + extractedRange.length; i++) { 
-                        const a = extractedRange.splice((i + 1) % length, 1);
+                for (let i = newIndex; i < newIndex + extractedRange.length; i++) { 
+                    const a = clone.splice(0, 1);
                     
-                        cloneAppIcons[(i + 1) % length] = a[0];
-                    }
-                } else { 
-                    const extractedRange = extractRangeFromIconToIcon(newIndex, cloneAppIcons);
-                    const clone = structuredClone(extractedRange);
-                    extractedRange.unshift(element);
-                    cloneAppIcons[prevIndex] = null;
-                    cloneAppIcons[newIndex] = element;
-
-                    for (let i = newIndex; i < newIndex + extractedRange.length; i++) { 
-                        const a = clone.splice(0, 1);
-                    
-                        cloneAppIcons[(i + 1) % length] = a[0];
-                    }
+                    cloneAppIcons[i + 1] = a[0];
                 }
+          
             } else {
-                const extractedRange = extractRangeFromIconToIcon(newIndex + 1, cloneAppIcons);
-
+                const extractedRange = extractRangeFromIconToIcon(newIndex, cloneAppIcons);
                 if (extractedRange.length) {
                     cloneAppIcons.splice(prevIndex, 1);
+                    cloneAppIcons.splice(newIndex + extractedRange.length, 1);
                     cloneAppIcons.splice(newIndex, 0, element);
                 } else { 
                     cloneAppIcons[prevIndex] = null;
@@ -155,7 +139,7 @@ class DesktopStore extends Store<AppsState> {
                 result[result.length] = item;
             }
         });
-
+    
         this.setState({
             ...prevState, appIcons: result,
         });
