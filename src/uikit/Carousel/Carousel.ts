@@ -123,7 +123,7 @@ function Carousel({
                             }).dom 
                         ],
                         events: {
-                            onclick: (e) => {
+                            onclick: () => {
                                 onLeft();
                                 loop();
                             },

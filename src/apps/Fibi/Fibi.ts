@@ -5,11 +5,17 @@ import type { AppProps } from '$apps/types';
 import styles from './style.module.css';
 import Element from '$lib/Element';
 import Carousel from '$uikit/Carousel';
-import i1 from './images/splash.png';
-import i2 from './images/login.png';
-import i3 from './images/choose-avatar.jpg';
 import Typography from '$uikit/Typography';
 import Scroll from '$uikit/Scroll/Scroll';
+import i1 from './images/splash.jpg';
+import i2 from './images/login.jpg';
+import i3 from './images/choose-avatar.jpg';
+import i4 from './images/sidebar.jpg';
+import i5 from './images/view.jpg';
+import i6 from './images/program.jpg';
+import i7 from './images/lang.jpg';
+import i8 from './images/pin.jpg';
+import i9 from './images/sign-out.jpg';
 
 function Fibi(props?:AppProps) { 
     return (
@@ -29,7 +35,13 @@ function Fibi(props?:AppProps) {
                                     images: [
                                         i1,
                                         i2,
-                                        i3
+                                        i3,
+                                        i4,
+                                        i5,
+                                        i6,
+                                        i7,
+                                        i8,
+                                        i9
                                     ],
                                 }) 
                             ],
@@ -82,6 +94,7 @@ function Fibi(props?:AppProps) {
                                 
                                         new Typography({
                                             text: 'Key contributions:', 
+                                            variant: 'body-emphasized',
                                             style: {
                                                 margin: '20px 0 10px 0', color: 'var(--accents-blue)', 
                                             },

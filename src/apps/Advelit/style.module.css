@@ -1,5 +1,37 @@
-.root {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+ .root {
+     display: flex;
+ }
+
+ .carousel {
+     flex: 2
+ }
+
+ .content {
+     flex: 1;
+     margin: 20px 16px;
+     color: var(--fills-vibrant-primary);
+ }
+
+
+ .title {
+     text-align: center;
+     margin: 20px 0;
+     color: var(--accents-green)
+ }
+
+ .subtitle {
+     margin: 10px 0;
+ }
+
+ .list {
+     padding-left: 16px;
+     display: grid;
+     gap: 10px;
+ }
+
+ .toggle_container {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     margin-top: 10px;
+ }
