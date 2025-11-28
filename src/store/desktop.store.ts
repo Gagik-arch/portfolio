@@ -5,6 +5,7 @@ import advelitIcon from '$assets/images/app-icons/advelit.png';
 import fibiIcon from '$assets/images/app-icons/fibi.png';
 import datewiseIcon from '$assets/images/app-icons/datewise256.png';
 import { extractRangeFromIconToIcon } from '$components/Desktop/utils';
+import previewIcon from '$assets/images/app-icons/preview.png';
 
 const initialState:DesktopIconType[] = [
     {
@@ -21,6 +22,11 @@ const initialState:DesktopIconType[] = [
         index: 2,
         title: 'Datewise',
         appIcon: datewiseIcon,
+    },
+    {
+        index: 3,
+        title: 'CV',
+        appIcon: previewIcon,
     }
 ];
 

@@ -56,12 +56,12 @@ function Advelit(props?:AppProps) {
                                         }).dom,
 
                                         new Typography({
-                                            text: 'React Native Engineer — Video Streaming Platform', variant: 'title3-regular',
+                                            text: 'Cross-Platform Engineer-Advertisement', variant: 'title3-regular',
                                             className: styles.subtitle,
                                         }).dom,
 
                                         new Typography({
-                                            text: 'Android · iOS · WebOS · TizenOS', variant: 'headline-regular',
+                                            text: 'Android · Windows', variant: 'headline-regular',
                                             className: styles.subtitle,
                                         }).dom,
                                 
@@ -78,7 +78,7 @@ function Advelit(props?:AppProps) {
                                                         variant: 'body-emphasized',
                                                     }).dom,
                                                     new Typography({
-                                                        text: 'React Native Expo, Type script.', 
+                                                        text: 'React Native Expo, Electron js, Node js, Windows API, WebSocket.', 
                                                         isInline: true,
                                                     }).dom
                                                 ],
@@ -86,7 +86,7 @@ function Advelit(props?:AppProps) {
                                         }).dom,
 
                                         new Typography({
-                                            text: 'Built and maintained a fully cross-platform video streaming application using React Native, delivering a smooth, high-performance experience across (Android/Apple) and smart TVs (LG WebOS, Samsung Tizen).', 
+                                            text: 'At Advelit, I develop high-performance cross-platform solutions for Android and Windows, focusing on digital signage, kiosk systems, and advertisement display technologies.', 
                                         }).dom,
                                 
                                         new Typography({
@@ -107,28 +107,12 @@ function Advelit(props?:AppProps) {
                                                         props: {
                                                             children: [
                                                                 new Typography({
-                                                                    text: 'Advanced Video Playback: ', 
+                                                                    text: 'React Native Development: ', 
                                                                     isInline: true,
                                                                     variant: 'body-emphasized',
                                                                 }).dom,
                                                                 new Typography({
-                                                                    text: 'Implemented custom video players with HLS/DASH, DRM support, adaptive streaming, and reliable offline playback.', 
-                                                                    isInline: true,
-                                                                }).dom
-                                                            ],
-                                                        },
-                                                    }).dom,
-                                                    new Element<HTMLLIElement>({
-                                                        tagName: 'li',
-                                                        props: {
-                                                            children: [
-                                                                new Typography({
-                                                                    text: 'Native Integrations: ', 
-                                                                    isInline: true,
-                                                                    variant: 'body-emphasized',
-                                                                }).dom,
-                                                                new Typography({
-                                                                    text: 'Developed platform-specific native modules to enhance performance, ensure compatibility, and unlock device-level features.', 
+                                                                    text: 'Built and maintained advanced React Native applications with deep native module integrations to deliver seamless, high-performance user experiences.', 
                                                                     isInline: true,
                                                                 }).dom
                                                             ],
@@ -140,12 +124,12 @@ function Advelit(props?:AppProps) {
                                                         props: {
                                                             children: [
                                                                 new Typography({
-                                                                    text: 'TV UI/UX: ', 
+                                                                    text: 'Android Native Development: ', 
                                                                     isInline: true,
                                                                     variant: 'body-emphasized',
                                                                 }).dom,
                                                                 new Typography({
-                                                                    text: 'Designed intuitive, remote-friendly TV interfaces with smooth focus management, directional navigation, and layouts optimized for large screens.', 
+                                                                    text: 'Built and optimized Android features tailored for digital signage, ensuring compatibility across various devices and OS versions.', 
                                                                     isInline: true,
                                                                 }).dom
                                                             ],
@@ -157,12 +141,12 @@ function Advelit(props?:AppProps) {
                                                         props: {
                                                             children: [
                                                                 new Typography({
-                                                                    text: 'Backend Collaboration: ', 
+                                                                    text: 'Electron.js Desktop Application: ', 
                                                                     isInline: true,
                                                                     variant: 'body-emphasized',
                                                                 }).dom,
                                                                 new Typography({
-                                                                    text: 'Integrated REST APIs for authentication, personalized recommendations, session management, and analytics tracking.', 
+                                                                    text: 'Created secure and efficient Windows desktop apps using Electron.js, integrating with hardware, system APIs, and local resources.', 
                                                                     isInline: true,
                                                                 }).dom
                                                             ],
@@ -174,35 +158,52 @@ function Advelit(props?:AppProps) {
                                                         props: {
                                                             children: [
                                                                 new Typography({
-                                                                    text: 'Performance Optimization: ', 
+                                                                    text: 'Enterprise & Advertisement Features: ', 
                                                                     isInline: true,
                                                                     variant: 'body-emphasized',
                                                                 }).dom,
                                                                 new Typography({
-                                                                    text: 'Reduced app startup time, improved memory usage, and resolved critical production issues to boost stability on all supported devices.', 
+                                                                    text: 'Implemented kiosk mode, SYSTEM_ALERT_WINDOW overlays, device monitoring, and low-level permissions essential for advertising displays and enterprise deployments.', 
                                                                     isInline: true,
                                                                 }).dom
                                                             ],
                                                         },
                                                     }).dom,
-                                                    
-                                                    new Element<HTMLDivElement>({
-                                                        tagName: 'div',
+
+                                                    new Element<HTMLLIElement>({
+                                                        tagName: 'li',
                                                         props: {
-                                                            className: styles.toggle_container,
                                                             children: [
-                                                                new Button({
-                                                                    children: [ 'View' ],
-                                                                    variant: 'primary',
-                                                                    events: {
-                                                                        onclick: () => {
-                                                                            window.open('https://www.advelit.com/', '_blank');
-                                                                        },
-                                                                    },
+                                                                new Typography({
+                                                                    text: 'Complex Debugging: ', 
+                                                                    isInline: true,
+                                                                    variant: 'body-emphasized',
+                                                                }).dom,
+                                                                new Typography({
+                                                                    text: 'Resolved challenging issues involving JavaScript, native modules, thread management, and multi-platform dependencies.', 
+                                                                    isInline: true,
+                                                                }).dom
+                                                            ],
+                                                        },
+                                                    }).dom,
+
+                                                    new Element<HTMLLIElement>({
+                                                        tagName: 'li',
+                                                        props: {
+                                                            children: [
+                                                                new Typography({
+                                                                    text: 'Clean & Scalable Code: ', 
+                                                                    isInline: true,
+                                                                    variant: 'body-emphasized',
+                                                                }).dom,
+                                                                new Typography({
+                                                                    text: 'Wrote modular, maintainable, and well-documented code aligned with internal standards and deployment pipelines.', 
+                                                                    isInline: true,
                                                                 }).dom
                                                             ],
                                                         },
                                                     }).dom
+                                                  
                                                 ],
                                             },
                                         }).dom

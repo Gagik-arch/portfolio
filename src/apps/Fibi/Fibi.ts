@@ -137,7 +137,22 @@ function Fibi(props?:AppProps) {
                                                             ],
                                                         },
                                                     }).dom,
-
+                                                    new Element<HTMLLIElement>({
+                                                        tagName: 'li',
+                                                        props: {
+                                                            children: [
+                                                                new Typography({
+                                                                    text: 'User Interface Execution: ', 
+                                                                    isInline: true,
+                                                                    variant: 'body-emphasized',
+                                                                }).dom,
+                                                                new Typography({
+                                                                    text: 'Worked closely with designers to deliver clean, responsive, and visually appealing UIs optimized for large screens.', 
+                                                                    isInline: true,
+                                                                }).dom
+                                                            ],
+                                                        },
+                                                    }).dom,
                                                     new Element<HTMLLIElement>({
                                                         tagName: 'li',
                                                         props: {
