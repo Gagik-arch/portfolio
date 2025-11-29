@@ -13,7 +13,7 @@ class Button extends Element<HTMLButtonElement> {
         super({
             tagName: 'button',
             props: {
-                className: `pointer ${styles.root} ${className}`, //  FIX:  ${styles[`root_${variant}`]}
+                className: `pointer ${styles.root} ${className} ${styles[`root_${variant}`]}`,  
                 type,
                 ...props,
             },

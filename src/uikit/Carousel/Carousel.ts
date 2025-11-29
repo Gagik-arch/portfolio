@@ -98,7 +98,6 @@ function Carousel({
 
     line
         .onMount(() => {
-
             loop();
         })
         .onUnMount(() => {

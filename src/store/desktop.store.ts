@@ -3,7 +3,9 @@ import type App from '$components/App';
 import type { DesktopIconType } from '$types/index';
 import advelitIcon from '$assets/images/app-icons/advelit.png';
 import fibiIcon from '$assets/images/app-icons/fibi.png';
+import datewiseIcon from '$assets/images/app-icons/datewise256.png';
 import { extractRangeFromIconToIcon } from '$components/Desktop/utils';
+import previewIcon from '$assets/images/app-icons/preview.png';
 
 const initialState:DesktopIconType[] = [
     {
@@ -15,6 +17,16 @@ const initialState:DesktopIconType[] = [
         index: 1,
         title: 'Fibi',
         appIcon: fibiIcon,
+    },
+    {
+        index: 2,
+        title: 'Datewise',
+        appIcon: datewiseIcon,
+    },
+    {
+        index: 3,
+        title: 'CV',
+        appIcon: previewIcon,
     }
 ];
 
@@ -74,9 +86,11 @@ class DesktopStore extends Store<AppsState> {
         });
     }
 
-    public replaceIcon(newIndex:number, prevIndex:number, count:number) { 
+    public replaceIcon(newIndex: number, prevIndex: number, length: number) { 
+        if (prevIndex === newIndex) return; 
+        
         const prevState = this.getState();
-        const cloneAppIcons: (DesktopIconType | null)[] = Array.from({ length: count }, () => null);
+        const cloneAppIcons: (DesktopIconType | null)[] = Array.from({ length }, () => null);
        
         prevState.appIcons.forEach(item => {
             cloneAppIcons[item.index] = item;
@@ -92,14 +106,16 @@ class DesktopStore extends Store<AppsState> {
                 extractedRange.unshift(element);
                 cloneAppIcons[prevIndex] = null;
                 cloneAppIcons[newIndex] = element;
-          
+
                 for (let i = newIndex; i < newIndex + extractedRange.length; i++) { 
                     const a = clone.splice(0, 1);
-                    cloneAppIcons[(i + 1) % count] = a[0];
+                    
+                    cloneAppIcons[i + 1] = a[0];
                 }
+          
             } else {
-                const extractedRange = extractRangeFromIconToIcon(newIndex + 1, cloneAppIcons);
-
+                const extractedRange = extractRangeFromIconToIcon(newIndex, cloneAppIcons);
+          
                 if (extractedRange.length) {
                     cloneAppIcons.splice(prevIndex, 1);
                     cloneAppIcons.splice(newIndex, 0, element);
@@ -116,16 +132,15 @@ class DesktopStore extends Store<AppsState> {
             cloneAppIcons.splice(prevIndex, 1, null);
         }
 
-        const result: DesktopIconType [] = [];
+        const result: DesktopIconType[] = [];
+        
         cloneAppIcons.forEach((item, index) => {
             if (item) {
                 item.index = index;
                 result[result.length] = item;
             }
         });
-        
-        if (prevIndex === newIndex) return; 
-
+     
         this.setState({
             ...prevState, appIcons: result,
         });

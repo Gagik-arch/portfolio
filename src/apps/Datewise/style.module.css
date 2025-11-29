@@ -9,14 +9,13 @@
  .content {
      flex: 1;
      margin: 20px 16px;
-     color: var(--fills-vibrant-primary);
  }
 
 
  .title {
      text-align: center;
      margin: 20px 0;
-     color: var(--accents-green)
+     color: var(--grays-black)
  }
 
  .subtitle {
@@ -33,5 +32,6 @@
      display: flex;
      justify-content: center;
      align-items: center;
-     margin-top: 10px;
+     margin: 20px 0;
+     column-gap: 10px
  }

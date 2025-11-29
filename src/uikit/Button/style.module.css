@@ -1,8 +1,40 @@
 .root {
-    background-color: transparent;
     border: none;
     padding: 0;
     user-select: none;
     -webkit-user-drag: none;
     outline: none
+}
+
+.root_default {
+    background-color: transparent;
+}
+
+.root_primary {
+    background-color: var(--accents-blue);
+    padding: 6px 10px;
+    border-radius: 6px;
+    color: #fff;
+    font-size: calc(13px * 1.2);
+    line-height: calc(16px * 1.2);
+    transition: all 18ms ease;
+
+    &:hover {
+        outline: 2px solid rgba(0, 123, 255, 0.25);
+    }
+}
+
+.root_secondary {
+    background-color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    color: var(--accents-blue);
+    ;
+    font-size: calc(13px * 1.2);
+    line-height: calc(16px * 1.2);
+    transition: all 18ms ease;
+
+    &:hover {
+        outline: 2px solid rgba(130, 130, 130, 0.15);
+    }
 }
