@@ -40,7 +40,7 @@ class DesktopStore extends Store<AppsState> {
     public constructor() {
         super({
             focusedAppId: undefined,
-            activeApps: [],
+            activeApps: [ ],
             appIcons: initialState,
         });
     }

@@ -51,11 +51,11 @@ function Dock() {
         app.window.dom.focus();
     };
 
-    const onDockAppMount = (e: Button) => {
+    const onDockAppMount = (dockIcon: Button) => {
         desktopStore.subscribe((state) => { 
-            const app = state.activeApps.find(a => a.name === e.dom.id);
+            const app = state.activeApps.find(a => a.name === dockIcon.dom.id);
             
-            e.setProps({
+            dockIcon.setProps({
                 className: (cx) => {
                     if (app) {
                         cx.add(styles.is_opened);

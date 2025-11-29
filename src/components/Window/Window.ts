@@ -53,6 +53,7 @@ class Window extends Element<HTMLDivElement> {
                 ...props,
             },
         });
+        
         this.createdAt = new Date()
             .getTime();
         

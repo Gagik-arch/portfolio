@@ -7,7 +7,8 @@ import Element from '$lib/Element';
 import Typography from '$uikit/Typography';
 import json from './reactive_resume-clq4rvkzx027jpbpu032kjehk.json';
 
-function CV(props?:AppProps) { 
+function CV(props?: AppProps) { 
+   
     return (
         new App({
             name: 'CV',
@@ -22,12 +23,17 @@ function CV(props?:AppProps) {
                             children: [
                                 new Typography({
                                     className: styles.text_center,
-                                    text: json.basics.name, variant: 'title1-emphasized', 
+                                    text: json.basics.name,
+                                    variant: 'title1-emphasized', 
+                                }).dom,
+                                new Typography({
+                                    className: styles.text_center,
+                                    text: json.basics.name,
+                                    variant: 'title1-emphasized', 
                                 }).dom 
                             ],
                         },
                     }).dom
-
                 ],
                 width: props?.width,
                 height: props?.height,
@@ -36,7 +42,7 @@ function CV(props?:AppProps) {
                 id: props?.id,
                 key: props?.key,
                 minWidth: 900,
-                minHeight: 500,
+                minHeight: 600,
             }),
         })
     );

@@ -1,6 +1,5 @@
 import Store from '$lib/store';
 import type allApps from '../apps/index';
-
 export interface IconType {
     image: string;
     title: keyof typeof allApps;
@@ -10,7 +9,7 @@ const initialState: IconType[] = [];
 
 class DockIconsStore extends Store<IconType[]> {
     public constructor() {
-        super(initialState);
+        super( initialState );
     }
 
     public setIcon(icon: IconType) { 

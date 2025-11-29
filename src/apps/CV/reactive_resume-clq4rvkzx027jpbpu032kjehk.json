@@ -4,18 +4,7 @@
         "headline": "React, React Native, Electron engineer.",
         "email": "gagik.chilingaryan2020@gmail.com",
         "phone": "+37498116141",
-        "location": "Armenia Charentsavan",
-        "picture": {
-            "url": "https://lh3.googleusercontent.com/a/ACg8ocKlfnEP7owKOYrkS5dqA8-O1bxADXlCYc7PHXeIvPP6=s96-c",
-            "size": 64,
-            "aspectRatio": 1,
-            "borderRadius": 9999,
-            "effects": {
-                "hidden": true,
-                "border": false,
-                "grayscale": false
-            }
-        }
+        "location": "Armenia Charentsavan"
     },
     "sections": {
         "summary": {
