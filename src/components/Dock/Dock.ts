@@ -78,8 +78,10 @@ function Dock() {
             className: `${styles.root} dock`,
         },
     });
-    
+
     dockIconsStore.effect((appIcons) => {
+        const calendar = localStorage.getItem('calendarIcon') as string;
+
         dock.setProps({
             children: [
                 new Button({
@@ -173,6 +175,31 @@ function Dock() {
                                         src: notes,
                                     }).dom,
                                     Tooltip( 'Notes' )
+                                ],
+                            },
+                        }).dom
+                    ],
+                })
+                    .onMount(onDockAppMount).dom,
+                     
+                new Button({
+                    className: styles.button,
+                    key: 'Calendar',
+                    events: {
+                        onclick: onclick,
+                        onanimationend: (e) => {
+                            onOpenAnimationEnd(e, 'Calendar'); 
+                        },
+                    },
+                    children: [
+                        new Element<HTMLDivElement>({
+                            tagName: 'div',
+                            props: {
+                                children: [
+                                    new Image({
+                                        src: calendar,
+                                    }).dom,
+                                    Tooltip( 'Calendar' )
                                 ],
                             },
                         }).dom

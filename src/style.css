@@ -79,3 +79,7 @@ hr {
 ::-webkit-scrollbar-corner {
     background-color: transparent;
 }
+
+#fake-canvas {
+    background-color: transparent
+}
