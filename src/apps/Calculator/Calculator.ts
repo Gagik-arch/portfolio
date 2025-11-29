@@ -1,6 +1,6 @@
 import App from '$components/App';
 import Window from '$components/Window';
-import appIcon from '$assets/images/app-icons/calculator/calculator256.png';
+import appIcon from '$assets/images/app-icons/calculator.png';
 import styles from './style.module.css';
 import type { AppProps } from '$apps/types';
 

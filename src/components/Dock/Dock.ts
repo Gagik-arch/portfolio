@@ -1,12 +1,13 @@
 import Element from '$lib/Element';
 import styles from './style.module.css';
-import finder from '$assets/images/app-icons/finder/finder256.png';
-import trash from '$assets/images/app-icons/trash/trash256.png';
-import folder from '$assets/images/app-icons/folder/folder256.png';
-import settings from '$assets/images/app-icons/settings/settings256.png';
-import launchpad from '$assets/images/app-icons/launchpad/launchpad256.png';
-import calculator from '$assets/images/app-icons/calculator/calculator256.png';
-import notes from '$assets/images/app-icons/notes/notes256.png';
+import finder from '$assets/images/app-icons/finder.png';
+import trash from '$assets/images/app-icons/trash.png';
+import folder from '$assets/images/app-icons/folder.png';
+import settings from '$assets/images/app-icons/settings.png';
+import launchpad from '$assets/images/app-icons/launchpad.png';
+import calculator from '$assets/images/app-icons/calculator.png';
+import music from '$assets/images/app-icons/music.png';
+import notes from '$assets/images/app-icons/notes.png';
 import Button from '$uikit/Button';
 import Image from '$uikit/Image';
 import Tooltip from './Tooltip';
@@ -75,172 +76,6 @@ function Dock() {
                 onmousemove: onMouseMove,
             },
             className: `${styles.root} dock`,
-            children: [
-                new Button({
-                    className: styles.button,
-                    tabIndex: -1,
-                    id: 'Finder',
-                    key: 'Finder',
-                    events: {
-                        onclick: onclick,
-                        onanimationend: (e) => {
-                            onOpenAnimationEnd(e, 'Finder'); 
-                        },
-                    },
-                    children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({ src: finder }).dom,
-                                    Tooltip('Finder' )
-                                ],
-                            },
-                        }).dom
-                    ],
-                })
-                    .onMount(onDockAppMount).dom, 
-                    
-                new Button({
-                    className: `not-allowed ${styles.button}`,
-                    id: 'Launchpad',
-                    key: 'Launchpad',
-                    children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({ src: launchpad }).dom,
-                                    Tooltip('Launchpad')
-                                ],
-                            },
-                        }).dom
-                    ],
-                }).dom,
-
-                new Button({
-                    tabIndex: -1,
-                    className: styles.button,
-                    id: 'Calculator',
-                    key: 'Calculator',
-                    events: {
-                        onclick: onclick,
-                        onanimationend: (e) => {
-                            onOpenAnimationEnd(e, 'Calculator'); 
-                        },
-                    },
-                    children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({ src: calculator }).dom,
-                                    Tooltip('Calculator')
-                                ],
-                            },
-                        }).dom
-                    ],
-                })
-                    .onMount(onDockAppMount).dom,
-                     
-                new Button({
-                    className: styles.button,
-                    key: 'Notes',
-                    events: {
-                        onclick: onclick,
-                        onanimationend: (e) => {
-                            onOpenAnimationEnd(e, 'Notes'); 
-                        },
-                    },
-                    children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({
-                                        src: notes,
-                                    }).dom,
-                                    Tooltip( 'Notes' )
-                                ],
-                            },
-                        }).dom
-                    ],
-                })
-                    .onMount(onDockAppMount).dom,
-
-                new Button({
-                    className: styles.button,
-                    key: 'Settings',
-                    events: {
-                        onclick: onclick,
-                        onanimationend: (e) => {
-                            onOpenAnimationEnd(e, 'Settings'); 
-                        },
-                    },
-                    children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    Tooltip( 'Settings' ),
-                                    new Image({
-                                        src: settings,
-                                    }).dom
-                                ],
-                            },
-                        }).dom
-                    ],
-                })
-                    .onMount(onDockAppMount).dom,
-
-                new Element<HTMLHRElement>({
-                    tagName: 'hr',
-                    props: {
-                        key: 'separator',
-                        className: styles.separator,
-                    },
-                }).dom,
-
-                new Button({
-                    className: `not-allowed ${styles.button}`,
-                    key: 'Downloads',
-                    children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({
-                                        src: folder,
-                          
-                                    }).dom,
-                                    Tooltip( 'Downloads' )
-                                ],
-                            },
-                        }).dom
-                       
-                    ],
-                })
-                    .onMount(onDockAppMount).dom,
-                
-                new Button({
-                    className: `not-allowed ${styles.button}`,
-                    key: 'Trash',
-                    children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({
-                                        src: trash,
-                                    }).dom,
-                                    Tooltip( 'Trash' )
-                                ],
-                            },
-                        }).dom
-                    ],
-                })
-                    .onMount(onDockAppMount).dom
-            ],
         },
     });
     
@@ -338,6 +173,31 @@ function Dock() {
                                         src: notes,
                                     }).dom,
                                     Tooltip( 'Notes' )
+                                ],
+                            },
+                        }).dom
+                    ],
+                })
+                    .onMount(onDockAppMount).dom,
+                
+                new Button({
+                    className: styles.button,
+                    key: 'Music',
+                    events: {
+                        onclick: onclick,
+                        onanimationend: (e) => {
+                            onOpenAnimationEnd(e, 'Music'); 
+                        },
+                    },
+                    children: [
+                        new Element<HTMLDivElement>({
+                            tagName: 'div',
+                            props: {
+                                children: [
+                                    new Image({
+                                        src: music,
+                                    }).dom,
+                                    Tooltip( 'Music' )
                                 ],
                             },
                         }).dom

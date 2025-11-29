@@ -3,7 +3,7 @@ import type App from '$components/App';
 import type { DesktopIconType } from '$types/index';
 import advelitIcon from '$assets/images/app-icons/advelit.png';
 import fibiIcon from '$assets/images/app-icons/fibi.png';
-import datewiseIcon from '$assets/images/app-icons/datewise256.png';
+import datewiseIcon from '$assets/images/app-icons/datewise.png';
 import { extractRangeFromIconToIcon } from '$components/Desktop/utils';
 import previewIcon from '$assets/images/app-icons/preview.png';
 
