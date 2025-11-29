@@ -510,14 +510,14 @@ function CV(props?: AppProps) {
                         ],
                     }).dom
                 ],
-                width: 600,
-                height: window.innerHeight / 2,
+                width: getCssVariable<number>('--scale') === 1 ? 800 : 600,
+                height: getCssVariable<number>('--scale') === 1 ? 500 : window.innerHeight / 2,
                 x: (window.innerWidth / 2) - (450 * getCssVariable<number>('--scale')),
                 y: 42,
                 id: props?.id,
                 key: props?.key,
-                minWidth: 600,
-                minHeight: 300,
+                minWidth: getCssVariable<number>('--scale') === 1 ? 800 : 600,
+                minHeight: getCssVariable<number>('--scale') === 1 ? 500 : window.innerHeight / 2,
             }),
         })
     );

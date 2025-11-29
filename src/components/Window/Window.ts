@@ -227,12 +227,12 @@ class Window extends Element<HTMLDivElement> {
             const left = Math.floor(Math.max(rect.left + e.movementX, 0));
                 
             if (width <= scaledWidth || left === 0) return; 
+
             this.x = left;
             this.dom.style.setProperty('--width', Math.floor(Math.max(width, scaledWidth)) + 'px');
             this.dom.style.setProperty('--left', this.x + 'px');
 
             this.dom.classList.add('e-resize');
-
         };
 
         const onBottom = () => { 

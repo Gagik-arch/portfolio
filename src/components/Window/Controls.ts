@@ -1,6 +1,7 @@
 import Element from '$lib/Element';
 import Button from '$uikit/Button';
 import Icon from '$uikit/Icon';
+import { getCssVariable } from '$utils/index';
 import styles from './styles.module.css';
 import type { ControlProps } from './types';
 
@@ -21,7 +22,7 @@ function Controls({
                         className: `${styles.traffic_light} ${styles.close}`,
                         children: [
                             new Icon( 'Plus', {
-                                size: 16, 
+                                size: 12 * getCssVariable<number>('--scale'), 
                                 stroke: 'rgba(0,0,0,0.4)',
                             }).dom 
                         ],
@@ -33,7 +34,7 @@ function Controls({
                         className: `${styles.traffic_light} ${styles.minimize}`,
                         children: [
                             new Icon( 'Minus', {
-                                size: 14,
+                                size: 12 * getCssVariable<number>('--scale'),
                                 stroke: 'rgba(0,0,0,0.4)',
                             }).dom 
                         ],
@@ -46,7 +47,7 @@ function Controls({
                         children: isResizable
                             ? [
                                 new Icon('Maximize', {
-                                    size: 13,
+                                    size: 11 * getCssVariable<number>('--scale'),
                                     fill: 'rgba(0,0,0,0.4)',
                                 }).dom 
                             ]

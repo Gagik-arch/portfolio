@@ -6,6 +6,17 @@ import styles from './style.module.css';
 import desktopStore from '$store/desktop.store';
 
 function MenuBar() {
+    const date = new Date();
+
+    const gbDateTime = new Intl.DateTimeFormat('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+    })
+        .format(date);
     
     return (
         new Element<HTMLDivElement>({
@@ -110,7 +121,7 @@ function MenuBar() {
                                     className: `not-allowed ${styles.item}`,
                                     children: [
                                         new Typography({
-                                            text: 'Mon Jun 10  9:41 AM',
+                                            text: gbDateTime,
                                             variant: 'body-emphasized',
                                         }).dom 
                                     ],
