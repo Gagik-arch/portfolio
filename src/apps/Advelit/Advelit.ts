@@ -90,7 +90,7 @@ function Advelit(props?:AppProps) {
                                         }).dom,
                                 
                                         new Typography({
-                                            text: 'Key contributions:', 
+                                            text: 'Key contributions', 
                                             variant: 'body-emphasized',
                                             style: {
                                                 margin: '20px 0 10px 0', color: 'var(--accents-blue)', 

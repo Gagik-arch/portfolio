@@ -115,9 +115,9 @@ class DesktopStore extends Store<AppsState> {
           
             } else {
                 const extractedRange = extractRangeFromIconToIcon(newIndex, cloneAppIcons);
+          
                 if (extractedRange.length) {
                     cloneAppIcons.splice(prevIndex, 1);
-                    cloneAppIcons.splice(newIndex + extractedRange.length, 1);
                     cloneAppIcons.splice(newIndex, 0, element);
                 } else { 
                     cloneAppIcons[prevIndex] = null;
@@ -132,14 +132,15 @@ class DesktopStore extends Store<AppsState> {
             cloneAppIcons.splice(prevIndex, 1, null);
         }
 
-        const result: DesktopIconType [] = [];
+        const result: DesktopIconType[] = [];
+        
         cloneAppIcons.forEach((item, index) => {
             if (item) {
                 item.index = index;
                 result[result.length] = item;
             }
         });
-    
+     
         this.setState({
             ...prevState, appIcons: result,
         });

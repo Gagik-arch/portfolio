@@ -5,9 +5,6 @@ import type { AppProps } from '$apps/types';
 import styles from './style.module.css';
 import Element from '$lib/Element';
 import Typography from '$uikit/Typography';
-import Scroll from '$uikit/Scroll/Scroll';
-import Button from '$uikit/Button';
-import src from './gagik-chilingaryan-cv.pdf';
 import json from './reactive_resume-clq4rvkzx027jpbpu032kjehk.json';
 
 function CV(props?:AppProps) { 

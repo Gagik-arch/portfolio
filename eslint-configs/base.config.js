@@ -272,6 +272,7 @@ export default [
             '@typescript-eslint/ban-ts-comment': 'off',
             'no-case-declarations': 'off',
             '@typescript-eslint/no-extraneous-class': 'off',
+            '@typescript-eslint/no-dynamic-delete':'off'
         },
     }
 ];
