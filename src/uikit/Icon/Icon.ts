@@ -10,7 +10,9 @@ class Icon extends Element<HTMLSpanElement> {
     ) {
         const {
             size, ..._props 
-        } = props ?? { size: 24 };
+        } = {
+            size: 24, ...props, 
+        };
 
         super({
             tagName: 'span',

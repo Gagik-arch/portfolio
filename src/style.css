@@ -17,7 +17,8 @@ body {
     background-image: url(../assets/images/wallpaper.jpg);
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: cover
+    background-attachment: fixed;
+    background-size: cover;
 }
 
 

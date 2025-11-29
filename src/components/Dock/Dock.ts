@@ -244,7 +244,7 @@ function Dock() {
         },
     });
     
-    dockIconsStore.subscribe((appIcons) => {
+    dockIconsStore.effect((appIcons) => {
         dock.setProps({
             children: [
                 new Button({

@@ -1,13 +1,112 @@
  .root {
      display: flex;
-
+     padding: 20px
  }
 
  .content {
      flex: 1;
-     padding: 30px;
+     max-width: 800px;
+     margin: 0 auto
+ }
+
+ .header {
+     display: flex;
+     justify-content: flex-end;
+     margin-bottom: 10px;
  }
 
  .text_center {
      text-align: center
+ }
+
+ .profile {
+     display: inline-flex;
+     align-items: center;
+     column-gap: 6px;
+
+     &>img {
+         width: 18px;
+         height: 18px;
+     }
+ }
+
+ .icon {
+     stroke-width: 2px
+ }
+
+ .contacts {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     column-gap: 4px;
+ }
+
+ .separator {
+     margin: 16px 0
+ }
+
+ .segment {
+     display: grid;
+     grid-template-columns: minmax(min-content, 100px) 1fr
+ }
+
+ .row {
+     display: flex;
+     justify-content: space-between;
+     align-items: center
+ }
+
+ .link {
+     display: flex;
+     align-items: center;
+     column-gap: 4px;
+
+     & {
+         stroke-width: 3px
+     }
+ }
+
+ .block {
+     display: flex;
+     flex-direction: column;
+     row-gap: 4px;
+
+     &:not(:last-child) {
+         margin-bottom: 20px;
+     }
+
+     p {
+         margin: 10px 0;
+         font-size: calc(12px * 1.2);
+         line-height: calc(15px * 1.2);
+     }
+
+     ul {
+         padding-left: 30px;
+     }
+ }
+
+ .skill_container {
+     display: grid;
+     grid-template-columns: 1fr 1fr 1fr;
+     gap: 10px
+ }
+
+ .skill_block {
+     display: grid;
+     row-gap: 6px
+ }
+
+ .circle_container {
+     display: inline-flex;
+     column-gap: 4px;
+
+     &>span {
+         width: 7px;
+         height: 7px;
+         background-color: transparent;
+         border-radius: 50%;
+         border: 1px solid var(--accents-blue);
+         box-sizing: border-box
+     }
  }

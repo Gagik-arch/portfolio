@@ -19,12 +19,12 @@ function MenuBar() {
                             className: styles.group_leading,
                             children: [
                                 new Button({
-                                    className: styles.icon,
+                                    className: `not-allowed ${styles.item}`,
                                     children: [ new Icon('MinLogo').dom ],
                                 }).dom,
 
                                 new Button({
-                                    className: styles.item,
+                                    className: `not-allowed ${styles.item}`,
                                     children: [
                                         new Typography({
                                             text: 'Finder',
@@ -43,7 +43,7 @@ function MenuBar() {
                                 }).dom,
 
                                 new Button({
-                                    className: styles.item,
+                                    className: `not-allowed ${styles.item}`,
                                     children: [
                                         new Typography({
                                             text: 'Edit', variant: 'body-emphasized',
@@ -52,7 +52,7 @@ function MenuBar() {
                                 }).dom,
 
                                 new Button({
-                                    className: styles.item,
+                                    className: `not-allowed ${styles.item}`,
                                     children: [
                                         new Typography({
                                             text: 'View', variant: 'body-emphasized',
@@ -61,7 +61,7 @@ function MenuBar() {
                                 }).dom,
 
                                 new Button({
-                                    className: styles.item,
+                                    className: `not-allowed ${styles.item}`,
                                     children: [
                                         new Typography({
                                             text: 'Window', variant: 'body-emphasized',
@@ -70,7 +70,7 @@ function MenuBar() {
                                 }).dom,
 
                                 new Button({
-                                    className: styles.item,
+                                    className: `not-allowed ${styles.item}`,
                                     children: [
                                         new Typography({
                                             text: 'Help', variant: 'body-emphasized',
@@ -87,27 +87,27 @@ function MenuBar() {
                             className: styles.group_trailing,
                             children: [
                                 new Button({
-                                    className: styles.item,
+                                    className: `not-allowed ${styles.item}`,
                                     children: [ new Icon('Wifi', { size: 18 } ).dom ],
                                 }).dom,
 
                                 new Button({
-                                    className: styles.item,
+                                    className: `not-allowed ${styles.item}`,
                                     children: [ new Icon('Search', { size: 18 } ).dom ],
                                 }).dom,
 
                                 new Button({
-                                    className: styles.item,
+                                    className: `not-allowed ${styles.item}`,
                                     children: [ new Icon('UserCircle', { size: 18 } ).dom ],
                                 }).dom,
 
                                 new Button({
-                                    className: styles.item,
+                                    className: `not-allowed ${styles.item}`,
                                     children: [ new Icon('ControlCenter', { size: 20 } ).dom ],
                                 }).dom,
 
                                 new Button({
-                                    className: styles.item,
+                                    className: `not-allowed ${styles.item}`,
                                     children: [
                                         new Typography({
                                             text: 'Mon Jun 10  9:41 AM',

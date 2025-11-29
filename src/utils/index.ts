@@ -35,3 +35,10 @@ export const onCssVariableChange = (element:HTMLElement, callback:(e:string)=>vo
 
     return () => styleObserver.disconnect();
 };
+
+export const isStrictDesktop = () => {
+    const mobileRegex = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i;
+    const isMobileUA = mobileRegex.test(navigator.userAgent);
+
+    return !isMobileUA && navigator.maxTouchPoints === 0;
+};
