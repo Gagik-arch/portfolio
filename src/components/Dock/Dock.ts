@@ -16,6 +16,8 @@ import allApps from '$apps/index';
 import dockIconsStore from '$store/dockIcons.store';
 
 function Dock() {
+    let timeout: number | undefined; 
+
     const onMouseMove = (e: MouseEvent) => {
         const target = e.currentTarget as HTMLDivElement;
 
@@ -37,6 +39,8 @@ function Dock() {
         const app = desktopStore.getState().activeApps.find(a => a.name === target.id);
        
         if (!app) return; 
+        clearTimeout(timeout);
+        
         desktopStore.setFocusApp(app.window.dom.id);
 
         app.window.dom.focus();
@@ -49,7 +53,9 @@ function Dock() {
       
         desktopStore.addApp(app);
 
-        app.window.dom.focus();
+        timeout = setTimeout(() => {
+            app.window.dom.focus();
+        }, 300);
     };
 
     const subscribers: (()=>void)[] = [];
