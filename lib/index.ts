@@ -11,7 +11,7 @@ export const createRoot = (
     if (Array.isArray(app)) {
         rootElement.append(...app);
     } else {
-        rootElement?.appendChild(app);
+        rootElement.appendChild(app);
     }
 };
 

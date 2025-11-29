@@ -1,12 +1,3 @@
-import App from '$components/App';
-import Window from '$components/Window';
-import appIcon from '$assets/images/app-icons/fibi.png';
-import type { AppProps } from '$apps/types';
-import styles from './style.module.css';
-import Element from '$lib/Element';
-import Carousel from '$uikit/Carousel';
-import Typography from '$uikit/Typography';
-import Scroll from '$uikit/Scroll/Scroll';
 import i1 from './images/splash.jpg';
 import i2 from './images/login.jpg';
 import i3 from './images/choose-avatar.jpg';
@@ -16,6 +7,15 @@ import i6 from './images/program.jpg';
 import i7 from './images/lang.jpg';
 import i8 from './images/pin.jpg';
 import i9 from './images/sign-out.jpg';
+import App from '$components/App';
+import Window from '$components/Window';
+import appIcon from '$assets/images/app-icons/fibi.png';
+import type { AppProps } from '$apps/types';
+import styles from './style.module.css';
+import Element from '$lib/Element';
+import Carousel from '$uikit/Carousel';
+import Typography from '$uikit/Typography';
+import Scroll from '$uikit/Scroll';
 
 function Fibi(props?:AppProps) { 
     return (

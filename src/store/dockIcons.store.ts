@@ -1,16 +1,22 @@
 import Store from '$lib/store';
 import type allApps from '../apps/index';
+import cvIcon from '$assets/images/app-icons/preview.png';
 
 export interface IconType {
     image: string;
     title: keyof typeof allApps;
 }
 
-const initialState: IconType[] = [];
+const initialState: IconType[] = [
+    {
+        image: cvIcon,
+        title: 'CV' as keyof typeof allApps,
+    }
+];
 
 class DockIconsStore extends Store<IconType[]> {
     public constructor() {
-        super(initialState);
+        super( initialState );
     }
 
     public setIcon(icon: IconType) { 

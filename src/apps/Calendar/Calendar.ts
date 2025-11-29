@@ -1,7 +1,8 @@
 import App from '$components/App';
 import Window from '$components/Window';
-import appIcon from '$assets/images/app-icons/calculator/calculator256.png';
+import appIcon from '$assets/images/app-icons/calculator.png';
 import type { AppProps } from '$apps/types';
+import styles from './style.module.css';
 
 function Calendar(props?:AppProps) { 
     return (
@@ -10,7 +11,8 @@ function Calendar(props?:AppProps) {
             appIcon,
             isNative: true,
             window: new Window({
-                children: [ 'Calendar' ],
+                className: styles.root,
+                children: [ 'Macos Calendar app coming soon.' ],
                 width: props?.width,
                 height: props?.height,
                 x: props?.x,

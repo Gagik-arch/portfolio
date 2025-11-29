@@ -7,6 +7,7 @@ import Notes from './Notes';
 import Settings from './Settings';
 import Datewise from './Datewise';
 import CV from './CV';
+import Music from './Music';
     
 const apps = {
     Calculator,
@@ -18,6 +19,7 @@ const apps = {
     Fibi,
     Datewise,
     CV,
+    Music,
 } as const;
     
 export default apps;

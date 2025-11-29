@@ -13,6 +13,7 @@ export default defineConfig({
             $store: resolve(__dirname, './src/store'),
             $components: resolve(__dirname, './src/components'),
             $apps: resolve(__dirname, './src/apps'),
+            $pages: resolve(__dirname, './src/pages'),
         },
     },
 });
