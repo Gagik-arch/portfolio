@@ -7,7 +7,7 @@ import styles from './style.module.css';
 function Calendar(props?:AppProps) { 
     return (
         new App({
-            name: 'Finder',
+            name: 'Calendar',
             appIcon,
             isNative: true,
             window: new Window({

@@ -85,7 +85,7 @@ export const generateCalendarAppIcon = async () => {
     
     await document.fonts.load('500 1px SFProText');
  
-    ctx.font = '500 50px SFProText'; 
+    ctx.font = '500 58px SFProText'; 
   
     ctx.fillStyle = 'rgb(254 96 88)'; 
     ctx.textAlign = 'center'; 

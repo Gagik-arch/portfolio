@@ -52,10 +52,12 @@ function Dock() {
         app.window.dom.focus();
     };
 
+    const subscribers: (()=>void)[] = [];
+
     const onDockAppMount = (dockIcon: Button) => {
-        desktopStore.subscribe((state) => { 
+        subscribers.push( desktopStore.subscribe((state) => { 
             const app = state.activeApps.find(a => a.name === dockIcon.dom.id);
-            
+  
             dockIcon.setProps({
                 className: (cx) => {
                     if (app) {
@@ -65,7 +67,7 @@ function Dock() {
                     }
                 },
             });
-        });
+        }));
     };
 
     const dock = new Element<HTMLDivElement>({
@@ -77,8 +79,13 @@ function Dock() {
             },
             className: `${styles.root} dock`,
         },
-    });
-
+    })
+        .onUnMount(() => {
+            subscribers.forEach(item => {
+                item();
+            });
+        });
+    
     dockIconsStore.effect((appIcons) => {
         const calendar = localStorage.getItem('calendarIcon') as string;
 

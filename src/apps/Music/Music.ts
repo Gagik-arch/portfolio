@@ -7,7 +7,7 @@ import styles from './style.module.css';
 function Music(props?:AppProps) { 
     return (
         new App({
-            name: 'Notes',
+            name: 'Music',
             appIcon,
             isNative: true,
             window: new Window({
