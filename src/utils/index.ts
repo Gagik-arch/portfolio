@@ -75,7 +75,7 @@ export const generateCalendarAppIcon = async () => {
     if (!ctx) return; 
 
     const date = new Date();
-    const month = date.toLocaleString('default', { month: 'short' });
+    const month = date.toLocaleDateString('default', { month: 'short' });
 
     ctx.beginPath();
     ctx.fillStyle = 'rgba(255, 252, 252, 0.9)';

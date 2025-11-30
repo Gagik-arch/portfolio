@@ -236,9 +236,14 @@ class Window extends Element<HTMLDivElement> {
         };
 
         const onBottom = () => { 
-            const height = Math.max(rect.height + e.movementY, scaledHeight);
+            const height = Math.floor( Math.max(rect.height + e.movementY, scaledHeight));
 
-            this.dom.style.setProperty('--height', `${Math.floor(rect.bottom < desktop.bottom ? height : desktop.height - rect.top + desktop.top )}px`);
+            if (rect.bottom <= Math.round(desktop.bottom)) {
+                this.dom.style.setProperty('--height', `${Math.floor(height)}px`);
+            } else { 
+              
+                this.dom.style.setProperty('--height', `${desktop.height - rect.top + Math.floor(desktop.top)}px`);
+            }
         };
 
         const onRight = () => {
