@@ -11,10 +11,11 @@ import Icon from '$uikit/Icon';
 import Scroll from '$uikit/Scroll';
 import Link from '$uikit/Link';
 import Button from '$uikit/Button';
-import csFile from './gagik-chilingaryan-cv.pdf';
 import linkedinImage from '$assets/images/linkedin.png';
 import githubImage from '$assets/images/github.png';
 import Image from '$uikit/Image';
+
+const CV_FILE = 'https://raw.githubusercontent.com/Gagik-arch/portfolio-storage/main/gagik-chilingaryan-cv.pdf';
 
 const Row = (left:string, right?:string, isSubtitle = false) => {
     return (
@@ -62,7 +63,7 @@ function CV(props?: AppProps) {
                                                 className: styles.header,
                                                 children: [
                                                     new Link({
-                                                        href: csFile,
+                                                        href: CV_FILE,
                                                         download: 'gagik-chilingaryan-cv',
                                                         children: [
                                                             new Button({
