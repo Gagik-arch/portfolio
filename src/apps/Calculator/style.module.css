@@ -2,5 +2,81 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #fff
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    row-gap: 10px
+}
+
+.text {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    font-size: 40px
+}
+
+.buttons {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+
+    svg {
+        stroke-width: 1.7px
+    }
+}
+
+.button {
+    background-color: rgba(0, 0, 0, 0.15);
+    color: white !important;
+    height: 70px;
+    border-radius: 70px;
+    position: relative;
+    /* outline: 2px solid rgba(255, 255, 255, 0.02) */
+
+    &::after {
+        border-radius: inherit;
+        content: '';
+        position: absolute;
+        inset: 0;
+        border: 2px solid transparent;
+        mask:
+            linear-gradient(#000 0 0) padding-box,
+            linear-gradient(#000 0 0);
+        mask-composite: exclude;
+        background: linear-gradient(100deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)) border-box;
+    }
+
+    &:nth-child(4n) {
+        background-color: var(--accents-orange)
+    }
+
+    &:has(+ :nth-child(4n))::after {
+        background: linear-gradient(100deg, rgba(255, 255, 255, 0.03) 10%, rgba(255, 255, 255, 0.1) 89%, rgba(255, 145, 1, 0.9)) border-box;
+    }
+
+    &:first-child,
+    &:first-child+.button,
+    &:first-child+.button+.button {
+        background-color: rgba(255, 255, 255, 0.2)
+    }
+}
+
+.plus_minus {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &>div {
+        &:first-child {
+            transform: translateY(-10px);
+        }
+
+        &:last-child {
+            transform: translateY(10px);
+        }
+    }
 }

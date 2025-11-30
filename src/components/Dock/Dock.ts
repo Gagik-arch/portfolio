@@ -145,7 +145,7 @@ function Dock() {
 
                 new Button({
                     tabIndex: -1,
-                    className: styles.button,
+                    className: `${styles.button} ${styles.on_open_animate}`,
                     id: 'Calculator',
                     key: 'Calculator',
                     events: {
