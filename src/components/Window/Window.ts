@@ -74,30 +74,27 @@ class Window extends Element<HTMLDivElement> {
                             tagName: 'span',
                             props: {
                                 className: `${styles.left_top} nw-resize ${styles.anchor}`,
-                                children: [],
                             },
                         }).dom,
                         new Element<HTMLSpanElement>({
                             tagName: 'span',
                             props: {
                                 className: `${styles.left_bottom} ne-resize ${styles.anchor}`,
-                                children: [],
                             },
                         }).dom,
                         new Element<HTMLSpanElement>({
                             tagName: 'span',
                             props: {
                                 className: `${styles.right_top} ne-resize ${styles.anchor}`,
-                                children: [],
                             },
                         }).dom,
                         new Element<HTMLSpanElement>({
                             tagName: 'span',
                             props: {
                                 className: `${styles.right_bottom} nw-resize ${styles.anchor}`,
-                                children: [],
                             },
                         }).dom
+
                     ]
                     : []),
                 ...(children ?? [])

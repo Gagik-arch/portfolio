@@ -145,7 +145,7 @@ function Dock() {
 
                 new Button({
                     tabIndex: -1,
-                    className: styles.button,
+                    className: `${styles.button} `,
                     id: 'Calculator',
                     key: 'Calculator',
                     events: {

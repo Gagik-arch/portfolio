@@ -11,6 +11,9 @@ import ChevronRight from './chevron-right';
 import Map from './map';
 import Phone from './phone';
 import Link from './link';
+import Backdrop from './backdrop';
+import Divide from './divide';
+import PlusSlashMinus from './plus-slash-minus';
 
 export default {
     MinLogo,
@@ -26,4 +29,7 @@ export default {
     Map,
     Phone,
     Link,
+    Backdrop,
+    Divide,
+    PlusSlashMinus,
 };
