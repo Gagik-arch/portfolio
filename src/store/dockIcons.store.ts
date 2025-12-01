@@ -7,11 +7,10 @@ export interface IconType {
 }
 
 const initialState: IconType[] = [
-
-    // {
-    //     image: cvIcon,
-    //     title: 'CV' as keyof typeof allApps,
-    // }
+    {
+        image: cvIcon,
+        title: 'CV' as keyof typeof allApps,
+    }
 ];
 
 class DockIconsStore extends Store<IconType[]> {
