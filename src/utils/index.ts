@@ -99,5 +99,7 @@ export const generateCalendarAppIcon = async () => {
        
     const imageDataURL = canvas.dom.toDataURL(imageType);
     localStorage.setItem('calendarIcon', imageDataURL);
+
+    canvas.remove();
 };
     
