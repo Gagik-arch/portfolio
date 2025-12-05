@@ -18,8 +18,8 @@ export function setupChildren<T extends HTMLElement>(
             for (let i = 0; i < Math.max(extractedChildren.length, dom.children.length); i++) {
                 const newChild = extractedChildren[i] as (HTMLElement | null );
                 const oldChild = dom.childNodes[i] as (HTMLElement | null);
-
-                if ( !oldChild && newChild ) {
+         
+                if (!oldChild && newChild) {                    
                     dom.append(newChild);
                 } 
 
@@ -43,7 +43,7 @@ export function setupChildren<T extends HTMLElement>(
                     }
                 } 
 
-                if (oldChild && !newChild ) { 
+                if (oldChild && !newChild) { 
                     dom.removeChild(oldChild);
                 }
             }

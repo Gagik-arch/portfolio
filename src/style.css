@@ -1,6 +1,6 @@
-@import url('../assets/fonts/SFPro/font-face.css');
 @import url('./styles/colors.css');
 @import url('./styles/cursors.css');
+@import url('./styles/text.css');
 
 :root {
     font-family: SFProText, sans-serif;

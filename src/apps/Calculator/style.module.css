@@ -10,12 +10,24 @@
 }
 
 .text {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    font-size: 40px;
+    padding-bottom: 10px;
+    flex: 0.5;
+    transition: all 100ms ease
+}
+
+.result {
     flex: 1;
     width: 100%;
     display: flex;
     justify-content: end;
     align-items: end;
-    font-size: 40px
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.7)
 }
 
 .buttons {
@@ -35,7 +47,10 @@
     height: 70px;
     border-radius: 70px;
     position: relative;
-    /* outline: 2px solid rgba(255, 255, 255, 0.02) */
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &::after {
         border-radius: inherit;
@@ -51,7 +66,8 @@
     }
 
     &:nth-child(4n) {
-        background-color: var(--accents-orange)
+        background-color: var(--accents-orange);
+        border: 2px solid rgba(255, 255, 255, 0.203);
     }
 
     &:has(+ :nth-child(4n))::after {

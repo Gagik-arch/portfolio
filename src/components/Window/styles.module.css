@@ -29,16 +29,16 @@
     }
 
     &:focus-within {
+        z-index: 2 !important;
+
         &::before {
-            backdrop-filter: blur(7px);
+            backdrop-filter: blur(40px);
         }
 
         .anchor {
             background-color: transparent;
             display: block
         }
-
-        z-index: 2 !important;
 
         .close:not(:disabled) {
             background-color: #FF736A;
@@ -64,7 +64,6 @@
 
     &:hover {
         z-index: 2 !important;
-
 
         .traffic_light svg {
             opacity: 1;
