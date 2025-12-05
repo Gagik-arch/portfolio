@@ -1,4 +1,4 @@
-/* eslint-disable no-useless-escape */
+ 
 import App from '$components/App';
 import Window from '$components/Window';
 import appIcon from '$assets/images/app-icons/calculator.png';
@@ -8,8 +8,10 @@ import Element from '$lib/Element';
 import Icon from '$uikit/Icon';
 import Button from '$uikit/Button';
 import Store from '$lib/store';
+import { clampNumber } from '$utils/index';
 
 function Calculator(props?: AppProps) { 
+    const result = new Store('');
     const state = new Store('');
 
     const availableActions = [
@@ -37,18 +39,18 @@ function Calculator(props?: AppProps) {
     const text = new Element<HTMLDivElement>({
         tagName: 'div',
         props: {
-            className: `title3 ${styles.text}`,   
+            className: `regular ${styles.text}`,   
+        },
+    });
+
+    const resultContainer = new Element<HTMLDivElement>({
+        tagName: 'div',
+        props: {
+            className: `regular ${styles.result}`,   
         },
     });
     
-    const calculate = (num:string | undefined, action:string | undefined) => {
-        console.log(num, action);
-
-        const parts = state.getState()
-            .split(/[\%\+\-\/\*]/);
-        
-        const lastPart = parts
-            .at(-1);
+    const calculate = (num: string | undefined, action: string | undefined) => {
         
         switch (action) {
                 case 'backspace':
@@ -56,68 +58,94 @@ function Calculator(props?: AppProps) {
                     break;
                 case 'clear':
                     state.setState('');
+                    result.setState('');
                     break;
                 case 'plusSlashMinus':
-                    if (!lastPart) break;
+                    if (!state.getState()) break;
                 
-                    const p = parts.slice(0, parts.length - 1);
-                    const lastPartNumber = +lastPart; 
-                    console.log(p);
-                    p.push((lastPartNumber * -1).toString());
-                
-                    state.setState(p.join(''));
+                    state.setState(prev => (+prev * -1) + '');
                     break;
                 case '.':
-                    if (lastPart?.includes('.')) break;
+                    if (state.getState()
+                        .includes('.')) break;
                 
-                    const lastChar = lastPart?.at(-1);
-                    const isAvailableLastNumber = lastChar ? !isNaN(+lastChar) : false;
-            
-                    if (!isAvailableLastNumber) {
-                        state.setState(prev => prev + '0.');
-                        break;
-                    } 
-            
-                    state.setState(prev => lastPart?.length ? prev + '.' : '0.');
+                    if (state.getState().length) {
+                        state.setState( prev => prev + '.');
+                    } else { 
+                        
+                        const char = result.getState()
+                            .at(-1); 
+                
+                        if (!(char && !isNaN(+char))) { 
+                            state.setState( '0.');
+                        }
+                    }
+                
                     break;
                 case '+':
                 case '-':
                 case '/':
                 case '*':
                 case '%':
-                    const _lastChar = lastPart?.at(-1);
+                    const _lastChar = result.getState()
+                        .at(-1); 
+                
                     const _isAvailableLastNumber = _lastChar ? !isNaN(+_lastChar) : false;
-                
-                    if (!state.getState().length) break;
                     
-                    if (_lastChar === '.') {
-                        state.setState(prev => prev.replace('.', '') + action);
-                        break;
-                    } 
-                
-                    if (!_isAvailableLastNumber) break;
+                    if (_lastChar) {
+                        if (_isAvailableLastNumber) {
+                            result.setState( eval(result.getState() + ' ' + state.getState()) + action);
+                        } else {
+                            if (state.getState()) {
+                                result.setState(eval(result.getState() + state.getState()) + action);
+                            } else { 
+                                result.setState(prev => prev.replace(_lastChar, action));
+                            }
+                        }
+                    } else { 
+                        result.setState( eval(result.getState() + state.getState()) + action);
+                    }
 
-                    state.setState(prev => prev + action);
+                    state.setState('');
                     break;
                 case 'enter':
                 case '=':
-                    state.setState(prev => eval(prev) + '');
+                    if (!result.getState().length || !state.getState().length) { 
+                        break;
+                    }
+                    result.setState(eval(result.getState() + state.getState()) + '');
+                    state.setState('');
                     break;
                 default:
                     break;
         }
-        const width = text.dom.getBoundingClientRect().width;
-
-        if (state.getState().length) { 
-
-            // console.log( (state.getState().length ));
-        }
+        
+        const width = 396, 
+                factor = 0.6;
+        const fontSize = clampNumber(width / (state.getState().length * factor), 14, 40); 
 
         if (num) { 
-            state.setState(prev => {
-                return prev + num;
-            });
+            if (fontSize === 14) return; 
+
+            const _lastChar = result.getState()
+                .at(-1); 
+            const isAvailableLastNumber = _lastChar ? !isNaN(+_lastChar) : false;
+            
+            if (!isAvailableLastNumber) {
+                state.setState( prev => prev + num);
+            }
         }
+        text.setProps({
+            style: {
+                fontSize: fontSize + 'px',
+            },
+        });
+        
+        resultContainer.setProps({
+            style: {
+                fontSize: Math.min(20, width / (result.getState().length * factor)) + 'px',
+            },
+        });
     };
 
     const onClickWrapper = (e: MouseEvent) => {
@@ -144,6 +172,12 @@ function Calculator(props?: AppProps) {
         calculate(num, action);
     };
     
+    result.effect((prev) => {
+        resultContainer.setProps({
+            children: [ prev ],
+        }, true);
+    });
+
     return (
         new App({
             name: 'Calculator',
@@ -152,6 +186,7 @@ function Calculator(props?: AppProps) {
             window: new Window({
                 events: { onkeyup: onKeyUp },
                 children: [
+                    resultContainer.dom,
                     text
                         .onMount((e) => {
                             state.effect((prev) => {

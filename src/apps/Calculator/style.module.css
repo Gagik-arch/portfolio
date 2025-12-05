@@ -10,13 +10,24 @@
 }
 
 .text {
-    flex: 1;
     width: 100%;
     display: flex;
     justify-content: end;
     align-items: end;
     font-size: 40px;
     padding-bottom: 10px;
+    flex: 0.5;
+    transition: all 100ms ease
+}
+
+.result {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.7)
 }
 
 .buttons {
