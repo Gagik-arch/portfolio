@@ -7,15 +7,18 @@ import desktopStore from '$store/desktop.store';
 
 function MenuBar() {
     const date = new Date();
-
-    const gbDateTime = new Intl.DateTimeFormat('en-US', {
+    let timeout: number | undefined;
+    
+    const format = new Intl.DateTimeFormat('en-US', {
         weekday: 'short',
         month: 'short',
         day: '2-digit',
         hour: '2-digit',
         minute: '2-digit',
         hour12: false,
-    })
+    });
+    
+    const gbDateTime = format
         .format(date);
     
     return (
@@ -123,15 +126,36 @@ function MenuBar() {
                                         new Typography({
                                             text: gbDateTime,
                                             variant: 'body-emphasized',
-                                        }).dom 
+                                        })
+                                            .onMount((e) => {
+                                                const check = () => {
+                
+                                                    timeout = setTimeout(() => {
+                                                        e.setProps({
+                                                            children: [
+                                                                format
+                                                                    .format(new Date())
+                                                            ],
+                                                        });
+                                                        check();
+                                                    }, 1000);
+                                                };
+
+                                                check();
+                                            })
+                                            .onUnMount(() => {
+                                                clearTimeout(timeout);
+                                            }).dom 
                                     ],
-                                }).dom
+                                })
+                                    .dom
                             ],
                         },
                     }).dom
                 ],
             },
-        }).dom
+        })
+            .dom
     );
 }
 
