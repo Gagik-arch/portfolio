@@ -143,7 +143,7 @@ function Calculator(props?: AppProps) {
         
         resultContainer.setProps({
             style: {
-                fontSize: Math.min(20, width / (result.getState().length * factor)) + 'px',
+                fontSize: Math.min(24, width / (result.getState().length * factor)) + 'px',
             },
         });
     };

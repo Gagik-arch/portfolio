@@ -30,7 +30,7 @@
         z-index: 1000 !important;
 
         &>.image_container {
-            border: 3px solid rgba(212, 212, 212, 0.9);
+            border: 3px solid rgba(212, 212, 212, 0.65);
         }
     }
 }

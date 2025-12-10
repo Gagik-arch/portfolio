@@ -137,6 +137,7 @@ function MenuBar() {
                                                                     .format(new Date())
                                                             ],
                                                         });
+                                                        
                                                         check();
                                                     }, 1000);
                                                 };
