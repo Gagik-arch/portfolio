@@ -196,7 +196,7 @@ function Dock() {
                     .onMount(onDockAppMount).dom,
                      
                 new Button({
-                    className: styles.button,
+                    className: `${styles.button} `,
                     key: 'Calendar',
                     events: {
                         onclick: onclick,
