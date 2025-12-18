@@ -51,7 +51,6 @@ function Calculator(props?: AppProps) {
     });
     
     const calculate = (num: string | undefined, action: string | undefined) => {
-        
         switch (action) {
                 case 'backspace':
                     state.setState(prev => prev.slice(0, -1));
@@ -72,7 +71,6 @@ function Calculator(props?: AppProps) {
                     if (state.getState().length) {
                         state.setState( prev => prev + '.');
                     } else { 
-                        
                         const char = result.getState()
                             .at(-1); 
                 
@@ -91,10 +89,10 @@ function Calculator(props?: AppProps) {
                         .at(-1); 
                 
                     const _isAvailableLastNumber = _lastChar ? !isNaN(+_lastChar) : false;
-                    
+
                     if (_lastChar) {
                         if (_isAvailableLastNumber) {
-                            result.setState( eval(result.getState() + ' ' + state.getState()) + action);
+                            result.setState( eval(result.getState() + state.getState()) + action);
                         } else {
                             if (state.getState()) {
                                 result.setState(eval(result.getState() + state.getState()) + action);
@@ -103,7 +101,7 @@ function Calculator(props?: AppProps) {
                             }
                         }
                     } else { 
-                        result.setState( eval(result.getState() + state.getState()) + action);
+                        result.setState( eval((result.getState() || '0') + '+' + (state.getState() || '0')) + action);
                     }
 
                     state.setState('');
@@ -120,7 +118,7 @@ function Calculator(props?: AppProps) {
                     break;
         }
         
-        const width = 396, 
+        const width = 394, 
                 factor = 0.6;
         const fontSize = clampNumber(width / (state.getState().length * factor), 14, 40); 
 
@@ -172,7 +170,7 @@ function Calculator(props?: AppProps) {
         calculate(num, action);
     };
     
-    result.effect((prev) => {
+    result.subscribe((prev) => {
         resultContainer.setProps({
             children: [ prev ],
         }, true);
