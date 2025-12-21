@@ -128,6 +128,7 @@ function Dock() {
                     className: styles.button,
                     id: 'Launchpad',
                     key: 'Launchpad',
+                    tabIndex: -1,
                     children: [
                         new Element<HTMLDivElement>({
                             tagName: 'div',
@@ -173,6 +174,8 @@ function Dock() {
                 new Button({
                     className: styles.button,
                     key: 'Notes',
+                    tabIndex: -1,
+                    id: 'Notes',
                     events: {
                         onclick: onclick,
                         onanimationend: (e) => {
@@ -198,6 +201,8 @@ function Dock() {
                 new Button({
                     className: `${styles.button} `,
                     key: 'Calendar',
+                    tabIndex: -1,
+                    id: 'Calendar',
                     events: {
                         onclick: onclick,
                         onanimationend: (e) => {
@@ -223,6 +228,8 @@ function Dock() {
                 new Button({
                     className: styles.button,
                     key: 'Music',
+                    id: 'Music',
+                    tabIndex: -1,
                     events: {
                         onclick: onclick,
                         onanimationend: (e) => {
@@ -248,6 +255,8 @@ function Dock() {
                 new Button({
                     className: styles.button,
                     key: 'Settings',
+                    id: 'Settings',
+                    tabIndex: -1,
                     events: {
                         onclick: onclick,
                         onanimationend: (e) => {
@@ -281,6 +290,7 @@ function Dock() {
                 new Button({
                     className: styles.button,
                     key: 'Downloads',
+                    tabIndex: -1,
                     children: [
                         new Element<HTMLDivElement>({
                             tagName: 'div',
@@ -306,6 +316,7 @@ function Dock() {
                                 className: styles.button,
                                 key: icon.title,
                                 id: icon.title,
+                                tabIndex: -1,
                                 events: {
                                     onclick: onclick,
                                     onanimationend: (e) => {
@@ -353,6 +364,7 @@ function Dock() {
                 new Button({
                     className: styles.button,
                     key: 'Trash',
+                    tabIndex: -1,
                     children: [
                         new Element<HTMLDivElement>({
                             tagName: 'div',
