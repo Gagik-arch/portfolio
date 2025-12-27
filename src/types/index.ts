@@ -11,3 +11,19 @@ export interface DesktopIconType {
 }
 
 export type ActiveAppType = WindowDimension & AppData;
+
+export interface DocumentType {
+    key: string;
+    label: string;
+}
+
+export interface ResponseErrorType {
+    key: string;
+    code: string;
+}
+
+export interface ResponseSuccessType<T> {
+    errors: ResponseErrorType[] | null;
+    success: boolean;
+    data: T;
+}

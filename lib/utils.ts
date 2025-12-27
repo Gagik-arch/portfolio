@@ -21,7 +21,7 @@ export function setupStyle(
     style: HTMLElement['style'] | undefined,
     dom: HTMLElement
 ) {
-    if (!style || !dom) return;
+    if (!style) return;
 
     Object.entries(style)
         .forEach(([

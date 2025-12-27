@@ -35,9 +35,8 @@ export function setupChildren<T extends HTMLElement>(
                                 oldChild.replaceWith(newChild);
                             }
                         }
-
                     } else {
-                        if (oldChild !== newChild) {
+                        if (!oldChild.isEqualNode(newChild)) {
                             oldChild.replaceWith(newChild);
                         }
                     }
