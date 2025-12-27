@@ -25,7 +25,6 @@ export function setupChildren<T extends HTMLElement>(
 
                 if (newChild && oldChild) {
                     if (oldChild.nodeType === 1 && newChild.nodeType === 1) {
-                       
                         if (oldChild.getAttribute('key') && newChild.getAttribute('key')) {
                             if (oldChild.getAttribute('key') !== newChild.getAttribute('key')) {
                                 oldChild.replaceWith(newChild);
@@ -36,7 +35,7 @@ export function setupChildren<T extends HTMLElement>(
                             }
                         }
                     } else {
-                        if (!oldChild.isEqualNode(newChild)) {
+                        if (oldChild !== newChild) {
                             oldChild.replaceWith(newChild);
                         }
                     }
