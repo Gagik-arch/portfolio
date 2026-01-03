@@ -67,6 +67,7 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     padding: 0 8px;
     box-sizing: content-box;
     position: relative;
+    user-select: none;
 
     &::before {
         content: '';

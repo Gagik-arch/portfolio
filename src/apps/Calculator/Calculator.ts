@@ -13,7 +13,6 @@ import { clampNumber } from '$utils/index';
 function Calculator(props?: AppProps) { 
     const result = new Store('');
     const state = new Store('');
-
     const availableActions = [
         '.',
         '=',
@@ -182,7 +181,9 @@ function Calculator(props?: AppProps) {
             appIcon,
             isNative: true,
             window: new Window({
-                events: { onkeyup: onKeyUp },
+                events: {
+                    onkeyup: onKeyUp,
+                },
                 children: [
                     resultContainer.dom,
                     text
