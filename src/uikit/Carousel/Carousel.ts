@@ -58,7 +58,7 @@ function Carousel({
         },
     }); 
   
-    const mutation = onCssVariableChange(line.dom, () => {
+    const mutation = onCssVariableChange(line.dom, '--offset', () => {
         const dotButtons = dots.dom.querySelectorAll('button');
 
         dotButtons.forEach((button, index) => {
@@ -74,16 +74,16 @@ function Carousel({
     
     const onLeft = () => {
         const old = getCssVariable<number>('--offset', line.dom);
-        const a = ( ((old + images.length) - 1) % images.length).toString();
+        const offset = ( ((old + images.length) - 1) % images.length).toString();
 
-        line.dom.style.setProperty('--offset', a);
+        line.dom.style.setProperty('--offset', offset);
     };
 
     const onRight = () => {
         const old = getCssVariable<number>('--offset', line.dom);
-        const a = ((old + 1) % images.length).toString();
+        const offset = ((old + 1) % images.length).toString();
 
-        line.dom.style.setProperty('--offset', a);
+        line.dom.style.setProperty('--offset', offset);
     };
     
     const loop = () => {

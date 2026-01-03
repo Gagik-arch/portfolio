@@ -19,7 +19,7 @@
                 {
                     "username": "Gagik-arch",
                     "url": {
-                        "href": "https://github.com/Gagik-arch/"
+                        "href": "https://github.com/Gagik-arch"
                     }
                 }
             ]
@@ -49,7 +49,7 @@
             "name": "Experience",
             "items": [
                 {
-                    "company": "Evocabank ",
+                    "company": "Evocabank",
                     "position": "Senior Front-End Developer",
                     "location": "Remote",
                     "date": "September-2025 - November 2025",
@@ -90,7 +90,7 @@
                     }
                 },
                 {
-                    "company": "ithire ",
+                    "company": "Tire",
                     "position": "(full time) Middle+  React , React Native ,Flutter",
                     "location": "Yerevan",
                     "date": "July 2022 - January 2024",
@@ -116,7 +116,7 @@
                     "date": "2019 January - 2021 July",
                     "summary": "<ul><li><p>Making responsive sites.</p></li><li><p>Making web robots that collects tens of millions data points daily .</p></li><li><p>Making multiplatform applications.<br><br>React, React Native, Puppeteer, Node</p></li></ul>",
                     "url": {
-                        "href": "https://www.crawbots.com/"
+                        "href": "https://www.crawbots.com"
                     }
                 }
             ]
@@ -142,12 +142,8 @@
             "name": "Skills",
             "items": [
                 {
-                    "id": "n6g7x6l3gln7vy5panrab0se",
-                    "visible": true,
                     "name": "Java script",
-                    "description": "",
-                    "level": 5,
-                    "keywords": []
+                    "level": 5
                 },
                 {
                     "name": "Type script",
@@ -158,8 +154,8 @@
                     "level": 5
                 },
                 {
-                    "name": "React Native ",
-                    "level": 4
+                    "name": "React Native",
+                    "level": 5
                 },
                 {
                     "name": "Electron.js",
@@ -167,7 +163,7 @@
                 },
                 {
                     "name": "Redux",
-                    "level": 4
+                    "level": 5
                 },
                 {
                     "name": "HTML canvas",
@@ -183,7 +179,7 @@
                 },
                 {
                     "name": "Mobx",
-                    "level": 4
+                    "level": 5
                 }
             ]
         }

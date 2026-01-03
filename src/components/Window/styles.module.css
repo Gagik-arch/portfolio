@@ -28,6 +28,11 @@
         z-index: -1;
     }
 
+    @supports (corner-shape: squircle) {
+        corner-shape: squircle;
+        border-radius: 60px;
+    }
+
     &:focus-within {
         z-index: 2 !important;
 
@@ -82,18 +87,6 @@
         }
     }
 
-    &>button {
-        transition: all 160ms ease;
-        width: calc(14px * var(--scale));
-        height: calc(14px * var(--scale));
-        border-radius: 50%;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        background-color: rgba(135, 135, 135, 0.5);
-
-        &>button:disabled {
-            background-color: rgba(0, 0, 0, 0.1) !important;
-        }
-    }
 }
 
 .left_top {
@@ -135,6 +128,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: all 160ms ease;
+    width: calc(14px * var(--scale));
+    height: calc(14px * var(--scale));
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(135, 135, 135, 0.5);
+
 
     svg {
         opacity: 0;
