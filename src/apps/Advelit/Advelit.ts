@@ -229,7 +229,6 @@ function Advelit(props?:AppProps) {
                             ],
                         },
                     }).dom
-
                 ],
                 width: props?.width,
                 height: props?.height,
