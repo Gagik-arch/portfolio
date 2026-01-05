@@ -29,7 +29,6 @@
     padding: 6px 10px;
     border-radius: 6px;
     color: var(--accents-blue);
-    ;
     font-size: calc(13px * 1.2);
     line-height: calc(16px * 1.2);
     transition: all 18ms ease;

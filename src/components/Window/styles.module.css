@@ -37,7 +37,7 @@
         z-index: 2 !important;
 
         &::before {
-            backdrop-filter: blur(40px);
+            backdrop-filter: blur(4px) saturate(50%);
         }
 
         .anchor {

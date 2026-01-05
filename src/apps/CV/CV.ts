@@ -76,11 +76,13 @@ function CV(props?: AppProps) {
                                                 ],
                                             },
                                         }).dom,
+                                        
                                         new Typography({
                                             className: styles.text_center,
                                             text: json.basics.name,
                                             variant: 'title1-emphasized',
                                         }).dom,
+
                                         new Typography({
                                             className: styles.text_center,
                                             style: { margin: '8px 0' },
