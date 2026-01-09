@@ -47,8 +47,6 @@
     align-items: center
 }
 
-.root {}
-
 .dots {
     position: absolute;
     bottom: 20px;
