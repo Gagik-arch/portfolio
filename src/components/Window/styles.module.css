@@ -65,11 +65,9 @@
     left: 22px;
     top: 22px;
     gap: 8px;
-    z-index: 56;
+    z-index: 5555;
 
     &:hover {
-        z-index: 2 !important;
-
         .traffic_light svg {
             opacity: 1;
         }
