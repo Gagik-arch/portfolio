@@ -175,13 +175,14 @@ class Window extends Element<HTMLDivElement> {
 
         this.resizeAnchor = this.detectAnchorSide(e);
         this.isMouseDowned = this.dom === target.closest('.' + styles.root);
-    
-        if (this.isMouseDowned) {
-            this.setProps({ 'data-resizing': !!this.resizeAnchor + '' });
-         
-            this.dom.focus();
 
+        if (this.isMouseDowned) {
             desktopStore.setFocusApp(this.dom.id);
+            this.setProps({ 'data-resizing': !!this.resizeAnchor + '' });
+        
+            setTimeout(() => {
+                this.dom.focus();
+            }, 0);
         }
 
         if (this.resizeAnchor) return; 

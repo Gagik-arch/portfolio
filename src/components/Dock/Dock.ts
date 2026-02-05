@@ -43,7 +43,9 @@ function Dock() {
         
         desktopStore.setFocusApp(app.window.dom.id);
 
-        app.window.dom.focus();
+        timeout = setTimeout(() => {
+            app.window.dom.focus();
+        }, 0);
     };
     
     const onOpenAnimationEnd = (e: AnimationEvent, appName: keyof typeof allApps) => {
@@ -55,7 +57,7 @@ function Dock() {
 
         timeout = setTimeout(() => {
             app.window.dom.focus();
-        }, 300);
+        }, 0);
     };
 
     const subscribers: (()=>void)[] = [];
@@ -94,7 +96,7 @@ function Dock() {
     
     dockIconsStore.effect((appIcons) => {
         const calendar = localStorage.getItem('calendarIcon') as string;
-
+     
         dock.setProps({
             children: [
                 new Button({
