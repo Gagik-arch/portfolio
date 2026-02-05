@@ -8,6 +8,7 @@ import Settings from './Settings';
 import Datewise from './Datewise';
 import CV from './CV';
 import Music from './Music';
+import Balljunge from './Balljunge';
     
 const apps = {
     Calculator,
@@ -20,6 +21,7 @@ const apps = {
     Datewise,
     CV,
     Music,
+    Balljunge,
 } as const;
     
 export default apps;

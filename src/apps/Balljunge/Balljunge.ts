@@ -1,6 +1,6 @@
 import App from '$components/App';
 import Window from '$components/Window';
-import appIcon from '$assets/images/app-icons/datewise.png';
+import appIcon from '$assets/images/app-icons/balljunge.png';
 import type { AppProps } from '$apps/types';
 import styles from './style.module.css';
 import Element from '$lib/Element';
@@ -8,10 +8,10 @@ import Typography from '$uikit/Typography';
 import Scroll from '$uikit/Scroll/Scroll';
 import Button from '$uikit/Button';
 
-function Datewise(props?:AppProps) { 
+function Balljunge(props?:AppProps) { 
     return (
         new App({
-            name: 'Datewise',
+            name: 'Balljunge',
             appIcon,
             window: new Window({
                 className: styles.root,
@@ -24,11 +24,11 @@ function Datewise(props?:AppProps) {
                                 new Scroll({
                                     children: [
                                         new Typography({
-                                            text: 'Datewise', variant: 'title1-regular', className: styles.title,
+                                            text: 'Balljunge', variant: 'title1-regular', className: styles.title,
                                         }).dom,
 
                                         new Typography({
-                                            text: 'Lightweight Calendar & Date Management npm library', variant: 'title3-regular',
+                                            text: 'Soccer players statistic collector app.', variant: 'title3-regular',
                                             className: styles.subtitle,
                                         }).dom,
 
@@ -45,7 +45,7 @@ function Datewise(props?:AppProps) {
                                                         variant: 'body-emphasized',
                                                     }).dom,
                                                     new Typography({
-                                                        text: 'Type script.', 
+                                                        text: 'Type script, React Native CLI ', 
                                                         isInline: true,
                                                     }).dom
                                                 ],
@@ -61,18 +61,7 @@ function Datewise(props?:AppProps) {
                                         }).dom,
 
                                         new Typography({
-                                            text: 'Datewise is a minimal, developer-friendly JavaScript/TypeScript library for generating and managing calendar data. Instead of focusing on heavy date arithmetic, it provides a structured way to build calendars, date pickers, and scheduling interfaces by exposing month, week, and day metadata in an intuitive format.', 
-                                        }).dom,
-
-                                        new Typography({
-                                            style: {
-                                                margin: '20px 0',
-                                            },
-                                            text: 'The library offers a simple Calendar class that outputs localized month names, weekday labels, and an array of day objects—each containing the underlying Date instance and contextual status (such as whether it belongs to the current month). It also includes navigation helpers like moving to previous/next months or years, selecting dates, and switching locales dynamically.', 
-                                        }).dom,
-
-                                        new Typography({
-                                            text: 'With a clean API, no external dependencies, and built-in TypeScript support, datewise is ideal for building custom calendar components, booking flows, or any UI that requires date visualization and lightweight date handling.', 
+                                            text: 'Balljunge is an app the target of which are football clubs and trainers. The trainers or the invited assistants can record the match actions and get the effectiveness statistics of the team both per player and per game. The uniqueness of the app is also the subscription plans (3 subscription plans-Bambini, Junior, Pro). Each plan has a different UI engaging more actions for recording than the previous one. This makes the app usage wider from law class clubs to professional football clubs and trainers.', 
                                         }).dom,
 
                                         new Element<HTMLDivElement>({
@@ -81,20 +70,11 @@ function Datewise(props?:AppProps) {
                                                 className: styles.toggle_container,
                                                 children: [
                                                     new Button({
-                                                        children: [ 'Vie demo' ],
-                                                        variant: 'secondary',
-                                                        events: {
-                                                            onclick: () => {
-                                                                window.open('https://datewise-khaki.vercel.app/', '_blank');
-                                                            },
-                                                        },
-                                                    }).dom,
-                                                    new Button({
-                                                        children: [ 'View npm' ],
+                                                        children: [ 'View' ],
                                                         variant: 'primary',
                                                         events: {
                                                             onclick: () => {
-                                                                window.open('https://www.npmjs.com/package/datewise', '_blank');
+                                                                window.open('https://beewebsystems.com/works/Balljunge', '_blank');
                                                             },
                                                         },
                                                     }).dom
@@ -115,10 +95,10 @@ function Datewise(props?:AppProps) {
                 id: props?.id,
                 key: props?.key,
                 minWidth: 500,
-                minHeight: 400,
+                minHeight: 330,
             }),
         })
     );
 }
 
-export default Datewise;
+export default Balljunge;

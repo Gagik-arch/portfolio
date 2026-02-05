@@ -6,6 +6,7 @@ import fibiIcon from '$assets/images/app-icons/fibi.png';
 import datewiseIcon from '$assets/images/app-icons/datewise.png';
 import { extractRangeFromIconToIcon } from '$components/Desktop/utils';
 import previewIcon from '$assets/images/app-icons/preview.png';
+import balljungeIcon from '$assets/images/app-icons/balljunge.png';
 
 const initialState:DesktopIconType[] = [
     {
@@ -27,6 +28,11 @@ const initialState:DesktopIconType[] = [
         index: 3,
         title: 'CV',
         appIcon: previewIcon,
+    },
+    {
+        index: 4,
+        title: 'Balljunge',
+        appIcon: balljungeIcon,
     }
 ];
 
