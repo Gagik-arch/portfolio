@@ -207,46 +207,41 @@ class Window extends Element<HTMLDivElement> {
         const rect = this.dom.getBoundingClientRect();
        
         const onTop = () => {
-            const height = rect.height - e.movementY;
-            if (height <= scaledHeight) return; 
+            const height = (rect.height ) - e.movementY;
+            if (height <= this.minHeight) return; 
                 
             this.y = Math.floor(Math.max(((rect.y - desktop.top) + e.movementY), 0));
     
             this.dom.style.setProperty('--top', this.y + 'px');
 
-            if ( this.y > desktop.top) {
-                this.dom.style.setProperty('--height', Math.floor(Math.max(height, scaledHeight)) + 'px');
+            if (this.y > 0) {
+                this.dom.style.setProperty('--height', Math.floor(height) + 'px');
             }
         };
 
         const onLeft = () => {
-            const width = rect.width - e.movementX;
+            const width = Math.floor(rect.width - e.movementX);
             const left = Math.floor(Math.max(rect.left + e.movementX, 0));
-                
-            if (width <= scaledWidth || left === 0) return; 
 
+            if (width <= scaledWidth || left <= 0) return;
+            
             this.x = left;
-            this.dom.style.setProperty('--width', Math.floor(Math.max(width, scaledWidth)) + 'px');
+            this.dom.style.setProperty('--width', width + 'px');
             this.dom.style.setProperty('--left', this.x + 'px');
 
             this.dom.classList.add('e-resize');
         };
 
         const onBottom = () => { 
-            const height = Math.floor( Math.max(rect.height + e.movementY, scaledHeight));
+            const height = rangeNumber(rect.height + e.movementY, scaledHeight, desktop.bottom - rect.y); 
 
-            if (rect.bottom <= Math.round(desktop.bottom)) {
-                this.dom.style.setProperty('--height', `${Math.floor(height)}px`);
-            } else { 
-              
-                this.dom.style.setProperty('--height', `${desktop.height - rect.top + Math.floor(desktop.top)}px`);
-            }
+            this.dom.style.setProperty('--height', `${height}px`);
         };
 
         const onRight = () => {
-            const width = Math.floor(Math.max(rect.width + e.movementX, scaledWidth));
-                 
-            this.dom.style.setProperty('--width', `${rect.right <= desktop.right ? width : desktop.width - rect.left}px`);
+            const width = rangeNumber(rect.width + e.movementX, this.minWidth, desktop.right - rect.x); 
+
+            this.dom.style.setProperty('--width', `${width}px`);
         };
     
         switch (this.resizeAnchor) {
