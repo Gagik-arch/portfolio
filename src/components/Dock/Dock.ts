@@ -26,8 +26,11 @@ function Dock() {
 
         const buttonRect = button.getBoundingClientRect();
         const cursorDistance = e.clientX - buttonRect.x;
-        const value = Math.abs(+(cursorDistance / 11).toFixed(0)) - 3;
-      
+
+        const step = Math.trunc(cursorDistance / 15) + 1;
+
+        const value = Math.abs(step) - 4;
+
         target.style.setProperty('--offset', `${value}px`);
     };
 
