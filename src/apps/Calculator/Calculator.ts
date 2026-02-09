@@ -8,7 +8,7 @@ import Element from '$lib/Element';
 import Icon from '$uikit/Icon';
 import Button from '$uikit/Button';
 import Store from '$lib/store';
-import { clampNumber } from '$utils/index';
+import { rangeNumber } from '$utils/index';
 
 function Calculator(props?: AppProps) { 
     const result = new Store('');
@@ -119,7 +119,7 @@ function Calculator(props?: AppProps) {
         
         const width = 394, 
                 factor = 0.6;
-        const fontSize = clampNumber(width / (state.getState().length * factor), 14, 40); 
+        const fontSize = rangeNumber(width / (state.getState().length * factor), 14, 40); 
 
         if (num) { 
             if (fontSize === 14) return; 

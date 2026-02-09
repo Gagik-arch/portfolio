@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import type { WindowDimension, WindowProps } from './types';
 import Controls from './Controls';
 import {
-    clampNumber, genRandomNumber, getCssVariable  
+    rangeNumber, genRandomNumber, getCssVariable  
 } from '$utils/index';
 import desktopStore from '$store/desktop.store';
 import dockStyles from '../Dock/style.module.css';
@@ -139,25 +139,24 @@ class Window extends Element<HTMLDivElement> {
     private readonly onMove = (e: MouseEvent) => {
         const desktop = document.getElementById( 'desktop')
             ?.getBoundingClientRect();
-
+            
         if (document.activeElement !== this.dom) return;
-        
         this.changeCursorAnchorHover(e);
         const target = e.target as HTMLElement;
-
+        
         if (target !== this.dom) { 
             this.dom.classList.remove('n-resize', 'e-resize', 'grabbing');
         }
-     
+        
         if (!this.isMouseDowned || !desktop) return;
 
         this.onResize(e);
    
         if (this.resizeAnchor) return; 
-        
         const rect = this.dom.getBoundingClientRect();
-        this.x = Math.round(clampNumber(rect.x + e.movementX, 0, window.innerWidth - rect.width));
-        this.y = Math.round(clampNumber(rect.y + e.movementY, desktop.top, desktop.bottom - rect.height));
+
+        this.x = Math.round(rangeNumber(rect.x + e.movementX, 0, window.innerWidth - rect.width));
+        this.y = Math.round(rangeNumber((rect.y - desktop.top) + e.movementY, 0, desktop.height - rect.height));
 
         this.dom.style.setProperty( '--left', this.x + 'px');
         this.dom.style.setProperty( '--top', this.y + 'px');
@@ -211,7 +210,7 @@ class Window extends Element<HTMLDivElement> {
             const height = rect.height - e.movementY;
             if (height <= scaledHeight) return; 
                 
-            this.y = Math.floor(Math.max((rect.top + e.movementY), desktop.top));
+            this.y = Math.floor(Math.max(((rect.y - desktop.top) + e.movementY), 0));
     
             this.dom.style.setProperty('--top', this.y + 'px');
 
