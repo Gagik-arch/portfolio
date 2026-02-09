@@ -4,7 +4,7 @@ export const minNumberIndex = (arr: number[]): number => {
     return arr.reduce((r, v, i, a) => v > a[r] ? r : i, -1);
 };
 
-export const clampNumber = (num:number, min:number, max:number) => {
+export const rangeNumber = (num:number, min:number, max:number) => {
     return Math.max(min, Math.min(num, max));
 };
 

@@ -8,7 +8,7 @@ import {
     convertRealToVirtual, convertVirtualToIndex, convertVirtualToReal 
 } from './utils';
 import type { DesktopIconType } from '$types/index';
-import { clampNumber } from '$utils/index';
+import { rangeNumber } from '$utils/index';
 import allApps from '$apps/index';
 import dockIconsStore from '$store/dockIcons.store';
 
@@ -164,8 +164,8 @@ function Desktop() {
         
         element.classList.add('grabbing');
 
-        element.style.setProperty('--x', Math.floor( clampNumber(cord.x, 0, rootRect.right - elementRect.width)) + 'px');
-        element.style.setProperty('--y', Math.floor( clampNumber(cord.y, 0, rootRect.height - elementRect.height ) ) + 'px'); 
+        element.style.setProperty('--x', Math.floor( rangeNumber(cord.x, 0, rootRect.right - elementRect.width)) + 'px');
+        element.style.setProperty('--y', Math.floor( rangeNumber(cord.y, 0, rootRect.height - elementRect.height ) ) + 'px'); 
     };
 
     window.addEventListener('mouseup', windowMouseUp );

@@ -25,6 +25,7 @@ function App() {
                 props: {
                     id: 'container',
                     children: [
+
                         MenuBar(),
                         Desktop(),
                         Dock()

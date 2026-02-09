@@ -1,7 +1,6 @@
 .root {
     flex: 1;
     position: relative;
-    overflow: hidden;
     margin-bottom: 5px;
     --icon-size: 100px;
 }
