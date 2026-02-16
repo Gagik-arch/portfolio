@@ -43,7 +43,7 @@ const Row = (left:string, right?:string, isSubtitle = false) => {
 
 function CV(props?: AppProps) { 
     const width = getCssVariable<number>('--scale') === 1 ? 800 : 600;
-
+ 
     return (
         new App({
             name: 'CV',

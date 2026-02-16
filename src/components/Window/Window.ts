@@ -208,7 +208,7 @@ class Window extends Element<HTMLDivElement> {
        
         const onTop = () => {
             const height = (rect.height ) - e.movementY;
-            if (height <= this.minHeight) return; 
+            if (height < this.minHeight) return; 
                 
             this.y = Math.floor(Math.max(((rect.y - desktop.top) + e.movementY), 0));
     
