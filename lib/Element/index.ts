@@ -7,7 +7,7 @@ import {
 } from '../utils';
 import { setupChildren } from './utils';
 
-class Element <T extends HTMLElementTags > {
+class Element<T extends HTMLElementTags> {
     public dom: T;
     readonly #events: EventType<T> = {};
 
@@ -19,12 +19,16 @@ class Element <T extends HTMLElementTags > {
             style,
             events,
             key,
-            includeKey,
             ...props
         },
         rootElement,
     }: ElementConstructorType<T>) {
         this.dom = document.createElement(tagName) as T;
+        
+        if (key) {
+            this.dom.setAttribute('key', key);
+        }
+
         if (rootElement) {
             rootElement.appendChild(this.dom);
         }
@@ -38,14 +42,11 @@ class Element <T extends HTMLElementTags > {
                 className,
                 children,
                 style,
-                key,
-                includeKey,
                 ...props,
             } as Omit<ElementPropsType<T>, 'className' | 'children'> & {
                 className?: ((classList: DOMTokenList) => void) | string | undefined;
-                children?: ((childNodes:Set<ChildNode>)=>Set<ChildNode>) | Children[] | undefined;
-            },
-            true
+                children?: ((childNodes: Set<ChildNode>) => Set<ChildNode>) | Children[] | undefined;
+            }
         );
 
         Object.entries<EventType<T>[keyof EventType<T>]>(this.#events)
@@ -53,7 +54,9 @@ class Element <T extends HTMLElementTags > {
                 type,
                 listener
             ]) => {
-                this.dom.addEventListener(type.replace('on', ''), listener as EventListener);
+                const event = type.replace('on', '');
+
+                this.dom.addEventListener(event, listener as EventListener);
             });
     }
 
@@ -65,22 +68,21 @@ class Element <T extends HTMLElementTags > {
             ...props
         }: Omit<ElementPropsType<T>, 'className' | 'children'> & {
             className?: ((classList: DOMTokenList) => void) | string | undefined;
-            children?: ((childNodes:Set<ChildNode>)=>Set<ChildNode>) | Children[] | undefined;
+            children?: ((childNodes: Set<ChildNode>) => Set<ChildNode>) | Children[] | undefined;
         },
         isForceUpdate = false
     ) {
 
-        setupStyle(style, this.dom);
         setupClassName(className, this.dom);
-
+        setupStyle(style, this.dom);
         setupChildren(children, this.dom, isForceUpdate);
-     
+
         Object.entries(props)
             .forEach(([
                 name,
                 value
             ]) => {
-                if (this.dom[name as keyof T] !== value && typeof value !== 'function') { 
+                if (this.dom[name as keyof T] !== value && typeof value !== 'function') {
                     this.dom.setAttribute(name, value as string);
                     this.dom[name as keyof T] = value;
                 }
@@ -93,7 +95,7 @@ class Element <T extends HTMLElementTags > {
         const oldChild = this.dom.childNodes[index] as (ChildNode | undefined);
 
         if (oldChild === newChild) return;
-   
+
         if (!newChild) {
             if (index > -1 && oldChild) this.dom.removeChild(oldChild);
         } else {
@@ -108,24 +110,23 @@ class Element <T extends HTMLElementTags > {
     public remove() {
         this.dom.remove();
     }
-    
-    public onMount(callback: (e:this) => void) {
 
+    public onMount(callback: (e: this) => void) {
         const check = () => {
             if (document.body.contains(this.dom)) {
                 callback(this);
             } else {
-
                 requestAnimationFrame(check);
             }
         };
 
         check();
+        
         return this;
     }
 
-    public onUnMount(callback:(e:this)=>void) {
-        const observer = new MutationObserver(() => {
+    public onUnMount(callback: (e: this) => void) {
+        const observer = new MutationObserver(() => { 
             if (!document.body.contains(this.dom)) {
                 callback(this);
 
@@ -141,7 +142,7 @@ class Element <T extends HTMLElementTags > {
             }
         });
 
-        observer.observe(document.body, {
+        observer.observe(document.body, { //  FIX: check observer  change document.body to this.dom
             childList: true, subtree: true,
         });
 

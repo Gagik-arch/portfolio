@@ -11,17 +11,26 @@ export function setupClassName(
     if (typeof className === 'function') {
         className(dom.classList);
     } else {
-        if (dom.className !== className) { 
+        if (dom.className !== className) {
             dom.className = className;
         }
     }
 }
 
+export function setupInnerHtml(
+    oldChild: HTMLElement,
+    newChild: HTMLElement
+) {
+    if (oldChild.innerHTML !== newChild.innerHTML) {
+        oldChild.innerHTML = newChild.innerHTML;
+    }
+}
+
 export function setupStyle(
     style: HTMLElement['style'] | undefined,
-    dom: HTMLElement
+    dom: HTMLElement | undefined
 ) {
-    if (!style) return;
+    if (!style || !dom) return;
 
     Object.entries(style)
         .forEach(([
@@ -32,4 +41,47 @@ export function setupStyle(
 
             dom.style.setProperty(camelToKebab(property), value.toString());
         });
+}
+
+export const isPlainObject = (val: unknown): val is Record<string, unknown> => Object.prototype.toString.call(val) === '[object Object]';
+
+export const isEqualObjects = (a: unknown, b: unknown): boolean => {
+    if (Object.is(a, b)) return true;
+
+    if (Array.isArray(a) && Array.isArray(b)) {
+        if (a.length !== b.length) return false;
+        return a.every((v, i) => isEqualObjects(v, b[i]));
+    }
+
+    if (isPlainObject(a) && isPlainObject(b)) {
+        const keysA = Object.keys(a);
+        const keysB = Object.keys(b);
+
+        if (keysA.length !== keysB.length) return false;
+
+        for (const key of keysA) {
+            if (!Object.prototype.hasOwnProperty.call(b, key)) {
+                return false;
+            }
+            if (!isEqualObjects(a[key], b[key])) return false;
+        }
+
+        return true;
+    }
+
+    return false;
+};
+
+export function mergeAttributes(
+    oldChild: HTMLElement,
+    newChild: HTMLElement
+) {
+    for (let i = 0; i < newChild.getAttributeNames().length; i++) {
+        const oldChildAtt = oldChild.attributes[i];
+        const newChildAtt = newChild.attributes[i];
+
+        if (oldChildAtt.name === newChildAtt.name && oldChildAtt.value !== newChildAtt.value) {
+            oldChild.setAttribute(newChildAtt.name, newChildAtt.value);
+        }
+    }
 }

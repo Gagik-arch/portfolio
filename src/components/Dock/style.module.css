@@ -80,9 +80,22 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
         cursor: inherit;
     }
 
+    &::after {
+        content: '';
+        position: absolute;
+        height: calc(4px * var(--scale)) !important;
+        width: calc(4px * var(--scale)) !important;
+        background-color: rgba(0, 0, 0, 0.5);
+        bottom: -10px;
+        border-radius: 50%;
+        opacity: 0;
+        transition: all 200ms ease
+    }
+
     img {
         width: 100%;
         height: 100%;
+        transition: all 200ms linear
     }
 
     &>div {
@@ -222,10 +235,6 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
 }
 
 .is_opened {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     &::after {
         content: '';
         position: absolute;
@@ -233,7 +242,8 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
         width: calc(4px * var(--scale)) !important;
         background-color: rgba(0, 0, 0, 0.5);
         bottom: -10px;
-        border-radius: 50%
+        border-radius: 50%;
+        opacity: 1;
     }
 
     img {

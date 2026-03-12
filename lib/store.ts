@@ -1,14 +1,14 @@
-import { isObject } from '$utils/index';
+import { isEqualObjects, isPlainObject } from './utils';
 
 class Store<T> {
     private state: T;
-    private listeners: ((state:T)=>void)[] = [];
+    private listeners: ((state: T) => void)[] = [];
 
-    public constructor(initialState:T) {
+    public constructor(initialState: T) {
         this.state = initialState;
     }
 
-    public subscribe(callback: (state: T) => void):()=>void {
+    public subscribe(callback: (state: T) => void): () => void {
         this.listeners.push(callback);
 
         return () => {
@@ -27,14 +27,14 @@ class Store<T> {
             = typeof newState === 'function'
                 ? (newState as (prev: T) => T)(this.state)
                 : newState;
-    
-        if (isObject(this.state) && isObject(state)) {
-            if (!this.state.isEqual(state)) { 
+
+        if (isPlainObject(this.state) && isPlainObject(state)) {
+            if (!isEqualObjects(this.state, state)) {
                 this.state = state;
                 this.notify();
             }
-        } else { 
-            if (this.state === state) return; 
+        } else {
+            if (this.state === state) return;
 
             this.state = state;
             this.notify();
@@ -48,7 +48,7 @@ class Store<T> {
     private notify() {
         this.listeners.forEach((listener) => {
             listener(this.state);
-        } );
+        });
     }
 }
 
