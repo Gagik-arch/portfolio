@@ -1,6 +1,7 @@
 import type {
     ElementPropsType, ElementConstructorType, HTMLElementTags, EventType,
-    Children
+    Children,
+    KeyedHTMLElement
 } from './types';
 import {
     setupClassName, setupStyle
@@ -9,7 +10,6 @@ import { setupChildren } from './utils';
 
 class Element<T extends HTMLElementTags> {
     public dom: T;
-    readonly #events: EventType<T> = {};
 
     public constructor({
         tagName,
@@ -24,19 +24,20 @@ class Element<T extends HTMLElementTags> {
         rootElement,
     }: ElementConstructorType<T>) {
         this.dom = document.createElement(tagName) as T;
-        
+
         if (key) {
-            this.dom.setAttribute('key', key);
+            (this.dom as KeyedHTMLElement<T>).__key = key;
         }
 
         if (rootElement) {
             rootElement.appendChild(this.dom);
         }
 
-        if (events) {
-            this.#events = events;
-        }
-
+        this.dom.__props = {
+            className,
+            style,
+        };
+  
         this.setProps(
             {
                 className,
@@ -47,17 +48,30 @@ class Element<T extends HTMLElementTags> {
                 className?: ((classList: DOMTokenList) => void) | string | undefined;
                 children?: ((childNodes: Set<ChildNode>) => Set<ChildNode>) | Children[] | undefined;
             }
-        );
+        ); 
 
-        Object.entries<EventType<T>[keyof EventType<T>]>(this.#events)
-            .forEach(([
-                type,
-                listener
-            ]) => {
-                const event = type.replace('on', '');
+        queueMicrotask(() => {
+            const DOM = ([ ...(this.dom.parentElement?.children || []) ]).find(item => item.isEqualNode(this.dom));
 
-                this.dom.addEventListener(event, listener as EventListener);
-            });
+            if (DOM) {
+                this.dom = DOM as T;
+            }
+
+            if ( !events) return;
+
+            Object.entries<EventType<T>[keyof EventType<T>]>(events)
+                .forEach(([
+                    type,
+                    listener
+                ]) => {
+                    const event = type.replace('on', '');
+
+                    this.dom.addEventListener(event, listener as EventListener);
+
+                });
+
+            (this.dom as KeyedHTMLElement<T>).__events = events;
+        });
     }
 
     public setProps(
@@ -72,39 +86,40 @@ class Element<T extends HTMLElementTags> {
         },
         isForceUpdate = false
     ) {
-
         setupClassName(className, this.dom);
         setupStyle(style, this.dom);
         setupChildren(children, this.dom, isForceUpdate);
-
+        
         Object.entries(props)
             .forEach(([
                 name,
                 value
             ]) => {
-                if (this.dom[name as keyof T] !== value && typeof value !== 'function') {
+                if (typeof value === 'function') return;
+
+                if (name in this.dom) {
+                    (this.dom)[name as keyof T] = value;
+                } else {
                     this.dom.setAttribute(name, value as string);
-                    this.dom[name as keyof T] = value;
                 }
             });
 
         return this;
     }
 
-    public replaceChild(index: number, newChild: null | undefined | HTMLElement | string) {
-        const oldChild = this.dom.childNodes[index] as (ChildNode | undefined);
+    public destroy() {
+        if (!this.dom.__events) return;
 
-        if (oldChild === newChild) return;
+        Object.entries(this.dom.__events)
+            .forEach(([
+                type,
+                listener 
+            ]) => {
+                const event = type.replace('on', '');
+                this.dom.removeEventListener(event, listener as EventListener);
+            });
 
-        if (!newChild) {
-            if (index > -1 && oldChild) this.dom.removeChild(oldChild);
-        } else {
-            if (oldChild !== undefined) {
-                oldChild.replaceWith(newChild);
-            } else {
-                this.dom.append(newChild);
-            }
-        }
+        this.remove();
     }
 
     public remove() {
@@ -112,38 +127,51 @@ class Element<T extends HTMLElementTags> {
     }
 
     public onMount(callback: (e: this) => void) {
-        const check = () => {
-            if (document.body.contains(this.dom)) {
+        if (this.dom.isConnected) {
+            callback(this);
+            return this;
+        }
+        const observer = new MutationObserver(() => {
+            if (this.dom.isConnected) {
                 callback(this);
-            } else {
-                requestAnimationFrame(check);
+                observer.disconnect();
             }
-        };
+        });
 
-        check();
-        
+        observer.observe(document, {
+            childList: true,
+            subtree: true,
+        });
+
         return this;
     }
 
     public onUnMount(callback: (e: this) => void) {
-        const observer = new MutationObserver(() => { 
-            if (!document.body.contains(this.dom)) {
+        const observer = new MutationObserver(() => {
+
+            if (!this.dom.isConnected) {
                 callback(this);
 
-                Object.entries<EventType<T>[keyof EventType<T>]>(this.#events)
-                    .forEach(([
-                        type,
-                        listener
-                    ]) => {
-                        this.dom.removeEventListener(type, listener as EventListener);
-                    });
+                const DOM = this.dom as KeyedHTMLElement<HTMLElement>;
+
+                if ((DOM).__events) {
+                    Object.entries(DOM.__events)
+                        .forEach(([
+                            type,
+                            listener 
+                        ]) => {
+                            const event = type.replace('on', '');
+                            this.dom.removeEventListener(event, listener as EventListener);
+                        });
+                }
 
                 observer.disconnect();
             }
         });
 
-        observer.observe(document.body, { //  FIX: check observer  change document.body to this.dom
-            childList: true, subtree: true,
+        observer.observe(document, {
+            childList: true,
+            subtree: true,
         });
 
         return this;

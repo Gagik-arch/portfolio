@@ -236,13 +236,6 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
 
 .is_opened {
     &::after {
-        content: '';
-        position: absolute;
-        height: calc(4px * var(--scale)) !important;
-        width: calc(4px * var(--scale)) !important;
-        background-color: rgba(0, 0, 0, 0.5);
-        bottom: -10px;
-        border-radius: 50%;
         opacity: 1;
     }
 

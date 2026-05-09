@@ -19,7 +19,7 @@ class Store<T> {
     public effect(callback: (state: T) => void): () => void {
         callback(this.getState());
 
-        return this.subscribe((prevState) => callback(prevState));
+        return this.subscribe(callback);
     }
 
     public setState(newState: T | ((prev: T) => T)) {

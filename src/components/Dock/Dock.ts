@@ -13,7 +13,6 @@ import Image from '$uikit/Image';
 import Tooltip from './Tooltip';
 import desktopStore from '$store/desktop.store';
 import allApps from '$apps/index';
-import dockIconsStore from '$store/dockIcons.store';
 
 function Dock() {
     const calendar = localStorage.getItem('calendarIcon') as string;
@@ -47,6 +46,11 @@ function Dock() {
             app.window.dom.focus();
         } else { 
             element.classList.add(styles.on_open_animate);
+            const appName = element.id as keyof typeof allApps;
+        
+            const app = allApps[appName]({ key: `window/${appName}` });
+
+            desktopStore.addApp(app);
         }
     };
      
@@ -60,10 +64,8 @@ function Dock() {
         
         const app = allApps[appName]();
 
-        desktopStore.addApp(app);
-
         app.window.dom.focus();
-
+   
     };
     
     const dock = new Element<HTMLDivElement>({
@@ -73,12 +75,12 @@ function Dock() {
             events: {
                 onmousemove: onMouseMove,
                 onanimationend: onOpenAnimationEnd,
-                onclick: onClick,
+                onmousedown: onClick,
             },
             className: `${styles.root} dock`,
         },
     });
-    
+
     desktopStore.effect((state) => {
         dock.setProps({
             children: [
@@ -220,83 +222,83 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .dom,
-
-                new Element<HTMLHRElement>({
-                    tagName: 'hr',
-                    props: {
-                        key: 'separator',
-                        className: styles.separator,
-                    },
-                }).dom,
-
-                new Button({
-                    className: styles.button,
-                    key: 'Downloads',
-                    tabIndex: -1,
-                    children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({
-                                        src: folder,
-                          
-                                    }).dom,
-                                    Tooltip( 'Downloads' )
-                                ],
-                            },
-                        }).dom
-                       
-                    ],
-                })
-                    .dom,
-                
-                ...dockIconsStore.getState()
-                    .map(icon => {
-                        const app = state.activeApps.findIndex(a => a.name === icon.title) > -1;
-
-                        return (
-                            new Button({
-                                className: `${styles.button} ${app ? styles.is_opened : ''}`,
-                                key: icon.title,
-                                id: icon.title,
-                                tabIndex: -1,
-                                children: [
-                                    new Element<HTMLDivElement>({
-                                        tagName: 'div',
-                                        props: {
-                                            children: [
-                                                new Image({ src: icon.image }).dom,
-                                                Tooltip(icon.title)
-                                            ],
-                                        },
-                                    }).dom
-                                ],
-                            })
-                                .dom
-                        );
-                    }),
-
-                new Button({
-                    className: styles.button,
-                    key: 'Trash',
-                    tabIndex: -1,
-                    children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({
-                                        src: trash,
-                                    }).dom,
-                                    Tooltip( 'Trash' )
-                                ],
-                            },
-                        }).dom
-                    ],
-                })
                     .dom
+
+                // new Element<HTMLHRElement>({
+                //     tagName: 'hr',
+                //     props: {
+                //         key: 'separator',
+                //         className: styles.separator,
+                //     },
+                // }).dom,
+
+                // new Button({
+                //     className: styles.button,
+                //     key: 'Downloads',
+                //     tabIndex: -1,
+                //     children: [
+                //         new Element<HTMLDivElement>({
+                //             tagName: 'div',
+                //             props: {
+                //                 children: [
+                //                     new Image({
+                //                         src: folder,
+                          
+                //                     }).dom,
+                //                     Tooltip( 'Downloads' )
+                //                 ],
+                //             },
+                //         }).dom
+                       
+                //     ],
+                // })
+                //     .dom,
+                
+                // // ...dockIconsStore.getState()
+                // //     .map(icon => {
+                // //         const app = state.activeApps.findIndex(a => a.name === icon.title) > -1;
+
+                // //         return (
+                // //             new Button({
+                // //                 className: `${styles.button} ${app ? styles.is_opened : ''}`,
+                // //                 key: icon.title,
+                // //                 id: icon.title,
+                // //                 tabIndex: -1,
+                // //                 children: [
+                // //                     new Element<HTMLDivElement>({
+                // //                         tagName: 'div',
+                // //                         props: {
+                // //                             children: [
+                // //                                 new Image({ src: icon.image }).dom,
+                // //                                 Tooltip(icon.title)
+                // //                             ],
+                // //                         },
+                // //                     }).dom
+                // //                 ],
+                // //             })
+                // //                 .dom
+                // //         );
+                // //     }),
+
+                // new Button({
+                //     className: styles.button,
+                //     key: 'Trash',
+                //     tabIndex: -1,
+                //     children: [
+                //         new Element<HTMLDivElement>({
+                //             tagName: 'div',
+                //             props: {
+                //                 children: [
+                //                     new Image({
+                //                         src: trash,
+                //                     }).dom,
+                //                     Tooltip( 'Trash' )
+                //                 ],
+                //             },
+                //         }).dom
+                //     ],
+                // })
+                //     .dom
             ],
         });
     });

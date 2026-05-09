@@ -28,7 +28,7 @@ export function setupInnerHtml(
 
 export function setupStyle(
     style: HTMLElement['style'] | undefined,
-    dom: HTMLElement | undefined
+    dom?: HTMLElement
 ) {
     if (!style || !dom) return;
 
@@ -43,13 +43,14 @@ export function setupStyle(
         });
 }
 
-export const isPlainObject = (val: unknown): val is Record<string, unknown> => Object.prototype.toString.call(val) === '[object Object]';
+export const isPlainObject = (val: unknown): val is Record<string, unknown> => Object.prototype.toString.call(val) === '[object Object]' || Array.isArray(val);
 
 export const isEqualObjects = (a: unknown, b: unknown): boolean => {
     if (Object.is(a, b)) return true;
 
     if (Array.isArray(a) && Array.isArray(b)) {
         if (a.length !== b.length) return false;
+
         return a.every((v, i) => isEqualObjects(v, b[i]));
     }
 
@@ -63,7 +64,10 @@ export const isEqualObjects = (a: unknown, b: unknown): boolean => {
             if (!Object.prototype.hasOwnProperty.call(b, key)) {
                 return false;
             }
-            if (!isEqualObjects(a[key], b[key])) return false;
+
+            if (!isEqualObjects(a[key], b[key])) {
+                return false;
+            }
         }
 
         return true;
@@ -79,9 +83,8 @@ export function mergeAttributes(
     for (let i = 0; i < newChild.getAttributeNames().length; i++) {
         const oldChildAtt = oldChild.attributes[i];
         const newChildAtt = newChild.attributes[i];
-
         if (oldChildAtt.name === newChildAtt.name && oldChildAtt.value !== newChildAtt.value) {
-            oldChild.setAttribute(newChildAtt.name, newChildAtt.value);
+            oldChild.setAttribute(oldChildAtt.name, newChildAtt.value);
         }
     }
 }

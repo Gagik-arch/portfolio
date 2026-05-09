@@ -1,6 +1,9 @@
 export type HTMLTags = keyof HTMLElementTagNameMap;
 
-export type HTMLElementTags = HTMLElementTagNameMap[HTMLTags];
+export type HTMLElementTags = HTMLElementTagNameMap[HTMLTags] & {
+    __events?: EventType<HTMLElementTags>;
+    __props?: ElementConstructorType<HTMLElementTags>['props'];
+};
 
 export type Tags = HTMLElementTagNameMap[HTMLTags];
 
@@ -23,7 +26,6 @@ export type ElementPropsType<T extends HTMLElementTags = HTMLElement>
         events?: EventType<T>;
         style?: Partial<CSSStyleDeclaration> | undefined;
         key?: string;
-        includeKey?: string;
     };
 
 export interface ElementConstructorType<T extends HTMLElementTags> {
@@ -32,3 +34,8 @@ export interface ElementConstructorType<T extends HTMLElementTags> {
     rootElement?: HTMLElement | null;
 }
 
+export type KeyedHTMLElement<T extends HTMLElement> = HTMLElement & {
+    __key?: string;
+    __events?: EventType<T>;
+    __props?: ElementConstructorType<T>['props'];
+};

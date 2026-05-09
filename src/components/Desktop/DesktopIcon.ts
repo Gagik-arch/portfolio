@@ -13,6 +13,7 @@ function DesktopIcon({
     appIcon,
     onDoubleClick,
 }: DesktopIconProps) { 
+    
     const button = new Button({
         className: styles.app_icon,
         tabIndex: 0,
@@ -20,6 +21,7 @@ function DesktopIcon({
         events: {
             ondblclick: onDoubleClick,  
         },
+        key: `/${index}/${title}`,
         children: [
             new Element<HTMLDivElement>({
                 tagName: 'div',

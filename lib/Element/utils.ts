@@ -1,30 +1,33 @@
 import { mergeAttributes, setupInnerHtml } from '../utils';
 import type {
-    Children
+    Children, KeyedHTMLElement
 } from './types';
 
-function keyedDiff(dom: HTMLElement, newChildren: HTMLElement[]) {
-    const children = [ ...dom.children ];
-    const oldKeys = children.map(c => c.getAttribute('key'));
-    const newKeys = newChildren.map(c => c.getAttribute('key'));
+function keyedDiff(dom: HTMLElement, newChildren: KeyedHTMLElement<HTMLElement>[]) {
+    const oldChildren = Array.from(dom.children) as KeyedHTMLElement<HTMLElement>[];
 
-    children.forEach(child => {
-        if (!newKeys.includes(child.getAttribute('key'))) {
+    const oldKeys = oldChildren.map((c) => c.__key);
+    const newKeys = newChildren.map(c => c.__key);
+
+    oldChildren.forEach(child => {
+        if (!newKeys.includes(child.__key)) {
             child.remove();
         }
     });
-
     for (let i = 0; i < newChildren.length; i++) {
         const newChild = newChildren[i];
-        const oldChild = dom.children[i] as HTMLElement;
+        const oldChild = dom.children[i] as KeyedHTMLElement<HTMLElement>;
 
-        if (!oldKeys.includes(newChild.getAttribute('key'))) {
-            dom.insertBefore(newChild, dom.children[i]);
+        if (!oldKeys.includes(newChild.__key)) {
+            dom.insertBefore(newChild, oldChild);
         } else {
-            if (!oldChild.isEqualNode(newChild)) { 
+          
+            if (oldChild.isEqualNode(newChild)) {
                 setupInnerHtml(oldChild, newChild);
                 mergeAttributes(oldChild, newChild);
-            } 
+            } else {
+                dom.insertBefore(newChild, oldChild);
+            }
         }
     }
 }
@@ -43,8 +46,7 @@ function unKeyedDiff(dom: HTMLElement, newChildren: HTMLElement[]) {
         } else if (oldNode && !newNode) {
             dom.removeChild(oldNode);
         } else if (
-            oldNode
-            && newNode
+            oldNode && newNode
             && oldNode.nodeType === Node.ELEMENT_NODE
             && !oldNode.isEqualNode(newNode)
         ) {
@@ -69,7 +71,7 @@ export function setupChildren<T extends HTMLElement>(
         if (isForceUpdate) {
             dom.replaceChildren(...extracted);
         } else {
-            const isAvailableKey = [ ...dom.children ][0]?.getAttribute('key');
+            const isAvailableKey = ([ ...dom.children ][0] as KeyedHTMLElement<HTMLElement>)?.__key;
 
             if (isAvailableKey) {
                 keyedDiff(dom, extracted); //  NOTE: key in element
@@ -78,4 +80,28 @@ export function setupChildren<T extends HTMLElement>(
             }
         }
     }
+}
+
+export function compareElements(
+    oldElement: KeyedHTMLElement<HTMLElement>,
+    newElement: KeyedHTMLElement<HTMLElement>
+):boolean {
+    let oldSortedObject: object | null = null, 
+            newSortedObject :object | null = null;
+    
+    if (oldElement.__props) { 
+        oldSortedObject = Object.fromEntries(
+            Object.entries(oldElement.__props)
+                .sort()
+        );
+    }
+        
+    if (newElement.__props) { 
+        newSortedObject = Object.fromEntries(
+            Object.entries(newElement.__props)
+                .sort()
+        );
+    }
+
+    return JSON.stringify(oldSortedObject) === JSON.stringify(newSortedObject); 
 }

@@ -21,7 +21,7 @@ function Desktop() {
     const onDoubleClickAppIcon = (title:keyof typeof allApps) => {
         const app = allApps[title]();
         const isExistsApp = desktopStore.getState().activeApps.find(a => a.name === app.name);
-
+      
         if (isExistsApp) {
             desktopStore.setFocusApp( isExistsApp.window.dom.id);
             isExistsApp.window.dom.focus();
@@ -85,7 +85,7 @@ function Desktop() {
                         }),
                         ...activeApps.map(item => item.window.dom)
                     ],
-                }, true);
+                });
             });
 
         })
