@@ -44,11 +44,11 @@ function MenuBar() {
                                             text: 'Finder',
                                             variant: 'headline-regular',
                                         })
-                                            .onMount((e) => {
-                                                desktopStore.subscribe((state) => {
+                                            .OnMount((e) => {
+                                                desktopStore.Subscribe((state) => {
                                                     const app = state.activeApps.find(a => a.window.dom.id === state.focusedAppId);
                                                  
-                                                    e.setProps({
+                                                    e.SetProps({
                                                         children: [ app?.name || 'Finder' ],
                                                     });
                                                 });
@@ -127,11 +127,11 @@ function MenuBar() {
                                             text: gbDateTime,
                                             variant: 'body-emphasized',
                                         })
-                                            .onMount((e) => {
+                                            .OnMount((e) => {
                                                 const check = () => {
                 
                                                     timeout = setTimeout(() => {
-                                                        e.setProps({
+                                                        e.SetProps({
                                                             children: [
                                                                 format
                                                                     .format(new Date())
@@ -144,7 +144,7 @@ function MenuBar() {
 
                                                 check();
                                             })
-                                            .onUnMount(() => {
+                                            .OnUnMount(() => {
                                                 clearTimeout(timeout);
                                             }).dom 
                                     ],

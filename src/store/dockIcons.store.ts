@@ -19,14 +19,14 @@ class DockIconsStore extends Store<IconType[]> {
     }
 
     public setIcon(icon: IconType) { 
-        this.setState((prev) => ([
+        this.SetState((prev) => ([
             ...prev,
             icon
         ]));
     }
 
     public removeIcon(title: IconType['title']) { 
-        this.setState((prev) => (prev.filter(item => item.title !== title)));
+        this.SetState((prev) => (prev.filter(item => item.title !== title)));
     }
 }
 

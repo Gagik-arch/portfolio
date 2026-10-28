@@ -57,7 +57,7 @@ class Window extends Element<HTMLDivElement> {
         this.createdAt = new Date()
             .getTime();
         
-        this.setProps({
+        this.SetProps({
             'data-is-resizable': isResizable.toString(),
             id: id || genRandomNumber(1_000_000, 90_000_000)
                 .toString(),
@@ -123,13 +123,13 @@ class Window extends Element<HTMLDivElement> {
         this.dom.style.setProperty('--left', this.x + 'px');
         this.dom.style.setProperty('--top', this.y + 'px');
 
-        this.onMount(() => {
+        this.OnMount(() => {
             desktop?.addEventListener('mousedown', this.onMouseDown);
             window.addEventListener('mousemove', this.onMove);
             window.addEventListener('mouseup', this.onMouseUp);
         });
 
-        this.onUnMount(() => {
+        this.OnUnMount(() => {
             desktop?.removeEventListener('mousedown', this.onMouseDown);
             window.removeEventListener('mousemove', this.onMove);
             window.removeEventListener('mouseup', this.onMouseUp);
@@ -177,7 +177,7 @@ class Window extends Element<HTMLDivElement> {
 
         if (this.isMouseDowned) {
             desktopStore.setFocusApp(this.dom.id);
-            this.setProps({ 'data-resizing': !!this.resizeAnchor + '' });
+            this.SetProps({ 'data-resizing': !!this.resizeAnchor + '' });
         
             setTimeout(() => {
                 this.dom.focus();
@@ -192,7 +192,7 @@ class Window extends Element<HTMLDivElement> {
         this.isMouseDowned = false;
 
         this.dom.classList.remove('n-resize', 'e-resize', 'grabbing');
-        this.setProps({ 'data-resizing': 'false' });
+        this.SetProps({ 'data-resizing': 'false' });
     };
 
     private readonly onResize = (e: MouseEvent) => {
@@ -303,7 +303,6 @@ class Window extends Element<HTMLDivElement> {
     };
 
     private readonly changeCursorAnchorHover = (e:MouseEvent) => {
-        
         const anchor = this.detectAnchorSide(e);
 
         const target = e.target as HTMLElement;
@@ -343,14 +342,14 @@ class Window extends Element<HTMLDivElement> {
     }
 
     public onClose = () => {
-        const target = desktopStore.getState().activeApps.find(item => item.window.dom.id === this.dom.id);
+        const target = desktopStore.GetState().activeApps.find(item => item.window.dom.id === this.dom.id);
      
         if (!target) return; 
         const dockIcon = document.getElementById(target.name);   
        
         dockIcon?.classList.remove(dockStyles.on_open_animate);
 
-        const app = desktopStore.getState().activeApps.find(item => item.window.dom.id === this.dom.id);
+        const app = desktopStore.GetState().activeApps.find(item => item.window.dom.id === this.dom.id);
         
         if (!app) return; 
 

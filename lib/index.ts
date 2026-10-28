@@ -1,6 +1,5 @@
 import Element from './Element';
 import Fragment from './Fragment';
-import Text from './Text';
 import Store from './store';
 import SVGElement from './SVGElement';
 
@@ -19,6 +18,5 @@ export {
     Element,
     Store,
     Fragment,
-    Text,
     SVGElement
 };

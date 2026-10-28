@@ -18,7 +18,7 @@ function Desktop() {
     
     const onDoubleClickAppIcon = (title:keyof typeof allApps) => {
         const app = allApps[title]();
-        const isExistsApp = desktopStore.getState().activeApps.find(a => a.name === app.name);
+        const isExistsApp = desktopStore.GetState().activeApps.find(a => a.name === app.name);
 
         if (isExistsApp) {
             desktopStore.setFocusApp( isExistsApp.window.dom.id);
@@ -47,20 +47,19 @@ function Desktop() {
 
                     target.classList.remove(styles.transition);
              
-                    const app:DesktopIconType | undefined = desktopStore.getState().appIcons
+                    const app:DesktopIconType | undefined = desktopStore.GetState().appIcons
                         .find(a => a.index === index);
          
                     if (!app) return; 
                         
                     appIcon = app;
-                        
                 },
             },
         },
     })
-        .onMount((e) => {
-            e.setProps({
-                children: desktopStore.getState().appIcons
+        .OnMount((e) => {
+            e.SetProps({
+                children: desktopStore.GetState().appIcons
                     .map(item => {
                         const virtual = convertIndexToVirtual(item.index, e.dom.getBoundingClientRect());
                         
@@ -81,11 +80,11 @@ function Desktop() {
             });
         });
 
-    desktopStore.subscribe(({
+    desktopStore.Subscribe(({
         activeApps, appIcons, 
     }) => {
     
-        desktopContainer.setProps({
+        desktopContainer.SetProps({
             children: [
                 ...appIcons.map(item => {
                     const virtual = convertIndexToVirtual(item.index, desktopContainer.dom.getBoundingClientRect());
@@ -104,6 +103,7 @@ function Desktop() {
                         onDoubleClick: () => onDoubleClickAppIcon(item.title),
                     });
                 }),
+
                 ...activeApps.map(item => item.window.dom)
             ],
         });
@@ -124,7 +124,7 @@ function Desktop() {
         const w = Math.floor(rootRect.width / 100);
         const length = w * h;
 
-        const lastIcon = desktopStore.getState().appIcons.find(item => item.index === length - 1);
+        const lastIcon = desktopStore.GetState().appIcons.find(item => item.index === length - 1);
 
         if (newIndex === length - 1 && lastIcon) {
             const virtual = convertIndexToVirtual(prevIndex, rootRect);
@@ -173,7 +173,7 @@ function Desktop() {
 
     return (
         desktopContainer
-            .onUnMount(() => {
+            .OnUnMount(() => {
                 window.removeEventListener('mouseup', windowMouseUp );
                 window.removeEventListener('mousemove', windowMouseMove );
             })

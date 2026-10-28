@@ -52,29 +52,29 @@ function Calculator(props?: AppProps) {
     const calculate = (num: string | undefined, action: string | undefined) => {
         switch (action) {
                 case 'backspace':
-                    state.setState(prev => prev.slice(0, -1));
+                    state.SetState(prev => prev.slice(0, -1));
                     break;
                 case 'clear':
-                    state.setState('');
-                    result.setState('');
+                    state.SetState('');
+                    result.SetState('');
                     break;
                 case 'plusSlashMinus':
-                    if (!state.getState()) break;
+                    if (!state.GetState()) break;
                 
-                    state.setState(prev => (+prev * -1) + '');
+                    state.SetState(prev => (+prev * -1) + '');
                     break;
                 case '.':
-                    if (state.getState()
+                    if (state.GetState()
                         .includes('.')) break;
                 
-                    if (state.getState().length) {
-                        state.setState( prev => prev + '.');
+                    if (state.GetState().length) {
+                        state.SetState( prev => prev + '.');
                     } else { 
-                        const char = result.getState()
+                        const char = result.GetState()
                             .at(-1); 
                 
                         if (!(char && !isNaN(+char))) { 
-                            state.setState( '0.');
+                            state.SetState( '0.');
                         }
                     }
                 
@@ -84,34 +84,34 @@ function Calculator(props?: AppProps) {
                 case '/':
                 case '*':
                 case '%':
-                    const _lastChar = result.getState()
+                    const _lastChar = result.GetState()
                         .at(-1); 
                 
                     const _isAvailableLastNumber = _lastChar ? !isNaN(+_lastChar) : false;
 
                     if (_lastChar) {
                         if (_isAvailableLastNumber) {
-                            result.setState( eval(result.getState() + state.getState()) + action);
+                            result.SetState( eval(result.GetState() + state.GetState()) + action);
                         } else {
-                            if (state.getState()) {
-                                result.setState(eval(result.getState() + state.getState()) + action);
+                            if (state.GetState()) {
+                                result.SetState(eval(result.GetState() + state.GetState()) + action);
                             } else { 
-                                result.setState(prev => prev.replace(_lastChar, action));
+                                result.SetState(prev => prev.replace(_lastChar, action));
                             }
                         }
                     } else { 
-                        result.setState( eval((result.getState() || '0') + '+' + (state.getState() || '0')) + action);
+                        result.SetState( eval((result.GetState() || '0') + '+' + (state.GetState() || '0')) + action);
                     }
 
-                    state.setState('');
+                    state.SetState('');
                     break;
                 case 'enter':
                 case '=':
-                    if (!result.getState().length || !state.getState().length) { 
+                    if (!result.GetState().length || !state.GetState().length) { 
                         break;
                     }
-                    result.setState(eval(result.getState() + state.getState()) + '');
-                    state.setState('');
+                    result.SetState(eval(result.GetState() + state.GetState()) + '');
+                    state.SetState('');
                     break;
                 default:
                     break;
@@ -119,28 +119,28 @@ function Calculator(props?: AppProps) {
         
         const width = 394, 
                 factor = 0.6;
-        const fontSize = rangeNumber(width / (state.getState().length * factor), 14, 40); 
+        const fontSize = rangeNumber(width / (state.GetState().length * factor), 14, 40); 
 
         if (num) { 
             if (fontSize === 14) return; 
 
-            const _lastChar = result.getState()
+            const _lastChar = result.GetState()
                 .at(-1); 
             const isAvailableLastNumber = _lastChar ? !isNaN(+_lastChar) : false;
             
             if (!isAvailableLastNumber) {
-                state.setState( prev => prev + num);
+                state.SetState( prev => prev + num);
             }
         }
-        text.setProps({
+        text.SetProps({
             style: {
                 fontSize: fontSize + 'px',
             },
         });
         
-        resultContainer.setProps({
+        resultContainer.SetProps({
             style: {
-                fontSize: Math.min(24, width / (result.getState().length * factor)) + 'px',
+                fontSize: Math.min(24, width / (result.GetState().length * factor)) + 'px',
             },
         });
     };
@@ -169,8 +169,8 @@ function Calculator(props?: AppProps) {
         calculate(num, action);
     };
     
-    result.subscribe((prev) => {
-        resultContainer.setProps({
+    result.Subscribe((prev) => {
+        resultContainer.SetProps({
             children: [ prev ],
         }, true);
     });
@@ -187,9 +187,9 @@ function Calculator(props?: AppProps) {
                 children: [
                     resultContainer.dom,
                     text
-                        .onMount((e) => {
-                            state.effect((prev) => {
-                                e.setProps({
+                        .OnMount((e) => {
+                            state.Effect((prev) => {
+                                e.SetProps({
                                     children: [ prev ],
                                 }, true);
                             });

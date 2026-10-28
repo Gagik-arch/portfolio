@@ -52,7 +52,7 @@ class DesktopStore extends Store<AppsState> {
     }
 
     public addApp(app: App) { 
-        this.setState((state) => ({
+        this.SetState((state) => ({
             ...state,
             focusedAppId: app.window.dom.id,
             activeApps: [
@@ -64,7 +64,7 @@ class DesktopStore extends Store<AppsState> {
 
     public setFocusApp(id: AppsState['focusedAppId'] | undefined) { 
      
-        this.setState((state) => {
+        this.SetState((state) => {
             const result:App[] = [];
             let target; 
 
@@ -95,7 +95,7 @@ class DesktopStore extends Store<AppsState> {
     public replaceIcon(newIndex: number, prevIndex: number, length: number) { 
         if (prevIndex === newIndex) return; 
         
-        const prevState = this.getState();
+        const prevState = this.GetState();
         const cloneAppIcons: (DesktopIconType | null)[] = Array.from({ length }, () => null);
        
         prevState.appIcons.forEach(item => {
@@ -147,13 +147,13 @@ class DesktopStore extends Store<AppsState> {
             }
         });
      
-        this.setState({
+        this.SetState({
             ...prevState, appIcons: result,
         });
     }
 
     public removeApp(id: string) { 
-        this.setState(prev => ( {
+        this.SetState(prev => ( {
             ...prev,
             activeApps: prev.activeApps.filter(item => item.window.dom.id !== id),
         }));

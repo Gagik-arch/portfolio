@@ -1,15 +1,16 @@
 import type {
     ElementPropsType, ElementConstructorType, HTMLElementTags, EventType,
-    Children
+    KeyedHTMLElement
 } from './types';
 import {
+    isPlainObject,
     setupClassName, setupStyle
 } from '../utils';
 import { setupChildren } from './utils';
 
-class Element <T extends HTMLElementTags > {
+class Element<T extends HTMLElementTags> {
     public dom: T;
-    readonly #events: EventType<T> = {};
+    private events?: EventType<T> | undefined;
 
     public constructor({
         tagName,
@@ -19,130 +20,167 @@ class Element <T extends HTMLElementTags > {
             style,
             events,
             key,
-            includeKey,
             ...props
         },
         rootElement,
     }: ElementConstructorType<T>) {
         this.dom = document.createElement(tagName) as T;
+
+        if (key) {
+            (this.dom as KeyedHTMLElement).__key = key;
+        }
+
         if (rootElement) {
             rootElement.appendChild(this.dom);
         }
 
-        if (events) {
-            this.#events = events;
-        }
-
-        this.setProps(
+        this.SetProps(
             {
                 className,
                 children,
                 style,
-                key,
-                includeKey,
                 ...props,
-            } as Omit<ElementPropsType<T>, 'className' | 'children'> & {
+            } as Omit<ElementPropsType<T>, 'className'> & {
                 className?: ((classList: DOMTokenList) => void) | string | undefined;
-                children?: ((childNodes:Set<ChildNode>)=>Set<ChildNode>) | Children[] | undefined;
-            },
-            true
+            }
         );
 
-        Object.entries<EventType<T>[keyof EventType<T>]>(this.#events)
-            .forEach(([
-                type,
-                listener
-            ]) => {
-                this.dom.addEventListener(type.replace('on', ''), listener as EventListener);
-            });
+        this.SetEvents(events);
     }
 
-    public setProps(
+    public SetProps(
         {
             className,
             children,
             style,
             ...props
-        }: Omit<ElementPropsType<T>, 'className' | 'children'> & {
+        }: Omit<ElementPropsType<T>, 'className'> & {
             className?: ((classList: DOMTokenList) => void) | string | undefined;
-            children?: ((childNodes:Set<ChildNode>)=>Set<ChildNode>) | Children[] | undefined;
         },
         isForceUpdate = false
     ) {
+        if (className !== undefined) {
+            setupClassName(
+                className,
+                this.dom
+            );
+        }
 
-        setupStyle(style, this.dom);
-        setupClassName(className, this.dom);
+        if (style !== undefined) {
+            setupStyle(
+                style,
+                this.dom
+            );
+        }
 
-        setupChildren(children, this.dom, isForceUpdate);
-     
+        if (children !== undefined) {
+            setupChildren(
+                children,
+                this.dom,
+                isForceUpdate
+            );
+        }
+
         Object.entries(props)
-            .forEach(([
-                name,
-                value
-            ]) => {
-                if (this.dom[name as keyof T] !== value && typeof value !== 'function') { 
-                    this.dom.setAttribute(name, value as string);
-                    this.dom[name as keyof T] = value;
+            .forEach(([ name, value ]) => {
+                if ( name === 'events' || isPlainObject(value)) {
+                    return;
+                }
+
+                if (name === 'value' && (this.dom instanceof HTMLInputElement || this.dom instanceof HTMLTextAreaElement)) {
+                    if (this.dom.value === value) {
+                        return;
+                    } else {
+                        this.dom.value = value;
+                    }
+                }
+
+                if (name in this.dom) {
+                    if (value === undefined || value === '') {
+                        this.dom.removeAttribute(name);
+                    } else {
+                        if (((this.dom)[name as keyof T] !== undefined ) && (this.dom)[name as keyof T] !== value ) {
+                            (this.dom)[name as keyof T] = value;
+                        }
+                    }
+                } else {
+                    if (value !== '' && this.dom.getAttribute(name) !== String(value)) {
+                        this.dom.setAttribute(name, value as string);
+                    }
                 }
             });
 
         return this;
     }
 
-    public replaceChild(index: number, newChild: null | undefined | HTMLElement | string) {
-        const oldChild = this.dom.childNodes[index] as (ChildNode | undefined);
+    private SetEvents(
+        events: EventType<T> | undefined
+    ) {
+        if (events) {
+            Object.entries<EventType<T>[keyof EventType<T>]>(events)
+                .forEach(([ type, listener ]) => {
+                    this.dom.addEventListener(
+                        type.replace(/^on/, ''),
+                        listener as EventListener
+                    );
 
-        if (oldChild === newChild) return;
-   
-        if (!newChild) {
-            if (index > -1 && oldChild) this.dom.removeChild(oldChild);
-        } else {
-            if (oldChild !== undefined) {
-                oldChild.replaceWith(newChild);
-            } else {
-                this.dom.append(newChild);
-            }
+                });
+
+            this.events = events;
         }
     }
 
-    public remove() {
+    public Destroy() {
+        const events = this.events;
+
+        if (!events) return;
+
+        Object.entries(events)
+            .forEach(([ type, listener ]) => {
+                const event = type.replace('on', '');
+                this.dom.removeEventListener(event, listener as EventListener);
+            });
+
+        this.Remove();
+    }
+
+    public Remove() {
         this.dom.remove();
     }
-    
-    public onMount(callback: (e:this) => void) {
 
-        const check = () => {
-            if (document.body.contains(this.dom)) {
-                callback(this);
-            } else {
-
-                requestAnimationFrame(check);
-            }
-        };
-
-        check();
-        return this;
-    }
-
-    public onUnMount(callback:(e:this)=>void) {
+    public OnMount(callback: (e: this) => void) {
+        if (this.dom.isConnected) {
+            callback(this);
+            return this;
+        }
         const observer = new MutationObserver(() => {
-            if (!document.body.contains(this.dom)) {
+            if (this.dom.isConnected) {
                 callback(this);
-
-                Object.entries<EventType<T>[keyof EventType<T>]>(this.#events)
-                    .forEach(([
-                        type,
-                        listener
-                    ]) => {
-                        this.dom.removeEventListener(type, listener as EventListener);
-                    });
-
                 observer.disconnect();
             }
         });
 
-        observer.observe(document.body, {
-            childList: true, subtree: true,
+        observer.observe(document, {
+            childList: true,
+            subtree: true,
+        });
+
+        return this;
+    }
+
+    public OnUnMount(callback: (e: this) => void) {
+        const observer = new MutationObserver(() => {
+            if (!this.dom.isConnected) {
+                callback(this);
+
+                this.Destroy();
+                observer.disconnect();
+            }
+        });
+
+        observer.observe(document, {
+            childList: true,
+            subtree: true,
         });
 
         return this;
