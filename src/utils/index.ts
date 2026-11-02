@@ -102,4 +102,4 @@ export const generateCalendarAppIcon = async () => {
 
     canvas.Remove();
 };
-    
+

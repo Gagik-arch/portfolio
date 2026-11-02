@@ -14,6 +14,7 @@ import Tooltip from './Tooltip';
 import desktopStore from '$store/desktop.store';
 import allApps from '$apps/index';
 import dockIconsStore from '$store/dockIcons.store';
+import { clsx } from '$utils/clsx';
 
 function Dock() {
     let timeout: number | undefined; 
@@ -54,8 +55,10 @@ function Dock() {
     const onOpenAnimationEnd = (e: AnimationEvent, appName: keyof typeof allApps) => {
         const target = e.currentTarget as HTMLButtonElement;
         target.id = appName;
-        const app = allApps[appName]({ key: appName });
-       
+        const app = allApps[appName]({
+            key: appName, id: appName,
+            
+        });
         desktopStore.addApp(app);
 
         timeout = setTimeout(() => {
@@ -99,11 +102,13 @@ function Dock() {
     
     dockIconsStore.Effect((appIcons) => {
         const calendar = localStorage.getItem('calendarIcon') as string;
-     
+        const activeApps = desktopStore.GetState().activeApps;
+      
         dock.SetProps({
             children: [
                 new Button({
-                    className: styles.button,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Finder') > -1 ? styles.is_opened : ''),
                     tabIndex: -1,
                     id: 'Finder',
                     key: 'Finder',
@@ -130,7 +135,8 @@ function Dock() {
                     .OnMount(onDockAppMount).dom, 
                     
                 new Button({
-                    className: styles.button,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Launchpad') > -1 ? styles.is_opened : ''),
                     id: 'Launchpad',
                     key: 'Launchpad',
                     tabIndex: -1,
@@ -151,7 +157,8 @@ function Dock() {
 
                 new Button({
                     tabIndex: -1,
-                    className: styles.button,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Calculator') > -1 ? styles.is_opened : ''),
                     id: 'Calculator',
                     key: 'Calculator',
                     events: {
@@ -177,7 +184,8 @@ function Dock() {
                     .OnMount(onDockAppMount).dom,
                      
                 new Button({
-                    className: styles.button,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Notes') > -1 ? styles.is_opened : ''),
                     key: 'Notes',
                     tabIndex: -1,
                     id: 'Notes',
@@ -204,7 +212,8 @@ function Dock() {
                     .OnMount(onDockAppMount).dom,
                      
                 new Button({
-                    className: `${styles.button} `,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Calendar') > -1 ? styles.is_opened : ''),
                     key: 'Calendar',
                     tabIndex: -1,
                     id: 'Calendar',
@@ -231,7 +240,8 @@ function Dock() {
                     .OnMount(onDockAppMount).dom,
                 
                 new Button({
-                    className: styles.button,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Music') > -1 ? styles.is_opened : ''),
                     key: 'Music',
                     id: 'Music',
                     tabIndex: -1,
@@ -258,7 +268,8 @@ function Dock() {
                     .OnMount(onDockAppMount).dom,
 
                 new Button({
-                    className: styles.button,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Settings') > -1 ? styles.is_opened : ''),
                     key: 'Settings',
                     id: 'Settings',
                     tabIndex: -1,
@@ -318,7 +329,8 @@ function Dock() {
                     .map(icon => {
                         return (
                             new Button({
-                                className: styles.button,
+                                className: clsx(styles.button,
+                                    activeApps.findIndex(i => i.name === icon.title) > -1 ? styles.is_opened : ''),
                                 key: icon.title,
                                 id: icon.title,
                                 tabIndex: -1,
@@ -347,7 +359,7 @@ function Dock() {
                                 .OnMount((e) => {
                                     const target = e.dom;
                                     const appIsExists = desktopStore.GetState().activeApps.find(item => item.name === target.id);
-                                
+
                                     if (!appIsExists) {
                                         e.SetProps({
                                             className: (cx) => {

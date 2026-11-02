@@ -8,7 +8,7 @@ import Typography from '$uikit/Typography';
 import Scroll from '$uikit/Scroll/Scroll';
 import Button from '$uikit/Button';
 
-function Datewise(props?:AppProps) { 
+function Datewise(props?: AppProps) { 
     return (
         new App({
             name: 'Datewise',

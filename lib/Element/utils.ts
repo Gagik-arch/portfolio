@@ -1,6 +1,6 @@
-import { mergeAttributes, setupInnerHtml } from '../utils';
+import { mergeAttributes } from '../utils';
 import type {
-    Children, KeyedHTMLElement
+    Children, VirtualHTMLElement
 } from './types';
 
 export function compareProps(
@@ -11,9 +11,11 @@ export function compareProps(
     
     const oldNAttrs = oldNode.attributes;
     const newNAttrs = newNode.attributes;
-    
+  
+    if (oldNode.tagName !== newNode.tagName) return false;
+
     if (oldNAttrs.length !== newNAttrs.length) return false;
-    
+
     for (const attr of oldNAttrs) {
         if (newNode.getAttribute(attr.name) !== attr.value) {
             return true;
@@ -23,8 +25,8 @@ export function compareProps(
     return false;
 }
 
-function keyedDiff(dom: HTMLElement, newChildren: KeyedHTMLElement[]) {
-    const oldChildren = Array.from(dom.children) as KeyedHTMLElement[];
+function keyedDiff(dom: HTMLElement, newChildren: VirtualHTMLElement[]) {
+    const oldChildren = Array.from(dom.children) as VirtualHTMLElement[];
 
     const oldKeys = oldChildren.map((c) => c.__key);
     const newKeys = newChildren.map(c => c.__key);
@@ -37,18 +39,23 @@ function keyedDiff(dom: HTMLElement, newChildren: KeyedHTMLElement[]) {
 
     for (let i = 0; i < newChildren.length; i++) {
         const newChild = newChildren[i];
-        const oldChild = dom.children[i] as KeyedHTMLElement | null;
+        const oldChild = oldChildren[i];
+        
+        const oldIndex = oldKeys.indexOf(newChild.__key);
 
-        if (!oldKeys.includes(newChild.__key)) {
+        if (oldIndex === -1) {
             dom.insertBefore(newChild, oldChild);
         } else {
-            const shouldReplace = compareProps(oldChild, newChild); 
+            const target = oldChildren[oldIndex];
 
-            if (shouldReplace || (oldChild && oldChild.isEqualNode(newChild) )) {
-                setupInnerHtml(oldChild as KeyedHTMLElement, newChild);
-                mergeAttributes(oldChild as KeyedHTMLElement, newChild);
-            } else {
-                dom.insertBefore(newChild, oldChild);
+            if (target.tagName !== newChild.tagName) { 
+                oldChildren[oldIndex] = newChild;
+            }
+
+            const shouldReplace = compareProps(target, newChild); 
+            
+            if ( shouldReplace) { 
+                mergeAttributes(target, newChild);
             }
         }
     }
@@ -58,7 +65,7 @@ function unKeyedDiff(dom: HTMLElement, newChildren: HTMLElement[]) {
     const oldChildren = Array.from(dom.childNodes);
 
     const max = Math.max(oldChildren.length, newChildren.length);
-
+  
     for (let i = 0; i < max; i++) {
         const oldNode = oldChildren[i] as HTMLElement | undefined;
         const newNode = newChildren[i] as HTMLElement | undefined;
@@ -97,8 +104,8 @@ export function setupChildren<T extends HTMLElement>(
         if (isForceUpdate) {
             dom.replaceChildren(...extracted);
         } else {
-            const isAvailableKey = ([ ...dom.children ][0] as KeyedHTMLElement)?.__key;
-
+            const isAvailableKey = ([ ...dom.children ][0] as VirtualHTMLElement | undefined)?.__key;
+         
             if (isAvailableKey) {
                 keyedDiff(dom, extracted); //  NOTE: key in element
             } else { //  NOTE: not key in element

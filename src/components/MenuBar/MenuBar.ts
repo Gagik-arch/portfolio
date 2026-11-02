@@ -5,6 +5,8 @@ import Typography from '$uikit/Typography';
 import styles from './style.module.css';
 import desktopStore from '$store/desktop.store';
 
+const a = 0;
+
 function MenuBar() {
     const date = new Date();
     let timeout: number | undefined;
@@ -121,16 +123,18 @@ function MenuBar() {
                                 }).dom,
 
                                 new Button({
-                                    className: `not-allowed ${styles.item}`,
+                                    className: `not-allowed ${styles.item} `,
                                     children: [
+
                                         new Typography({
                                             text: gbDateTime,
                                             variant: 'body-emphasized',
+                                            children: [ a.toString() ],
                                         })
                                             .OnMount((e) => {
                                                 const check = () => {
-                
                                                     timeout = setTimeout(() => {
+                                                   
                                                         e.SetProps({
                                                             children: [
                                                                 format
@@ -139,7 +143,7 @@ function MenuBar() {
                                                         });
                                                         
                                                         check();
-                                                    }, 1000);
+                                                    }, 60 * 10);
                                                 };
 
                                                 check();

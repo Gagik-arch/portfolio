@@ -1,6 +1,6 @@
 import type {
     ElementPropsType, ElementConstructorType, HTMLElementTags, EventType,
-    KeyedHTMLElement
+    VirtualHTMLElement
 } from './types';
 import {
     isPlainObject,
@@ -26,10 +26,12 @@ class Element<T extends HTMLElementTags> {
     }: ElementConstructorType<T>) {
         this.dom = document.createElement(tagName) as T;
 
-        if (key) {
-            (this.dom as KeyedHTMLElement).__key = key;
-        }
+        const virtualDom = this.dom as VirtualHTMLElement;
 
+        if (key) {
+            virtualDom.__key = key;
+        }
+        
         if (rootElement) {
             rootElement.appendChild(this.dom);
         }
@@ -82,7 +84,10 @@ class Element<T extends HTMLElementTags> {
         }
 
         Object.entries(props)
-            .forEach(([ name, value ]) => {
+            .forEach(([
+                name,
+                value 
+            ]) => {
                 if ( name === 'events' || isPlainObject(value)) {
                     return;
                 }
@@ -118,7 +123,10 @@ class Element<T extends HTMLElementTags> {
     ) {
         if (events) {
             Object.entries<EventType<T>[keyof EventType<T>]>(events)
-                .forEach(([ type, listener ]) => {
+                .forEach(([
+                    type,
+                    listener 
+                ]) => {
                     this.dom.addEventListener(
                         type.replace(/^on/, ''),
                         listener as EventListener
@@ -136,7 +144,10 @@ class Element<T extends HTMLElementTags> {
         if (!events) return;
 
         Object.entries(events)
-            .forEach(([ type, listener ]) => {
+            .forEach(([
+                type,
+                listener 
+            ]) => {
                 const event = type.replace('on', '');
                 this.dom.removeEventListener(event, listener as EventListener);
             });

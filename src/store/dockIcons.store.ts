@@ -1,6 +1,7 @@
 import Store from '$lib/store';
 import type allApps from '../apps/index';
 import cvIcon from '$assets/images/app-icons/preview.png';
+
 export interface IconType {
     image: string;
     title: keyof typeof allApps;
