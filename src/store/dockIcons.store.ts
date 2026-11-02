@@ -1,6 +1,7 @@
 import Store from '$lib/store';
 import type allApps from '../apps/index';
 import cvIcon from '$assets/images/app-icons/preview.png';
+
 export interface IconType {
     image: string;
     title: keyof typeof allApps;
@@ -19,14 +20,14 @@ class DockIconsStore extends Store<IconType[]> {
     }
 
     public setIcon(icon: IconType) { 
-        this.setState((prev) => ([
+        this.SetState((prev) => ([
             ...prev,
             icon
         ]));
     }
 
     public removeIcon(title: IconType['title']) { 
-        this.setState((prev) => (prev.filter(item => item.title !== title)));
+        this.SetState((prev) => (prev.filter(item => item.title !== title)));
     }
 }
 

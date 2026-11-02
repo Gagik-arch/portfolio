@@ -8,7 +8,7 @@ class Store<T> {
         this.state = initialState;
     }
 
-    public subscribe(callback: (state: T) => void): () => void {
+    public Subscribe(callback: (state: T) => void): () => void {
         this.listeners.push(callback);
 
         return () => {
@@ -16,13 +16,13 @@ class Store<T> {
         };
     }
 
-    public effect(callback: (state: T) => void): () => void {
-        callback(this.getState());
+    public Effect(callback: (state: T) => void): () => void {
+        callback(this.GetState());
 
-        return this.subscribe(callback);
+        return this.Subscribe(callback);
     }
 
-    public setState(newState: T | ((prev: T) => T)) {
+    public SetState(newState: T | ((prev: T) => T)) {
         const state
             = typeof newState === 'function'
                 ? (newState as (prev: T) => T)(this.state)
@@ -31,21 +31,21 @@ class Store<T> {
         if (isPlainObject(this.state) && isPlainObject(state)) {
             if (!isEqualObjects(this.state, state)) {
                 this.state = state;
-                this.notify();
+                this.Notify();
             }
         } else {
             if (this.state === state) return;
 
             this.state = state;
-            this.notify();
+            this.Notify();
         }
     }
 
-    public getState() {
+    public GetState() {
         return this.state;
     }
 
-    private notify() {
+    private Notify() {
         this.listeners.forEach((listener) => {
             listener(this.state);
         });

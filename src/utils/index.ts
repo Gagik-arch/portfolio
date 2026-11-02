@@ -62,7 +62,7 @@ export const generateCalendarAppIcon = async () => {
     canvas.dom.width = width;
     canvas.dom.height = height;
 
-    canvas.setProps({
+    canvas.SetProps({
         style: {
             marginLeft: '50px',
             borderRadius: '50px',
@@ -98,6 +98,6 @@ export const generateCalendarAppIcon = async () => {
     const imageDataURL = canvas.dom.toDataURL(imageType);
     localStorage.setItem('calendarIcon', imageDataURL);
 
-    canvas.remove();
+    canvas.Remove();
 };
-    
+

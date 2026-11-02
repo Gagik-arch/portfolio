@@ -22,7 +22,7 @@ export function setupInnerHtml(
     newChild: HTMLElement
 ) {
     if (oldChild.innerHTML !== newChild.innerHTML) {
-        oldChild.innerHTML = newChild.innerHTML;
+        oldChild = newChild;
     }
 }
 
@@ -30,12 +30,12 @@ export function setupStyle(
     style: HTMLElement['style'] | undefined,
     dom?: HTMLElement
 ) {
-    if (!style || !dom) return;
+    if (!style ) return;
 
     Object.entries(style)
         .forEach(([
             property,
-            value
+            value 
         ]) => {
             if (!value) return;
 

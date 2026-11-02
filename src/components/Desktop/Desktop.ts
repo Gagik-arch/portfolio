@@ -13,15 +13,13 @@ import allApps from '$apps/index';
 import dockIconsStore from '$store/dockIcons.store';
 
 function Desktop() {
-    let desktopStoreSubscriber: undefined | (()=>void) = undefined;
-
     let appIcon:DesktopIconType | null = null, 
             timeout: number | undefined = undefined;
     
     const onDoubleClickAppIcon = (title:keyof typeof allApps) => {
         const app = allApps[title]();
-        const isExistsApp = desktopStore.getState().activeApps.find(a => a.name === app.name);
-      
+        const isExistsApp = desktopStore.GetState().activeApps.find(a => a.name === app.name);
+
         if (isExistsApp) {
             desktopStore.setFocusApp( isExistsApp.window.dom.id);
             isExistsApp.window.dom.focus();
@@ -49,49 +47,66 @@ function Desktop() {
 
                     target.classList.remove(styles.transition);
              
-                    const app:DesktopIconType | undefined = desktopStore.getState().appIcons
+                    const app:DesktopIconType | undefined = desktopStore.GetState().appIcons
                         .find(a => a.index === index);
          
                     if (!app) return; 
                         
                     appIcon = app;
-                        
                 },
             },
         },
     })
-        .onMount((e) => {
-            desktopStoreSubscriber = desktopStore.effect(({
-                activeApps, appIcons, 
-            }) => {
-                e.setProps({
-                    children: [
-                        ...appIcons.map(item => {
-                            const virtual = convertIndexToVirtual(item.index, desktopContainer.dom.getBoundingClientRect());
+        .OnMount((e) => {
+            e.SetProps({
+                children: desktopStore.GetState().appIcons
+                    .map(item => {
+                        const virtual = convertIndexToVirtual(item.index, e.dom.getBoundingClientRect());
+                        
+                        const real = convertVirtualToReal(
+                            virtual,
+                            e.dom.getBoundingClientRect()
+                        );
 
-                            const real = convertVirtualToReal(
-                                virtual,
-                                desktopContainer.dom.getBoundingClientRect()
-                            );
-               
-                            return DesktopIcon({
-                                x: real.x,
-                                y: real.y,
-                                index: item.index,
-                                title: item.title,
-                                appIcon: item.appIcon,
-                                onDoubleClick: () => onDoubleClickAppIcon(item.title),
-                            });
-                        }),
-                        ...activeApps.map(item => item.window.dom)
-                    ],
-                });
+                        return DesktopIcon({
+                            x: real.x,
+                            y: real.y,
+                            index: item.index,
+                            title: item.title,
+                            appIcon: item.appIcon,
+                            onDoubleClick: () => onDoubleClickAppIcon(item.title),
+                        });
+                    }),
             });
-
-        })
-        .onUnMount(() => {
-            desktopStoreSubscriber?.(); 
         });
+
+    desktopStore.Subscribe(({
+        activeApps, appIcons, 
+    }) => {
+        desktopContainer.SetProps({
+            children: [
+                ...appIcons.map(item => {
+                    const virtual = convertIndexToVirtual(item.index, desktopContainer.dom.getBoundingClientRect());
+
+                    const real = convertVirtualToReal(
+                        virtual,
+                        desktopContainer.dom.getBoundingClientRect()
+                    );
+               
+                    return DesktopIcon({
+                        x: real.x,
+                        y: real.y,
+                        index: item.index,
+                        title: item.title,
+                        appIcon: item.appIcon,
+                        onDoubleClick: () => onDoubleClickAppIcon(item.title),
+                    });
+                }),
+
+                ...activeApps.map(item => item.window.dom)
+            ],
+        });
+    });
 
     const windowMouseUp = (e: MouseEvent) => {
         if (!appIcon) return; 
@@ -108,7 +123,7 @@ function Desktop() {
         const w = Math.floor(rootRect.width / 100);
         const length = w * h;
 
-        const lastIcon = desktopStore.getState().appIcons.find(item => item.index === length - 1);
+        const lastIcon = desktopStore.GetState().appIcons.find(item => item.index === length - 1);
 
         if (newIndex === length - 1 && lastIcon) {
             const virtual = convertIndexToVirtual(prevIndex, rootRect);
@@ -157,7 +172,7 @@ function Desktop() {
 
     return (
         desktopContainer
-            .onUnMount(() => {
+            .OnUnMount(() => {
                 window.removeEventListener('mouseup', windowMouseUp );
                 window.removeEventListener('mousemove', windowMouseMove );
             })

@@ -13,10 +13,12 @@ import Image from '$uikit/Image';
 import Tooltip from './Tooltip';
 import desktopStore from '$store/desktop.store';
 import allApps from '$apps/index';
+import dockIconsStore from '$store/dockIcons.store';
+import { clsx } from '$utils/clsx';
 
 function Dock() {
-    const calendar = localStorage.getItem('calendarIcon') as string;
-    
+    let timeout: number | undefined; 
+
     const onMouseMove = (e: MouseEvent) => {
         const target = e.currentTarget as HTMLDivElement;
 
@@ -32,78 +34,110 @@ function Dock() {
 
         target.style.setProperty('--offset', `${value}px`);
     };
-    
-    const onClick = (e:MouseEvent) => {
-        const target = e.target as HTMLDivElement; 
-        const element:HTMLElement | null = target.closest(`.${styles.button}`);
 
-        if (!element?.id) return; 
+    const onclick = (e:MouseEvent) => {
+        const target = e.currentTarget as HTMLButtonElement; 
+        target.classList.add(styles.on_open_animate);
+
+        if (!target.id) return; 
+        const app = desktopStore.GetState().activeApps.find(a => a.name === target.id);
+       
+        if (!app) return; 
+        clearTimeout(timeout);
         
-        const app = desktopStore.getState().activeApps.find(a => a.name === element.id);
+        desktopStore.setFocusApp(app.window.dom.id);
 
-        if (app) {
-            desktopStore.setFocusApp(app.window.dom.id);
+        timeout = setTimeout(() => {
             app.window.dom.focus();
-        } else { 
-            element.classList.add(styles.on_open_animate);
-            const appName = element.id as keyof typeof allApps;
-        
-            const app = allApps[appName]({ key: `window/${appName}` });
-
-            desktopStore.addApp(app);
-        }
-    };
-     
-    const onOpenAnimationEnd = (e: AnimationEvent) => {
-        const target = e.target as HTMLDivElement; 
-        const element:HTMLElement | null = target.closest(`.${styles.button}`);
-        
-        if (!element?.id) return;
-
-        const appName = element.id as keyof typeof allApps;
-        
-        const app = allApps[appName]();
-
-        app.window.dom.focus();
-   
+        }, 0);
     };
     
+    const onOpenAnimationEnd = (e: AnimationEvent, appName: keyof typeof allApps) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        target.id = appName;
+        const app = allApps[appName]({
+            key: appName, id: appName,
+            
+        });
+        desktopStore.addApp(app);
+
+        timeout = setTimeout(() => {
+            app.window.dom.focus();
+        }, 0);
+    };
+
+    const subscribers: (()=>void)[] = [];
+
+    const onDockAppMount = (dockIcon: Button) => {
+        subscribers.push( desktopStore.Subscribe((state) => { 
+            const app = state.activeApps.find(a => a.name === dockIcon.dom.id);
+  
+            dockIcon.SetProps({
+                className: (cx) => {
+                    if (app) {
+                        cx.add(styles.is_opened);
+                    } else { 
+                        cx.remove(styles.is_opened);
+                    }
+                },
+            });
+        }));
+    };
+
     const dock = new Element<HTMLDivElement>({
         tagName: 'div',
         props: {
             id: 'dock',
             events: {
                 onmousemove: onMouseMove,
-                onanimationend: onOpenAnimationEnd,
-                onmousedown: onClick,
             },
             className: `${styles.root} dock`,
         },
-    });
-
-    desktopStore.effect((state) => {
-        dock.setProps({
+    })
+        .OnUnMount(() => {
+            subscribers.forEach(item => {
+                item();
+            });
+        });
+    
+    dockIconsStore.Effect((appIcons) => {
+        const calendar = localStorage.getItem('calendarIcon') as string;
+        const activeApps = desktopStore.GetState().activeApps;
+      
+        dock.SetProps({
             children: [
                 new Button({
-                    className: `${styles.button} ${state.activeApps.find(a => a.name === 'Finder') ? styles.is_opened : ''}`,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Finder') > -1 ? styles.is_opened : ''),
+                    tabIndex: -1,
                     id: 'Finder',
                     key: 'Finder',
-                    tabIndex: -1,
+                    events: {
+                        onclick: onclick,
+                        onanimationend: (e) => {
+                            onOpenAnimationEnd(e, 'Finder'); 
+                        },
+                    },
                     children: [
                         new Element<HTMLDivElement>({
                             tagName: 'div',
                             props: {
                                 children: [
-                                    new Image({ src: finder }).dom,
+                                    new Image({
+                                        src: finder,
+                                    }).dom,
                                     Tooltip('Finder' )
                                 ],
                             },
                         }).dom
                     ],
-                }).dom,
+                })
+                    .OnMount(onDockAppMount).dom, 
                     
                 new Button({
-                    className: styles.button,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Launchpad') > -1 ? styles.is_opened : ''),
+                    id: 'Launchpad',
                     key: 'Launchpad',
                     tabIndex: -1,
                     children: [
@@ -122,29 +156,45 @@ function Dock() {
                 }).dom,
 
                 new Button({
-                    className: `${styles.button} ${state.activeApps.find(a => a.name === 'Calculator') ? styles.is_opened : ''}`,
+                    tabIndex: -1,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Calculator') > -1 ? styles.is_opened : ''),
                     id: 'Calculator',
                     key: 'Calculator',
-                    tabIndex: -1,
+                    events: {
+                        onclick: onclick,
+                        onanimationend: (e) => {
+                            onOpenAnimationEnd(e, 'Calculator'); 
+                        },
+                    },
                     children: [
                         new Element<HTMLDivElement>({
                             tagName: 'div',
                             props: {
                                 children: [
-                                    new Image({ src: calculator }).dom,
+                                    new Image({
+                                        src: calculator,
+                                    }).dom,
                                     Tooltip('Calculator')
                                 ],
                             },
                         }).dom
                     ],
                 })
-                    .dom,
+                    .OnMount(onDockAppMount).dom,
                      
                 new Button({
-                    className: `${styles.button} ${state.activeApps.find(a => a.name === 'Notes') ? styles.is_opened : ''}`,
-                    id: 'Notes',
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Notes') > -1 ? styles.is_opened : ''),
                     key: 'Notes',
                     tabIndex: -1,
+                    id: 'Notes',
+                    events: {
+                        onclick: onclick,
+                        onanimationend: (e) => {
+                            onOpenAnimationEnd(e, 'Notes'); 
+                        },
+                    },
                     children: [
                         new Element<HTMLDivElement>({
                             tagName: 'div',
@@ -159,13 +209,20 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .dom,
+                    .OnMount(onDockAppMount).dom,
                      
                 new Button({
-                    className: `${styles.button} ${state.activeApps.find(a => a.name === 'Calendar') ? styles.is_opened : ''}`,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Calendar') > -1 ? styles.is_opened : ''),
                     key: 'Calendar',
-                    id: 'Calendar',
                     tabIndex: -1,
+                    id: 'Calendar',
+                    events: {
+                        onclick: onclick,
+                        onanimationend: (e) => {
+                            onOpenAnimationEnd(e, 'Calendar'); 
+                        },
+                    },
                     children: [
                         new Element<HTMLDivElement>({
                             tagName: 'div',
@@ -180,13 +237,20 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .dom,
+                    .OnMount(onDockAppMount).dom,
                 
                 new Button({
-                    className: `${styles.button} ${state.activeApps.find(a => a.name === 'Music') ? styles.is_opened : ''}`,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Music') > -1 ? styles.is_opened : ''),
                     key: 'Music',
                     id: 'Music',
                     tabIndex: -1,
+                    events: {
+                        onclick: onclick,
+                        onanimationend: (e) => {
+                            onOpenAnimationEnd(e, 'Music'); 
+                        },
+                    },
                     children: [
                         new Element<HTMLDivElement>({
                             tagName: 'div',
@@ -201,13 +265,20 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .dom,
+                    .OnMount(onDockAppMount).dom,
 
                 new Button({
-                    className: `${styles.button} ${state.activeApps.find(a => a.name === 'Settings') ? styles.is_opened : ''}`,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Settings') > -1 ? styles.is_opened : ''),
                     key: 'Settings',
                     id: 'Settings',
                     tabIndex: -1,
+                    events: {
+                        onclick: onclick,
+                        onanimationend: (e) => {
+                            onOpenAnimationEnd(e, 'Settings'); 
+                        },
+                    },
                     children: [
                         new Element<HTMLDivElement>({
                             tagName: 'div',
@@ -222,83 +293,110 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .dom
+                    .OnMount(onDockAppMount).dom,
 
-                // new Element<HTMLHRElement>({
-                //     tagName: 'hr',
-                //     props: {
-                //         key: 'separator',
-                //         className: styles.separator,
-                //     },
-                // }).dom,
+                new Element<HTMLHRElement>({
+                    tagName: 'hr',
+                    props: {
+                        key: 'separator',
+                        className: styles.separator,
+                    },
+                }).dom,
 
-                // new Button({
-                //     className: styles.button,
-                //     key: 'Downloads',
-                //     tabIndex: -1,
-                //     children: [
-                //         new Element<HTMLDivElement>({
-                //             tagName: 'div',
-                //             props: {
-                //                 children: [
-                //                     new Image({
-                //                         src: folder,
+                new Button({
+                    className: styles.button,
+                    key: 'Downloads',
+                    tabIndex: -1,
+                    children: [
+                        new Element<HTMLDivElement>({
+                            tagName: 'div',
+                            props: {
+                                children: [
+                                    new Image({
+                                        src: folder,
                           
-                //                     }).dom,
-                //                     Tooltip( 'Downloads' )
-                //                 ],
-                //             },
-                //         }).dom
+                                    }).dom,
+                                    Tooltip( 'Downloads' )
+                                ],
+                            },
+                        }).dom
                        
-                //     ],
-                // })
-                //     .dom,
+                    ],
+                })
+                    .OnMount(onDockAppMount).dom,
                 
-                // // ...dockIconsStore.getState()
-                // //     .map(icon => {
-                // //         const app = state.activeApps.findIndex(a => a.name === icon.title) > -1;
+                ...appIcons
+                    .map(icon => {
+                        return (
+                            new Button({
+                                className: clsx(styles.button,
+                                    activeApps.findIndex(i => i.name === icon.title) > -1 ? styles.is_opened : ''),
+                                key: icon.title,
+                                id: icon.title,
+                                tabIndex: -1,
+                                events: {
+                                    onclick: onclick,
+                                    onanimationend: (e) => {
+                                        onOpenAnimationEnd(e, icon.title); 
+                                    },
+                                },
+                                children: [
+                                    new Element<HTMLDivElement>({
+                                        tagName: 'div',
+                                        props: {
+                                            children: [
+                                                new Image({
+                                                    src: icon.image,
+                          
+                                                }).dom,
+                                                Tooltip(icon.title)
+                                            ],
+                                        },
+                                    }).dom
+                       
+                                ],
+                            })
+                                .OnMount((e) => {
+                                    const target = e.dom;
+                                    const appIsExists = desktopStore.GetState().activeApps.find(item => item.name === target.id);
 
-                // //         return (
-                // //             new Button({
-                // //                 className: `${styles.button} ${app ? styles.is_opened : ''}`,
-                // //                 key: icon.title,
-                // //                 id: icon.title,
-                // //                 tabIndex: -1,
-                // //                 children: [
-                // //                     new Element<HTMLDivElement>({
-                // //                         tagName: 'div',
-                // //                         props: {
-                // //                             children: [
-                // //                                 new Image({ src: icon.image }).dom,
-                // //                                 Tooltip(icon.title)
-                // //                             ],
-                // //                         },
-                // //                     }).dom
-                // //                 ],
-                // //             })
-                // //                 .dom
-                // //         );
-                // //     }),
+                                    if (!appIsExists) {
+                                        e.SetProps({
+                                            className: (cx) => {
+                                                cx.add(styles.on_open_animate);
+                                            },
+                                        });
+                                    } else { 
+                                        e.SetProps({
+                                            className: (cx) => {
+                                                cx.add(styles.is_opened);
+                                            },
+                                        });
+                                    }
+                                    onDockAppMount(e); 
+                                }).dom
+                        );
+                    }),
 
-                // new Button({
-                //     className: styles.button,
-                //     key: 'Trash',
-                //     tabIndex: -1,
-                //     children: [
-                //         new Element<HTMLDivElement>({
-                //             tagName: 'div',
-                //             props: {
-                //                 children: [
-                //                     new Image({
-                //                         src: trash,
-                //                     }).dom,
-                //                     Tooltip( 'Trash' )
-                //                 ],
-                //             },
-                //         }).dom
-                //     ],
-                // })
-                //     .dom
+                new Button({
+                    className: styles.button,
+                    key: 'Trash',
+                    tabIndex: -1,
+                    children: [
+                        new Element<HTMLDivElement>({
+                            tagName: 'div',
+                            props: {
+                                children: [
+                                    new Image({
+                                        src: trash,
+                                    }).dom,
+                                    Tooltip( 'Trash' )
+                                ],
+                            },
+                        }).dom
+                    ],
+                })
+                    .OnMount(onDockAppMount).dom
             ],
         });
     });

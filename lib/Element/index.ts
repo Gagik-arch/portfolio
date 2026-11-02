@@ -1,15 +1,16 @@
 import type {
     ElementPropsType, ElementConstructorType, HTMLElementTags, EventType,
-    Children,
-    KeyedHTMLElement
+    VirtualHTMLElement
 } from './types';
 import {
+    isPlainObject,
     setupClassName, setupStyle
 } from '../utils';
 import { setupChildren } from './utils';
 
 class Element<T extends HTMLElementTags> {
     public dom: T;
+    private events?: EventType<T> | undefined;
 
     public constructor({
         tagName,
@@ -25,92 +26,124 @@ class Element<T extends HTMLElementTags> {
     }: ElementConstructorType<T>) {
         this.dom = document.createElement(tagName) as T;
 
-        if (key) {
-            (this.dom as KeyedHTMLElement<T>).__key = key;
-        }
+        const virtualDom = this.dom as VirtualHTMLElement;
 
+        if (key) {
+            virtualDom.__key = key;
+        }
+        
         if (rootElement) {
             rootElement.appendChild(this.dom);
         }
 
-        this.dom.__props = {
-            className,
-            style,
-        };
-  
-        this.setProps(
+        this.SetProps(
             {
                 className,
                 children,
                 style,
                 ...props,
-            } as Omit<ElementPropsType<T>, 'className' | 'children'> & {
+            } as Omit<ElementPropsType<T>, 'className'> & {
                 className?: ((classList: DOMTokenList) => void) | string | undefined;
-                children?: ((childNodes: Set<ChildNode>) => Set<ChildNode>) | Children[] | undefined;
             }
-        ); 
+        );
 
-        queueMicrotask(() => {
-            const DOM = ([ ...(this.dom.parentElement?.children || []) ]).find(item => item.isEqualNode(this.dom));
-
-            if (DOM) {
-                this.dom = DOM as T;
-            }
-
-            if ( !events) return;
-
-            Object.entries<EventType<T>[keyof EventType<T>]>(events)
-                .forEach(([
-                    type,
-                    listener
-                ]) => {
-                    const event = type.replace('on', '');
-
-                    this.dom.addEventListener(event, listener as EventListener);
-
-                });
-
-            (this.dom as KeyedHTMLElement<T>).__events = events;
-        });
+        this.SetEvents(events);
     }
 
-    public setProps(
+    public SetProps(
         {
             className,
             children,
             style,
             ...props
-        }: Omit<ElementPropsType<T>, 'className' | 'children'> & {
+        }: Omit<ElementPropsType<T>, 'className'> & {
             className?: ((classList: DOMTokenList) => void) | string | undefined;
-            children?: ((childNodes: Set<ChildNode>) => Set<ChildNode>) | Children[] | undefined;
         },
         isForceUpdate = false
     ) {
-        setupClassName(className, this.dom);
-        setupStyle(style, this.dom);
-        setupChildren(children, this.dom, isForceUpdate);
-        
+        if (className !== undefined) {
+            setupClassName(
+                className,
+                this.dom
+            );
+        }
+
+        if (style !== undefined) {
+            setupStyle(
+                style,
+                this.dom
+            );
+        }
+
+        if (children !== undefined) {
+            setupChildren(
+                children,
+                this.dom,
+                isForceUpdate
+            );
+        }
+
         Object.entries(props)
             .forEach(([
                 name,
-                value
+                value 
             ]) => {
-                if (typeof value === 'function') return;
+                if ( name === 'events' || isPlainObject(value)) {
+                    return;
+                }
+
+                if (name === 'value' && (this.dom instanceof HTMLInputElement || this.dom instanceof HTMLTextAreaElement)) {
+                    if (this.dom.value === value) {
+                        return;
+                    } else {
+                        this.dom.value = value;
+                    }
+                }
 
                 if (name in this.dom) {
-                    (this.dom)[name as keyof T] = value;
+                    if (value === undefined || value === '') {
+                        this.dom.removeAttribute(name);
+                    } else {
+                        if (((this.dom)[name as keyof T] !== undefined ) && (this.dom)[name as keyof T] !== value ) {
+                            (this.dom)[name as keyof T] = value;
+                        }
+                    }
                 } else {
-                    this.dom.setAttribute(name, value as string);
+                    if (value !== '' && this.dom.getAttribute(name) !== String(value)) {
+                        this.dom.setAttribute(name, value as string);
+                    }
                 }
             });
 
         return this;
     }
 
-    public destroy() {
-        if (!this.dom.__events) return;
+    private SetEvents(
+        events: EventType<T> | undefined
+    ) {
+        if (events) {
+            Object.entries<EventType<T>[keyof EventType<T>]>(events)
+                .forEach(([
+                    type,
+                    listener 
+                ]) => {
+                    this.dom.addEventListener(
+                        type.replace(/^on/, ''),
+                        listener as EventListener
+                    );
 
-        Object.entries(this.dom.__events)
+                });
+
+            this.events = events;
+        }
+    }
+
+    public Destroy() {
+        const events = this.events;
+
+        if (!events) return;
+
+        Object.entries(events)
             .forEach(([
                 type,
                 listener 
@@ -119,14 +152,14 @@ class Element<T extends HTMLElementTags> {
                 this.dom.removeEventListener(event, listener as EventListener);
             });
 
-        this.remove();
+        this.Remove();
     }
 
-    public remove() {
+    public Remove() {
         this.dom.remove();
     }
 
-    public onMount(callback: (e: this) => void) {
+    public OnMount(callback: (e: this) => void) {
         if (this.dom.isConnected) {
             callback(this);
             return this;
@@ -146,25 +179,12 @@ class Element<T extends HTMLElementTags> {
         return this;
     }
 
-    public onUnMount(callback: (e: this) => void) {
+    public OnUnMount(callback: (e: this) => void) {
         const observer = new MutationObserver(() => {
-
             if (!this.dom.isConnected) {
                 callback(this);
 
-                const DOM = this.dom as KeyedHTMLElement<HTMLElement>;
-
-                if ((DOM).__events) {
-                    Object.entries(DOM.__events)
-                        .forEach(([
-                            type,
-                            listener 
-                        ]) => {
-                            const event = type.replace('on', '');
-                            this.dom.removeEventListener(event, listener as EventListener);
-                        });
-                }
-
+                this.Destroy();
                 observer.disconnect();
             }
         });
