@@ -114,4 +114,3 @@ export function setupChildren<T extends HTMLElement>(
         }
     }
 }
-

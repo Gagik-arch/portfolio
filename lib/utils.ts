@@ -28,7 +28,7 @@ export function setupInnerHtml(
 
 export function setupStyle(
     style: HTMLElement['style'] | undefined,
-    dom: HTMLElement
+    dom?: HTMLElement
 ) {
     if (!style ) return;
 
@@ -83,7 +83,6 @@ export function mergeAttributes(
     for (let i = 0; i < newChild.getAttributeNames().length; i++) {
         const oldChildAtt = oldChild.attributes[i];
         const newChildAtt = newChild.attributes[i];
-
         if (oldChildAtt.name === newChildAtt.name && oldChildAtt.value !== newChildAtt.value) {
             oldChild.setAttribute(oldChildAtt.name, newChildAtt.value);
         }

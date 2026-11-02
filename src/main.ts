@@ -1,7 +1,6 @@
 import './style.css';
 import Root from './Root';
 import { createRoot } from '$lib/index';
-import './utils/prototypes';
 import { generateCalendarAppIcon } from './utils';
 
 void (async() => {

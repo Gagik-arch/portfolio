@@ -9,7 +9,6 @@ class Button extends Element<HTMLButtonElement> {
         className = '',
         ...props
     }: ButtonProps) {
-
         super({
             tagName: 'button',
             props: {
