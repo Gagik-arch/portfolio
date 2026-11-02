@@ -3,56 +3,102 @@ class Vector {
     public x: number;
     public y: number;
 
+    public static Zero() {
+        return new Vector(0, 0);
+    }
+
+    public static One() {
+        return new Vector(1, 1);
+    }
+
     public constructor(x:number, y:number) {
         this.x = x;
         this.y = y;
     }
 
-    public add(vector = new Vector(0, 0)) {
-        if (!(vector instanceof Vector)) {
-            throw new Error('vector argument must be  Vector');
+    public Add(value: number | Vector = Vector.Zero()) {
+        if (typeof value === 'number') {
+            return new Vector(this.x + value, this.y + value);
         }
 
-        return new Vector(this.x + vector.x, this.y + vector.y);
+        return new Vector(this.x + value.x, this.y + value.y);
     }
 
-    public subtract(vector = new Vector(0, 0)) {
-        if (!(vector instanceof Vector)) {
-            throw new Error('vector argument must ber Vector');
+    public AddSelf(value: number | Vector) {
+        if (typeof value === 'number') {
+            this.x += value;
+            this.y += value;
+        } else {
+            this.x += value.x;
+            this.y += value.y;
         }
 
-        return new Vector(this.x - vector.x, this.y - vector.y);
+        return this;
     }
 
-    public multiply(scalar:number) {
+    public Subtract(value: number | Vector = Vector.Zero()) {
+        if (typeof value === 'number') {
+            return new Vector(this.x - value, this.y - value);
+        }
+
+        return new Vector(this.x - value.x, this.y - value.y);
+    }
+
+    public SubtractSelf(value: number | Vector = Vector.Zero()) {
+        if (typeof value === 'number') {
+            this.x -= value;
+            this.y -= value;
+        } else {
+            this.x -= value.x;
+            this.y -= value.y;
+        }
+
+        return this;
+    }
+
+    public Multiply(scalar:number) {
         return new Vector(this.x * scalar, this.y * scalar);
     }
 
-    public divide(scalar:number) {
+    public MultiplySelf(scalar: number) {
+        this.x *= scalar;
+        this.y *= scalar;
+
+        return this;
+    }
+
+    public Divide(scalar:number) {
         return new Vector(this.x / scalar, this.y / scalar);
     }
 
-    public magnitude(vector = new Vector(0, 0)) {
-        const dx = vector.x - this.x;
-        const dy = vector.y - this.y;
+    public DivideSelf(scalar: number) {
+        this.x /= scalar;
+        this.y /= scalar;
 
-        return Math.sqrt(dx * dx + dy * dy);
+        return this;
     }
 
-    public round() {
+    public Round() {
         return new Vector(Math.round(this.x), Math.round(this.y));
     }
 
-    public floor() {
+    public Floor() {
         return new Vector(Math.floor(this.x), Math.floor(this.y));
     }
 
-    public abs() {
+    public ToFixed(scalar = 2) {
+        return new Vector(+this.x.toFixed(scalar), +this.y.toFixed(scalar));
+    }
+
+    public ToABS() {
         return new Vector(Math.abs(this.x), Math.abs(this.y));
     }
 
-    public toFixed(scalar = 2) {
-        return new Vector(+this.x.toFixed(scalar), +this.y.toFixed(scalar));
+    public ToABSSelf() {
+        this.x = Math.abs(this.x);
+        this.y = Math.abs(this.y);
+
+        return this;
     }
 }
 

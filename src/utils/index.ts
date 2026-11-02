@@ -1,5 +1,7 @@
 import Element from '$lib/Element';
 
+export const clamp = (num: number, min: number, max: number = Number.MAX_SAFE_INTEGER): number => Math.max(min, Math.min(num, max));
+
 export const minNumberIndex = (arr: number[]): number => {
     return arr.reduce((r, v, i, a) => v > a[r] ? r : i, -1);
 };
@@ -13,6 +15,10 @@ export const getCssVariable = <T extends string | number>(key:string, element: H
     const variable = style.getPropertyValue(key);
 
     return (isNaN(+variable) ? variable : +variable ) as T;
+};
+
+export const setCSSVariable = (key:string, value:string, element: HTMLElement = document.body ) => {
+    element.style.setProperty(key, value);
 };
 
 export const genRandomNumber = (min = 0, max = 10) => {

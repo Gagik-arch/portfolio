@@ -31,6 +31,24 @@ function Desktop() {
         }
     };
 
+    const calculateIconPlace = (item:DesktopIconType, dom:HTMLElement) => {
+        const virtual = convertIndexToVirtual(item.index, dom.getBoundingClientRect());
+       
+        const real = convertVirtualToReal(
+            virtual,
+            dom.getBoundingClientRect()
+        );
+
+        return DesktopIcon({
+            x: real.x,
+            y: real.y,
+            index: item.index,
+            title: item.title,
+            appIcon: item.appIcon,
+            onDoubleClick: () => onDoubleClickAppIcon(item.title),
+        });
+
+    };
     const desktopContainer = new Element<HTMLDivElement>({
         tagName: 'div',
         props: {
@@ -60,23 +78,7 @@ function Desktop() {
         .OnMount((e) => {
             e.SetProps({
                 children: desktopStore.GetState().appIcons
-                    .map(item => {
-                        const virtual = convertIndexToVirtual(item.index, e.dom.getBoundingClientRect());
-                        
-                        const real = convertVirtualToReal(
-                            virtual,
-                            e.dom.getBoundingClientRect()
-                        );
-
-                        return DesktopIcon({
-                            x: real.x,
-                            y: real.y,
-                            index: item.index,
-                            title: item.title,
-                            appIcon: item.appIcon,
-                            onDoubleClick: () => onDoubleClickAppIcon(item.title),
-                        });
-                    }),
+                    .map(item => calculateIconPlace(item, e.dom)),
             });
         });
 
@@ -85,23 +87,7 @@ function Desktop() {
     }) => {
         desktopContainer.SetProps({
             children: [
-                ...appIcons.map(item => {
-                    const virtual = convertIndexToVirtual(item.index, desktopContainer.dom.getBoundingClientRect());
-
-                    const real = convertVirtualToReal(
-                        virtual,
-                        desktopContainer.dom.getBoundingClientRect()
-                    );
-               
-                    return DesktopIcon({
-                        x: real.x,
-                        y: real.y,
-                        index: item.index,
-                        title: item.title,
-                        appIcon: item.appIcon,
-                        onDoubleClick: () => onDoubleClickAppIcon(item.title),
-                    });
-                }),
+                ...appIcons.map(item => calculateIconPlace(item, desktopContainer.dom)),
 
                 ...activeApps.map(item => item.window.dom)
             ],
@@ -158,8 +144,8 @@ function Desktop() {
         const movementV = new Vector(e.movementX, e.movementY);
         const offset = new Vector(elementRect.x - rootRect.x, elementRect.y - rootRect.y);
    
-        const cord = movementV.add(offset)
-            .floor();
+        const cord = movementV.Add(offset)
+            .Floor();
         
         element.classList.add('grabbing');
 

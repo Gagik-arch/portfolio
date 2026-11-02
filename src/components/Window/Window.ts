@@ -3,7 +3,8 @@ import styles from './styles.module.css';
 import type { WindowDimension, WindowProps } from './types';
 import Controls from './Controls';
 import {
-    rangeNumber, genRandomNumber, getCssVariable  
+    rangeNumber, genRandomNumber, getCssVariable,  
+    clamp
 } from '$utils/index';
 import desktopStore from '$store/desktop.store';
 import dockStyles from '../Dock/style.module.css';
@@ -53,6 +54,7 @@ class Window extends Element<HTMLDivElement> {
                 ...props,
             },
         });
+
         this.createdAt = new Date()
             .getTime();
         
@@ -99,29 +101,29 @@ class Window extends Element<HTMLDivElement> {
                 ...(children ?? [])
             ],
         });
+
         this.minWidth = minWidth;
         this.minHeight = minHeight;
 
-        this.width = width ? Math.max(width, this.minWidth) : this.minWidth; 
-        this.height = height ? Math.max(height, this.minHeight) : this.minHeight;
+        this.width = clamp((width ?? this.minWidth), this.minWidth, width); 
+        this.height = clamp((height ?? this.minHeight), this.minHeight, height); 
  
         const scaledWidth = this.width * getCssVariable<number>('--scale');
         const scaledHeight = this.height * getCssVariable<number>('--scale');
-  
-        this.dom.style.setProperty('--width', scaledWidth + 'px');
-        this.dom.style.setProperty('--height', scaledHeight + 'px');
         
         const desktop = document.getElementById('desktop'); 
         const desktopRect = desktop?.getBoundingClientRect();
         
         if (!desktopRect) return; 
-        
+    
         this.x = x ?? Math.floor(genRandomNumber(desktopRect.left, desktopRect.right - scaledWidth));
-        this.y = y ?? Math.floor(genRandomNumber(desktopRect.top, desktopRect.bottom - scaledHeight));
-
+        this.y = y ?? Math.floor(genRandomNumber(0, desktopRect.bottom - scaledHeight));
+       
         this.dom.style.setProperty('--left', this.x + 'px');
         this.dom.style.setProperty('--top', this.y + 'px');
-
+        this.dom.style.setProperty('--width', scaledWidth + 'px');
+        this.dom.style.setProperty('--height', scaledHeight + 'px');
+        
         this.OnMount(() => {
             desktop?.addEventListener('mousedown', this.onMouseDown);
             window.addEventListener('mousemove', this.onMove);

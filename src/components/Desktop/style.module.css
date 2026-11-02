@@ -3,6 +3,7 @@
     position: relative;
     margin-bottom: 5px;
     --icon-size: 100px;
+    /* margin: 0 5px 5px 5px */
 }
 
 .root:has(.app_icon:focus-within) {

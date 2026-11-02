@@ -10,11 +10,11 @@ export const convertRealToVirtual = (mouse: Vector, rootRect: DOMRect) => {
     const mouseMax = new Vector(rangeNumber(mouse.x, 0, window.innerWidth),
         rangeNumber(mouse.y, 0, window.innerHeight));
     
-    const cord = mouseMax.subtract(new Vector(rootRect.x, rootRect.y))
-        .subtract(new Vector(rootRect.width, 0))
-        .divide(100)
-        .abs()
-        .floor();
+    const cord = mouseMax.Subtract(new Vector(rootRect.x, rootRect.y))
+        .Subtract(new Vector(Math.floor(rootRect.width), 0))
+        .Divide(100)
+        .ToABS()
+        .Floor();
     
     const maxWidthBlock = Math.floor(rootRect.width / iconSize) - 1;
     const maxHeightBlock = Math.floor(rootRect.height / iconSize) - 1;
@@ -25,11 +25,10 @@ export const convertRealToVirtual = (mouse: Vector, rootRect: DOMRect) => {
     );
 };
 
-export const convertVirtualToReal = (virtual: Vector, rootRect:DOMRect) => { 
-    return virtual.multiply(100)
-        .subtract(new Vector(rootRect.width - iconSize, 0))
-        .floor()
-        .abs();
+export const convertVirtualToReal = (virtual: Vector, rootRect: DOMRect) => { 
+    return virtual.Multiply(100)
+        .Subtract(new Vector(Math.floor(rootRect.width) - iconSize, 0))
+        .ToABS();
 };
 
 export const convertVirtualToIndex = (virtual: Vector, rootRect: DOMRect) => { 
@@ -38,12 +37,13 @@ export const convertVirtualToIndex = (virtual: Vector, rootRect: DOMRect) => {
 }; 
 
 export const convertIndexToVirtual = (index: number, rootRect: DOMRect) => { 
-    const heightBlocks = Math.floor(rootRect.height / 100);
-    
+    const heightBlocks = Math.floor(Math.floor(rootRect.height) / 100);
+
     return new Vector(
-        Math.floor(index / heightBlocks),
+        index / heightBlocks,
         index % heightBlocks
-    );
+    )
+        .Floor();
 }; 
 
 export const extractRangeFromIconToIcon = (startIndex: number, appsIcons: (DesktopIconType | null)[]) => {
