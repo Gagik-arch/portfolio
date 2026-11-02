@@ -5,6 +5,8 @@ import Typography from '$uikit/Typography';
 import styles from './style.module.css';
 import desktopStore from '$store/desktop.store';
 
+const a = 0;
+
 function MenuBar() {
     const date = new Date();
     let timeout: number | undefined;
@@ -44,11 +46,11 @@ function MenuBar() {
                                             text: 'Finder',
                                             variant: 'headline-regular',
                                         })
-                                            .onMount((e) => {
-                                                desktopStore.subscribe((state) => {
+                                            .OnMount((e) => {
+                                                desktopStore.Subscribe((state) => {
                                                     const app = state.activeApps.find(a => a.window.dom.id === state.focusedAppId);
                                                  
-                                                    e.setProps({
+                                                    e.SetProps({
                                                         children: [ app?.name || 'Finder' ],
                                                     });
                                                 });
@@ -121,17 +123,19 @@ function MenuBar() {
                                 }).dom,
 
                                 new Button({
-                                    className: `not-allowed ${styles.item}`,
+                                    className: `not-allowed ${styles.item} `,
                                     children: [
+
                                         new Typography({
                                             text: gbDateTime,
                                             variant: 'body-emphasized',
+                                            children: [ a.toString() ],
                                         })
-                                            .onMount((e) => {
+                                            .OnMount((e) => {
                                                 const check = () => {
-                
                                                     timeout = setTimeout(() => {
-                                                        e.setProps({
+                                                   
+                                                        e.SetProps({
                                                             children: [
                                                                 format
                                                                     .format(new Date())
@@ -139,12 +143,12 @@ function MenuBar() {
                                                         });
                                                         
                                                         check();
-                                                    }, 1000);
+                                                    }, 60 * 10);
                                                 };
 
                                                 check();
                                             })
-                                            .onUnMount(() => {
+                                            .OnUnMount(() => {
                                                 clearTimeout(timeout);
                                             }).dom 
                                     ],

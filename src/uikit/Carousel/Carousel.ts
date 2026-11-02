@@ -97,10 +97,10 @@ function Carousel({
     };
 
     line
-        .onMount(() => {
+        .OnMount(() => {
             loop();
         })
-        .onUnMount(() => {
+        .OnUnMount(() => {
             clearTimeout(timer);
             mutation();
         });

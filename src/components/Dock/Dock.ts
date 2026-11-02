@@ -14,6 +14,7 @@ import Tooltip from './Tooltip';
 import desktopStore from '$store/desktop.store';
 import allApps from '$apps/index';
 import dockIconsStore from '$store/dockIcons.store';
+import { clsx } from '$utils/clsx';
 
 function Dock() {
     let timeout: number | undefined; 
@@ -39,7 +40,7 @@ function Dock() {
         target.classList.add(styles.on_open_animate);
 
         if (!target.id) return; 
-        const app = desktopStore.getState().activeApps.find(a => a.name === target.id);
+        const app = desktopStore.GetState().activeApps.find(a => a.name === target.id);
        
         if (!app) return; 
         clearTimeout(timeout);
@@ -54,8 +55,10 @@ function Dock() {
     const onOpenAnimationEnd = (e: AnimationEvent, appName: keyof typeof allApps) => {
         const target = e.currentTarget as HTMLButtonElement;
         target.id = appName;
-        const app = allApps[appName]();
-      
+        const app = allApps[appName]({
+            key: appName, id: appName,
+            
+        });
         desktopStore.addApp(app);
 
         timeout = setTimeout(() => {
@@ -66,10 +69,10 @@ function Dock() {
     const subscribers: (()=>void)[] = [];
 
     const onDockAppMount = (dockIcon: Button) => {
-        subscribers.push( desktopStore.subscribe((state) => { 
+        subscribers.push( desktopStore.Subscribe((state) => { 
             const app = state.activeApps.find(a => a.name === dockIcon.dom.id);
   
-            dockIcon.setProps({
+            dockIcon.SetProps({
                 className: (cx) => {
                     if (app) {
                         cx.add(styles.is_opened);
@@ -91,19 +94,21 @@ function Dock() {
             className: `${styles.root} dock`,
         },
     })
-        .onUnMount(() => {
+        .OnUnMount(() => {
             subscribers.forEach(item => {
                 item();
             });
         });
     
-    dockIconsStore.effect((appIcons) => {
+    dockIconsStore.Effect((appIcons) => {
         const calendar = localStorage.getItem('calendarIcon') as string;
-     
-        dock.setProps({
+        const activeApps = desktopStore.GetState().activeApps;
+      
+        dock.SetProps({
             children: [
                 new Button({
-                    className: styles.button,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Finder') > -1 ? styles.is_opened : ''),
                     tabIndex: -1,
                     id: 'Finder',
                     key: 'Finder',
@@ -127,10 +132,11 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .onMount(onDockAppMount).dom, 
+                    .OnMount(onDockAppMount).dom, 
                     
                 new Button({
-                    className: styles.button,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Launchpad') > -1 ? styles.is_opened : ''),
                     id: 'Launchpad',
                     key: 'Launchpad',
                     tabIndex: -1,
@@ -151,7 +157,8 @@ function Dock() {
 
                 new Button({
                     tabIndex: -1,
-                    className: styles.button,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Calculator') > -1 ? styles.is_opened : ''),
                     id: 'Calculator',
                     key: 'Calculator',
                     events: {
@@ -174,10 +181,11 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .onMount(onDockAppMount).dom,
+                    .OnMount(onDockAppMount).dom,
                      
                 new Button({
-                    className: styles.button,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Notes') > -1 ? styles.is_opened : ''),
                     key: 'Notes',
                     tabIndex: -1,
                     id: 'Notes',
@@ -201,10 +209,11 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .onMount(onDockAppMount).dom,
+                    .OnMount(onDockAppMount).dom,
                      
                 new Button({
-                    className: `${styles.button} `,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Calendar') > -1 ? styles.is_opened : ''),
                     key: 'Calendar',
                     tabIndex: -1,
                     id: 'Calendar',
@@ -228,10 +237,11 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .onMount(onDockAppMount).dom,
+                    .OnMount(onDockAppMount).dom,
                 
                 new Button({
-                    className: styles.button,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Music') > -1 ? styles.is_opened : ''),
                     key: 'Music',
                     id: 'Music',
                     tabIndex: -1,
@@ -255,10 +265,11 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .onMount(onDockAppMount).dom,
+                    .OnMount(onDockAppMount).dom,
 
                 new Button({
-                    className: styles.button,
+                    className: clsx(styles.button,
+                        activeApps.findIndex(i => i.name === 'Settings') > -1 ? styles.is_opened : ''),
                     key: 'Settings',
                     id: 'Settings',
                     tabIndex: -1,
@@ -282,7 +293,7 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .onMount(onDockAppMount).dom,
+                    .OnMount(onDockAppMount).dom,
 
                 new Element<HTMLHRElement>({
                     tagName: 'hr',
@@ -312,13 +323,14 @@ function Dock() {
                        
                     ],
                 })
-                    .onMount(onDockAppMount).dom,
+                    .OnMount(onDockAppMount).dom,
                 
                 ...appIcons
                     .map(icon => {
                         return (
                             new Button({
-                                className: styles.button,
+                                className: clsx(styles.button,
+                                    activeApps.findIndex(i => i.name === icon.title) > -1 ? styles.is_opened : ''),
                                 key: icon.title,
                                 id: icon.title,
                                 tabIndex: -1,
@@ -344,18 +356,18 @@ function Dock() {
                        
                                 ],
                             })
-                                .onMount((e) => {
+                                .OnMount((e) => {
                                     const target = e.dom;
-                                    const appIsExists = desktopStore.getState().activeApps.find(item => item.name === target.id);
-                                
+                                    const appIsExists = desktopStore.GetState().activeApps.find(item => item.name === target.id);
+
                                     if (!appIsExists) {
-                                        e.setProps({
+                                        e.SetProps({
                                             className: (cx) => {
                                                 cx.add(styles.on_open_animate);
                                             },
                                         });
                                     } else { 
-                                        e.setProps({
+                                        e.SetProps({
                                             className: (cx) => {
                                                 cx.add(styles.is_opened);
                                             },
@@ -384,7 +396,7 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .onMount(onDockAppMount).dom
+                    .OnMount(onDockAppMount).dom
             ],
         });
     });

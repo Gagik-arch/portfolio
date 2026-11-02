@@ -17,7 +17,7 @@ function DesktopIcon({
         className: styles.app_icon,
         tabIndex: 0,
         'data-index': index.toString(),
-        key: `${index}/${title}`,
+        key: `desktop-icon-${title}`,
         events: {
             ondblclick: onDoubleClick,  
         },
