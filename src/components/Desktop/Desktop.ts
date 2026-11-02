@@ -123,6 +123,7 @@ function Desktop() {
             element.style.setProperty('--x', real.x + 'px');
             element.style.setProperty('--y', real.y + 'px'); 
             element.classList.add(styles.transition);
+            
             timeout = setTimeout(() => {
                 desktopStore.replaceIcon(newIndex, prevIndex, length);
             }, 200);

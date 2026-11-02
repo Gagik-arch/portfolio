@@ -58,7 +58,7 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     user-select: none;
 
     &:hover {
-        --transition: all 0 cubic-bezier(0.25, 1, 0.5, 1)
+        transition: none
     }
 
     &::after {
