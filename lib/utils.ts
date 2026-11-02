@@ -39,7 +39,7 @@ export function setupStyle(
         ]) => {
             if (!value) return;
 
-            dom.style.setProperty(camelToKebab(property), value.toString());
+            dom?.style.setProperty(camelToKebab(property), value.toString());
         });
 }
 
