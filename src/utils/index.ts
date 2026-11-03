@@ -1,5 +1,7 @@
 import Element from '$lib/Element';
 
+export const clamp = (num: number, min: number, max: number = Number.MAX_SAFE_INTEGER): number => Math.max(min, Math.min(num, max));
+
 export const minNumberIndex = (arr: number[]): number => {
     return arr.reduce((r, v, i, a) => v > a[r] ? r : i, -1);
 };
@@ -8,11 +10,27 @@ export const rangeNumber = (num:number, min:number, max:number) => {
     return Math.max(min, Math.min(num, max));
 };
 
-export const getCssVariable = <T extends string | number>(key:string, element: HTMLElement = document.body ):T => {
+export const getCssVariable = <T extends string | number>(
+    key: string,
+    element: HTMLElement = document.body,
+    defaultValue?:undefined | T
+): T | undefined => {
     const style = window.getComputedStyle(element);
     const variable = style.getPropertyValue(key);
 
-    return (isNaN(+variable) ? variable : +variable ) as T;
+    if (isNaN(+variable)) return variable as T;
+    
+    if (variable === '') {
+        if (defaultValue) return defaultValue;
+        
+        return undefined;
+    }
+    
+    return variable as T;
+};
+
+export const setCSSVariable = (key:string, value:string, element: HTMLElement = document.body ) => {
+    element.style.setProperty(key, value);
 };
 
 export const genRandomNumber = (min = 0, max = 10) => {
@@ -25,7 +43,9 @@ export const onCssVariableChange = (element:HTMLElement, key:string, callback:(e
     const styleObserver = new MutationObserver((mutations) => {
         const currentValue = getCssVariable<string>(key, mutations[0].target as HTMLElement);
         
-        callback(currentValue);
+        if (currentValue) { 
+            callback(currentValue);
+        }
     });
 
     styleObserver.observe(element, {

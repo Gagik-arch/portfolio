@@ -10,7 +10,7 @@ import { setupChildren } from './utils';
 
 class Element<T extends HTMLElementTags> {
     public dom: T;
-    private events?: EventType<T> | undefined;
+    private readonly controller = new AbortController();
 
     public constructor({
         tagName,
@@ -129,29 +129,17 @@ class Element<T extends HTMLElementTags> {
                 ]) => {
                     this.dom.addEventListener(
                         type.replace(/^on/, ''),
-                        listener as EventListener
+                        listener as EventListener,
+                        { signal: this.controller.signal }
                     );
 
                 });
-
-            this.events = events;
         }
     }
 
     public Destroy() {
-        const events = this.events;
-
-        if (!events) return;
-
-        Object.entries(events)
-            .forEach(([
-                type,
-                listener 
-            ]) => {
-                const event = type.replace('on', '');
-                this.dom.removeEventListener(event, listener as EventListener);
-            });
-
+        this.controller.abort('Element event is destroyed.');
+        
         this.Remove();
     }
 

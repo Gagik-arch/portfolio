@@ -3,16 +3,19 @@ import styles from './styles.module.css';
 import type { WindowDimension, WindowProps } from './types';
 import Controls from './Controls';
 import {
-    rangeNumber, genRandomNumber, getCssVariable  
+    rangeNumber, genRandomNumber, getCssVariable,  
+    clamp
 } from '$utils/index';
 import desktopStore from '$store/desktop.store';
 import dockStyles from '../Dock/style.module.css';
 import dockIconsStore, { type IconType } from '$store/dockIcons.store';
 
 class Window extends Element<HTMLDivElement> {
+    private readonly scale = getCssVariable<number>('--scale', document.body) || 1;
+
     private isMouseDowned = false;
     private resizeAnchor: 'top' | 'left' | 'right' | 'bottom' | 'right-bottom' | 'right-top' | 'left-top' | 'left-bottom' | undefined = undefined;
-    private readonly borderSize = Math.round(6 * getCssVariable<number>('--scale'));
+    private readonly borderSize = Math.round(6 * this.scale);
     private readonly width: number;
     private readonly height: number;
     private readonly minWidth: number;
@@ -53,6 +56,7 @@ class Window extends Element<HTMLDivElement> {
                 ...props,
             },
         });
+
         this.createdAt = new Date()
             .getTime();
         
@@ -99,29 +103,43 @@ class Window extends Element<HTMLDivElement> {
                 ...(children ?? [])
             ],
         });
+
         this.minWidth = minWidth;
         this.minHeight = minHeight;
 
-        this.width = width ? Math.max(width, this.minWidth) : this.minWidth; 
-        this.height = height ? Math.max(height, this.minHeight) : this.minHeight;
+        this.width = clamp((width || this.minWidth), this.minWidth, width); 
+        this.height = clamp((height || this.minHeight), this.minHeight, height); 
  
-        const scaledWidth = this.width * getCssVariable<number>('--scale');
-        const scaledHeight = this.height * getCssVariable<number>('--scale');
-  
-        this.dom.style.setProperty('--width', scaledWidth + 'px');
-        this.dom.style.setProperty('--height', scaledHeight + 'px');
+        const scaledWidth = this.width * this.scale;
+        const scaledHeight = this.height * this.scale;
         
         const desktop = document.getElementById('desktop'); 
         const desktopRect = desktop?.getBoundingClientRect();
-        
-        if (!desktopRect) return; 
-        
-        this.x = x ?? Math.floor(genRandomNumber(desktopRect.left, desktopRect.right - scaledWidth));
-        this.y = y ?? Math.floor(genRandomNumber(desktopRect.top, desktopRect.bottom - scaledHeight));
 
+        const desktopWidth = desktop?.clientWidth || 0;
+        const desktopHeight = desktop?.clientHeight || 0;
+
+        if (!desktopRect) return; 
+
+        const padding = 6;
+        const maxX = Math.max(
+            padding,
+            desktopWidth - scaledWidth - padding
+        );
+
+        const maxY = Math.max(
+            padding,
+            desktopHeight - scaledHeight - padding
+        );
+  
+        this.x = x ?? genRandomNumber(padding, maxX);
+        this.y = y ?? genRandomNumber(padding, maxY);
+   
         this.dom.style.setProperty('--left', this.x + 'px');
         this.dom.style.setProperty('--top', this.y + 'px');
-
+        this.dom.style.setProperty('--width', scaledWidth + 'px');
+        this.dom.style.setProperty('--height', scaledHeight + 'px');
+        
         this.OnMount(() => {
             desktop?.addEventListener('mousedown', this.onMouseDown);
             window.addEventListener('mousemove', this.onMove);
@@ -195,8 +213,8 @@ class Window extends Element<HTMLDivElement> {
     };
 
     private readonly onResize = (e: MouseEvent) => {
-        const scaledWidth = this.minWidth * getCssVariable<number>('--scale');
-        const scaledHeight = this.minHeight * getCssVariable<number>('--scale');
+        const scaledWidth = this.minWidth * this.scale;
+        const scaledHeight = this.minHeight * this.scale;
         
         const desktop = document.getElementById( 'desktop')
             ?.getBoundingClientRect();

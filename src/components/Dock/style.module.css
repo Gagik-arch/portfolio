@@ -1,19 +1,16 @@
 .root {
     --width: 60px;
+    --transition: all 90ms cubic-bezier(0.25, 1, 0.5, 1);
+    ;
 
     position: relative;
     display: flex;
+    justify-content: center;
     align-items: end;
     padding: 20px 15px;
     margin: auto auto 10px auto;
     height: calc(var(--width) + 40px);
     z-index: 900;
-
-    &:hover {
-        &>.button::before {
-            transform: translateY(6px)
-        }
-    }
 
     &::after {
         content: '';
@@ -28,28 +25,12 @@
         border-radius: 36px;
         backdrop-filter: blur(100px);
         border: 2px solid rgba(235, 235, 235, 0.1);
-        transition: all 180ms cubic-bezier(0.25, 1, 0.5, 1);
+        transition: all 120ms linear;
         box-sizing: border-box;
 
         @supports (corner-shape: squircle) {
             corner-shape: squircle;
             border-radius: 50px;
-        }
-    }
-
-
-    :has(+ hr) {
-        padding-right: 20px;
-    }
-
-    &>hr+* {
-        padding-left: 20px;
-    }
-
-    :has(+ hr),
-    &>hr+* {
-        &::after {
-            width: calc(var(--width) + 62px);
         }
     }
 }
@@ -59,26 +40,18 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
 }
 
 .button {
-    width: var(--width);
-    height: var(--width);
+    --i-scale: 1;
+
+    width: calc(var(--width) * var(--i-scale, 1));
+    height: calc(var(--width) * var(--i-scale, 1));
     display: flex;
     place-items: center;
     place-content: center;
-    transition: all 180ms cubic-bezier(0.25, 1, 0.5, 1);
+    transition: var(--transition);
     padding: 0 10px;
     box-sizing: content-box;
     position: relative;
     user-select: none;
-
-    &::before {
-        content: '';
-        position: absolute;
-        height: calc(100% + 40px);
-        background-color: transparent;
-        width: calc(var(--width) + 40px);
-        z-index: 1;
-        cursor: inherit;
-    }
 
     &::after {
         content: '';
@@ -95,7 +68,7 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     img {
         width: 100%;
         height: 100%;
-        transition: all 200ms linear
+        transition: all 180ms linear
     }
 
     &>div {
@@ -106,73 +79,12 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     }
 
     &:first-child {
-        padding-left: 0;
+        padding-left: 6px;
     }
 
     &:last-child {
-        padding-right: 0;
+        padding-right: 6px;
     }
-
-    &:hover {
-        width: calc(var(--width) * 1.5);
-        height: calc(var(--width) * 1.5);
-
-        .tooltip {
-            display: inline-block
-        }
-
-        /* left */
-        :has(+ &):is(button),
-        :has(+ * + &):is(button) {
-            width: calc(var(--width) * 1.43 + var(--offset, 0px) * -1);
-            height: calc(var(--width) * 1.43 + var(--offset, 0px) * -1);
-        }
-
-        :has(+ button + &):is(button),
-        :has(+ button + * + &):is(button),
-        :has(+ hr + button + &):is(button) {
-            width: calc(var(--width)* 1.25 + var(--offset, 0px) * -1);
-            height: calc(var(--width) * 1.25 + var(--offset, 0px) * -1);
-        }
-
-        :has(+ button + button + &):is(button),
-        :has(+ button + button + hr + &):is(button),
-        :has(+ button + hr +button + &):is(button),
-        :has(+ hr + button + button + &):is(button) {
-            width: calc(var(--width)* 1.1 + var(--offset, 0px) * -1);
-            height: calc(var(--width) * 1.1 + var(--offset, 0px) * -1);
-        }
-
-        /* right */
-        &+button:is(button),
-        &+*+button {
-            width: calc(var(--width)* 1.43 + var(--offset, 0px));
-            height: calc(var(--width) * 1.43 + var(--offset, 0px));
-        }
-
-        &+button+button:is(button),
-        &+*+button:is(button)+button,
-        &+*+*+button {
-            width: calc(var(--width)* 1.25 + var(--offset, 0px));
-            height: calc(var(--width) * 1.25 + var(--offset, 0px));
-        }
-
-        &+button+button+:is(button),
-        &+*+*+hr+:is(button),
-        &+*+hr+button+:is(button),
-        &+hr+button+button+:is(button) {
-            width: calc(var(--width)* 1.1 + var(--offset, 0px));
-            height: calc(var(--width) * 1.1 + var(--offset, 0px));
-        }
-    }
-}
-
-.separator {
-    pointer-events: none;
-    border-color: oklab(35.885% 0.00326 -0.01157 / 0.61);
-    height: 100%;
-    z-index: 0;
-    width: 0 !important;
 }
 
 .tooltip {

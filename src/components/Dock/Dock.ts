@@ -15,27 +15,57 @@ import desktopStore from '$store/desktop.store';
 import allApps from '$apps/index';
 import dockIconsStore from '$store/dockIcons.store';
 import { clsx } from '$utils/clsx';
+import { getCssVariable, setCSSVariable } from '$utils/index';
 
 function Dock() {
-    let timeout: number | undefined; 
-
-    const onMouseMove = (e: MouseEvent) => {
-        const target = e.currentTarget as HTMLDivElement;
-
-        const button = (e.target as HTMLButtonElement).closest('.' + styles.button);
-        if (!button) return;
-
-        const buttonRect = button.getBoundingClientRect();
-        const cursorDistance = e.clientX - buttonRect.x;
-
-        const step = Math.trunc(cursorDistance / 15) + 1;
-
-        const value = Math.abs(step) - 4;
-
-        target.style.setProperty('--offset', `${value}px`);
+    let mouseMoveTimeout : number | undefined = undefined;
+    
+    const onMouseEnter = (e: MouseEvent) => {
+        const dock = e.currentTarget as HTMLDivElement;
+        
+        mouseMoveTimeout = setTimeout(() => {
+            setCSSVariable('--transition', 'none', dock);
+        }, 120);
     };
 
-    const onclick = (e:MouseEvent) => {
+    const onMouseMove = (e: MouseEvent) => {
+        const dock = e.currentTarget as HTMLDivElement;
+        const buttons = [ ...dock.getElementsByClassName( styles.button) ] as HTMLElement[];
+
+        const scaleFactorMatch = getCssVariable<number>('--scale');
+        const globalScale = scaleFactorMatch ? scaleFactorMatch : 1;
+
+        const maxDistance = 200 * globalScale; 
+
+        buttons.forEach((btn) => {
+            const rect = (btn).getBoundingClientRect();
+            const center = rect.left + rect.width / 2;
+            const distance = Math.abs(e.clientX - center);
+
+            let scale = 1;
+            if (distance < maxDistance) {
+                const percent = distance / maxDistance;
+                scale = 1 + 0.55 * Math.cos(percent * (Math.PI / 2));
+            }
+
+            setCSSVariable('--i-scale', scale.toFixed(3), btn);
+        });
+    };
+
+    const onMouseLeave = (e: MouseEvent) => {
+        const dock = e.currentTarget as HTMLDivElement;
+        const buttons = [ ...dock.getElementsByClassName(styles.button) ] as HTMLDivElement[];
+        
+        clearTimeout(mouseMoveTimeout);
+        
+        setCSSVariable('--transition', 'all 90ms cubic-bezier(0.25, 1, 0.5, 1)', dock);
+
+        buttons.forEach((btn) => {
+            setCSSVariable('--i-scale', '1', btn);
+        });
+    };
+
+    const onclick = (e: MouseEvent) => {
         const target = e.currentTarget as HTMLButtonElement; 
         target.classList.add(styles.on_open_animate);
 
@@ -43,13 +73,8 @@ function Dock() {
         const app = desktopStore.GetState().activeApps.find(a => a.name === target.id);
        
         if (!app) return; 
-        clearTimeout(timeout);
-        
-        desktopStore.setFocusApp(app.window.dom.id);
 
-        timeout = setTimeout(() => {
-            app.window.dom.focus();
-        }, 0);
+        desktopStore.setFocusApp(app.window.dom.id);
     };
     
     const onOpenAnimationEnd = (e: AnimationEvent, appName: keyof typeof allApps) => {
@@ -57,32 +82,13 @@ function Dock() {
         target.id = appName;
         const app = allApps[appName]({
             key: appName, id: appName,
-            
         });
-        desktopStore.addApp(app);
 
-        timeout = setTimeout(() => {
-            app.window.dom.focus();
-        }, 0);
+        desktopStore.addApp(app);
+        desktopStore.setFocusApp(app.window.dom.id);
     };
 
     const subscribers: (()=>void)[] = [];
-
-    const onDockAppMount = (dockIcon: Button) => {
-        subscribers.push( desktopStore.Subscribe((state) => { 
-            const app = state.activeApps.find(a => a.name === dockIcon.dom.id);
-  
-            dockIcon.SetProps({
-                className: (cx) => {
-                    if (app) {
-                        cx.add(styles.is_opened);
-                    } else { 
-                        cx.remove(styles.is_opened);
-                    }
-                },
-            });
-        }));
-    };
 
     const dock = new Element<HTMLDivElement>({
         tagName: 'div',
@@ -90,16 +96,44 @@ function Dock() {
             id: 'dock',
             events: {
                 onmousemove: onMouseMove,
+                onmouseleave: onMouseLeave,
+                onmouseenter: onMouseEnter,
             },
             className: `${styles.root} dock`,
         },
     })
+        .OnMount(e => {
+            setCSSVariable('--transition', 'all 140ms cubic-bezier(0.25, 1, 0.5, 1)', e.dom);
+        })
         .OnUnMount(() => {
             subscribers.forEach(item => {
-                item();
+                item(); 
             });
         });
     
+    desktopStore.Effect(async ({
+        activeApps, focusedAppId,
+    }) => {
+        const dockIcons = [ ...dock.dom.children ];
+
+        dockIcons.forEach(icon => {
+            const app = activeApps.find(a => a.name === icon.id);
+
+            if (app) {
+                icon.classList.add(styles.is_opened);
+            } else { 
+                icon.classList.remove(styles.is_opened);
+            }
+        });
+        activeApps.forEach(app => {
+            if (app.window.dom.id === focusedAppId) { 
+                app.window.dom.focus();
+                
+                return; 
+            }
+        });
+    });
+
     dockIconsStore.Effect((appIcons) => {
         const calendar = localStorage.getItem('calendarIcon') as string;
         const activeApps = desktopStore.GetState().activeApps;
@@ -132,7 +166,7 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .OnMount(onDockAppMount).dom, 
+                    .dom, 
                     
                 new Button({
                     className: clsx(styles.button,
@@ -181,7 +215,7 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .OnMount(onDockAppMount).dom,
+                    .dom,
                      
                 new Button({
                     className: clsx(styles.button,
@@ -209,7 +243,7 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .OnMount(onDockAppMount).dom,
+                    .dom,
                      
                 new Button({
                     className: clsx(styles.button,
@@ -237,7 +271,7 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .OnMount(onDockAppMount).dom,
+                    .dom,
                 
                 new Button({
                     className: clsx(styles.button,
@@ -265,7 +299,7 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .OnMount(onDockAppMount).dom,
+                    .dom,
 
                 new Button({
                     className: clsx(styles.button,
@@ -293,15 +327,7 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .OnMount(onDockAppMount).dom,
-
-                new Element<HTMLHRElement>({
-                    tagName: 'hr',
-                    props: {
-                        key: 'separator',
-                        className: styles.separator,
-                    },
-                }).dom,
+                    .dom,
 
                 new Button({
                     className: styles.button,
@@ -323,14 +349,14 @@ function Dock() {
                        
                     ],
                 })
-                    .OnMount(onDockAppMount).dom,
+                    .dom,
                 
                 ...appIcons
                     .map(icon => {
                         return (
                             new Button({
                                 className: clsx(styles.button,
-                                    activeApps.findIndex(i => i.name === icon.title) > -1 ? styles.is_opened : ''),
+                                    activeApps.findIndex(i => i.name === icon.title) > -1 ? `${styles.on_open_animate} ${styles.is_opened}` : ''),
                                 key: icon.title,
                                 id: icon.title,
                                 tabIndex: -1,
@@ -373,7 +399,7 @@ function Dock() {
                                             },
                                         });
                                     }
-                                    onDockAppMount(e); 
+                           
                                 }).dom
                         );
                     }),
@@ -396,14 +422,12 @@ function Dock() {
                         }).dom
                     ],
                 })
-                    .OnMount(onDockAppMount).dom
+                    .dom
             ],
         });
     });
        
-    return (
-        dock.dom
-    );
+    return dock.dom;
 }
 
 export default Dock;
