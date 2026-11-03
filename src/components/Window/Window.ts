@@ -109,7 +109,7 @@ class Window extends Element<HTMLDivElement> {
 
         this.width = clamp((width || this.minWidth), this.minWidth, width); 
         this.height = clamp((height || this.minHeight), this.minHeight, height); 
- 
+      
         const scaledWidth = this.width * this.scale;
         const scaledHeight = this.height * this.scale;
         
