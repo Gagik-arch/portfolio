@@ -18,6 +18,16 @@ import { clsx } from '$utils/clsx';
 import { getCssVariable, setCSSVariable } from '$utils/index';
 
 function Dock() {
+    let mouseMoveTimeout : number | undefined = undefined;
+    
+    const onMouseEnter = (e: MouseEvent) => {
+        const dock = e.currentTarget as HTMLDivElement;
+        
+        mouseMoveTimeout = setTimeout(() => {
+            setCSSVariable('--transition', 'none', dock);
+        }, 140);
+    };
+
     const onMouseMove = (e: MouseEvent) => {
         const dock = e.currentTarget as HTMLDivElement;
         const buttons = [ ...dock.getElementsByClassName( styles.button) ] as HTMLElement[];
@@ -25,10 +35,8 @@ function Dock() {
         const scaleFactorMatch = getCssVariable<number>('--scale');
         const globalScale = scaleFactorMatch ? scaleFactorMatch : 1;
 
-        const maxDistance = 180 * globalScale; 
+        const maxDistance = 200 * globalScale; 
 
-        setCSSVariable('--transition', 'none', dock);
-        
         buttons.forEach((btn) => {
             const rect = (btn).getBoundingClientRect();
             const center = rect.left + rect.width / 2;
@@ -38,7 +46,7 @@ function Dock() {
             if (distance < maxDistance) {
                 const percent = distance / maxDistance;
 
-                scale = 1 + 0.6 * Math.cos(percent * (Math.PI / 2));
+                scale = 1 + 0.55 * Math.cos(percent * (Math.PI / 2));
             }
 
             setCSSVariable('--i-scale', scale.toFixed(3), btn);
@@ -48,21 +56,17 @@ function Dock() {
     const onMouseLeave = (e: MouseEvent) => {
         const dock = e.currentTarget as HTMLDivElement;
         const buttons = [ ...dock.getElementsByClassName(styles.button) ] as HTMLDivElement[];
-        setCSSVariable('--transition', 'all 180ms cubic-bezier(0.25, 1, 0.5, 1)', dock);
         
+        clearTimeout(mouseMoveTimeout);
+        
+        setCSSVariable('--transition', 'all 140ms cubic-bezier(0.25, 1, 0.5, 1)', dock);
+
         buttons.forEach((btn) => {
             setCSSVariable('--i-scale', '1', btn);
         });
     };
 
-    const onMouseEnter = (e: MouseEvent) => {
-        const dock = e.currentTarget as HTMLDivElement;
-
-        setCSSVariable('--transition', 'all 180ms cubic-bezier(0.25, 1, 0.5, 1)', dock);
-    };
-
     const onclick = (e: MouseEvent) => {
-
         const target = e.currentTarget as HTMLButtonElement; 
         target.classList.add(styles.on_open_animate);
 
@@ -72,7 +76,6 @@ function Dock() {
         if (!app) return; 
 
         desktopStore.setFocusApp(app.window.dom.id);
-     
     };
     
     const onOpenAnimationEnd = (e: AnimationEvent, appName: keyof typeof allApps) => {
@@ -83,7 +86,6 @@ function Dock() {
         });
 
         desktopStore.addApp(app);
-        
         desktopStore.setFocusApp(app.window.dom.id);
     };
 
@@ -101,6 +103,9 @@ function Dock() {
             className: `${styles.root} dock`,
         },
     })
+        .OnMount(e => {
+            setCSSVariable('--transition', 'all 140ms cubic-bezier(0.25, 1, 0.5, 1)', e.dom);
+        })
         .OnUnMount(() => {
             subscribers.forEach(item => {
                 item(); 

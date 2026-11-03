@@ -1,20 +1,16 @@
 .root {
     --width: 60px;
-    --transition: all 180ms cubic-bezier(0.25, 1, 0.5, 1);
+    --transition: all 140ms cubic-bezier(0.25, 1, 0.5, 1);
+    ;
 
     position: relative;
     display: flex;
+    justify-content: center;
     align-items: end;
     padding: 20px 15px;
     margin: auto auto 10px auto;
     height: calc(var(--width) + 40px);
     z-index: 900;
-
-    /* &:hover {
-        &>.button::before {
-            transform: translateY(6px)
-        }
-    } */
 
     &::after {
         content: '';
@@ -29,7 +25,7 @@
         border-radius: 36px;
         backdrop-filter: blur(100px);
         border: 2px solid rgba(235, 235, 235, 0.1);
-        transition: all 180ms cubic-bezier(0.25, 1, 0.5, 1);
+        transition: all 120ms linear;
         box-sizing: border-box;
 
         @supports (corner-shape: squircle) {
@@ -57,10 +53,6 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     position: relative;
     user-select: none;
 
-    &:hover {
-        transition: none
-    }
-
     &::after {
         content: '';
         position: absolute;
@@ -76,7 +68,7 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     img {
         width: 100%;
         height: 100%;
-        transition: all 200ms linear
+        transition: all 180ms linear
     }
 
     &>div {
@@ -87,11 +79,11 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     }
 
     &:first-child {
-        padding-left: 0;
+        padding-left: 6px;
     }
 
     &:last-child {
-        padding-right: 0;
+        padding-right: 6px;
     }
 }
 
@@ -160,7 +152,7 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     }
 
     img {
-        filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.2));
+        /* filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.2)); */
     }
 }
 
