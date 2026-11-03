@@ -73,14 +73,14 @@ function Carousel({
     });
     
     const onLeft = () => {
-        const old = getCssVariable<number>('--offset', line.dom);
+        const old = getCssVariable<number>('--offset', line.dom) || 0;
         const offset = ( ((old + images.length) - 1) % images.length).toString();
 
         line.dom.style.setProperty('--offset', offset);
     };
 
     const onRight = () => {
-        const old = getCssVariable<number>('--offset', line.dom);
+        const old = getCssVariable<number>('--offset', line.dom) || 0;
         const offset = ((old + 1) % images.length).toString();
 
         line.dom.style.setProperty('--offset', offset);

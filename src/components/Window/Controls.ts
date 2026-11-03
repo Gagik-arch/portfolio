@@ -11,6 +11,7 @@ function Controls({
     onMinimize,
     onMaximize,
 }:ControlProps) {
+    const scale = getCssVariable<number>('--scale', document.body) || 1;
 
     return (
         new Element<HTMLDivElement>({
@@ -22,7 +23,7 @@ function Controls({
                         className: `${styles.traffic_light} ${styles.close}`,
                         children: [
                             new Icon( 'Plus', {
-                                size: 12 * getCssVariable<number>('--scale'), 
+                                size: 12 * scale, 
                                 stroke: 'rgba(0,0,0,0.4)',
                             }).dom 
                         ],
@@ -34,7 +35,7 @@ function Controls({
                         className: `${styles.traffic_light} ${styles.minimize}`,
                         children: [
                             new Icon( 'Minus', {
-                                size: 12 * getCssVariable<number>('--scale'),
+                                size: 12 * scale,
                                 stroke: 'rgba(0,0,0,0.4)',
                             }).dom 
                         ],
@@ -47,7 +48,7 @@ function Controls({
                         children: isResizable
                             ? [
                                 new Icon('Maximize', {
-                                    size: 11 * getCssVariable<number>('--scale'),
+                                    size: 11 * scale,
                                     fill: 'rgba(0,0,0,0.4)',
                                 }).dom 
                             ]
