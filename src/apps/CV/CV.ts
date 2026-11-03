@@ -42,8 +42,9 @@ const Row = (left:string, right?:string, isSubtitle = false) => {
 };
 
 function CV(props?: AppProps) { 
-    const width = getCssVariable<number>('--scale') === 1 ? 800 : 600;
- 
+    const scale = getCssVariable<number>('--scale') || 1;
+    const width = scale ? 800 : 600;
+    
     return (
         new App({
             name: 'CV',
@@ -517,7 +518,7 @@ function CV(props?: AppProps) {
                 width,
                 height: getCssVariable<number>('--scale') === 1 ? 500 : window.innerHeight / 2,
                 y: 48,
-                x: (window.innerWidth / 2) - ((width / 2) * getCssVariable<number>('--scale')),
+                x: (window.innerWidth / 2) - ((width / 2) * scale),
                 id: props?.id,
                 key: props?.key,
                 minWidth: width,
