@@ -10,13 +10,21 @@ export const rangeNumber = (num:number, min:number, max:number) => {
     return Math.max(min, Math.min(num, max));
 };
 
-export const getCssVariable = <T extends string | number>(key:string, element: HTMLElement = document.body ):T | undefined => {
+export const getCssVariable = <T extends string | number>(
+    key: string,
+    element: HTMLElement = document.body,
+    defaultValue?:undefined | T
+): T | undefined => {
     const style = window.getComputedStyle(element);
     const variable = style.getPropertyValue(key);
 
     if (isNaN(+variable)) return variable as T;
     
-    if (variable === '') return undefined;
+    if (variable === '') {
+        if (defaultValue) return defaultValue;
+        
+        return undefined;
+    }
     
     return variable as T;
 };

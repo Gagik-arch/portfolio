@@ -11,9 +11,11 @@ import dockStyles from '../Dock/style.module.css';
 import dockIconsStore, { type IconType } from '$store/dockIcons.store';
 
 class Window extends Element<HTMLDivElement> {
+    private readonly scale = getCssVariable<number>('--scale', document.body) || 1;
+
     private isMouseDowned = false;
     private resizeAnchor: 'top' | 'left' | 'right' | 'bottom' | 'right-bottom' | 'right-top' | 'left-top' | 'left-bottom' | undefined = undefined;
-    private readonly borderSize = Math.round(6 * getCssVariable<number>('--scale'));
+    private readonly borderSize = Math.round(6 * this.scale);
     private readonly width: number;
     private readonly height: number;
     private readonly minWidth: number;
@@ -108,8 +110,8 @@ class Window extends Element<HTMLDivElement> {
         this.width = clamp((width ?? this.minWidth), this.minWidth, width); 
         this.height = clamp((height ?? this.minHeight), this.minHeight, height); 
  
-        const scaledWidth = this.width * getCssVariable<number>('--scale');
-        const scaledHeight = this.height * getCssVariable<number>('--scale');
+        const scaledWidth = this.width * this.scale;
+        const scaledHeight = this.height * this.scale;
         
         const desktop = document.getElementById('desktop'); 
         const desktopRect = desktop?.getBoundingClientRect();
@@ -197,8 +199,8 @@ class Window extends Element<HTMLDivElement> {
     };
 
     private readonly onResize = (e: MouseEvent) => {
-        const scaledWidth = this.minWidth * getCssVariable<number>('--scale');
-        const scaledHeight = this.minHeight * getCssVariable<number>('--scale');
+        const scaledWidth = this.minWidth * this.scale;
+        const scaledHeight = this.minHeight * this.scale;
         
         const desktop = document.getElementById( 'desktop')
             ?.getBoundingClientRect();

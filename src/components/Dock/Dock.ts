@@ -25,7 +25,7 @@ function Dock() {
         
         mouseMoveTimeout = setTimeout(() => {
             setCSSVariable('--transition', 'none', dock);
-        }, 140);
+        }, 120);
     };
 
     const onMouseMove = (e: MouseEvent) => {
@@ -45,7 +45,6 @@ function Dock() {
             let scale = 1;
             if (distance < maxDistance) {
                 const percent = distance / maxDistance;
-
                 scale = 1 + 0.55 * Math.cos(percent * (Math.PI / 2));
             }
 
@@ -59,7 +58,7 @@ function Dock() {
         
         clearTimeout(mouseMoveTimeout);
         
-        setCSSVariable('--transition', 'all 140ms cubic-bezier(0.25, 1, 0.5, 1)', dock);
+        setCSSVariable('--transition', 'all 90ms cubic-bezier(0.25, 1, 0.5, 1)', dock);
 
         buttons.forEach((btn) => {
             setCSSVariable('--i-scale', '1', btn);
