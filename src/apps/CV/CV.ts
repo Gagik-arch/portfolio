@@ -43,7 +43,7 @@ const Row = (left:string, right?:string, isSubtitle = false) => {
 
 function CV(props?: AppProps) { 
     const scale = getCssVariable<number>('--scale') || 1;
-    const width = scale ? 800 : 600;
+    const width = scale === 1 ? 800 : 600;
     
     return (
         new App({
@@ -516,13 +516,13 @@ function CV(props?: AppProps) {
                     }).dom
                 ],
                 width,
-                height: getCssVariable<number>('--scale') === 1 ? 500 : window.innerHeight / 2,
+                height: scale === 1 ? 500 : window.innerHeight / 2,
                 y: 48,
                 x: (window.innerWidth / 2) - ((width / 2) * scale),
                 id: props?.id,
                 key: props?.key,
                 minWidth: width,
-                minHeight: getCssVariable<number>('--scale') === 1 ? 500 : window.innerHeight / 2,
+                minHeight: scale === 1 ? 500 : window.innerHeight / 2,
             }),
         })
     );
