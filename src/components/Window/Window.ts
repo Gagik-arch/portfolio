@@ -107,20 +107,34 @@ class Window extends Element<HTMLDivElement> {
         this.minWidth = minWidth;
         this.minHeight = minHeight;
 
-        this.width = clamp((width ?? this.minWidth), this.minWidth, width); 
-        this.height = clamp((height ?? this.minHeight), this.minHeight, height); 
+        this.width = clamp((width || this.minWidth), this.minWidth, width); 
+        this.height = clamp((height || this.minHeight), this.minHeight, height); 
  
         const scaledWidth = this.width * this.scale;
         const scaledHeight = this.height * this.scale;
         
         const desktop = document.getElementById('desktop'); 
         const desktopRect = desktop?.getBoundingClientRect();
-        
+
+        const desktopWidth = desktop?.clientWidth || 0;
+        const desktopHeight = desktop?.clientHeight || 0;
+
         if (!desktopRect) return; 
-    
-        this.x = x ?? Math.floor(genRandomNumber(desktopRect.left, desktopRect.right - scaledWidth));
-        this.y = y ?? Math.floor(genRandomNumber(0, desktopRect.bottom - scaledHeight));
-       
+
+        const padding = 6;
+        const maxX = Math.max(
+            padding,
+            desktopWidth - scaledWidth - padding
+        );
+
+        const maxY = Math.max(
+            padding,
+            desktopHeight - scaledHeight - padding
+        );
+  
+        this.x = x ?? genRandomNumber(padding, maxX);
+        this.y = y ?? genRandomNumber(padding, maxY);
+   
         this.dom.style.setProperty('--left', this.x + 'px');
         this.dom.style.setProperty('--top', this.y + 'px');
         this.dom.style.setProperty('--width', scaledWidth + 'px');
