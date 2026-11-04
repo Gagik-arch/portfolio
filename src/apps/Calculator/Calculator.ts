@@ -1,4 +1,4 @@
- 
+
 import App from '$components/App';
 import Window from '$components/Window';
 import appIcon from '$assets/images/app-icons/calculator.png';
@@ -9,10 +9,20 @@ import Icon from '$uikit/Icon';
 import Button from '$uikit/Button';
 import Store from '$lib/store';
 import { rangeNumber } from '$utils/index';
+import { evaluateExpression } from './utils';
 
-function Calculator(props?: AppProps) { 
+function Calculator(props?: AppProps) {
+    const expression = new Store('');
     const result = new Store('');
-    const state = new Store('');
+
+    const operators = [
+        '+',
+        '-',
+        '*',
+        '/',
+        '%' 
+    ];
+
     const availableActions = [
         '.',
         '=',
@@ -32,165 +42,318 @@ function Calculator(props?: AppProps) {
         '8',
         '9',
         'enter',
-        'backspace'
+        'backspace',
+        'clear',
+        'delete'
     ];
-    let backspaceTimer: number | undefined = undefined;
-    
+
+    let backspaceTimer: number | undefined;
+
     const text = new Element<HTMLDivElement>({
         tagName: 'div',
         props: {
-            className: `regular ${styles.text}`,   
+            className: `regular ${styles.text}`,
         },
     });
 
     const resultContainer = new Element<HTMLDivElement>({
         tagName: 'div',
         props: {
-            className: `regular ${styles.result}`,   
+            className: `regular ${styles.result}`,
         },
     });
 
-    const clearLongPressTimer = () => {
-        if (!backspaceTimer) return; 
-        
-        clearTimeout(backspaceTimer);
+    const isOperator = (char?: string) => !!char && operators.includes(char);
+
+    const getCurrentNumber = (value: string) => {
+        const parts = value.split(/[+\-*/%]/);
+        return parts.at(-1) || '';
     };
 
-    const backspaceLongHold = () => {
-        if (state.GetState().length) {
-            clearLongPressTimer();
+    const updateDisplay = () => {
+        const width = 394;
+        const factor = 0.6;
 
-            backspaceTimer = setTimeout(() => {
-                state.SetState('');
-            }, 1000);
-        } 
-    };
-    
-    const calculate = (num: string | undefined, action: string | undefined) => {
-        switch (action) {
-                case 'backspace':
-                    state.SetState(prev => prev.slice(0, -1));
-                
-                    backspaceLongHold();
-                    break;
-                case 'clear':
-                    state.SetState('');
-                    result.SetState('');
-                    break;
-                case 'plusSlashMinus':
-                    if (!state.GetState()) break;
-                
-                    state.SetState(prev => (+prev * -1) + '');
-                    break;
-                case '.':
-                    if (state.GetState()
-                        .includes('.')) break;
-                
-                    if (state.GetState().length) {
-                        state.SetState( prev => prev + '.');
-                    } else { 
-                        const char = result.GetState()
-                            .at(-1); 
-                
-                        if (!(char && !isNaN(+char))) { 
-                            state.SetState( '0.');
-                        }
-                    }
-                
-                    break;
-                case '+':
-                case '-':
-                case '/':
-                case '*':
-                case '%':
-                    const _lastChar = result.GetState()
-                        .at(-1); 
-                
-                    const _isAvailableLastNumber = _lastChar ? !isNaN(+_lastChar) : false;
+        const currentExpression = expression.GetState();
+        const currentResult = result.GetState();
 
-                    if (_lastChar) {
-                        if (_isAvailableLastNumber) {
-                            result.SetState( eval(result.GetState() + state.GetState()) + action);
-                        } else {
-                            if (state.GetState()) {
-                                result.SetState(eval(result.GetState() + state.GetState()) + action);
-                            } else { 
-                                result.SetState(prev => prev.replace(_lastChar, action));
-                            }
-                        }
-                    } else { 
-                        result.SetState( eval((result.GetState() || '0') + '+' + (state.GetState() || '0')) + action);
-                    }
-
-                    state.SetState('');
-                    break;
-                case 'enter':
-                case '=':
-                    if (!result.GetState().length || !state.GetState().length) { 
-                        break;
-                    }
-                    result.SetState(eval(result.GetState() + state.GetState()) + '');
-                    state.SetState('');
-                    break;
-                default:
-                    break;
-        }
-        
-        const width = 394, 
-                factor = 0.6,
-                fontSize = rangeNumber(width / (state.GetState().length * factor), 14, 40); 
-
-        if (num) { 
-            if (fontSize === 14) return; 
-
-            const _lastChar = result.GetState()
-                .at(-1); 
-            const isAvailableLastNumber = _lastChar ? !isNaN(+_lastChar) : false;
-            
-            if (!isAvailableLastNumber) {
-                state.SetState( prev => prev + num);
-            }
-        }
+        const fontSize = rangeNumber(
+            width / (Math.max(1, currentExpression.length) * factor),
+            14,
+            40
+        );
 
         text.SetProps({
             style: {
-                fontSize: fontSize + 'px',
+                fontSize: `${fontSize}px`,
             },
         });
-        
+
         resultContainer.SetProps({
             style: {
-                fontSize: Math.min(24, width / (result.GetState().length * factor)) + 'px',
+                fontSize: `${Math.min(
+                    24,
+                    width / (Math.max(1, currentResult.length) * factor)
+                )}px`,
             },
         });
+    };
+
+    const updateResult = () => {
+        const value = expression.GetState();
+
+        if (!value || isOperator(value.at(-1))) {
+            result.SetState('');
+            return;
+        }
+
+        try {
+            const calculated = evaluateExpression(value);
+
+            result.SetState(
+                Number.isFinite(calculated)
+                    ? String(calculated)
+                    : ''
+            );
+        } catch {
+            result.SetState('');
+        }
+    };
+
+    const clearLongPressTimer = () => {
+        if (backspaceTimer === undefined) return;
+
+        clearTimeout(backspaceTimer);
+        backspaceTimer = undefined;
+    };
+
+    const backspaceLongHold = () => {
+        if (!expression.GetState().length) return;
+
+        clearLongPressTimer();
+
+        backspaceTimer = setTimeout(() => {
+            expression.SetState('');
+            result.SetState('');
+            backspaceTimer = undefined;
+        }, 1000);
+    };
+
+    const appendNumber = (num: string) => {
+        const current = expression.GetState();
+
+        const next = current + num;
+
+        expression.SetState(next);
+        updateResult();
+    };
+
+    const appendDecimal = () => {
+        const current = expression.GetState();
+        const currentNumber = getCurrentNumber(current);
+
+        if (currentNumber.includes('.')) return;
+
+        if (!current || isOperator(current.at(-1))) {
+            expression.SetState(current + '0.');
+        } else {
+            expression.SetState(current + '.');
+        }
+
+        updateResult();
+    };
+
+    const appendOperator = (operator: string) => {
+        const current = expression.GetState();
+
+        if (!current) {
+            if (operator === '-') {
+                expression.SetState('-');
+            }
+            return;
+        }
+
+        const lastChar = current.at(-1);
+
+        if (isOperator(lastChar)) {
+            if (operator === '-' && lastChar !== '-') {
+                expression.SetState(current + operator);
+                return;
+            }
+
+            expression.SetState(
+                current.slice(0, -1) + operator
+            );
+        } else {
+            expression.SetState(current + operator);
+        }
+
+        updateResult();
+    };
+
+    const toggleSign = () => {
+        const current = expression.GetState();
+
+        if (!current) {
+            expression.SetState('-');
+            return;
+        }
+
+        const lastOperatorIndex = Math.max(
+            current.lastIndexOf('+'),
+            current.lastIndexOf('-'),
+            current.lastIndexOf('*'),
+            current.lastIndexOf('/'),
+            current.lastIndexOf('%')
+        );
+
+        const number = current.slice(lastOperatorIndex + 1);
+
+        if (!number) return;
+
+        const previous = current.slice(0, lastOperatorIndex + 1);
+
+        if (number.startsWith('-')) {
+            expression.SetState(previous + number.slice(1));
+        } else {
+            expression.SetState(previous + '-' + number);
+        }
+
+        updateResult();
+    };
+
+    const calculate = (
+        num?: string,
+        action?: string
+    ) => {
+        try {
+            switch (action) {
+                    case 'backspace':
+                    case 'delete': {
+                        expression.SetState(
+                            prev => prev.slice(0, -1)
+                        );
+
+                        updateResult();
+                        break;
+                    }
+
+                    case 'clear': {
+                        expression.SetState('');
+                        result.SetState('');
+                        break;
+                    }
+
+                    case 'plusSlashMinus': {
+                        toggleSign();
+                        break;
+                    }
+
+                    case '.': {
+                        appendDecimal();
+                        break;
+                    }
+
+                    case '+':
+                    case '-':
+                    case '*':
+                    case '/':
+                    case '%': {
+                        appendOperator(action);
+                        break;
+                    }
+
+                    case '=':
+                    case 'enter': {
+                        const current = expression.GetState();
+
+                        if (
+                            !current
+                            || isOperator(current.at(-1))
+                            || current === '-'
+                        ) {
+                            break;
+                        }
+
+                        const value = evaluateExpression(current);
+
+                        if (!Number.isFinite(value)) {
+                            throw new Error('Invalid result');
+                        }
+
+                        expression.SetState(String(value));
+                        result.SetState('');
+                        break;
+                    }
+
+                    default:
+                        break;
+            }
+
+            if (num !== undefined) {
+                appendNumber(num);
+            }
+        } catch {
+            result.SetState('Error');
+        }
+
+        updateDisplay();
     };
 
     const onClickWrapper = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
 
-        if (!target.closest('.' + styles.button)) return; 
-        const name = target.dataset.name;
+        const button = target.closest(
+            '.' + styles.button
+        );
+
+        if (!button) return;
+
+        const name = (button as HTMLElement).dataset.name;
 
         if (!name) return;
 
-        const num = isNaN(+name) ? undefined : name;
-        const action = isNaN(+name) ? name : undefined;
-      
-        calculate(num, action);
-    };
-    
-    const onKeyUp = (e: KeyboardEvent) => {
-        if (e.repeat) return; 
-        
-        const key = e.key.toLowerCase();
-        if (!availableActions.includes(key) ) return; 
-        
-        const num = isNaN(+key) ? undefined : key;
-        const action = isNaN(+key) ? key : undefined;
+        const num = /^\d$/.test(name)
+            ? name
+            : undefined;
+
+        const action = num === undefined
+            ? name
+            : undefined;
 
         calculate(num, action);
     };
-    
+
+    const onKeyDown = (e: KeyboardEvent) => {
+        const key = e.key.toLowerCase();
+
+        if (!availableActions.includes(key)) return;
+
+        if (key === 'backspace' || key === 'enter') {
+            e.preventDefault();
+        }
+
+        if (e.repeat && key !== 'backspace') return;
+
+        const num = /^\d$/.test(key)
+            ? key
+            : undefined;
+
+        const action = num === undefined
+            ? key
+            : undefined;
+
+        calculate(num, action);
+    };
+
+    expression.Subscribe(() => {
+        updateResult();
+
+        text.SetProps({
+            children: [ expression.GetState() ],
+        }, true);
+    });
+
     result.Subscribe((prev) => {
         resultContainer.SetProps({
             children: [ prev ],
@@ -204,27 +367,29 @@ function Calculator(props?: AppProps) {
             isNative: true,
             window: new Window({
                 events: {
+                    onkeydown: onKeyDown,
                     onkeyup: clearLongPressTimer,
-                    onkeydown: onKeyUp,
                 },
                 children: [
                     resultContainer.dom,
+
                     text
                         .OnMount((e) => {
-                            state.Effect((prev) => {
+                            expression.Effect((prev) => {
                                 e.SetProps({
                                     children: [ prev ],
                                 }, true);
                             });
                         })
                         .dom,
+
                     new Element<HTMLDivElement>({
                         tagName: 'div',
                         props: {
                             events: {
                                 onclick: onClickWrapper,
                             },
-                            className: styles.buttons,    
+                            className: styles.buttons,
                             children: [
                                 new Button({
                                     className: styles.button,
@@ -232,19 +397,22 @@ function Calculator(props?: AppProps) {
                                     events: {
                                         onmousedown: backspaceLongHold,
                                         onmouseup: clearLongPressTimer,
+                                        onmouseleave: clearLongPressTimer,
                                     },
-                                    children: [ 
-                                        new Icon('Backdrop',
-                                            {
-                                                size: 30, color: 'white', 
-                                            }).dom 
+                                    children: [
+                                        new Icon('Backdrop', {
+                                            size: 30,
+                                            color: 'white',
+                                        }).dom
                                     ],
                                 }).dom,
+
                                 new Button({
                                     className: `${styles.button} title1 regular`,
                                     'data-name': 'clear',
                                     children: [ 'AC' ],
                                 }).dom,
+
                                 new Button({
                                     className: `${styles.button} largeTitle regular`,
                                     'data-name': '%',
@@ -254,31 +422,23 @@ function Calculator(props?: AppProps) {
                                 new Button({
                                     className: styles.button,
                                     'data-name': '/',
-                                    children: [ 
-                                        new Icon('Divide',
-                                            {
-                                                size: 30, color: 'white', 
-                                            }).dom 
+                                    children: [
+                                        new Icon('Divide', {
+                                            size: 30,
+                                            color: 'white',
+                                        }).dom
                                     ],
                                 }).dom,
 
-                                new Button({
+                                ...[
+                                    '7',
+                                    '8',
+                                    '9' 
+                                ].map(num => new Button({
                                     className: `${styles.button} largeTitle regular`,
-                                    'data-name': '7',
-                                    children: [ '7' ],
-                                }).dom,
-
-                                new Button({
-                                    className: `${styles.button} largeTitle regular`,
-                                    'data-name': '8',
-                                    children: [ '8' ],
-                                }).dom,
-
-                                new Button({
-                                    className: `${styles.button} largeTitle regular`,
-                                    'data-name': '9',
-                                    children: [ '9' ],
-                                }).dom,
+                                    'data-name': num,
+                                    children: [ num ],
+                                }).dom),
 
                                 new Button({
                                     className: `${styles.button} title1 regular`,
@@ -286,52 +446,36 @@ function Calculator(props?: AppProps) {
                                     children: [ '✖' ],
                                 }).dom,
 
-                                new Button({
+                                ...[
+                                    '4',
+                                    '5',
+                                    '6' 
+                                ].map(num => new Button({
                                     className: `${styles.button} largeTitle regular`,
-                                    'data-name': '4',
-                                    children: [ '4' ],
-                                }).dom,
-
-                                new Button({
-                                    className: `${styles.button} largeTitle regular`,
-                                    'data-name': '5',
-                                    children: [ '5' ],
-                                }).dom,
-
-                                new Button({
-                                    className: `${styles.button} largeTitle regular`,
-                                    'data-name': '6',
-                                    children: [ '6' ],
-                                }).dom,
+                                    'data-name': num,
+                                    children: [ num ],
+                                }).dom),
 
                                 new Button({
                                     className: `${styles.button} largeTitle regular`,
                                     'data-name': '-',
-                                    children: [ 
-                                        new Icon('Minus',
-                                            {
-                                                size: 24, color: 'white', 
-                                            }).dom 
+                                    children: [
+                                        new Icon('Minus', {
+                                            size: 24,
+                                            color: 'white',
+                                        }).dom
                                     ],
                                 }).dom,
 
-                                new Button({
+                                ...[
+                                    '1',
+                                    '2',
+                                    '3' 
+                                ].map(num => new Button({
                                     className: `${styles.button} largeTitle regular`,
-                                    'data-name': '1',
-                                    children: [ '1' ],
-                                }).dom,
-
-                                new Button({
-                                    className: `${styles.button} title1 regular`,
-                                    'data-name': '2',
-                                    children: [ '2' ],
-                                }).dom,
-
-                                new Button({
-                                    className: `${styles.button} largeTitle regular`,
-                                    'data-name': '3',
-                                    children: [ '3' ],
-                                }).dom,
+                                    'data-name': num,
+                                    children: [ num ],
+                                }).dom),
 
                                 new Button({
                                     className: `${styles.button} largeTitle regular`,
@@ -342,7 +486,7 @@ function Calculator(props?: AppProps) {
                                 new Button({
                                     className: `${styles.button} largeTitle regular`,
                                     'data-name': 'plusSlashMinus',
-                                    children: [ 
+                                    children: [
                                         new Icon('PlusSlashMinus', {
                                             color: 'white',
                                             size: 50,
@@ -368,7 +512,6 @@ function Calculator(props?: AppProps) {
                                     children: [ '=' ],
                                 }).dom
                             ],
-                       
                         },
                     }).dom
                 ],
@@ -382,7 +525,6 @@ function Calculator(props?: AppProps) {
                 id: props?.id,
                 key: props?.key,
             }),
-     
         })
     );
 }
