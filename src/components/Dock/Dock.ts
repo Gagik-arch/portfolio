@@ -52,7 +52,7 @@ function Dock() {
         refreshDockIcons(dock);
 
         mouseMoveTimeout = setTimeout(() => {
-            setCSSVariable('--transition', 'width 0ms ease-in-out, height 0ms ease-in-out', dock);
+            setCSSVariable('--transition', 'width 40ms linear, height 40ms linear', dock);
         }, 90);
     };
 
