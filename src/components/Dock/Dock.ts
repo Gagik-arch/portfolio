@@ -54,15 +54,9 @@ function Dock() {
 
         refreshDockIcons(dock);
 
-        setCSSVariable(
-            '--transition',
-            'width 90ms ease-in-out, height 90ms ease-in-out',
-            dock
-        );
-
-        mouseMoveTimeout = window.setTimeout(() => {
-            setCSSVariable('--transition', 'none', dock);
-        }, 100);
+        mouseMoveTimeout = setTimeout(() => {
+            setCSSVariable('--transition', 'width 0ms ease-in-out, height 0ms ease-in-out', dock);
+        }, 90);
     };
 
     const onMouseMove = (e: MouseEvent) => {
@@ -180,7 +174,7 @@ function Dock() {
                 icon.classList.remove(styles.is_opened);
             }
         });
-        
+
         activeApps.forEach(app => {
             if (app.window.dom.id === focusedAppId) { 
                 app.window.dom.focus();

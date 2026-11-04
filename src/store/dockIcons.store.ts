@@ -1,6 +1,6 @@
 import Store from '$lib/store';
 import type allApps from '../apps/index';
-import cvIcon from '$assets/images/app-icons/preview.png';
+import cv from '$assets/images/app-icons/preview.png';
 
 export interface IconType {
     image: string;
@@ -9,7 +9,7 @@ export interface IconType {
 
 const initialState: IconType[] = [
     {
-        image: cvIcon,
+        image: cv,
         title: 'CV' as keyof typeof allApps,
     }
 ];
