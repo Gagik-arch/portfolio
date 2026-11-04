@@ -1,7 +1,9 @@
-export type Dataset = Record<`data-${string}`, string>;
 
-export type HTMLTags = keyof HTMLElementTagNameMap;
-export type HTMLElementTags = HTMLElementTagNameMap[HTMLTags];
+export type Dataset = Record<`data-${string}`, string>;
+export type HTMLTags = keyof HTMLElementTagNameMap; 
+
+export type HTMLElementTags = HTMLElementTagNameMap[HTMLTags]; 
+
 export type Children = string | ChildNode | undefined | null | DocumentFragment | HTMLElement;
 
 type Handlers = Omit<GlobalEventHandlers, 'addEventListener' | 'removeEventListener'>;
@@ -29,6 +31,4 @@ export interface ElementConstructorType<T extends HTMLElementTags> {
 
 export type VirtualHTMLElement = HTMLElement & {
     __key?: string;
-
-    //   FIX:   __props: Omit<ElementPropsType<HTMLElement>, 'events'>
 };

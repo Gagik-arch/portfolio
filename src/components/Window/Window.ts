@@ -362,8 +362,9 @@ class Window extends Element<HTMLDivElement> {
         const target = desktopStore.GetState().activeApps.find(item => item.window.dom.id === this.dom.id);
      
         if (!target) return; 
-        const dockIcon = document.getElementById(target.name);   
-  
+        const dock = document.getElementById('dock');
+
+        const dockIcon = dock?.querySelector(`#${target.name}`);
         dockIcon?.classList.remove(dockStyles.on_open_animate);
 
         const app = desktopStore.GetState().activeApps.find(item => item.window.dom.id === this.dom.id);
