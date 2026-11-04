@@ -3,7 +3,7 @@ type Token = number | Operator;
 
 export function evaluateExpression(expression: string): number {
     const tokens: Token[] = [];
-    const regex = /\s*(?:(\d+(?:\.\d*)?|\.\d+)|([+\-*/%]))/y;
+    const regex = /\s*(?:(\d+(?:\.\d*)?(?:e[+-]?\d+)?|\.\d+(?:e[+-]?\d+)?)|([+\-*/%]))/iy;
 
     let index = 0;
 
