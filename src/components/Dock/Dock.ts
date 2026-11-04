@@ -120,7 +120,7 @@ function Dock() {
 
         desktopStore.setFocusApp(app.window.dom.id);
     };
-    
+
     const onOpenAnimationEnd = (e: AnimationEvent, appName: keyof typeof allApps) => {
         const target = e.currentTarget as HTMLButtonElement;
         target.id = appName;
@@ -196,7 +196,7 @@ function Dock() {
                     id: 'Finder',
                     key: 'Finder',
                     events: {
-                        onclick: onclick,
+                        onclick,
                         onanimationend: (e) => {
                             onOpenAnimationEnd(e, 'Finder'); 
                         },
@@ -231,7 +231,7 @@ function Dock() {
                     id: 'Calculator',
                     key: 'Calculator',
                     events: {
-                        onclick: onclick,
+                        onclick,
                         onanimationend: (e) => {
                             onOpenAnimationEnd(e, 'Calculator'); 
                         },
@@ -252,7 +252,7 @@ function Dock() {
                     tabIndex: -1,
                     id: 'Notes',
                     events: {
-                        onclick: onclick,
+                        onclick,
                         onanimationend: (e) => {
                             onOpenAnimationEnd(e, 'Notes'); 
                         },
@@ -273,7 +273,7 @@ function Dock() {
                     tabIndex: -1,
                     id: 'Calendar',
                     events: {
-                        onclick: onclick,
+                        onclick,
                         onanimationend: (e) => {
                             onOpenAnimationEnd(e, 'Calendar'); 
                         },
@@ -294,7 +294,7 @@ function Dock() {
                     id: 'Music',
                     tabIndex: -1,
                     events: {
-                        onclick: onclick,
+                        onclick,
                         onanimationend: (e) => {
                             onOpenAnimationEnd(e, 'Music'); 
                         },
@@ -315,7 +315,7 @@ function Dock() {
                     id: 'Settings',
                     tabIndex: -1,
                     events: {
-                        onclick: onclick,
+                        onclick,
                         onanimationend: (e) => {
                             onOpenAnimationEnd(e, 'Settings'); 
                         },
@@ -353,7 +353,7 @@ function Dock() {
                                 id: icon.title,
                                 tabIndex: -1,
                                 events: {
-                                    onclick: onclick,
+                                    onclick,
                                     onanimationend: (e) => {
                                         onOpenAnimationEnd(e, icon.title); 
                                     },
