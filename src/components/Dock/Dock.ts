@@ -61,7 +61,7 @@ function Dock() {
 
         if (animationFrame) return;
 
-        const maxDistance = 140 * globalScale;
+        const maxDistance = 180 * globalScale;
         const magnification = 0.55;
 
         animationFrame = requestAnimationFrame(() => {
