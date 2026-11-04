@@ -15,53 +15,104 @@ import desktopStore from '$store/desktop.store';
 import allApps from '$apps/index';
 import dockIconsStore from '$store/dockIcons.store';
 import { clsx } from '$utils/clsx';
-import { getCssVariable, setCSSVariable } from '$utils/index';
+import {
+    clamp, getCssVariable, setCSSVariable 
+} from '$utils/index';
+import type { DockIcon } from './types';
 
 function Dock() {
-    let mouseMoveTimeout : number | undefined = undefined;
+    let mouseMoveTimeout: number | undefined = undefined;
+    const globalScale = getCssVariable<number>('--scale') || 1;
     
+    let animationFrame = 0,
+            mouseX = 0,
+            dockIcons: DockIcon[] = [];
+    
+    const refreshDockIcons = (dock: HTMLDivElement) => {
+        const dockRect = dock.getBoundingClientRect();
+
+        dockIcons = [ ...dock.getElementsByClassName(styles.button) ].map((item) => {
+            const element = item as HTMLElement;
+
+            return {
+                element,
+                center: dockRect.left
+                    + element.offsetLeft
+                    + element.offsetWidth / 2,
+                width: element.offsetWidth,
+            };
+        });
+    };
+
     const onMouseEnter = (e: MouseEvent) => {
         const dock = e.currentTarget as HTMLDivElement;
-        
-        mouseMoveTimeout = setTimeout(() => {
+
+        clearTimeout(mouseMoveTimeout);
+
+        cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+
+        refreshDockIcons(dock);
+
+        setCSSVariable(
+            '--transition',
+            'width 90ms ease-in-out, height 90ms ease-in-out',
+            dock
+        );
+
+        mouseMoveTimeout = window.setTimeout(() => {
             setCSSVariable('--transition', 'none', dock);
-        }, 120);
+        }, 100);
     };
 
     const onMouseMove = (e: MouseEvent) => {
-        const dock = e.currentTarget as HTMLDivElement;
-        const buttons = [ ...dock.getElementsByClassName( styles.button) ] as HTMLElement[];
+        mouseX = e.clientX;
+        
+        if (animationFrame) return;
+        
+        animationFrame = window.requestAnimationFrame(() => {
+            
+            const maxDistance = 200 * globalScale,
+                    magnification = 0.5,
+                    count = dockIcons.length;
+            animationFrame = 0;
 
-        const scaleFactorMatch = getCssVariable<number>('--scale');
-        const globalScale = scaleFactorMatch ? scaleFactorMatch : 1;
+            for (let i = 0; i < count; i++) {
+                const {
+                    element, center,
+                } = dockIcons[i];
+             
+                const distance = Math.abs(mouseX - center);
 
-        const maxDistance = 200 * globalScale; 
-
-        buttons.forEach((btn) => {
-            const rect = (btn).getBoundingClientRect();
-            const center = rect.left + rect.width / 2;
-            const distance = Math.abs(e.clientX - center);
-
-            let scale = 1;
-            if (distance < maxDistance) {
                 const percent = distance / maxDistance;
-                scale = 1 + 0.55 * Math.cos(percent * (Math.PI / 2));
-            }
 
-            setCSSVariable('--i-scale', scale.toFixed(3), btn);
+                const scale = clamp(
+                    1 + (magnification * Math.cos(percent * Math.PI / 2)),
+                    1,
+                    maxDistance
+                );
+
+                setCSSVariable( '--i-scale', scale.toFixed(2), element);
+            }
         });
     };
 
     const onMouseLeave = (e: MouseEvent) => {
         const dock = e.currentTarget as HTMLDivElement;
-        const buttons = [ ...dock.getElementsByClassName(styles.button) ] as HTMLDivElement[];
-        
-        clearTimeout(mouseMoveTimeout);
-        
-        setCSSVariable('--transition', 'all 90ms cubic-bezier(0.25, 1, 0.5, 1)', dock);
 
-        buttons.forEach((btn) => {
-            setCSSVariable('--i-scale', '1', btn);
+        clearTimeout(mouseMoveTimeout);
+
+        cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+
+        setCSSVariable(
+            '--transition',
+            'width 90ms ease-in-out, height 90ms ease-in-out',
+            dock
+        );
+
+        dockIcons.forEach(({ element }) => {
+            setCSSVariable('--i-scale', '1', element);
         });
     };
 
@@ -103,7 +154,11 @@ function Dock() {
         },
     })
         .OnMount(e => {
-            setCSSVariable('--transition', 'all 140ms cubic-bezier(0.25, 1, 0.5, 1)', e.dom);
+            setCSSVariable(
+                '--transition',
+                'width 90ms ease-in-out, height 90ms ease-in-out',
+                e.dom
+            );
         })
         .OnUnMount(() => {
             subscribers.forEach(item => {
@@ -125,6 +180,7 @@ function Dock() {
                 icon.classList.remove(styles.is_opened);
             }
         });
+        
         activeApps.forEach(app => {
             if (app.window.dom.id === focusedAppId) { 
                 app.window.dom.focus();
@@ -153,17 +209,10 @@ function Dock() {
                         },
                     },
                     children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({
-                                        src: finder,
-                                    }).dom,
-                                    Tooltip('Finder' )
-                                ],
-                            },
-                        }).dom
+                        new Image({
+                            src: finder,
+                        }).dom,
+                        Tooltip('Finder' )
                     ],
                 })
                     .dom, 
@@ -175,17 +224,10 @@ function Dock() {
                     key: 'Launchpad',
                     tabIndex: -1,
                     children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({
-                                        src: launchpad,
-                                    }).dom,
-                                    Tooltip('Launchpad')
-                                ],
-                            },
-                        }).dom
+                        new Image({
+                            src: launchpad,
+                        }).dom,
+                        Tooltip('Launchpad')
                     ],
                 }).dom,
 
@@ -202,17 +244,10 @@ function Dock() {
                         },
                     },
                     children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({
-                                        src: calculator,
-                                    }).dom,
-                                    Tooltip('Calculator')
-                                ],
-                            },
-                        }).dom
+                        new Image({
+                            src: calculator,
+                        }).dom,
+                        Tooltip('Calculator')
                     ],
                 })
                     .dom,
@@ -230,17 +265,10 @@ function Dock() {
                         },
                     },
                     children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({
-                                        src: notes,
-                                    }).dom,
-                                    Tooltip( 'Notes' )
-                                ],
-                            },
-                        }).dom
+                        new Image({
+                            src: notes,
+                        }).dom,
+                        Tooltip( 'Notes' )
                     ],
                 })
                     .dom,
@@ -258,17 +286,10 @@ function Dock() {
                         },
                     },
                     children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({
-                                        src: calendar,
-                                    }).dom,
-                                    Tooltip( 'Calendar' )
-                                ],
-                            },
-                        }).dom
+                        new Image({
+                            src: calendar,
+                        }).dom,
+                        Tooltip( 'Calendar' )
                     ],
                 })
                     .dom,
@@ -286,17 +307,10 @@ function Dock() {
                         },
                     },
                     children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({
-                                        src: music,
-                                    }).dom,
-                                    Tooltip( 'Music' )
-                                ],
-                            },
-                        }).dom
+                        new Image({
+                            src: music,
+                        }).dom,
+                        Tooltip( 'Music' )
                     ],
                 })
                     .dom,
@@ -314,17 +328,10 @@ function Dock() {
                         },
                     },
                     children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    Tooltip( 'Settings' ),
-                                    new Image({
-                                        src: settings,
-                                    }).dom
-                                ],
-                            },
-                        }).dom
+                        new Image({
+                            src: settings,
+                        }).dom,
+                        Tooltip( 'Settings' )
                     ],
                 })
                     .dom,
@@ -334,19 +341,11 @@ function Dock() {
                     key: 'Downloads',
                     tabIndex: -1,
                     children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({
-                                        src: folder,
+                        new Image({
+                            src: folder,
                           
-                                    }).dom,
-                                    Tooltip( 'Downloads' )
-                                ],
-                            },
-                        }).dom
-                       
+                        }).dom,
+                        Tooltip( 'Downloads' )
                     ],
                 })
                     .dom,
@@ -367,19 +366,11 @@ function Dock() {
                                     },
                                 },
                                 children: [
-                                    new Element<HTMLDivElement>({
-                                        tagName: 'div',
-                                        props: {
-                                            children: [
-                                                new Image({
-                                                    src: icon.image,
+                                    new Image({
+                                        src: icon.image,
                           
-                                                }).dom,
-                                                Tooltip(icon.title)
-                                            ],
-                                        },
-                                    }).dom
-                       
+                                    }).dom,
+                                    Tooltip(icon.title)
                                 ],
                             })
                                 .OnMount((e) => {
@@ -400,7 +391,8 @@ function Dock() {
                                         });
                                     }
                            
-                                }).dom
+                                })
+                                .dom
                         );
                     }),
 
@@ -409,17 +401,10 @@ function Dock() {
                     key: 'Trash',
                     tabIndex: -1,
                     children: [
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({
-                                        src: trash,
-                                    }).dom,
-                                    Tooltip( 'Trash' )
-                                ],
-                            },
-                        }).dom
+                        new Image({
+                            src: trash,
+                        }).dom,
+                        Tooltip( 'Trash' )
                     ],
                 })
                     .dom

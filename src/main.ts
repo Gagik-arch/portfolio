@@ -5,13 +5,14 @@ import { generateCalendarAppIcon } from './utils';
 
 void (async() => {
     try {
-        const root = document.getElementById('app');
         await generateCalendarAppIcon();
+    } catch (error) {
+        console.error(error);
+    } finally { 
+        const root = document.getElementById('app');
 
         if (root) {
             createRoot(root, Root());
         }
-    } catch (error) {
-        console.error(error);
     }
 })();
