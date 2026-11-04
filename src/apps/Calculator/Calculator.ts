@@ -34,6 +34,7 @@ function Calculator(props?: AppProps) {
         'enter',
         'backspace'
     ];
+    let backspaceTimer: number | undefined = undefined;
     
     const text = new Element<HTMLDivElement>({
         tagName: 'div',
@@ -48,11 +49,29 @@ function Calculator(props?: AppProps) {
             className: `regular ${styles.result}`,   
         },
     });
+
+    const clearLongPressTimer = () => {
+        if (!backspaceTimer) return; 
+        
+        clearTimeout(backspaceTimer);
+    };
+
+    const backspaceLongHold = () => {
+        if (state.GetState().length) {
+            clearLongPressTimer();
+
+            backspaceTimer = setTimeout(() => {
+                state.SetState('');
+            }, 1000);
+        } 
+    };
     
     const calculate = (num: string | undefined, action: string | undefined) => {
         switch (action) {
                 case 'backspace':
                     state.SetState(prev => prev.slice(0, -1));
+                
+                    backspaceLongHold();
                     break;
                 case 'clear':
                     state.SetState('');
@@ -118,8 +137,8 @@ function Calculator(props?: AppProps) {
         }
         
         const width = 394, 
-                factor = 0.6;
-        const fontSize = rangeNumber(width / (state.GetState().length * factor), 14, 40); 
+                factor = 0.6,
+                fontSize = rangeNumber(width / (state.GetState().length * factor), 14, 40); 
 
         if (num) { 
             if (fontSize === 14) return; 
@@ -132,6 +151,7 @@ function Calculator(props?: AppProps) {
                 state.SetState( prev => prev + num);
             }
         }
+
         text.SetProps({
             style: {
                 fontSize: fontSize + 'px',
@@ -160,6 +180,8 @@ function Calculator(props?: AppProps) {
     };
     
     const onKeyUp = (e: KeyboardEvent) => {
+        if (e.repeat) return; 
+        
         const key = e.key.toLowerCase();
         if (!availableActions.includes(key) ) return; 
         
@@ -182,7 +204,8 @@ function Calculator(props?: AppProps) {
             isNative: true,
             window: new Window({
                 events: {
-                    onkeyup: onKeyUp,
+                    onkeyup: clearLongPressTimer,
+                    onkeydown: onKeyUp,
                 },
                 children: [
                     resultContainer.dom,
@@ -206,6 +229,10 @@ function Calculator(props?: AppProps) {
                                 new Button({
                                     className: styles.button,
                                     'data-name': 'backspace',
+                                    events: {
+                                        onmousedown: backspaceLongHold,
+                                        onmouseup: clearLongPressTimer,
+                                    },
                                     children: [ 
                                         new Icon('Backdrop',
                                             {
