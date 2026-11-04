@@ -34,7 +34,7 @@ function Desktop() {
             title 
         ]));
     };
-    
+
     stack.Subscribe((state) => {
         clearTimeout(stackTimeout);
 
@@ -82,7 +82,7 @@ function Desktop() {
                 desktopStore.setFocusApp(lastApp.window.dom.id);
                 lastApp.window.dom.focus();
             }
-        }, 600);
+        }, 800);
     });
 
     const calculateIconPlace = (item:DesktopIconType, dom:HTMLElement) => {

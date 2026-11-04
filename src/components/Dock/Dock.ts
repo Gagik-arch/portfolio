@@ -28,27 +28,25 @@ function Dock() {
             mouseMoveTimeout: number | undefined = undefined;
     
     const refreshDockIcons = (dock: HTMLDivElement) => {
-        const dockRect = dock.getBoundingClientRect();
+        dockIcons = [ ...dock.getElementsByClassName(styles.button) ]
+            .map((item) => {
+                const element = item as HTMLElement;
+                const rect = element.getBoundingClientRect();
 
-        dockIcons = [ ...dock.getElementsByClassName(styles.button) ].map((item) => {
-            const element = item as HTMLElement;
-
-            return {
-                element,
-                center: dockRect.left
-                    + element.offsetLeft
-                    + element.offsetWidth / 2,
-                width: element.offsetWidth,
-            };
-        });
+                return {
+                    element,
+                    center: rect.left + rect.width / 2,
+                    width: rect.width,
+                };
+            });
     };
 
     const onMouseEnter = (e: MouseEvent) => {
         const dock = e.currentTarget as HTMLDivElement;
 
         clearTimeout(mouseMoveTimeout);
-
         cancelAnimationFrame(animationFrame);
+
         animationFrame = 0;
 
         refreshDockIcons(dock);
@@ -60,32 +58,26 @@ function Dock() {
 
     const onMouseMove = (e: MouseEvent) => {
         mouseX = e.clientX;
-        
+
         if (animationFrame) return;
-        
-        animationFrame = window.requestAnimationFrame(() => {
-            
-            const maxDistance = 200 * globalScale,
-                    magnification = 0.5,
-                    count = dockIcons.length;
+
+        const maxDistance = 140 * globalScale;
+        const magnification = 0.55;
+
+        animationFrame = requestAnimationFrame(() => {
             animationFrame = 0;
 
-            for (let i = 0; i < count; i++) {
-                const {
-                    element, center,
-                } = dockIcons[i];
-             
+            for (const {
+                element, center, 
+            } of dockIcons) {
                 const distance = Math.abs(mouseX - center);
 
-                const percent = distance / maxDistance;
+                const percent = clamp(distance / maxDistance, 0, 1);
 
-                const scale = clamp(
-                    1 + (magnification * Math.cos(percent * Math.PI / 2)),
-                    1,
-                    maxDistance
-                );
+                const scale = 1 + magnification
+                    * Math.cos(percent * Math.PI / 2);
 
-                setCSSVariable( '--i-scale', scale.toFixed(2), element);
+                setCSSVariable('--i-scale', scale.toFixed(2), element);
             }
         });
     };
