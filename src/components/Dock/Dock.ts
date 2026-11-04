@@ -21,12 +21,11 @@ import {
 import type { DockIcon } from './types';
 
 function Dock() {
-    let mouseMoveTimeout: number | undefined = undefined;
     const globalScale = getCssVariable<number>('--scale') || 1;
-    
     let animationFrame = 0,
             mouseX = 0,
-            dockIcons: DockIcon[] = [];
+            dockIcons: DockIcon[] = [],
+            mouseMoveTimeout: number | undefined = undefined;
     
     const refreshDockIcons = (dock: HTMLDivElement) => {
         const dockRect = dock.getBoundingClientRect();
@@ -187,7 +186,7 @@ function Dock() {
     dockIconsStore.Effect((appIcons) => {
         const calendar = localStorage.getItem('calendarIcon') as string;
         const activeApps = desktopStore.GetState().activeApps;
-      
+  
         dock.SetProps({
             children: [
                 new Button({
@@ -213,8 +212,8 @@ function Dock() {
                     
                 new Button({
                     className: clsx(styles.button,
+                        'not-allowed',
                         activeApps.findIndex(i => i.name === 'Launchpad') > -1 ? styles.is_opened : ''),
-                    id: 'Launchpad',
                     key: 'Launchpad',
                     tabIndex: -1,
                     children: [
@@ -331,7 +330,7 @@ function Dock() {
                     .dom,
 
                 new Button({
-                    className: styles.button,
+                    className: `${styles.button} not-allowed`,
                     key: 'Downloads',
                     tabIndex: -1,
                     children: [
@@ -391,9 +390,9 @@ function Dock() {
                     }),
 
                 new Button({
-                    className: styles.button,
-                    key: 'Trash',
+                    className: `${styles.button} not-allowed`,
                     tabIndex: -1,
+                    key: 'Trash',
                     children: [
                         new Image({
                             src: trash,

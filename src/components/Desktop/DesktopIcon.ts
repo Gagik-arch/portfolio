@@ -19,7 +19,7 @@ function DesktopIcon({
         'data-index': index.toString(),
         key: `desktop-icon-${title}`,
         events: {
-            ondblclick: onDoubleClick,  
+            ondblclick: onDoubleClick, 
         },
         children: [
             new Element<HTMLDivElement>({
