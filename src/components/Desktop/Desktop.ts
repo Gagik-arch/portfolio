@@ -11,25 +11,79 @@ import type { DesktopIconType } from '$types/index';
 import { rangeNumber } from '$utils/index';
 import allApps from '$apps/index';
 import dockIconsStore from '$store/dockIcons.store';
+import Store from '$lib/store';
 
 function Desktop() {
+    const stack = new Store<(keyof typeof allApps)[]>([]);
     let appIcon:DesktopIconType | null = null, 
-            timeout: number | undefined = undefined;
-    
-    const onDoubleClickAppIcon = (title:keyof typeof allApps) => {
-        const app = allApps[title]();
-        const isExistsApp = desktopStore.GetState().activeApps.find(a => a.name === app.name);
+            timeout: number | undefined = undefined,
+            stackTimeout : number | undefined = undefined;
 
-        if (isExistsApp) {
-            desktopStore.setFocusApp( isExistsApp.window.dom.id);
-            isExistsApp.window.dom.focus();
-        } else { 
-            dockIconsStore.setIcon({
-                title: app.name as keyof typeof allApps,
-                image: app.appIcon,
-            });
-        }
+    const onDoubleClickAppIcon = (title: keyof typeof allApps) => {
+        const existsInDock = desktopStore.GetState()
+            .activeApps.find(e => e.name === title);
+     
+        if (existsInDock) {
+            desktopStore.setFocusApp( existsInDock.window.dom.id);
+            existsInDock.window.dom.focus();
+            return;
+        }  
+
+        stack.SetState(prev => ([
+            ...prev,
+            title 
+        ]));
     };
+
+    stack.Subscribe((state) => {
+        clearTimeout(stackTimeout);
+
+        if (state.length === 0) {
+            stackTimeout = undefined;
+            return;
+        }
+
+        stackTimeout = setTimeout(() => {
+            stackTimeout = undefined;
+
+            const titles = stack.GetState();
+
+            if (titles.length === 0) return;
+            stack.SetState([]);
+
+            const apps = titles.map((title) => {
+                const existingApp = desktopStore
+                    .GetState()
+                    .activeApps
+                    .find(app => app.name === title);
+
+                const app = existingApp ?? allApps[title]();
+
+                return {
+                    app,
+                    title: app.name as keyof typeof allApps,
+                    image: app.appIcon,
+                };
+            });
+
+            dockIconsStore.SetState(prev => [
+                ...prev,
+                ...apps.map(({
+                    title, image, 
+                }) => ({
+                    title,
+                    image,
+                }))
+            ]);
+
+            const lastApp = apps.at(-1)?.app;
+
+            if (lastApp) {
+                desktopStore.setFocusApp(lastApp.window.dom.id);
+                lastApp.window.dom.focus();
+            }
+        }, 800);
+    });
 
     const calculateIconPlace = (item:DesktopIconType, dom:HTMLElement) => {
         const virtual = convertIndexToVirtual(item.index, dom.getBoundingClientRect());

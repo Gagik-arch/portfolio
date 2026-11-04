@@ -12,6 +12,7 @@ function DesktopIcon({
     index,
     appIcon,
     onDoubleClick,
+    onMouseDown,
 }: DesktopIconProps) { 
     const button = new Button({
         className: styles.app_icon,
@@ -19,7 +20,8 @@ function DesktopIcon({
         'data-index': index.toString(),
         key: `desktop-icon-${title}`,
         events: {
-            ondblclick: onDoubleClick,  
+            ondblclick: onDoubleClick, 
+            onmousedown: onMouseDown, 
         },
         children: [
             new Element<HTMLDivElement>({

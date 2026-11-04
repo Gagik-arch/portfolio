@@ -25,42 +25,53 @@ export function compareProps(
     return false;
 }
 
-function keyedDiff(dom: HTMLElement, newChildren: VirtualHTMLElement[]) {
-    const oldChildren = Array.from(dom.children) as VirtualHTMLElement[];
+function keyedDiff(
+    dom: HTMLElement,
+    newChildren: VirtualHTMLElement[]
+) {
+    const oldChildren = Array.from( dom.children) as VirtualHTMLElement[];
 
-    const oldKeys = oldChildren.map((c) => c.__key);
-    const newKeys = newChildren.map(c => c.__key);
+    const oldByKey = new Map( oldChildren.map(child => [
+        child.__key,
+        child 
+    ]) );
 
-    oldChildren.forEach(child => {
-        if (!newKeys.includes(child.__key)) {
+    const newKeys = new Set(
+        newChildren.map(child => child.__key)
+    );
+
+    for (const child of oldChildren) {
+        if (!newKeys.has(child.__key)) {
             child.remove();
         }
-    });
+    }
+   
+    let anchor: Element | null = dom.firstElementChild;
 
-    for (let i = 0; i < newChildren.length; i++) {
-        const newChild = newChildren[i];
-        const oldChild = oldChildren[i];
-        
-        const oldIndex = oldKeys.indexOf(newChild.__key);
+    for (const newChild of newChildren) {
+        let current = oldByKey.get(newChild.__key);
 
-        if (oldIndex === -1) {
-            dom.insertBefore(newChild, oldChild);
-        } else {
-            const target = oldChildren[oldIndex];
-
-            if (target.tagName !== newChild.tagName) { 
-                oldChildren[oldIndex] = newChild;
-            }
-
-            const shouldReplace = compareProps(target, newChild); 
-            
-            if ( shouldReplace) { 
-                mergeAttributes(target, newChild);
-            }
+        if (!current) {
+            dom.insertBefore(newChild, anchor);
+            anchor = newChild.nextElementSibling;
+            continue;
         }
+
+        if (current.tagName !== newChild.tagName) {
+            current.replaceWith(newChild); 
+            oldByKey.set(newChild.__key, newChild);
+            current = newChild;
+        } else if (compareProps(current, newChild)) {
+            mergeAttributes(current, newChild);
+        }
+
+        if (current !== anchor) {
+            dom.insertBefore(current, anchor);
+        }
+
+        anchor = current.nextElementSibling;
     }
 }
-
 function unKeyedDiff(dom: HTMLElement, newChildren: HTMLElement[]) {
     const oldChildren = Array.from(dom.childNodes);
 
