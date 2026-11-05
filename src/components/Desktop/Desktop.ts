@@ -8,11 +8,10 @@ import {
     convertRealToVirtual, convertVirtualToIndex, convertVirtualToReal 
 } from './utils';
 import type { DesktopIconType } from '$types/index';
-import { rangeNumber } from '$utils/index';
+import { getImageUrl, rangeNumber } from '$utils/index';
 import type allApps from '$apps/index';
 import dockIconsStore from '$store/dockIcons.store';
 import Store from '$lib/store';
-import { APP_ICON_URL } from '$utils/constants';
 
 function Desktop() {
     const stack = new Store<(keyof typeof allApps)[]>([]);
@@ -52,9 +51,11 @@ function Desktop() {
             stack.SetState([]);
 
             const apps = titles.map((title) => {
+                const imgUrl = getImageUrl(title.toLowerCase());
+
                 return {
                     title: title,
-                    image: `${APP_ICON_URL}/${title.toLowerCase()}.png`,
+                    image: imgUrl,
                 };
             });
 
