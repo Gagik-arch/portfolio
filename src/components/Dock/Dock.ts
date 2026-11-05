@@ -12,11 +12,11 @@ import Button from '$uikit/Button';
 import Image from '$uikit/Image';
 import Tooltip from './Tooltip';
 import desktopStore from '$store/desktop.store';
-import allApps from '$apps/index';
+import APPS from '$apps/index';
 import dockIconsStore from '$store/dockIcons.store';
 import { clsx } from '$utils/clsx';
 import {
-    clamp, getCssVariable, setCSSVariable 
+    clamp, getCssVariable, getAppIcon, setCSSVariable 
 } from '$utils/index';
 import type { DockIcon } from './types';
 
@@ -113,10 +113,10 @@ function Dock() {
         desktopStore.setFocusApp(app.window.dom.id);
     };
 
-    const onOpenAnimationEnd = (e: AnimationEvent, appName: keyof typeof allApps) => {
+    const onOpenAnimationEnd = (e: AnimationEvent, appName: keyof typeof APPS) => {
         const target = e.currentTarget as HTMLButtonElement;
         target.id = appName;
-        const app = allApps[appName]({
+        const app = APPS[appName]({
             key: appName, id: appName,
         });
 
@@ -352,8 +352,7 @@ function Dock() {
                                 },
                                 children: [
                                     new Image({
-                                        src: icon.image,
-                          
+                                        src: getAppIcon(icon.title),
                                     }).dom,
                                     Tooltip(icon.title)
                                 ],

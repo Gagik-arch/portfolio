@@ -1,4 +1,5 @@
 import Element from '$lib/Element';
+import { APP_IMAGES } from '$utils/constants';
 
 export const clamp = (num: number, min: number, max: number = Number.MAX_SAFE_INTEGER): number => Math.max(min, Math.min(num, max));
 
@@ -132,7 +133,6 @@ export const generateCalendarAppIcon = async () => {
     canvas.Remove();
 };
 
-export function getImageUrl(name: string, extension = '.png') {
-    const base = import.meta.env.BASE_URL; 
-    return `${base}assets/images/app-icons/${name}${extension}`;
+export function getAppIcon(appName: keyof typeof APP_IMAGES) {
+    return APP_IMAGES[appName];
 }

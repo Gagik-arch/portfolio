@@ -8,18 +8,18 @@ import {
     convertRealToVirtual, convertVirtualToIndex, convertVirtualToReal 
 } from './utils';
 import type { DesktopIconType } from '$types/index';
-import { getImageUrl, rangeNumber } from '$utils/index';
-import type allApps from '$apps/index';
+import { getAppIcon, rangeNumber } from '$utils/index';
+import type APPS from '$apps/index';
 import dockIconsStore from '$store/dockIcons.store';
 import Store from '$lib/store';
 
 function Desktop() {
-    const stack = new Store<(keyof typeof allApps)[]>([]);
+    const stack = new Store<(keyof typeof APPS)[]>([]);
     let appIcon:DesktopIconType | null = null, 
             timeout: number | undefined = undefined,
             stackTimeout : number | undefined = undefined;
 
-    const onDoubleClickAppIcon = (title: keyof typeof allApps) => {
+    const onDoubleClickAppIcon = (title: keyof typeof APPS) => {
         const existsInDock = desktopStore.GetState()
             .activeApps.find(e => e.name === title);
      
@@ -51,11 +51,10 @@ function Desktop() {
             stack.SetState([]);
 
             const apps = titles.map((title) => {
-                const imgUrl = getImageUrl(title.toLowerCase());
+                const image = getAppIcon(title);
 
                 return {
-                    title: title,
-                    image: imgUrl,
+                    title, image: image || '', 
                 };
             });
 
@@ -84,7 +83,6 @@ function Desktop() {
             y: real.y,
             index: item.index,
             title: item.title,
-            appIcon: item.appIcon,
             onDoubleClick: () => onDoubleClickAppIcon(item.title),
         });
 

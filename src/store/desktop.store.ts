@@ -1,38 +1,28 @@
 import Store from '$lib/store';
 import type App from '$components/App';
 import type { DesktopIconType } from '$types/index';
-import advelitIcon from '$assets/images/app-icons/advelit.png';
-import fibiIcon from '$assets/images/app-icons/fibi.png';
-import datewiseIcon from '$assets/images/app-icons/datewise.png';
 import { extractRangeFromIconToIcon } from '$components/Desktop/utils';
-import previewIcon from '$assets/images/app-icons/preview.png';
-import balljungeIcon from '$assets/images/app-icons/balljunge.png';
 
 const initialState:DesktopIconType[] = [
     {
         index: 0,
         title: 'Advelit',
-        appIcon: advelitIcon,
     },
     {
         index: 1,
         title: 'Fibi',
-        appIcon: fibiIcon,
     },
     {
         index: 2,
         title: 'Datewise',
-        appIcon: datewiseIcon,
     },
     {
         index: 3,
-        title: 'CV',
-        appIcon: previewIcon,
+        title: 'Preview',
     },
     {
         index: 4,
         title: 'Balljunge',
-        appIcon: balljungeIcon,
     }
 ];
 

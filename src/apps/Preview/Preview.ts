@@ -41,7 +41,7 @@ const Row = (left:string, right?:string, isSubtitle = false) => {
     );
 };
 
-function CV(props?: AppProps) { 
+function Preview(props?: AppProps) { 
     const scale = getCssVariable<number>('--scale') || 1;
     const width = scale === 1 ? 800 : 600;
     
@@ -528,4 +528,4 @@ function CV(props?: AppProps) {
     );
 }
 
-export default CV;
+export default Preview;
