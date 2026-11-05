@@ -47,7 +47,7 @@ function Preview(props?: AppProps) {
     
     return (
         new App({
-            name: 'CV',
+            name: 'Preview',
             appIcon,
             window: new Window({
                 className: styles.root,
