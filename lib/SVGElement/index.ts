@@ -1,3 +1,7 @@
+import { setupChildren } from '$lib/Element/utils';
+import {
+    setupClassName, setupStyle 
+} from '$lib/utils';
 import type {
     SVGElementConstructorType, SVGTags, SVGElementPropsType
 } from './types';
@@ -24,7 +28,7 @@ class SVGElement <T extends SVGTags > {
             rootElement.appendChild(this.dom);
         }
 
-        this.setProps(
+        this.SetProps(
             {
                 className,
                 children,
@@ -34,20 +38,35 @@ class SVGElement <T extends SVGTags > {
         );
     }
 
-    public setProps(
+    public SetProps(
         {
             className,
             children,
             style,
             ...props
-        }: SVGElementConstructorType['props']
+        }: SVGElementConstructorType['props'],
+        isForceUpdate = false
     ) {
-        if (className) {
-            this.dom.setAttribute('class', className);
+        if (className !== undefined) {
+            setupClassName(
+                className,
+                this.dom
+            );
         }
 
-        if (children) {
-            this.dom.replaceChildren(...children);
+        if (style !== undefined) {
+            setupStyle(
+                style as CSSStyleDeclaration,
+                this.dom
+            );
+        }
+
+        if (children !== undefined) {
+            setupChildren(
+                children,
+                this.dom,
+                isForceUpdate
+            );
         }
 
         Object.entries(props)
@@ -61,29 +80,47 @@ class SVGElement <T extends SVGTags > {
         return this;
     }
 
-    public onMount(callback: (e:this) => void) {
-        const check = () => {
-            if (document.body.contains(this.dom)) {
-                callback(this);
-            } else {
-                requestAnimationFrame(check);
-            }
-        };
+    public Destroy() {
+        this.Remove();
+    }
 
-        check();
+    public Remove() {
+        this.dom.remove();
+    }
+
+    public OnMount(callback: (e: this) => void) {
+        if (this.dom.isConnected) {
+            callback(this);
+            return this;
+        }
+        const observer = new MutationObserver(() => {
+            if (this.dom.isConnected) {
+                callback(this);
+                observer.disconnect();
+            }
+        });
+
+        observer.observe(document, {
+            childList: true,
+            subtree: true,
+        });
 
         return this;
     }
 
-    public onUnMount(callback:(e:this)=>void) {
+    public OnUnMount(callback: (e: this) => void) {
         const observer = new MutationObserver(() => {
-            if (!document.body.contains(this.dom)) {
+            if (!this.dom.isConnected) {
                 callback(this);
+
+                this.Destroy();
+                observer.disconnect();
             }
         });
 
-        observer.observe(document.body, {
-            childList: true, subtree: true,
+        observer.observe(document, {
+            childList: true,
+            subtree: true,
         });
 
         return this;

@@ -1,30 +1,37 @@
+import type { DOMElement } from '$lib/Element/types';
+
 export type HTMLSVGTags = keyof SVGElementTagNameMap;
 
 export type SVGTags = SVGElementTagNameMap[HTMLSVGTags];
 
-export type Children = ChildNode;
+export type Children = string | ChildNode | undefined | null;
 
-export type SVGElementPropsType = SVGAttributes;
-export interface SVGElementConstructorType {
+export type SVGElementPropsType<T extends SVGTags = SVGElement > = ElementPropsType<T>;
+
+export type ElementPropsType<T extends SVGTags = SVGElement>
+    = Omit<Partial<T>, 'children' | 'className' | 'style'> & {
+        children?: (Children)[] | undefined;
+        className?: string | undefined;
+        style?: Partial<CSSStyleDeclaration> | undefined;
+        key?: string;
+    } & SVGAttributes;
+
+export interface SVGElementConstructorType<T extends SVGTags = SVGElement> {
     tagName: HTMLSVGTags;
-    props: SVGElementPropsType;
-    rootElement?: HTMLElement | SVGAElement | null;
+    props: SVGElementPropsType<T>;
+    rootElement?: DOMElement | null;
 }
 
 export interface SVGAttributes {
-    children?: (Children)[] | undefined;
     suppressHydrationWarning?: boolean | undefined;
-    className?: string | undefined;
     color?: string | undefined;
     height?: number | string | undefined;
-    id?: string | undefined;
     lang?: string | undefined;
     max?: number | string | undefined;
     media?: string | undefined;
     method?: string | undefined;
     min?: number | string | undefined;
     name?: string | undefined;
-    style?: Partial<CSSStyleDeclaration> | undefined;
     target?: string | undefined;
     type?: string | undefined;
     width?: number | string | undefined;

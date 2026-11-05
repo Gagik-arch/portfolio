@@ -1,4 +1,6 @@
 
+export type DOMElement = HTMLElement | SVGElement;
+
 export type Dataset = Record<`data-${string}`, string>;
 export type HTMLTags = keyof HTMLElementTagNameMap; 
 
@@ -29,6 +31,6 @@ export interface ElementConstructorType<T extends HTMLElementTags> {
     rootElement?: HTMLElement | null;
 }
 
-export type VirtualHTMLElement = HTMLElement & {
+export type VirtualHTMLElement = DOMElement & {
     __key?: string;
 };

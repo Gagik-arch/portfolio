@@ -3,26 +3,26 @@ import type App from '$components/App';
 import type { DesktopIconType } from '$types/index';
 import { extractRangeFromIconToIcon } from '$components/Desktop/utils';
 
-const initialState:DesktopIconType[] = [
+const initialState: DesktopIconType[] = [
     {
         index: 0,
-        title: 'Advelit',
-    },
-    {
-        index: 1,
-        title: 'Fibi',
-    },
-    {
-        index: 2,
-        title: 'Datewise',
-    },
-    {
-        index: 3,
         title: 'Preview',
     },
     {
-        index: 4,
+        index: 1,
+        title: 'Datewise',
+    },
+    {
+        index: 2,
         title: 'Balljunge',
+    },
+    {
+        index: 3,
+        title: 'Fibi',
+    },
+    {
+        index: 4,
+        title: 'Advelit',
     }
 ];
 
