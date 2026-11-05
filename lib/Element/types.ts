@@ -1,4 +1,6 @@
+type Handlers = Omit<GlobalEventHandlers, 'addEventListener' | 'removeEventListener'>;
 
+export type NodeChildren = string | ChildNode | undefined | null;
 export type DOMElement = HTMLElement | SVGElement;
 
 export type Dataset = Record<`data-${string}`, string>;
@@ -6,9 +8,7 @@ export type HTMLTags = keyof HTMLElementTagNameMap;
 
 export type HTMLElementTags = HTMLElementTagNameMap[HTMLTags]; 
 
-export type Children = string | ChildNode | undefined | null | DocumentFragment | HTMLElement;
-
-type Handlers = Omit<GlobalEventHandlers, 'addEventListener' | 'removeEventListener'>;
+export type Children = NodeChildren | DocumentFragment | HTMLElement;
 
 export type EventType<T extends HTMLElement> = {
     [K in keyof Handlers]?: Handlers[K] extends ((this: T, ev: infer E) => void) | null
@@ -18,7 +18,7 @@ export type EventType<T extends HTMLElement> = {
 
 export type ElementPropsType<T extends HTMLElementTags = HTMLElement>
     = Omit<Partial<T>, 'children' | 'className' | 'style'> & Dataset & {
-        children?: (Children)[] | undefined;
+        children?: Children[] | undefined;
         className?: string | undefined;
         events?: EventType<T>;
         style?: Partial<CSSStyleDeclaration> | undefined;
