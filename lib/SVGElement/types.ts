@@ -1,10 +1,10 @@
-import type { DOMElement } from '$lib/Element/types';
+import type { DOMElement, NodeChildren } from '$lib/Element/types';
 
 export type HTMLSVGTags = keyof SVGElementTagNameMap;
 
 export type SVGTags = SVGElementTagNameMap[HTMLSVGTags];
 
-export type Children = string | ChildNode | undefined | null;
+type Children = NodeChildren;
 
 export type SVGElementPropsType<T extends SVGTags = SVGElement > = ElementPropsType<T>;
 
