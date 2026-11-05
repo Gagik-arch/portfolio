@@ -1,16 +1,13 @@
 import Store from '$lib/store';
-import type allApps from '../apps/index';
-import cv from '$assets/images/app-icons/preview.png';
+import type APPS from '../apps/index';
 
 export interface IconType {
-    image: string;
-    title: keyof typeof allApps;
+    title: keyof typeof APPS;
 }
 
 const initialState: IconType[] = [
     {
-        image: cv,
-        title: 'CV' as keyof typeof allApps,
+        title: 'Preview',
     }
 ];
 

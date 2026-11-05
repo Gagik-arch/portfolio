@@ -6,11 +6,11 @@ import Finder from './Finder';
 import Notes from './Notes';
 import Settings from './Settings';
 import Datewise from './Datewise';
-import CV from './CV';
+import Preview from './Preview';
 import Music from './Music';
 import Balljunge from './Balljunge';
     
-const apps = {
+const APPS = {
     Calculator,
     Calendar,
     Notes,
@@ -19,9 +19,9 @@ const apps = {
     Advelit,
     Fibi,
     Datewise,
-    CV,
+    Preview,
     Music,
     Balljunge,
 } as const;
     
-export default apps;
+export default APPS;

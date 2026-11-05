@@ -4,13 +4,13 @@ import Image from '$uikit/Image';
 import styles from './style.module.css';
 import Button from '$uikit/Button';
 import type { DesktopIconProps } from './types';
+import { getAppIcon } from '$utils/index';
  
 function DesktopIcon({ 
     x,
     y,
     title,
     index,
-    appIcon,
     onDoubleClick,
     onMouseDown,
 }: DesktopIconProps) { 
@@ -30,7 +30,7 @@ function DesktopIcon({
                     className: styles.image_container,
                     children: [
                         new Image({
-                            src: appIcon,
+                            src: getAppIcon(title),
                         }).dom
                     ],
                 },
