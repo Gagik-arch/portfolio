@@ -1,9 +1,13 @@
+import type { DOMElement } from './Element/types';
+
 export function camelToKebab(str: string) {
     return str.replace(/[A-Z]/g, match => '-' + match.toLowerCase());
 }
 
 export function setupClassName(
-    className?: ((classList: DOMTokenList) => void) | string | undefined,
+    className?: ((classList: DOMTokenList) => void)
+        | string
+        | undefined,
     dom?: Element
 ) {
     if (!dom || !className) return;
@@ -11,15 +15,15 @@ export function setupClassName(
     if (typeof className === 'function') {
         className(dom.classList);
     } else {
-        if (dom.className !== className) {
-            dom.className = className;
+        if (dom.className !== className ) {
+            dom.classList.value = className;
         }
     }
 }
 
 export function setupInnerHtml(
-    oldChild: HTMLElement,
-    newChild: HTMLElement
+    oldChild: DOMElement,
+    newChild: DOMElement
 ) {
     if (oldChild.innerHTML !== newChild.innerHTML) {
         oldChild = newChild;
@@ -27,8 +31,8 @@ export function setupInnerHtml(
 }
 
 export function setupStyle(
-    style: HTMLElement['style'] | undefined,
-    dom?: HTMLElement
+    style: DOMElement['style'] | undefined,
+    dom?: DOMElement
 ) {
     if (!style ) return;
 
@@ -77,8 +81,8 @@ export const isEqualObjects = (a: unknown, b: unknown): boolean => {
 };
 
 export function mergeAttributes(
-    oldChild: HTMLElement,
-    newChild: HTMLElement
+    oldChild: DOMElement,
+    newChild: DOMElement
 ) {
     for (let i = 0; i < newChild.getAttributeNames().length; i++) {
         const oldChildAtt = oldChild.attributes[i];

@@ -1,11 +1,11 @@
 import { mergeAttributes } from '../utils';
 import type {
-    Children, VirtualHTMLElement
+    Children, DOMElement, VirtualHTMLElement
 } from './types';
 
 export function compareProps(
-    oldNode: HTMLElement | null,
-    newNode: HTMLElement | null 
+    oldNode: DOMElement | null,
+    newNode: DOMElement | null 
 ) { 
     if (!oldNode || !newNode) return false;
     
@@ -26,7 +26,7 @@ export function compareProps(
 }
 
 function keyedDiff(
-    dom: HTMLElement,
+    dom: DOMElement,
     newChildren: VirtualHTMLElement[]
 ) {
     const oldChildren = Array.from( dom.children) as VirtualHTMLElement[];
@@ -72,14 +72,14 @@ function keyedDiff(
         anchor = current.nextElementSibling;
     }
 }
-function unKeyedDiff(dom: HTMLElement, newChildren: HTMLElement[]) {
+function unKeyedDiff(dom: DOMElement, newChildren: DOMElement[]) {
     const oldChildren = Array.from(dom.childNodes);
 
     const max = Math.max(oldChildren.length, newChildren.length);
   
     for (let i = 0; i < max; i++) {
-        const oldNode = oldChildren[i] as HTMLElement | undefined;
-        const newNode = newChildren[i] as HTMLElement | undefined;
+        const oldNode = oldChildren[i] as DOMElement | undefined;
+        const newNode = newChildren[i] as DOMElement | undefined;
 
         let shouldReplace;
 
@@ -99,7 +99,7 @@ function unKeyedDiff(dom: HTMLElement, newChildren: HTMLElement[]) {
     }
 }
 
-export function setupChildren<T extends HTMLElement>(
+export function setupChildren<T extends DOMElement>(
     children: ((childNodes: Set<ChildNode>) => Set<ChildNode>) | Children[] | undefined,
     dom: T,
     isForceUpdate: boolean
@@ -110,7 +110,7 @@ export function setupChildren<T extends HTMLElement>(
                 ? Array.from(children(new Set(dom.childNodes)))
                 : children;
 
-        const extracted = newChildren.filter(Boolean) as HTMLElement[];
+        const extracted = newChildren.filter(Boolean) as DOMElement[];
 
         if (isForceUpdate) {
             dom.replaceChildren(...extracted);
