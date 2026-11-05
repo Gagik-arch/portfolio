@@ -12,7 +12,6 @@ import { getAppIcon, rangeNumber } from '$utils/index';
 import type APPS from '$apps/index';
 import dockIconsStore from '$store/dockIcons.store';
 import Store from '$lib/store';
-import type { APP_IMAGES } from '$utils/constants';
 
 function Desktop() {
     const stack = new Store<(keyof typeof APPS)[]>([]);
