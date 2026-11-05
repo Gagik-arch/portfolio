@@ -196,9 +196,7 @@ class Window extends Element<HTMLDivElement> {
             desktopStore.setFocusApp(this.dom.id);
             this.SetProps({ 'data-resizing': !!this.resizeAnchor + '' });
         
-            setTimeout(() => {
-                this.dom.focus();
-            }, 0);
+            this.dom.focus();
         }
 
         if (this.resizeAnchor) return; 

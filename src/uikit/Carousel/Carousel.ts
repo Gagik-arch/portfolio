@@ -46,7 +46,7 @@ function Carousel({
             children: images.map((_, index) => {
                 return (
                     new Button({
-                        className: getCssVariable<number>('--offset', line.dom) === index ? styles.active : undefined,
+                        className: index === 0 ? styles.active : undefined,
                         events: {
                             onclick: () => {
                                 line.dom.style.setProperty('--offset', index.toString());
@@ -60,10 +60,9 @@ function Carousel({
   
     const mutation = onCssVariableChange(line.dom, '--offset', () => {
         const dotButtons = dots.dom.querySelectorAll('button');
-
+        const savedIndex = getCssVariable<number>('--offset', line.dom);
+        
         dotButtons.forEach((button, index) => {
-            const savedIndex = getCssVariable<number>('--offset', line.dom);
-      
             if (index === savedIndex) {
                 button.classList.add(styles.active);
             } else { 

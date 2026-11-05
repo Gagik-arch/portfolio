@@ -213,7 +213,7 @@ function Advelit(props?:AppProps) {
                                                                     variant: 'primary',
                                                                     events: {
                                                                         onclick: () => {
-                                                                            window.open('https://www.advelit.com/', '_blank');
+                                                                            window.open('https://www.advelit.com', '_blank');
                                                                         },
                                                                     },
                                                                 }).dom

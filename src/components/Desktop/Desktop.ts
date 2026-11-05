@@ -9,9 +9,10 @@ import {
 } from './utils';
 import type { DesktopIconType } from '$types/index';
 import { rangeNumber } from '$utils/index';
-import allApps from '$apps/index';
+import type allApps from '$apps/index';
 import dockIconsStore from '$store/dockIcons.store';
 import Store from '$lib/store';
+import { APP_ICON_URL } from '$utils/constants';
 
 function Desktop() {
     const stack = new Store<(keyof typeof allApps)[]>([]);
@@ -25,7 +26,6 @@ function Desktop() {
      
         if (existsInDock) {
             desktopStore.setFocusApp( existsInDock.window.dom.id);
-            existsInDock.window.dom.focus();
             return;
         }  
 
@@ -52,17 +52,9 @@ function Desktop() {
             stack.SetState([]);
 
             const apps = titles.map((title) => {
-                const existingApp = desktopStore
-                    .GetState()
-                    .activeApps
-                    .find(app => app.name === title);
-
-                const app = existingApp ?? allApps[title]();
-
                 return {
-                    app,
-                    title: app.name as keyof typeof allApps,
-                    image: app.appIcon,
+                    title: title,
+                    image: `${APP_ICON_URL}/${title.toLowerCase()}.png`,
                 };
             });
 
@@ -75,13 +67,6 @@ function Desktop() {
                     image,
                 }))
             ]);
-
-            const lastApp = apps.at(-1)?.app;
-
-            if (lastApp) {
-                desktopStore.setFocusApp(lastApp.window.dom.id);
-                lastApp.window.dom.focus();
-            }
         }, 800);
     });
 

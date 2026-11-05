@@ -16,8 +16,9 @@ import Element from '$lib/Element';
 import Carousel from '$uikit/Carousel';
 import Typography from '$uikit/Typography';
 import Scroll from '$uikit/Scroll';
+import Button from '$uikit/Button';
 
-function Fibi(props?:AppProps) { 
+function Fibi(props?: AppProps) { 
     return (
         new App({
             name: 'Fibi',
@@ -199,6 +200,24 @@ function Fibi(props?:AppProps) {
                                                                 new Typography({
                                                                     text: 'Reduced app startup time, improved memory usage, and resolved critical production issues to boost stability on all supported devices.', 
                                                                     isInline: true,
+                                                                }).dom
+                                                            ],
+                                                        },
+                                                    }).dom,
+                                               
+                                                    new Element<HTMLDivElement>({
+                                                        tagName: 'div',
+                                                        props: {
+                                                            className: styles.toggle_container,
+                                                            children: [
+                                                                new Button({
+                                                                    children: [ 'View' ],
+                                                                    variant: 'primary',
+                                                                    events: {
+                                                                        onclick: () => {
+                                                                            window.open('https://fibi.live', '_blank');
+                                                                        },
+                                                                    },
                                                                 }).dom
                                                             ],
                                                         },

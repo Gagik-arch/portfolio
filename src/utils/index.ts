@@ -26,7 +26,7 @@ export const getCssVariable = <T extends string | number>(
         return undefined;
     }
     
-    return variable as T;
+    return +variable as T;
 };
 
 export const setCSSVariable = (key:string, value:string, element: HTMLElement = document.body ) => {
@@ -39,21 +39,32 @@ export const genRandomNumber = (min = 0, max = 10) => {
     return min + Math.floor(Math.random() * (max - min) );
 };
 
-export const onCssVariableChange = (element:HTMLElement, key:string, callback:(err:string)=>void) => {
-    const styleObserver = new MutationObserver((mutations) => {
-        const currentValue = getCssVariable<string>(key, mutations[0].target as HTMLElement);
-        
-        if (currentValue) { 
-            callback(currentValue);
-        }
-    });
+export const onCssVariableChange = (
+    element: HTMLElement,
+    key: string,
+    callback: (value: string | undefined) => void
+) => {
+    let previousValue: string | undefined;
 
-    styleObserver.observe(element, {
+    const update = () => {
+        const value = getCssVariable<string>(key, element);
+
+        if (value !== previousValue) {
+            previousValue = value;
+            callback(value);
+        }
+    };
+
+    const observer = new MutationObserver(update);
+
+    observer.observe(element, {
         attributes: true,
         attributeFilter: [ 'style' ],
     });
 
-    return () => styleObserver.disconnect();
+    update();
+
+    return () => observer.disconnect();
 };
 
 export const isStrictDesktop = () => {
