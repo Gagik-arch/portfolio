@@ -132,6 +132,7 @@ export const generateCalendarAppIcon = async () => {
     canvas.Remove();
 };
 
-export function getImageUrl(name:string, extension = '.png') {
-    return new URL(`../../assets/images/app-icons/${name}${extension}`, import.meta.url).href;
+export function getImageUrl(name: string, extension = '.png') {
+    const base = import.meta.env.BASE_URL; 
+    return `${base}assets/images/app-icons/${name}${extension}`;
 }
