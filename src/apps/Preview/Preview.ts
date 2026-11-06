@@ -3,7 +3,7 @@ import Window from '$components/Window';
 import appIcon from '$assets/images/app-icons/preview.png';
 import type { AppProps } from '$apps/types';
 import styles from './style.module.css';
-import Element from '$lib/Element';
+import { Element } from '@nuvo-js/core';
 import Typography from '$uikit/Typography';
 import json from './data.json';
 import { getCssVariable } from '$utils/index';

@@ -1,4 +1,4 @@
-import Element from '$lib/Element';
+import { Element } from '@nuvo-js/core';
 import type { CarouselProps } from './types';
 import styles from './style.module.css';
 import Image from '$uikit/Image';

@@ -1,4 +1,4 @@
-import type { ElementPropsType } from '$lib/Element';
+import type { ElementPropsType } from '@nuvo-js/core/types';
 import type { variants } from './data';
 
 export type Size = keyof typeof variants;

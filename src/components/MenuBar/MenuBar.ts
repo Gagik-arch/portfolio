@@ -1,4 +1,4 @@
-import Element from '$lib/Element';
+import { Element } from '@nuvo-js/core';
 import Button from '$uikit/Button';
 import Icon from '$uikit/Icon';
 import Typography from '$uikit/Typography';

@@ -3,7 +3,7 @@ import MenuBar from '$components/MenuBar';
 import Dock from './components/Dock';
 import NotSupportedDevice from '$pages/NotSupportedDevice';
 import { isStrictDesktop } from '$utils/index';
-import Element from '$lib/Element';
+import { Element } from '@nuvo-js/core';
 
 function App() {
     document.body.style.setProperty('--scale', (window.screen.availWidth / 1920).toFixed(1));

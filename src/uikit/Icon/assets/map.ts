@@ -1,7 +1,7 @@
 import {
     SVGElement
-} from '$lib/index';
-import type { SVGElementPropsType } from '$lib/SVGElement';
+} from '@nuvo-js/core';
+import type { SVGElementPropsType } from '@nuvo-js/core/types';
 
 function Map(props: SVGElementPropsType) {
     return (

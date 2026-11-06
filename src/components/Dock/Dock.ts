@@ -1,4 +1,4 @@
-import Element from '$lib/Element';
+import { Element } from '@nuvo-js/core';
 import styles from './style.module.css';
 import finder from '$assets/images/app-icons/finder.png';
 import trash from '$assets/images/app-icons/trash.png';
