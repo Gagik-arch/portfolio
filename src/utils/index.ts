@@ -1,4 +1,4 @@
-import Element from '$lib/Element';
+import { Element } from '@nuvo-js/core';
 import { APP_IMAGES } from '$utils/constants';
 
 export const clamp = (num: number, min: number, max: number = Number.MAX_SAFE_INTEGER): number => Math.max(min, Math.min(num, max));

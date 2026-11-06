@@ -1,4 +1,4 @@
-import Store from '$lib/store';
+import { Store } from '@nuvo-js/core';
 import type App from '$components/App';
 import type { DesktopIconType } from '$types/index';
 import { extractRangeFromIconToIcon } from '$components/Desktop/utils';

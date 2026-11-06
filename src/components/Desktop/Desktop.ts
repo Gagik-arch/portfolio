@@ -1,4 +1,4 @@
-import Element from '$lib/Element';
+import { Element, Store } from '@nuvo-js/core';
 import styles from './style.module.css';
 import desktopStore from '$store/desktop.store';
 import Vector from '$utils/trigonometry/Vector';
@@ -11,7 +11,6 @@ import type { DesktopIconType } from '$types/index';
 import { getAppIcon, rangeNumber } from '$utils/index';
 import type APPS from '$apps/index';
 import dockIconsStore from '$store/dockIcons.store';
-import Store from '$lib/store';
 
 function Desktop() {
     const stack = new Store<(keyof typeof APPS)[]>([]);

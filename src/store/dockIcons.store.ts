@@ -1,4 +1,4 @@
-import Store from '$lib/store';
+import { Store } from '@nuvo-js/core';
 import type APPS from '../apps/index';
 
 export interface IconType {

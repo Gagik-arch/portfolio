@@ -4,10 +4,9 @@ import Window from '$components/Window';
 import appIcon from '$assets/images/app-icons/calculator.png';
 import styles from './style.module.css';
 import type { AppProps } from '$apps/types';
-import Element from '$lib/Element';
+import { Element, Store } from '@nuvo-js/core';
 import Icon from '$uikit/Icon';
 import Button from '$uikit/Button';
-import Store from '$lib/store';
 import { rangeNumber } from '$utils/index';
 import { evaluateExpression } from './utils';
 

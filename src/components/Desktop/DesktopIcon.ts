@@ -1,4 +1,4 @@
-import Element from '$lib/Element';
+import { Element } from '@nuvo-js/core';
 import Typography from '$uikit/Typography';
 import Image from '$uikit/Image';
 import styles from './style.module.css';

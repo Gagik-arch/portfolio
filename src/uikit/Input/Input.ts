@@ -1,4 +1,4 @@
-import { Element } from '$lib/index';
+import { Element } from '@nuvo-js/core';
 import type { InputProps } from './types';
 
 class Input extends Element<HTMLInputElement> {

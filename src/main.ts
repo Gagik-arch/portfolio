@@ -1,6 +1,6 @@
 import './style.css';
 import Root from './Root';
-import { createRoot } from '$lib/index';
+import { createRoot } from '@nuvo-js/core';
 import { generateCalendarAppIcon } from './utils';
 
 void (async() => {

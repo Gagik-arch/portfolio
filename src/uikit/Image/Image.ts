@@ -1,4 +1,4 @@
-import Element from '$lib/Element';
+import { Element } from '@nuvo-js/core';
 import type {
     ImageProps
 } from './types';

@@ -1,4 +1,4 @@
-import type { ElementPropsType } from '$lib/Element/types';
+import type { ElementPropsType } from '@nuvo-js/core/types';
 
 export type ImageProps = ElementPropsType<HTMLImageElement> & {
 };

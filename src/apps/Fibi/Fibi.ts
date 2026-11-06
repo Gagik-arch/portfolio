@@ -12,7 +12,7 @@ import Window from '$components/Window';
 import appIcon from '$assets/images/app-icons/fibi.png';
 import type { AppProps } from '$apps/types';
 import styles from './style.module.css';
-import Element from '$lib/Element';
+import { Element } from '@nuvo-js/core';
 import Carousel from '$uikit/Carousel';
 import Typography from '$uikit/Typography';
 import Scroll from '$uikit/Scroll';

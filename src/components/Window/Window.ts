@@ -1,4 +1,4 @@
-import Element from '$lib/Element';
+import { Element } from '@nuvo-js/core';
 import styles from './styles.module.css';
 import type { WindowDimension, WindowProps } from './types';
 import Controls from './Controls';

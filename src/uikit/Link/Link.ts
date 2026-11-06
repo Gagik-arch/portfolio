@@ -1,4 +1,4 @@
-import { Element } from '$lib/index';
+import { Element } from '@nuvo-js/core';
 import type { LinkProps } from './types';
 import styles from './style.module.css';
 
