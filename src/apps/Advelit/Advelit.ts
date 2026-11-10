@@ -1,26 +1,26 @@
 import App from '$components/App';
 import Window from '$components/Window';
-import appIcon from '$assets/images/app-icons/advelit.png';
 import type { AppProps } from '$apps/types';
 import styles from './style.module.css';
 import { Element } from '@nuvo-js/core';
 import Carousel from '$uikit/Carousel';
 import Typography from '$uikit/Typography';
 import Scroll from '$uikit/Scroll/Scroll';
-import splash from './images/splash.jpg';
-import f1 from './images/f1.jpg';
-import f3 from './images/f3.jpg';
-import f4 from './images/f4.jpg';
-import f5 from './images/f5.jpg';
-import f6 from './images/f6.jpg';
-import f8 from './images/f8.jpg';
+import splash from './images/splash.avif';
+import f1 from './images/f1.avif';
+import f3 from './images/f2.avif';
+import f4 from './images/f3.avif';
+import f5 from './images/f4.avif';
+import f6 from './images/f5.avif';
+import f8 from './images/f6.avif';
 import Button from '$uikit/Button';
+import { APP_IMAGES } from '$utils/constants';
 
 function Advelit(props?:AppProps) { 
     return (
         new App({
             name: 'Advelit',
-            appIcon,
+            appIcon: APP_IMAGES.Advelit,
             window: new Window({
                 className: styles.root,
                 backgroundColor: 'rgba(0,0,0,0.9)',

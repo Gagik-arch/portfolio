@@ -9,6 +9,8 @@ import Datewise from './Datewise';
 import Preview from './Preview';
 import Music from './Music';
 import Balljunge from './Balljunge';
+import Axis from './Axis';
+import Npm from './Npm';
     
 const APPS = {
     Calculator,
@@ -22,6 +24,8 @@ const APPS = {
     Preview,
     Music,
     Balljunge,
+    Axis,
+    Npm,
 } as const;
     
 export default APPS;

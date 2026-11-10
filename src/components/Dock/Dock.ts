@@ -1,13 +1,6 @@
 import { Element } from '@nuvo-js/core';
 import styles from './style.module.css';
-import finder from '$assets/images/app-icons/finder.png';
-import trash from '$assets/images/app-icons/trash.png';
-import folder from '$assets/images/app-icons/folder.png';
-import settings from '$assets/images/app-icons/settings.png';
-import launchpad from '$assets/images/app-icons/launchpad.png';
-import calculator from '$assets/images/app-icons/calculator.png';
-import music from '$assets/images/app-icons/music.png';
-import notes from '$assets/images/app-icons/notes.png';
+import { APP_IMAGES } from '$utils/constants';
 import Button from '$uikit/Button';
 import Image from '$uikit/Image';
 import Tooltip from './Tooltip';
@@ -19,6 +12,17 @@ import {
     clamp, getCssVariable, getAppIcon, setCSSVariable 
 } from '$utils/index';
 import type { DockIcon } from './types';
+
+const {
+    Notes,
+    Calculator,
+    Music,
+    Launchpad,
+    Finder,
+    Trash,
+    Folder,
+    Settings,
+} = APP_IMAGES;
 
 function Dock() {
     const globalScale = getCssVariable<number>('--scale') || 1;
@@ -124,7 +128,7 @@ function Dock() {
         desktopStore.setFocusApp(app.window.dom.id);
     };
 
-    const subscribers: (()=>void)[] = [];
+    const subscribers: (() => void)[] = [];
 
     const dock = new Element<HTMLDivElement>({
         tagName: 'div',
@@ -195,7 +199,7 @@ function Dock() {
                     },
                     children: [
                         new Image({
-                            src: finder,
+                            src: Finder,
                         }).dom,
                         Tooltip('Finder' )
                     ],
@@ -210,7 +214,7 @@ function Dock() {
                     tabIndex: -1,
                     children: [
                         new Image({
-                            src: launchpad,
+                            src: Launchpad,
                         }).dom,
                         Tooltip('Launchpad')
                     ],
@@ -230,7 +234,7 @@ function Dock() {
                     },
                     children: [
                         new Image({
-                            src: calculator,
+                            src: Calculator,
                         }).dom,
                         Tooltip('Calculator')
                     ],
@@ -251,7 +255,7 @@ function Dock() {
                     },
                     children: [
                         new Image({
-                            src: notes,
+                            src: Notes,
                         }).dom,
                         Tooltip( 'Notes' )
                     ],
@@ -293,7 +297,7 @@ function Dock() {
                     },
                     children: [
                         new Image({
-                            src: music,
+                            src: Music,
                         }).dom,
                         Tooltip( 'Music' )
                     ],
@@ -314,7 +318,7 @@ function Dock() {
                     },
                     children: [
                         new Image({
-                            src: settings,
+                            src: Settings,
                         }).dom,
                         Tooltip( 'Settings' )
                     ],
@@ -327,7 +331,7 @@ function Dock() {
                     tabIndex: -1,
                     children: [
                         new Image({
-                            src: folder,
+                            src: Folder,
                           
                         }).dom,
                         Tooltip( 'Downloads' )
@@ -386,7 +390,7 @@ function Dock() {
                     key: 'Trash',
                     children: [
                         new Image({
-                            src: trash,
+                            src: Trash,
                         }).dom,
                         Tooltip( 'Trash' )
                     ],

@@ -1,6 +1,10 @@
 import { Element } from '@nuvo-js/core';
 import { APP_IMAGES } from '$utils/constants';
 
+export {
+    getCssVariable, setCSSVariable, onCssVariableChange 
+} from './css';
+
 export const clamp = (num: number, min: number, max: number = Number.MAX_SAFE_INTEGER): number => Math.max(min, Math.min(num, max));
 
 export const minNumberIndex = (arr: number[]): number => {
@@ -11,61 +15,10 @@ export const rangeNumber = (num:number, min:number, max:number) => {
     return Math.max(min, Math.min(num, max));
 };
 
-export const getCssVariable = <T extends string | number>(
-    key: string,
-    element: HTMLElement = document.body,
-    defaultValue?:undefined | T
-): T | undefined => {
-    const style = window.getComputedStyle(element);
-    const variable = style.getPropertyValue(key);
-
-    if (isNaN(+variable)) return variable as T;
-    
-    if (variable === '') {
-        if (defaultValue) return defaultValue;
-        
-        return undefined;
-    }
-    
-    return +variable as T;
-};
-
-export const setCSSVariable = (key:string, value:string, element: HTMLElement = document.body ) => {
-    element.style.setProperty(key, value);
-};
-
 export const genRandomNumber = (min = 0, max = 10) => {
     if (min > max) throw new Error('max num must be greater than min');
 
     return min + Math.floor(Math.random() * (max - min) );
-};
-
-export const onCssVariableChange = (
-    element: HTMLElement,
-    key: string,
-    callback: (value: string | undefined) => void
-) => {
-    let previousValue: string | undefined;
-
-    const update = () => {
-        const value = getCssVariable<string>(key, element);
-
-        if (value !== previousValue) {
-            previousValue = value;
-            callback(value);
-        }
-    };
-
-    const observer = new MutationObserver(update);
-
-    observer.observe(element, {
-        attributes: true,
-        attributeFilter: [ 'style' ],
-    });
-
-    update();
-
-    return () => observer.disconnect();
 };
 
 export const isStrictDesktop = () => {

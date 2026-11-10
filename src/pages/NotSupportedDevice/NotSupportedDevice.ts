@@ -2,7 +2,7 @@ import { Element } from '@nuvo-js/core';
 import Typography from '$uikit/Typography';
 import styles from './style.module.css';
 import Image from '$uikit/Image';
-import exclamationMark from '$assets/images/exclamation-mark.png';
+import exclamationMark from '$assets/images/exclamation-mark.avif';
 
 function NotSupportedDevice() { 
     return (

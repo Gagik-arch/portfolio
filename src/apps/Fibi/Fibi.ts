@@ -1,15 +1,14 @@
-import i1 from './images/splash.jpg';
-import i2 from './images/login.jpg';
-import i3 from './images/choose-avatar.jpg';
-import i4 from './images/sidebar.jpg';
-import i5 from './images/view.jpg';
-import i6 from './images/program.jpg';
-import i7 from './images/lang.jpg';
-import i8 from './images/pin.jpg';
-import i9 from './images/sign-out.jpg';
+import i1 from './images/splash.avif';
+import i2 from './images/login.avif';
+import i3 from './images/choose-avatar.avif';
+import i4 from './images/sidebar.avif';
+import i5 from './images/view.avif';
+import i6 from './images/program.avif';
+import i7 from './images/lang.avif';
+import i8 from './images/pin.avif';
+import i9 from './images/sign-out.avif';
 import App from '$components/App';
 import Window from '$components/Window';
-import appIcon from '$assets/images/app-icons/fibi.png';
 import type { AppProps } from '$apps/types';
 import styles from './style.module.css';
 import { Element } from '@nuvo-js/core';
@@ -17,12 +16,13 @@ import Carousel from '$uikit/Carousel';
 import Typography from '$uikit/Typography';
 import Scroll from '$uikit/Scroll';
 import Button from '$uikit/Button';
+import { APP_IMAGES } from '$utils/constants';
 
 function Fibi(props?: AppProps) { 
     return (
         new App({
             name: 'Fibi',
-            appIcon,
+            appIcon: APP_IMAGES.Fibi,
             window: new Window({
                 className: styles.root,
                 backgroundColor: 'rgba(0,0,0,0.9)',

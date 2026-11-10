@@ -1,6 +1,6 @@
 import App from '$components/App';
 import Window from '$components/Window';
-import appIcon from '$assets/images/app-icons/datewise.png';
+import appIcon from '$assets/images/app-icons/datewise.avif';
 import type { AppProps } from '$apps/types';
 import styles from './style.module.css';
 import { Element } from '@nuvo-js/core';

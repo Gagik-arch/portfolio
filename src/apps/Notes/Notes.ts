@@ -1,14 +1,14 @@
 import App from '$components/App';
 import Window from '$components/Window';
-import appIcon from '$assets/images/app-icons/notes.png';
 import styles from './style.module.css';
 import type { AppProps } from '$apps/types';
+import { APP_IMAGES } from '$utils/constants';
 
 function Notes(props?:AppProps) { 
     return (
         new App({
             name: 'Notes',
-            appIcon,
+            appIcon: APP_IMAGES.Notes,
             isNative: true,
             window: new Window({
                 className: styles.root,
