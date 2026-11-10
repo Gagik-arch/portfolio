@@ -31,5 +31,5 @@ export const APP_IMAGES:Record<keyof typeof APPS | 'Launchpad' | 'Folder' | 'Tra
     Trash,
     Settings,
     Axis,
-    Npm,
+    'Npm-packages': Npm,
 } as const;

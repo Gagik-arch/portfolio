@@ -358,7 +358,8 @@ function Dock() {
                                     new Image({
                                         src: getAppIcon(icon.title),
                                     }).dom,
-                                    Tooltip(icon.title)
+                                    
+                                    Tooltip(icon.title.replace('-', ' '))
                                 ],
                             })
                                 .OnMount((e) => {
@@ -378,7 +379,6 @@ function Dock() {
                                             },
                                         });
                                     }
-                           
                                 })
                                 .dom
                         );

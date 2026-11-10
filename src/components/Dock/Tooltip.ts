@@ -6,7 +6,6 @@ function Tooltip(text = 'asd') {
     return new Typography({
         text,
         className: styles.tooltip,
-        children: [ text ],
     }).dom;
 }
 

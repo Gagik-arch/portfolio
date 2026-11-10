@@ -3,30 +3,36 @@ import type App from '$components/App';
 import type { DesktopIconType } from '$types/index';
 import { extractRangeFromIconToIcon } from '$components/Desktop/utils';
 
-const initialState: DesktopIconType[] = [
+const initialState: (DesktopIconType & { icon: string; })[] = [
     {
         index: 0,
         title: 'Preview',
+        icon: 'Preview',
     },
     {
         index: 1,
-        title: 'Datewise',
+        title: 'Npm-packages',
+        icon: 'Npm',
     },
     {
         index: 2,
         title: 'Balljunge',
+        icon: 'Balljunge',
     },
     {
         index: 3,
         title: 'Fibi',
+        icon: 'Fibi',
     },
     {
         index: 4,
         title: 'Advelit',
+        icon: 'Advelit',
     },
     {
         index: 5,
         title: 'Axis',
+        icon: 'Axis',
     }
 ];
 
@@ -57,7 +63,6 @@ class DesktopStore extends Store<AppsState> {
     }
 
     public setFocusApp(id: AppsState['focusedAppId'] | undefined) { 
-     
         this.SetState((state) => {
             const result:App[] = [];
             let target; 

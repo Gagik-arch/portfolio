@@ -41,9 +41,9 @@ function DesktopIcon({
                     className: styles.title_wrapper,
                     children: [
                         new Typography({
-                            text: title,
+                            text: title.replace('-', ' '),
                             className: styles.title,
-                            variant: 'body-emphasized',
+                            variant: 'caption2-emphasized',
                         }).dom
                     ],
                 },
