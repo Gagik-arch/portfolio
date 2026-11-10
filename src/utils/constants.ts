@@ -12,6 +12,7 @@ import Folder from '$assets/images/app-icons/folder.avif';
 import Trash from '$assets/images/app-icons/trash.avif';
 import Settings from '$assets/images/app-icons/settings.avif';
 import Axis from '$assets/images/app-icons/axis.avif';
+import Npm from '$assets/images/app-icons/npm.avif';
 import type APPS from '$apps/index';
 
 export const APP_IMAGES:Record<keyof typeof APPS | 'Launchpad' | 'Folder' | 'Trash', string | undefined> = {
@@ -30,4 +31,5 @@ export const APP_IMAGES:Record<keyof typeof APPS | 'Launchpad' | 'Folder' | 'Tra
     Trash,
     Settings,
     Axis,
+    Npm,
 } as const;
