@@ -1,6 +1,5 @@
 import App from '$components/App';
 import Window from '$components/Window';
-import appIcon from '$assets/images/app-icons/advelit.png';
 import type { AppProps } from '$apps/types';
 import styles from './style.module.css';
 import { Element } from '@nuvo-js/core';
@@ -15,12 +14,13 @@ import f5 from './images/f5.jpg';
 import f6 from './images/f6.jpg';
 import f8 from './images/f8.jpg';
 import Button from '$uikit/Button';
+import { APP_IMAGES } from '$utils/constants';
 
 function Advelit(props?:AppProps) { 
     return (
         new App({
             name: 'Advelit',
-            appIcon,
+            appIcon: APP_IMAGES.Advelit,
             window: new Window({
                 className: styles.root,
                 backgroundColor: 'rgba(0,0,0,0.9)',

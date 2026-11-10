@@ -23,6 +23,10 @@ const initialState: DesktopIconType[] = [
     {
         index: 4,
         title: 'Advelit',
+    },
+    {
+        index: 5,
+        title: 'Axis',
     }
 ];
 

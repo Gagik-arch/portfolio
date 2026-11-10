@@ -1,6 +1,5 @@
 import App from '$components/App';
 import Window from '$components/Window';
-import appIcon from '$assets/images/app-icons/preview.png';
 import type { AppProps } from '$apps/types';
 import styles from './style.module.css';
 import { Element } from '@nuvo-js/core';
@@ -15,6 +14,7 @@ import linkedinImage from '$assets/images/linkedin.png';
 import githubImage from '$assets/images/github.png';
 import Image from '$uikit/Image';
 import cvFile from './gagik-chilingaryan-cv.pdf';
+import { APP_IMAGES } from '$utils/constants';
 
 const Row = (left:string, right?:string, isSubtitle = false) => {
     return (
@@ -48,7 +48,7 @@ function Preview(props?: AppProps) {
     return (
         new App({
             name: 'Preview',
-            appIcon,
+            appIcon: APP_IMAGES.Preview,
             window: new Window({
                 className: styles.root,
                 children: [ 

@@ -1,18 +1,18 @@
 import App from '$components/App';
 import Window from '$components/Window';
-import appIcon from '$assets/images/app-icons/balljunge.png';
 import type { AppProps } from '$apps/types';
 import styles from './style.module.css';
 import { Element } from '@nuvo-js/core';
 import Typography from '$uikit/Typography';
 import Scroll from '$uikit/Scroll/Scroll';
 import Button from '$uikit/Button';
+import { APP_IMAGES } from '$utils/constants';
 
 function Balljunge(props?:AppProps) { 
     return (
         new App({
             name: 'Balljunge',
-            appIcon,
+            appIcon: APP_IMAGES.Balljunge,
             window: new Window({
                 className: styles.root,
                 children: [ 

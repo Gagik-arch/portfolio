@@ -1,7 +1,6 @@
 
 import App from '$components/App';
 import Window from '$components/Window';
-import appIcon from '$assets/images/app-icons/calculator.png';
 import styles from './style.module.css';
 import type { AppProps } from '$apps/types';
 import { Element, Store } from '@nuvo-js/core';
@@ -9,6 +8,7 @@ import Icon from '$uikit/Icon';
 import Button from '$uikit/Button';
 import { rangeNumber } from '$utils/index';
 import { evaluateExpression } from './utils';
+import { APP_IMAGES } from '$utils/constants';
 
 function Calculator(props?: AppProps) {
     const expression = new Store('');
@@ -362,7 +362,7 @@ function Calculator(props?: AppProps) {
     return (
         new App({
             name: 'Calculator',
-            appIcon,
+            appIcon: APP_IMAGES.Advelit,
             isNative: true,
             window: new Window({
                 events: {
