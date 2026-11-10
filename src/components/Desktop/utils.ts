@@ -46,16 +46,19 @@ export const convertIndexToVirtual = (index: number, rootRect: DOMRect) => {
         .Floor();
 }; 
 
-export const extractRangeFromIconToIcon = (startIndex: number, appsIcons: (DesktopIconType | null)[]) => {
+export const extractRangeFromIconToIcon = (
+    startIndex: number,
+    appsIcons: (DesktopIconType | null)[]
+): DesktopIconType[] => {
     const result: DesktopIconType[] = [];
 
-    for (let i = startIndex; i < appsIcons.length; i++) { 
-        const item: DesktopIconType | null = appsIcons[i]; 
-        
+    for (let i = startIndex; i < appsIcons.length; i++) {
+        const item = appsIcons[i];
+
         if (item === null) break;
 
         result.push(item);
     }
 
     return result;
-};  
+};

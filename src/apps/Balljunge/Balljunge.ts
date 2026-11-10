@@ -74,7 +74,7 @@ function Balljunge(props?:AppProps) {
                                                         variant: 'primary',
                                                         events: {
                                                             onclick: () => {
-                                                                window.open('https://beewebsystems.com/works/Balljunge', '_blank');
+                                                                window.open('https://beewebsystems.com/work/Balljunge', '_blank');
                                                             },
                                                         },
                                                     }).dom

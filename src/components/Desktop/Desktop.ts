@@ -49,13 +49,9 @@ function Desktop() {
             if (titles.length === 0) return;
             stack.SetState([]);
 
-            const apps = titles.map((title) => {
-                const image = getAppIcon(title);
-
-                return {
-                    title, image: image || '', 
-                };
-            });
+            const apps = titles.map((title) => ({
+                title, image: getAppIcon(title) || '', 
+            }));
 
             dockIconsStore.SetState(prev => [
                 ...prev,
@@ -86,6 +82,7 @@ function Desktop() {
         });
 
     };
+    
     const desktopContainer = new Element<HTMLDivElement>({
         tagName: 'div',
         props: {
