@@ -6,12 +6,10 @@ export interface IconType {
 }
 
 const initialState: IconType[] = [
-    {
-        title: 'Preview',
-    },
-    {
-        title: 'Npm-packages',
-    }
+
+    // {
+    //     title: 'Preview',
+    // }
 ];
 
 class DockIconsStore extends Store<IconType[]> {

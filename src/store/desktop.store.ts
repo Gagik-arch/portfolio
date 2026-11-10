@@ -91,63 +91,73 @@ class DesktopStore extends Store<AppsState> {
         });
     }
 
-    public replaceIcon(newIndex: number, prevIndex: number, length: number) { 
-        if (prevIndex === newIndex) return; 
-        
+    public replaceIcon(
+        newIndex: number,
+        prevIndex: number,
+        length: number
+    ) {
+        if (prevIndex === newIndex) return;
+
         const prevState = this.GetState();
-        const cloneAppIcons: (DesktopIconType | null)[] = Array.from({ length }, () => null);
-       
+
+        const appIcons: (DesktopIconType | null)[] = Array.from(
+            { length },
+            () => null
+        );
+
         prevState.appIcons.forEach(item => {
-            cloneAppIcons[item.index] = item;
+            appIcons[item.index] = { ...item };
         });
-            
-        const element = structuredClone(cloneAppIcons[prevIndex]);
-        if (!element) return; 
 
-        if (cloneAppIcons[newIndex]) {
+        const element = appIcons[prevIndex];
+
+        if (!element) return;
+
+        if (appIcons[newIndex]) {
             if (newIndex > prevIndex) {
-                const extractedRange = extractRangeFromIconToIcon(newIndex, cloneAppIcons);
-                const clone = structuredClone(extractedRange);
-                extractedRange.unshift(element);
-                cloneAppIcons[prevIndex] = null;
-                cloneAppIcons[newIndex] = element;
+                const range = extractRangeFromIconToIcon(
+                    newIndex,
+                    appIcons
+                );
 
-                for (let i = newIndex; i < newIndex + extractedRange.length; i++) { 
-                    const a = clone.splice(0, 1);
-                    
-                    cloneAppIcons[i + 1] = a[0];
+                if (newIndex + range.length >= length) return;
+
+                for (let i = range.length - 1; i >= 0; i--) {
+                    appIcons[newIndex + i + 1] = range[i];
                 }
-          
+
+                appIcons[newIndex] = element;
+                appIcons[prevIndex] = null;
             } else {
-                const extractedRange = extractRangeFromIconToIcon(newIndex, cloneAppIcons);
-          
-                if (extractedRange.length) {
-                    cloneAppIcons.splice(prevIndex, 1);
-                    cloneAppIcons.splice(newIndex, 0, element);
-                } else { 
-                    cloneAppIcons[prevIndex] = null;
-                    const prevElement = structuredClone( cloneAppIcons[newIndex]);
+                const range = extractRangeFromIconToIcon(
+                    newIndex,
+                    appIcons
+                );
 
-                    cloneAppIcons[newIndex] = element;
-                    cloneAppIcons[newIndex + 1] = prevElement;
+                for (let i = 0; i < range.length; i++) {
+                    appIcons[newIndex + i + 1] = range[i];
                 }
+
+                appIcons[newIndex] = element;
+                appIcons[prevIndex] = null;
             }
         } else {
-            cloneAppIcons[newIndex] = element;
-            cloneAppIcons.splice(prevIndex, 1, null);
+            appIcons[newIndex] = element;
+            appIcons[prevIndex] = null;
         }
 
         const result: DesktopIconType[] = [];
-        
-        cloneAppIcons.forEach((item, index) => {
-            if (item) {
-                item.index = index;
-                result[result.length] = item;
-            }
+
+        appIcons.forEach((item, index) => {
+            if (!item) return;
+
+            item.index = index;
+            result.push(item);
         });
-     
+
         this.SetState({
-            ...prevState, appIcons: result,
+            ...prevState,
+            appIcons: result,
         });
     }
 
