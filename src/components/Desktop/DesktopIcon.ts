@@ -14,6 +14,7 @@ function DesktopIcon({
     onDoubleClick,
     onMouseDown,
 }: DesktopIconProps) { 
+    
     const button = new Button({
         className: styles.app_icon,
         tabIndex: 0,
@@ -53,7 +54,7 @@ function DesktopIcon({
 
     button.dom.style.setProperty('--x', x + 'px');
     button.dom.style.setProperty('--y', y + 'px');
-
+   
     return (
         button.dom
     );

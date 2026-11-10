@@ -7,7 +7,7 @@ import { APP_IMAGES } from '$utils/constants';
 function Npm_Packages(props?:AppProps) { 
     return (
         new App({
-            name: 'Npm',
+            name: 'Npm-packages',
             appIcon: APP_IMAGES['Npm-packages'],
             isNative: true,
             window: new Window({

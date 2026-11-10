@@ -9,6 +9,7 @@ import {
 import desktopStore from '$store/desktop.store';
 import dockStyles from '../Dock/style.module.css';
 import dockIconsStore, { type IconType } from '$store/dockIcons.store';
+import { clsx } from '$utils/clsx';
 
 class Window extends Element<HTMLDivElement> {
     private readonly scale = getCssVariable<number>('--scale', document.body) || 1;
@@ -42,14 +43,19 @@ class Window extends Element<HTMLDivElement> {
         super({
             tagName: 'div',
             props: {
-                className: `window default ${styles.root} ${className}`,
+                className: clsx(
+                    'window',
+                    'default',
+                    styles.root,
+                    typeof className === 'function' ? undefined : className   
+                ),
                 style: {
                     backgroundColor: backgroundColor || 'rgba(255,255,255,0.9)',
                 },
                 tabIndex: 0,
                 events: {
                     onblur: () => {
-                        this.dom.style.zIndex = '0';
+                        desktopStore.setFocusApp(undefined);
                     },
                     ...events,
                 },

@@ -182,7 +182,7 @@ function Dock() {
     dockIconsStore.Effect((appIcons) => {
         const calendar = localStorage.getItem('calendarIcon') as string;
         const activeApps = desktopStore.GetState().activeApps;
-  
+   
         dock.SetProps({
             children: [
                 new Button({
@@ -341,6 +341,7 @@ function Dock() {
                 
                 ...appIcons
                     .map(icon => {
+                 
                         return (
                             new Button({
                                 className: clsx(styles.button,
