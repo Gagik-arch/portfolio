@@ -32,7 +32,7 @@ function Fibi(props?: AppProps) {
                         props: {
                             className: styles.carousel,
                             children: [
-                                Carousel({
+                                new Carousel({
                                     images: [
                                         i1,
                                         i2,
@@ -44,10 +44,11 @@ function Fibi(props?: AppProps) {
                                         i8,
                                         i9
                                     ],
-                                }) 
+                                }).dom
                             ],
                         },
                     }).dom,
+
                     new Element<HTMLDivElement>({
                         tagName: 'div',
                         props: {

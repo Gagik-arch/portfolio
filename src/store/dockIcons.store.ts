@@ -10,9 +10,9 @@ const initialState: IconType[] = [
     // {
     //     title: 'Preview',
     // },
-    {
-        title: 'Npm-packages',
-    }
+    // {
+    //     title: 'Npm-packages',
+    // }
 ];
 
 class DockIconsStore extends Store<IconType[]> {

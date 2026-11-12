@@ -6,110 +6,110 @@ import Button from '$uikit/Button';
 import { getCssVariable, onCssVariableChange } from '$utils/index';
 import Icon from '$uikit/Icon';
 
-function Carousel({
-    views = [],
-    images,
-    timeout = 5000,
-    showToggles = true,
-}: CarouselProps) { 
-    const stack = images || views;
-    let timer: number | undefined;
+class Carousel extends Element<HTMLDivElement> { 
+    public constructor({
+        showToggles,
+        images,
+        timeout,
+        views = [],
+    }:CarouselProps) {
+        const stack = images || views;
+        let timer: number | undefined;
     
-    const line = new Element<HTMLDivElement>({
-        tagName: 'div',
-        props: {
-            className: styles.line,
-            style: {
-                gridTemplateColumns: `repeat(${stack.length}, 100%)`,
+        const line = new Element<HTMLDivElement>({
+            tagName: 'div',
+            props: {
+                className: styles.line,
+                style: {
+                    gridTemplateColumns: `repeat(${stack.length}, 100%)`,
+                },
+                children: images
+                    ? images.map(img => {
+                        return (
+                            new Element<HTMLDivElement>({
+                                tagName: 'div',
+                                props: {
+                                    children: [
+                                        new Image({
+                                            className: styles.image,
+                                            src: img,
+                                        }).dom
+                                    ],
+                                },
+                            }).dom
+                        );
+               
+                    })
+                    : views.map(view => view),
             },
-            children: images
-                ? images.map(img => {
+        });
+
+        const dots = new Element<HTMLDivElement>({
+            tagName: 'div',
+            props: {
+                className: styles.dots,
+                children: stack.map((_, index) => {
                     return (
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                children: [
-                                    new Image({
-                                        className: styles.image,
-                                        src: img,
-                                    }).dom
-                                ],
+                        new Button({
+                            className: index === 0 ? styles.active : undefined,
+                            events: {
+                                onclick: () => {
+                                    line.dom.style.setProperty('--offset', index.toString());
+                                },
                             },
                         }).dom
                     );
-               
-                })
-                : views.map(view => view),
-        },
-    });
-
-    const dots = new Element<HTMLDivElement>({
-        tagName: 'div',
-        props: {
-            className: styles.dots,
-            children: stack.map((_, index) => {
-                return (
-                    new Button({
-                        className: index === 0 ? styles.active : undefined,
-                        events: {
-                            onclick: () => {
-                                line.dom.style.setProperty('--offset', index.toString());
-                            },
-                        },
-                    }).dom
-                );
-            }),
-        },
-    }); 
+                }),
+            },
+        }); 
   
-    const mutation = onCssVariableChange(line.dom, '--offset', () => {
-        const dotButtons = dots.dom.querySelectorAll('button');
-        const savedIndex = getCssVariable<number>('--offset', line.dom);
+        const mutation = onCssVariableChange(line.dom, '--offset', () => {
+            const dotButtons = dots.dom.querySelectorAll('button');
+            const savedIndex = getCssVariable<number>('--offset', line.dom);
         
-        dotButtons.forEach((button, index) => {
-            if (index === savedIndex) {
-                button.classList.add(styles.active);
-            } else { 
-                button.classList.remove(styles.active);
-            }
+            dotButtons.forEach((button, index) => {
+                if (index === savedIndex) {
+                    button.classList.add(styles.active);
+                } else { 
+                    button.classList.remove(styles.active);
+                }
+            });
         });
-    });
     
-    const onLeft = () => {
-        const old = getCssVariable<number>('--offset', line.dom) || 0;
-        const offset = ( ((old + stack.length) - 1) % stack.length).toString();
+        const onLeft = () => {
+            const old = getCssVariable<number>('--offset', line.dom) || 0;
+            const offset = ( ((old + stack.length) - 1) % stack.length).toString();
 
-        line.dom.style.setProperty('--offset', offset);
-    };
+            line.dom.style.setProperty('--offset', offset);
+        };
 
-    const onRight = () => {
-        const old = getCssVariable<number>('--offset', line.dom) || 0;
-        const offset = ((old + 1) % stack.length).toString();
+        const onRight = () => {
+            const old = getCssVariable<number>('--offset', line.dom) || 0;
+            const offset = ((old + 1) % stack.length).toString();
 
-        line.dom.style.setProperty('--offset', offset);
-    };
+            line.dom.style.setProperty('--offset', offset);
+        };
     
-    const loop = () => {
-        clearTimeout(timer);
-                
-        timer = setTimeout(() => {
-            onRight();
-
-            loop();    
-        }, timeout);    
-    };
-
-    line
-        .OnMount(() => {
-            loop();
-        })
-        .OnUnMount(() => {
+        const loop = () => {
             clearTimeout(timer);
-            mutation();
-        });
-    
-    return (
-        new Element<HTMLDivElement>({
+                
+            timer = setTimeout(() => {
+                onRight();
+
+                loop();    
+            }, timeout);    
+        };
+
+        line
+            .OnMount(() => {
+                loop();
+            })
+            .OnUnMount(() => {
+                clearTimeout(timer);
+                mutation();
+            });
+
+        super({
             tagName: 'div',
             props: {
                 className: styles.root,
@@ -154,8 +154,8 @@ function Carousel({
                         : null
                 ],
             },
-        }).dom
-    );
+        });
+    }
 }
 
 export default Carousel;
