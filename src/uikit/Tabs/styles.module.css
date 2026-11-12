@@ -1,0 +1,10 @@
+.root {
+    height: auto;
+    width: auto;
+    display: inline-flex
+}
+
+.tab {
+    color: white;
+    font-size: 20px;
+}

@@ -11,10 +11,6 @@ export const minNumberIndex = (arr: number[]): number => {
     return arr.reduce((r, v, i, a) => v > a[r] ? r : i, -1);
 };
 
-export const rangeNumber = (num:number, min:number, max:number) => {
-    return Math.max(min, Math.min(num, max));
-};
-
 export const genRandomNumber = (min = 0, max = 10) => {
     if (min > max) throw new Error('max num must be greater than min');
 
@@ -40,6 +36,7 @@ export const generateCalendarAppIcon = async () => {
             id: 'fake-canvas',
             style: {
                 display: 'none',
+                backgroundColor: 'transparent',
             },
         },
     });

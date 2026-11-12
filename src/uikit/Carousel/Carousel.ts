@@ -5,6 +5,7 @@ import Image from '$uikit/Image';
 import Button from '$uikit/Button';
 import { getCssVariable, onCssVariableChange } from '$utils/index';
 import Icon from '$uikit/Icon';
+import { clsx } from '$utils/clsx';
 
 class Carousel extends Element<HTMLDivElement> { 
     public constructor({
@@ -12,6 +13,7 @@ class Carousel extends Element<HTMLDivElement> {
         images,
         timeout = 5000,
         views = [],
+        togglesClassName,
     }:CarouselProps) {
         const stack = images || views;
         let timer: number | undefined;
@@ -117,41 +119,47 @@ class Carousel extends Element<HTMLDivElement> {
                     line.dom,
                     dots.dom,
 
-                    showToggles
-                        ? new Button({
-                            className: styles.left,
-                            children: [
-                                new Icon('ChevronLeft', {
-                                    size: 50,
-                                    stroke: 'rgba(255,255,255,0.6)',
-                                }).dom 
-                            ],
-                            events: {
-                                onclick: () => {
-                                    onLeft();
-                                    loop();
-                                },
-                            },
-                        }).dom
-                        : null,                    
+                    (showToggles
+                        ? new Element<HTMLDivElement>({
+                            tagName: 'div',
+                            props: {
+                                className: clsx(styles.toggles, togglesClassName),
+                                children: [
+                                    new Button({
+                                        className: styles.left,
+                                        children: [
+                                            new Icon('ChevronLeft', {
+                                                size: 50,
+                                                stroke: 'rgba(255,255,255,0.6)',
+                                            }).dom 
+                                        ],
+                                        events: {
+                                            onclick: () => {
+                                                onLeft();
+                                                loop();
+                                            },
+                                        },
+                                    }).dom,
 
-                    showToggles
-                        ? new Button({
-                            className: styles.right,
-                            children: [
-                                new Icon('ChevronRight', {
-                                    size: 50,
-                                    stroke: 'rgba(255,255,255,0.6)',
-                                }).dom 
-                            ],
-                            events: {
-                                onclick: () => {
-                                    onRight();
-                                    loop();
-                                },
+                                    new Button({
+                                        className: styles.right,
+                                        children: [
+                                            new Icon('ChevronRight', {
+                                                size: 50,
+                                                stroke: 'rgba(255,255,255,0.6)',
+                                            }).dom 
+                                        ],
+                                        events: {
+                                            onclick: () => {
+                                                onRight();
+                                                loop();
+                                            },
+                                        },
+                                    }).dom
+                                ],
                             },
                         }).dom
-                        : null
+                        : null )
                 ],
             },
         });

@@ -3,8 +3,7 @@ import styles from './styles.module.css';
 import type { WindowDimension, WindowProps } from './types';
 import Controls from './Controls';
 import {
-    rangeNumber, genRandomNumber, getCssVariable,  
-    clamp
+    clamp, genRandomNumber, getCssVariable  
 } from '$utils/index';
 import desktopStore from '$store/desktop.store';
 import dockStyles from '../Dock/style.module.css';
@@ -178,8 +177,8 @@ class Window extends Element<HTMLDivElement> {
         if (this.resizeAnchor) return; 
         const rect = this.dom.getBoundingClientRect();
 
-        this.x = Math.round(rangeNumber(rect.x + e.movementX, 0, window.innerWidth - rect.width));
-        this.y = Math.round(rangeNumber((rect.y - desktop.top) + e.movementY, 0, desktop.height - rect.height));
+        this.x = Math.round(clamp(rect.x + e.movementX, 0, window.innerWidth - rect.width));
+        this.y = Math.round(clamp((rect.y - desktop.top) + e.movementY, 0, desktop.height - rect.height));
 
         this.dom.style.setProperty( '--left', this.x + 'px');
         this.dom.style.setProperty( '--top', this.y + 'px');
@@ -254,13 +253,13 @@ class Window extends Element<HTMLDivElement> {
         };
 
         const onBottom = () => { 
-            const height = rangeNumber(rect.height + e.movementY, scaledHeight, desktop.bottom - rect.y); 
+            const height = clamp(rect.height + e.movementY, scaledHeight, desktop.bottom - rect.y); 
 
             this.dom.style.setProperty('--height', `${height}px`);
         };
 
         const onRight = () => {
-            const width = rangeNumber(rect.width + e.movementX, this.minWidth, desktop.right - rect.x); 
+            const width = clamp(rect.width + e.movementX, this.minWidth, desktop.right - rect.x); 
 
             this.dom.style.setProperty('--width', `${width}px`);
         };

@@ -1,6 +1,18 @@
 .root {
+    --offset: 0;
+
+    color: white;
+    padding: 20px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white
+    flex-direction: column
+}
+
+.toggles {
+    position: absolute;
+    bottom: 0;
+}
+
+.tabs {
+    margin: 0 auto;
+    background-color: red !important;
 }

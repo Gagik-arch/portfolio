@@ -3,4 +3,5 @@ export interface CarouselProps {
     images?: string[];
     timeout?: number;
     showToggles?: boolean; 
+    togglesClassName?: string;
 }

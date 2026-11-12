@@ -6,7 +6,7 @@ import type { AppProps } from '$apps/types';
 import { Element, Store } from '@nuvo-js/core';
 import Icon from '$uikit/Icon';
 import Button from '$uikit/Button';
-import { rangeNumber } from '$utils/index';
+import { clamp } from '$utils/index';
 import { evaluateExpression } from './utils';
 import { APP_IMAGES } from '$utils/constants';
 
@@ -76,7 +76,7 @@ function Calculator(props?: AppProps) {
         const currentExpression = expression.GetState();
         const currentResult = result.GetState();
 
-        const fontSize = rangeNumber(
+        const fontSize = clamp(
             width / (Math.max(1, currentExpression.length) * factor),
             14,
             40
