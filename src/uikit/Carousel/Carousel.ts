@@ -8,9 +8,9 @@ import Icon from '$uikit/Icon';
 
 class Carousel extends Element<HTMLDivElement> { 
     public constructor({
-        showToggles,
+        showToggles = true,
         images,
-        timeout,
+        timeout = 5000,
         views = [],
     }:CarouselProps) {
         const stack = images || views;
