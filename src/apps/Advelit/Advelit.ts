@@ -30,7 +30,7 @@ function Advelit(props?:AppProps) {
                         props: {
                             className: styles.carousel,
                             children: [
-                                Carousel({
+                                new Carousel({
                                     images: [
                                         splash,
                                         f1,
@@ -40,7 +40,7 @@ function Advelit(props?:AppProps) {
                                         f6,
                                         f8
                                     ],
-                                }) 
+                                }).dom
                             ],
                         },
                     }).dom,

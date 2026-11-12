@@ -109,7 +109,7 @@ class DesktopStore extends Store<AppsState> {
             appIcons[item.index] = { ...item };
         });
 
-        const element = appIcons[prevIndex];
+        const element = appIcons[prevIndex] ? { ...appIcons[prevIndex] } : undefined;
 
         if (!element) return;
 
@@ -129,17 +129,28 @@ class DesktopStore extends Store<AppsState> {
                 appIcons[newIndex] = element;
                 appIcons[prevIndex] = null;
             } else {
-                const range = extractRangeFromIconToIcon(
+                
+                let range = extractRangeFromIconToIcon(
                     newIndex,
                     appIcons
                 );
+                
+                const isExistsInRange = !!range.find(e => e.title === element.title);
 
+                if (isExistsInRange) { 
+                    range = range.slice(0, prevIndex - newIndex);
+                }
+         
                 for (let i = 0; i < range.length; i++) {
                     appIcons[newIndex + i + 1] = range[i];
                 }
 
                 appIcons[newIndex] = element;
-                appIcons[prevIndex] = null;
+
+                if (!isExistsInRange) { 
+                    appIcons[prevIndex] = null;
+                }
+
             }
         } else {
             appIcons[newIndex] = element;

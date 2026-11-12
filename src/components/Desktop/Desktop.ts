@@ -119,6 +119,7 @@ function Desktop() {
     desktopStore.Subscribe(({
         activeApps, appIcons, 
     }) => {
+
         desktopContainer.SetProps({
             children: [
                 ...appIcons.map(item => calculateIconPlace(item, desktopContainer.dom)),

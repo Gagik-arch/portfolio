@@ -55,8 +55,8 @@ export const extractRangeFromIconToIcon = (
     for (let i = startIndex; i < appsIcons.length; i++) {
         const item = appsIcons[i];
 
-        if (item === null) break;
-
+        if ( item === null) break;
+        
         result.push(item);
     }
 

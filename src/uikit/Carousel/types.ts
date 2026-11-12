@@ -1,4 +1,6 @@
 export interface CarouselProps {
-    images: string[];
+    views?: HTMLElement[];
+    images?: string[];
     timeout?: number;
+    showToggles?: boolean; 
 }
