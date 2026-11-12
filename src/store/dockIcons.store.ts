@@ -6,8 +6,12 @@ export interface IconType {
 }
 
 const initialState: IconType[] = [
+
+    // {
+    //     title: 'Preview',
+    // },
     {
-        title: 'Preview',
+        title: 'Npm-packages',
     }
 ];
 

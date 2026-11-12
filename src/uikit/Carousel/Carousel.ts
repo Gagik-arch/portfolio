@@ -7,9 +7,12 @@ import { getCssVariable, onCssVariableChange } from '$utils/index';
 import Icon from '$uikit/Icon';
 
 function Carousel({
+    views = [],
     images,
     timeout = 5000,
+    showToggles = true,
 }: CarouselProps) { 
+    const stack = images || views;
     let timer: number | undefined;
     
     const line = new Element<HTMLDivElement>({
@@ -17,25 +20,26 @@ function Carousel({
         props: {
             className: styles.line,
             style: {
-                gridTemplateColumns: `repeat(${images.length}, 100%)`,
+                gridTemplateColumns: `repeat(${stack.length}, 100%)`,
             },
-            children: images.map(img => {
-                return (
-                    new Element<HTMLDivElement>({
-                        tagName: 'div',
-                        props: {
-                            className: styles.image_wrapper,
-                          
-                            children: [
-                                new Image({
-                                    className: styles.image,
-                                    src: img,
-                                }).dom
-                            ],
-                        },
-                    }).dom
-                );
-            }),
+            children: images
+                ? images.map(img => {
+                    return (
+                        new Element<HTMLDivElement>({
+                            tagName: 'div',
+                            props: {
+                                children: [
+                                    new Image({
+                                        className: styles.image,
+                                        src: img,
+                                    }).dom
+                                ],
+                            },
+                        }).dom
+                    );
+               
+                })
+                : views.map(view => view),
         },
     });
 
@@ -43,7 +47,7 @@ function Carousel({
         tagName: 'div',
         props: {
             className: styles.dots,
-            children: images.map((_, index) => {
+            children: stack.map((_, index) => {
                 return (
                     new Button({
                         className: index === 0 ? styles.active : undefined,
@@ -73,14 +77,14 @@ function Carousel({
     
     const onLeft = () => {
         const old = getCssVariable<number>('--offset', line.dom) || 0;
-        const offset = ( ((old + images.length) - 1) % images.length).toString();
+        const offset = ( ((old + stack.length) - 1) % stack.length).toString();
 
         line.dom.style.setProperty('--offset', offset);
     };
 
     const onRight = () => {
         const old = getCssVariable<number>('--offset', line.dom) || 0;
-        const offset = ((old + 1) % images.length).toString();
+        const offset = ((old + 1) % stack.length).toString();
 
         line.dom.style.setProperty('--offset', offset);
     };
@@ -113,37 +117,41 @@ function Carousel({
                     line.dom,
                     dots.dom,
 
-                    new Button({
-                        className: styles.left,
-                        children: [
-                            new Icon('ChevronLeft', {
-                                size: 50,
-                                stroke: 'rgba(255,255,255,0.6)',
-                            }).dom 
-                        ],
-                        events: {
-                            onclick: () => {
-                                onLeft();
-                                loop();
+                    showToggles
+                        ? new Button({
+                            className: styles.left,
+                            children: [
+                                new Icon('ChevronLeft', {
+                                    size: 50,
+                                    stroke: 'rgba(255,255,255,0.6)',
+                                }).dom 
+                            ],
+                            events: {
+                                onclick: () => {
+                                    onLeft();
+                                    loop();
+                                },
                             },
-                        },
-                    }).dom,
+                        }).dom
+                        : null,                    
 
-                    new Button({
-                        className: styles.right,
-                        children: [
-                            new Icon('ChevronRight', {
-                                size: 50,
-                                stroke: 'rgba(255,255,255,0.6)',
-                            }).dom 
-                        ],
-                        events: {
-                            onclick: () => {
-                                onRight();
-                                loop();
+                    showToggles
+                        ? new Button({
+                            className: styles.right,
+                            children: [
+                                new Icon('ChevronRight', {
+                                    size: 50,
+                                    stroke: 'rgba(255,255,255,0.6)',
+                                }).dom 
+                            ],
+                            events: {
+                                onclick: () => {
+                                    onRight();
+                                    loop();
+                                },
                             },
-                        },
-                    }).dom
+                        }).dom
+                        : null
                 ],
             },
         }).dom
