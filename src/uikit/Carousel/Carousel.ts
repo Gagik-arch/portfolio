@@ -3,8 +3,11 @@ import type { CarouselProps } from './types';
 import styles from './style.module.css';
 import Image from '$uikit/Image';
 import Button from '$uikit/Button';
-import { getCssVariable, onCssVariableChange } from '$utils/index';
+import {
+    getCssVariable, onCssVariableChange, setCSSVariable 
+} from '$utils/index';
 import Icon from '$uikit/Icon';
+import { clsx } from '$utils/clsx';
 
 class Carousel extends Element<HTMLDivElement> { 
     public constructor({
@@ -12,6 +15,10 @@ class Carousel extends Element<HTMLDivElement> {
         images,
         timeout = 5000,
         views = [],
+        togglesClassName,
+        onChange,
+        stopAutoSlide = false,
+        showDots = true,
     }:CarouselProps) {
         const stack = images || views;
         let timer: number | undefined;
@@ -44,28 +51,36 @@ class Carousel extends Element<HTMLDivElement> {
             },
         });
 
-        const dots = new Element<HTMLDivElement>({
-            tagName: 'div',
-            props: {
-                className: styles.dots,
-                children: stack.map((_, index) => {
-                    return (
-                        new Button({
-                            className: index === 0 ? styles.active : undefined,
-                            events: {
-                                onclick: () => {
-                                    line.dom.style.setProperty('--offset', index.toString());
+        const dots = showDots
+            ? new Element<HTMLDivElement>({
+                tagName: 'div',
+                props: {
+                    className: styles.dots,
+                    children: stack.map((_, index) => {
+                        return (
+                            new Button({
+                                className: index === 0 ? styles.active : undefined,
+                                events: {
+                                    onclick: () => {
+                                        setCSSVariable('--offset', index.toString(), line.dom);
+                                    },
                                 },
-                            },
-                        }).dom
-                    );
-                }),
-            },
-        }); 
+                            }).dom
+                        );
+                    }),
+                },
+            })
+            : undefined; 
   
-        const mutation = onCssVariableChange(line.dom, '--offset', () => {
-            const dotButtons = dots.dom.querySelectorAll('button');
+        const mutation = onCssVariableChange(line.dom, '--offset', (value) => {
+            if (value && isNaN(+value)) { 
+                onChange?.(+value);
+            }
             const savedIndex = getCssVariable<number>('--offset', line.dom);
+
+            if (!dots) return; 
+
+            const dotButtons = dots.dom.querySelectorAll('button');
         
             dotButtons.forEach((button, index) => {
                 if (index === savedIndex) {
@@ -91,6 +106,8 @@ class Carousel extends Element<HTMLDivElement> {
         };
     
         const loop = () => {
+            if (stopAutoSlide) return; 
+            
             clearTimeout(timer);
                 
             timer = setTimeout(() => {
@@ -115,46 +132,58 @@ class Carousel extends Element<HTMLDivElement> {
                 className: styles.root,
                 children: [ 
                     line.dom,
-                    dots.dom,
+                    dots?.dom,
 
-                    showToggles
-                        ? new Button({
-                            className: styles.left,
-                            children: [
-                                new Icon('ChevronLeft', {
-                                    size: 50,
-                                    stroke: 'rgba(255,255,255,0.6)',
-                                }).dom 
-                            ],
-                            events: {
-                                onclick: () => {
-                                    onLeft();
-                                    loop();
-                                },
+                    (showToggles
+                        ? new Element<HTMLDivElement>({
+                            tagName: 'div',
+                            props: {
+                                className: clsx(styles.toggles, togglesClassName),
+                                children: [
+                                    new Button({
+                                        className: styles.left,
+                                        children: [
+                                            new Icon('ChevronLeft', {
+                                                size: 50,
+                                                stroke: 'rgba(255,255,255,0.6)',
+                                            }).dom 
+                                        ],
+                                        events: {
+                                            onclick: () => {
+                                                onLeft();
+                                                loop();
+                                            },
+                                        },
+                                    }).dom,
+
+                                    new Button({
+                                        className: styles.right,
+                                        children: [
+                                            new Icon('ChevronRight', {
+                                                size: 50,
+                                                stroke: 'rgba(255,255,255,0.6)',
+                                            }).dom 
+                                        ],
+                                        events: {
+                                            onclick: () => {
+                                                onRight();
+                                                loop();
+                                            },
+                                        },
+                                    }).dom
+                                ],
                             },
                         }).dom
-                        : null,                    
-
-                    showToggles
-                        ? new Button({
-                            className: styles.right,
-                            children: [
-                                new Icon('ChevronRight', {
-                                    size: 50,
-                                    stroke: 'rgba(255,255,255,0.6)',
-                                }).dom 
-                            ],
-                            events: {
-                                onclick: () => {
-                                    onRight();
-                                    loop();
-                                },
-                            },
-                        }).dom
-                        : null
+                        : null )
                 ],
             },
         });
+    }
+
+    public SetOffset (index:number) {
+        const line = this.dom.querySelector(`.${styles.line}`) as HTMLElement | undefined;
+  
+        setCSSVariable('--offset', index.toString(), line);
     }
 }
 

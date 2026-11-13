@@ -1,14 +1,14 @@
  
 import Vector from '$utils/trigonometry/Vector';
-import { rangeNumber } from '$utils/index';
+import { clamp } from '$utils/index';
 import type { DesktopIconType } from '$types/index';
 
 const iconSize = 100;
 
 export const convertRealToVirtual = (mouse: Vector, rootRect: DOMRect) => { 
 
-    const mouseMax = new Vector(rangeNumber(mouse.x, 0, window.innerWidth),
-        rangeNumber(mouse.y, 0, window.innerHeight));
+    const mouseMax = new Vector(clamp(mouse.x, 0, window.innerWidth),
+        clamp(mouse.y, 0, window.innerHeight));
     
     const cord = mouseMax.Subtract(new Vector(rootRect.x, rootRect.y))
         .Subtract(new Vector(Math.floor(rootRect.width), 0))
@@ -20,8 +20,8 @@ export const convertRealToVirtual = (mouse: Vector, rootRect: DOMRect) => {
     const maxHeightBlock = Math.floor(rootRect.height / iconSize) - 1;
 
     return new Vector(
-        rangeNumber(cord.x, 0, maxWidthBlock),
-        rangeNumber(cord.y, 0, maxHeightBlock)
+        clamp(cord.x, 0, maxWidthBlock),
+        clamp(cord.y, 0, maxHeightBlock)
     );
 };
 

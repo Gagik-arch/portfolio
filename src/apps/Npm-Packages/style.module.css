@@ -1,6 +1,51 @@
 .root {
+    --offset: 0;
+
     display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white
+    flex-direction: column;
+    padding: 10px
+}
+
+.toggles {
+    position: absolute;
+    bottom: 0;
+}
+
+.tabs {
+    position: absolute !important;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 33;
+}
+
+.view {
+    color: black
+}
+
+.center {
+    text-align: center
+}
+
+.nuvo_root,
+.datewise_root {}
+
+.datewise_root {
+    height: 100%;
+}
+
+
+.row {
+    display: flex;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.title {
+    flex: 1;
+}
+
+.toggle_container {
+    display: flex;
+    gap: 16px
 }

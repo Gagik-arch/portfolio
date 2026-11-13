@@ -7,8 +7,9 @@ type Font = typeof variants[Size];
 
 export type Variant = `${Size}-${keyof Font}`;
 
-export type TypographyProps = ElementPropsType<HTMLSpanElement> & {
+export type TypographyProps = Omit<ElementPropsType<HTMLSpanElement>, 'className'> & {
     text: string; 
     variant?: Variant;
     isInline?: boolean;
+    className?: string;
 };

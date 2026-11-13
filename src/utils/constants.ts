@@ -1,7 +1,6 @@
 import Advelit from '$assets/images/app-icons/advelit.avif';
 import Fibi from '$assets/images/app-icons/fibi.avif';
 import Balljunge from '$assets/images/app-icons/balljunge.avif';
-import Datewise from '$assets/images/app-icons/datewise.avif';
 import Launchpad from '$assets/images/app-icons/launchpad.avif';
 import Calculator from '$assets/images/app-icons/calculator.avif';
 import Finder from '$assets/images/app-icons/finder.avif';
@@ -21,7 +20,6 @@ export const APP_IMAGES:Record<keyof typeof APPS | 'Launchpad' | 'Folder' | 'Tra
     Advelit,
     Balljunge,
     Calculator,
-    Datewise,
     Launchpad,
     Finder,
     Notes,

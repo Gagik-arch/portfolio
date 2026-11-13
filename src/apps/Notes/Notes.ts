@@ -19,6 +19,8 @@ function Notes(props?:AppProps) {
                 y: props?.y,
                 id: props?.id,
                 key: props?.key,
+                minWidth: 900,
+                minHeight: 500,
             }),
         })
     );
