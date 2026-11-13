@@ -55,9 +55,6 @@ class Window extends Element<HTMLDivElement> {
                 },
                 tabIndex: 0,
                 events: {
-                    onblur: () => {
-                        desktopStore.setFocusApp(undefined);
-                    },
                     ...events,
                 },
                 ...props,
@@ -197,7 +194,7 @@ class Window extends Element<HTMLDivElement> {
 
         this.resizeAnchor = this.detectAnchorSide(e);
         this.isMouseDowned = this.dom === target.closest('.' + styles.root);
-
+  
         if (this.isMouseDowned) {
             desktopStore.setFocusApp(this.dom.id);
             this.SetProps({ 'data-resizing': !!this.resizeAnchor + '' });

@@ -181,7 +181,7 @@ class Carousel extends Element<HTMLDivElement> {
     }
 
     public SetOffset (index:number) {
-        const line = document.querySelector(`.${styles.line}`) as HTMLElement | undefined;
+        const line = this.dom.querySelector(`.${styles.line}`) as HTMLElement | undefined;
   
         setCSSVariable('--offset', index.toString(), line);
     }

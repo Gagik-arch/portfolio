@@ -37,17 +37,15 @@
 
 .row {
     display: flex;
+    margin-bottom: 10px;
+    position: relative;
 }
 
 .title {
-    flex: 1
+    flex: 1;
 }
 
 .toggle_container {
     display: flex;
     gap: 16px
-}
-
-.scroll {
-    z-index: 1;
 }

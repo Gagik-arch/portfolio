@@ -17,25 +17,20 @@ export default new Element<HTMLDivElement>({
                         new Typography({
                             className: clsx(styles.center, styles.title),
                             text: 'Nuvo',
-                            variant: 'title1-emphasized',
+                            variant: 'title2-emphasized',
                         }).dom,
 
-                        new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                className: styles.toggle_container,
-                                children: [
-                                    new Button({
-                                        children: [ 'View demo' ],
-                                        variant: 'secondary',
-                                        events: {
-                                            onclick: () => {
-                                                window.open('https://datewise-khaki.vercel.app/', '_blank');
-                                            },
-                                        },
-                                    }).dom
-                            
-                                ],
+                        new Button({
+                            children: [ 'View npm' ],
+                            variant: 'primary',
+                            style: {
+                                position: 'absolute',
+                                right: '0',
+                            },     
+                            events: {
+                                onclick: () => {
+                                    window.open('https://www.npmjs.com/package/@nuvo-js/core', '_blank');
+                                },
                             },
                         }).dom
                     ],
@@ -271,31 +266,16 @@ export default new Element<HTMLDivElement>({
                 },
             }).dom,
 
-            new Typography({
-                text: 'Installation',
-                variant: 'title3-emphasized',
-                style: {
-                    marginTop: '10px',
-                },
-            }).dom,
-
-            new Typography({
-                text: 'npm install @nuvo-js/core',
-                variant: 'body-regular',
-                style: {
-                    marginTop: '10px',
-                },
-            }).dom,
-
             new Button({
-                children: [ 'View npm' ],
-                variant: 'primary',
+                children: [ 'View demo' ],
+                variant: 'secondary',
                 style: {
                     marginTop: '20px',
+                    marginLeft: '4px',
                 },
                 events: {
                     onclick: () => {
-                        window.open('https://www.npmjs.com/package/datewise', '_blank');
+                        window.open('https://example-ten-opal.vercel.app/', '_blank');
                     },
                 },
             }).dom

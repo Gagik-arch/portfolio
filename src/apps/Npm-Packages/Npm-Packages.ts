@@ -17,36 +17,37 @@ function Npm_Packages(props?: AppProps) {
         showToggles: false,
         showDots: false,
         views: [
+            new Element<HTMLDivElement>({
+                tagName: 'div',
+                props: {
+                    style: {
 
-            // new Element<HTMLDivElement>({
-            //     tagName: 'div',
-            //     props: {
-            //         style: {
+                        padding: '10px',
+                    },
+                    children: [
+                        new Scroll({
+                            className: styles.scroll,
+                            children: [ nuvo.dom ],
+                        }).dom
+                    ],
+                },
+            }).dom, 
 
-            //             // padding: '20px',
-            //         },
-            //         children: [
-            //             'asd'
-
-            //             // new Scroll({
-            //             //     className: styles.scroll,
-            //             //     children: [ nuvo.dom ],
-            //             // }).dom
-            //         ],
-            //     },
-            // }).dom, 
-
-            '1',
-            '2'
-
-            // new Scroll({
-            //     className: styles.scroll,
-            //     children: [ nuvo.dom ],
-            // }).dom,
-            // new Scroll({
-            //     className: styles.scroll,
-            //     children: [ datewise.dom ],
-            // }).dom                          
+            new Element<HTMLDivElement>({
+                tagName: 'div',
+                props: {
+                    style: {
+                        padding: '10px',
+                    },
+                    children: [
+                        new Scroll({
+                            className: styles.scroll,
+                            children: [ datewise.dom ],
+                        }).dom  
+                    ],
+                },
+            }).dom 
+                                
         ],
     });
 
@@ -58,22 +59,22 @@ function Npm_Packages(props?: AppProps) {
             window: new Window({
                 className: styles.root,
                 children: [ 
-                    carousel.dom
+                    carousel.dom,
                     
-                    // new Tabs({
-                    //     tabs: [
-                    //         new Typography({
-                    //             text: 'Nuvo', variant: 'body-emphasized', 
-                    //         }).dom,
-                    //         new Typography({
-                    //             text: 'Datesize', variant: 'body-emphasized', 
-                    //         }).dom 
-                    //     ],
-                    //     className: styles.tabs,
-                    // })
-                    //     .OnChangeSelection((v) => {
-                    //         carousel.SetOffset(v);
-                    //     }).dom
+                    new Tabs({
+                        tabs: [
+                            new Typography({
+                                text: 'Nuvo', variant: 'body-emphasized', 
+                            }).dom,
+                            new Typography({
+                                text: 'Datewize', variant: 'body-emphasized', 
+                            }).dom 
+                        ],
+                        className: styles.tabs,
+                    })
+                        .OnChangeSelection((v) => {
+                            carousel.SetOffset(v);
+                        }).dom
                 ],
                 width: props?.width,
                 height: props?.height,
@@ -81,6 +82,8 @@ function Npm_Packages(props?: AppProps) {
                 y: props?.y,
                 id: props?.id,
                 key: props?.key,
+                minWidth: 600,
+                minHeight: 400,
             }),
         })
     );

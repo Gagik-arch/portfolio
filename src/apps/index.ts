@@ -5,7 +5,6 @@ import Fibi from './Fibi';
 import Finder from './Finder';
 import Notes from './Notes';
 import Settings from './Settings';
-import Datewise from './Datewise';
 import Preview from './Preview';
 import Music from './Music';
 import Balljunge from './Balljunge';
@@ -20,7 +19,6 @@ const APPS = {
     Finder,
     Advelit,
     Fibi,
-    Datewise,
     Preview,
     Music,
     Balljunge,
