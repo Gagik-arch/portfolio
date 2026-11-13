@@ -5,6 +5,7 @@ import Typography from '$uikit/Typography';
 import Button from '$uikit/Button';
 import Image from '$uikit/Image';
 import logo from '$assets/images/app-icons/datewise.avif';
+import Link from '$uikit/Link';
 
 export default new Element<HTMLDivElement>({
     tagName: 'div',
@@ -20,7 +21,7 @@ export default new Element<HTMLDivElement>({
                             tagName: 'div',
                             props: {},
                         }).dom,
-                        
+
                         new Element<HTMLDivElement>({
                             tagName: 'div',
                             props: {
@@ -49,14 +50,16 @@ export default new Element<HTMLDivElement>({
                             },
                         }).dom,
 
-                        new Button({
-                            children: [ 'View npm' ],
-                            variant: 'primary',
-                            events: {
-                                onclick: () => {
-                                    window.open('https://www.npmjs.com/package/datewise', '_blank');
-                                },
-                            },
+                        new Link({
+                            href: 'https://www.npmjs.com/package/datewise',
+                            target: '_blank',
+                            children: [
+                                new Button({
+                                    children: [ 'View npm' ],
+                                    variant: 'primary',
+                           
+                                }).dom
+                            ],
                         }).dom
                     ],
                 },

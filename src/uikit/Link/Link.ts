@@ -1,6 +1,7 @@
 import { Element } from '@nuvo-js/core';
 import type { LinkProps } from './types';
 import styles from './style.module.css';
+import { clsx } from '$utils/clsx';
 
 class Link extends Element<HTMLAnchorElement> {
     public constructor({
@@ -12,7 +13,7 @@ class Link extends Element<HTMLAnchorElement> {
         super({
             tagName: 'a',
             props: {
-                className: `${styles.root} ${className}`,  
+                className: clsx(styles.root, className),
                 type,
                 ...props,
             },
