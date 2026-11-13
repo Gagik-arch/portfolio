@@ -241,19 +241,21 @@ export default new Element<HTMLDivElement>({
                     ],
                 },
             }).dom,
-
-            new Button({
-                children: [ 'View demo' ],
-                variant: 'secondary',
+            
+            new Link({
+                href: 'https://datewise-khaki.vercel.app',
+                target: '_blank',
                 style: {
                     marginTop: '20px',
                     marginLeft: '4px',
                 },
-                events: {
-                    onclick: () => {
-                        window.open('https://datewise-khaki.vercel.app/', '_blank');
-                    },
-                },
+                children: [
+                    new Button({
+                        children: [ 'View demo' ],
+                        variant: 'primary',
+                           
+                    }).dom
+                ],
             }).dom
         ],
     },
