@@ -1,10 +1,99 @@
 .root {
+    --c-glass: #bbbbbc;
+    --c-light: #fff;
+    --c-dark: #000;
+
+    --saturation: 150%;
+
+    --c-action: #0052f5;
+    --padding: 4;
+
     height: auto;
     width: auto;
-    display: inline-flex
+    display: inline-flex;
+    font-optical-sizing: auto;
+    background: #e8e8e9;
+    color: #224;
+    position: relative;
+    z-index: 222;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+    /* padding: calc(var(--padding) + 'px'); */
+    margin: 0 auto;
+    border: none;
+    border-radius: 99em;
+    font-size: var(--fz);
+    background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
+    backdrop-filter: blur(8px) url(#switcher) saturate(var(--saturation));
+    -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb,
+            var(--c-light) calc(1 * 10%),
+            transparent),
+        inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(1 * 90%), transparent),
+        inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(1 * 80%), transparent),
+        inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) calc(1 * 60%), transparent),
+        inset -0.3px -1px 4px 0px color-mix(in srgb,
+            var(--c-dark) calc(1 * 12%),
+            transparent),
+        inset -1.5px 2.5px 0px -2px color-mix(in srgb,
+            var(--c-dark) calc(1 * 20%),
+            transparent),
+        inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark) calc(1 * 30%), transparent),
+        inset 2px -6.5px 1px -4px color-mix(in srgb,
+            var(--c-dark) calc(1 * 10%),
+            transparent),
+        0px 1px 5px 0px color-mix(in srgb,
+            var(--c-dark) calc(1 * 30%),
+            transparent),
+        0px 6px 16px 0px color-mix(in srgb,
+            var(--c-dark) calc(1 * 8%),
+            transparent);
+    transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1),
+        box-shadow 400ms cubic-bezier(1, 0, 0.4, 1);
 }
 
 .tab {
-    color: white;
-    font-size: 20px;
+    padding: 20px;
+    color: rgb(79, 79, 79);
+    font-size: calc(var(--scale) * 12px);
+}
+
+.selected {
+    --width: 0;
+    --left: 0;
+
+    position: absolute;
+    left: var(--left);
+    width: var(--width);
+    height: calc(100% - 8px);
+    top: calc(var(--padding) + 'px');
+    display: block;
+    border-radius: 99em;
+
+    background-color: color-mix(in srgb, var(--c-glass) 36%, transparent);
+    z-index: -1;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb,
+            var(--c-light) calc(1 * 10%),
+            transparent),
+        inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light) calc(1 * 90%), transparent),
+        inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(1 * 80%), transparent),
+        inset -2px -6px 1px -5px color-mix(in srgb, var(--c-light) calc(1 * 60%), transparent),
+        inset -1px 2px 3px -1px color-mix(in srgb,
+            var(--c-dark) calc(1 * 20%),
+            transparent),
+        inset 0px -4px 1px -2px color-mix(in srgb,
+            var(--c-dark) calc(1 * 10%),
+            transparent),
+        0px 3px 6px 0px color-mix(in srgb,
+            var(--c-dark) calc(1 * 8%),
+            transparent);
+
+    translate: 0 0;
+    transform-origin: right;
+    transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1),
+        box-shadow 400ms cubic-bezier(1, 0, 0.4, 1),
+        translate 400ms cubic-bezier(1, 0, 0.4, 1);
+    transition: all 200ms ease;
 }

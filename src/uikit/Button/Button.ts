@@ -1,6 +1,7 @@
 import { Element } from '@nuvo-js/core';
 import type { ButtonProps } from './types';
 import styles from './style.module.css';
+import { clsx } from '$utils/clsx';
 
 class Button extends Element<HTMLButtonElement> {
     public constructor({
@@ -12,7 +13,12 @@ class Button extends Element<HTMLButtonElement> {
         super({
             tagName: 'button',
             props: {
-                className: `pointer ${styles.root} ${className} ${styles[`root_${variant}`]}`,  
+                className: clsx(
+                    'pointer',
+                    styles.root,
+                    typeof className === 'function' ? undefined : className,
+                    styles[`root_${variant}`]
+                ),
                 type,
                 ...props,
             },

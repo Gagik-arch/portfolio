@@ -3,7 +3,8 @@ import styles from './styles.module.css';
 import type { WindowDimension, WindowProps } from './types';
 import Controls from './Controls';
 import {
-    clamp, genRandomNumber, getCssVariable  
+    clamp, genRandomNumber, getCssVariable,  
+    setCSSVariable
 } from '$utils/index';
 import desktopStore from '$store/desktop.store';
 import dockStyles from '../Dock/style.module.css';
@@ -53,9 +54,6 @@ class Window extends Element<HTMLDivElement> {
                 },
                 tabIndex: 0,
                 events: {
-                    onblur: () => {
-                        desktopStore.setFocusApp(undefined);
-                    },
                     ...events,
                 },
                 ...props,
@@ -112,11 +110,11 @@ class Window extends Element<HTMLDivElement> {
         this.minWidth = minWidth;
         this.minHeight = minHeight;
 
-        this.width = clamp((width || this.minWidth), this.minWidth, width); 
-        this.height = clamp((height || this.minHeight), this.minHeight, height); 
-      
-        const scaledWidth = this.width * this.scale;
-        const scaledHeight = this.height * this.scale;
+        this.width = clamp((width || this.minWidth), this.minWidth, width) * this.scale; 
+        this.height = clamp((height || this.minHeight), this.minHeight, height) * this.scale; 
+       
+        const scaledWidth = this.width;
+        const scaledHeight = this.height;
         
         const desktop = document.getElementById('desktop'); 
         const desktopRect = desktop?.getBoundingClientRect();
@@ -163,7 +161,9 @@ class Window extends Element<HTMLDivElement> {
             ?.getBoundingClientRect();
             
         if (document.activeElement !== this.dom) return;
+
         this.changeCursorAnchorHover(e);
+
         const target = e.target as HTMLElement;
         
         if (target !== this.dom) { 
@@ -188,14 +188,15 @@ class Window extends Element<HTMLDivElement> {
         const target = e.target as HTMLElement;
         if (e.button !== 0 || target.closest(`.${styles.traffic_light}`)) return; 
 
-        if ( target === e.currentTarget ) { 
+        const targetWindow = target.closest(`.${styles.root}`);
 
+        if ( !targetWindow ) { 
             desktopStore.setFocusApp(undefined);
             return;
         }
 
         this.resizeAnchor = this.detectAnchorSide(e);
-        this.isMouseDowned = this.dom === target.closest('.' + styles.root);
+        this.isMouseDowned = this.dom === targetWindow;
 
         if (this.isMouseDowned) {
             desktopStore.setFocusApp(this.dom.id);
@@ -232,10 +233,10 @@ class Window extends Element<HTMLDivElement> {
                 
             this.y = Math.floor(Math.max(((rect.y - desktop.top) + e.movementY), 0));
     
-            this.dom.style.setProperty('--top', this.y + 'px');
+            setCSSVariable('--top', this.y + 'px', this.dom);
 
             if (this.y > 0) {
-                this.dom.style.setProperty('--height', Math.floor(height) + 'px');
+                setCSSVariable('--height', Math.floor(height) + 'px', this.dom);
             }
         };
 
@@ -246,8 +247,8 @@ class Window extends Element<HTMLDivElement> {
             if (width <= scaledWidth || left <= 0) return;
             
             this.x = left;
-            this.dom.style.setProperty('--width', width + 'px');
-            this.dom.style.setProperty('--left', this.x + 'px');
+            setCSSVariable('--width', width + 'px', this.dom);
+            setCSSVariable('--left', this.x + 'px', this.dom);
 
             this.dom.classList.add('e-resize');
         };
@@ -255,13 +256,13 @@ class Window extends Element<HTMLDivElement> {
         const onBottom = () => { 
             const height = clamp(rect.height + e.movementY, scaledHeight, desktop.bottom - rect.y); 
 
-            this.dom.style.setProperty('--height', `${height}px`);
+            setCSSVariable('--height', `${height}px`, this.dom);
         };
 
         const onRight = () => {
             const width = clamp(rect.width + e.movementX, this.minWidth, desktop.right - rect.x); 
 
-            this.dom.style.setProperty('--width', `${width}px`);
+            setCSSVariable('--width', `${width}px`, this.dom);
         };
     
         switch (this.resizeAnchor) {
@@ -299,9 +300,9 @@ class Window extends Element<HTMLDivElement> {
     };
 
     private readonly detectAnchorSide = (e: MouseEvent) => {
-        const rect = this.dom.getBoundingClientRect();
-   
         const target = e.target as HTMLElement;
+        const rect = this.dom.getBoundingClientRect();
+
         if (target.dataset.isResizable === 'false') return undefined; 
         
         if ( target.classList.contains(styles.right_bottom)) return 'right-bottom';
@@ -325,7 +326,7 @@ class Window extends Element<HTMLDivElement> {
     private readonly changeCursorAnchorHover = (e:MouseEvent) => {
         const anchor = this.detectAnchorSide(e);
 
-        const target = e.target as HTMLElement;
+        const target = (e.target as HTMLElement).closest(`.${styles.root}`);
 
         if (target !== this.dom) return; 
 

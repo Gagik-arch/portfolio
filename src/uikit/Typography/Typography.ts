@@ -13,6 +13,7 @@ class Typography extends Element<HTMLDivElement> {
         className,
         style,
         isInline = false,
+        
     }:TypographyProps) {
         const size = variants[variant.split('-')[0] as Size];
  

@@ -7,8 +7,38 @@ import Carousel from '$uikit/Carousel';
 import { Element } from '@nuvo-js/core';
 import Tabs from '$uikit/Tabs';
 import Scroll from '$uikit/Scroll';
+import nuvo from './nuvo';
+import datewise from './datewise';
+import Typography from '$uikit/Typography';
 
-function Npm_Packages(props?:AppProps) { 
+function Npm_Packages(props?: AppProps) { 
+    const carousel = new Carousel({
+        stopAutoSlide: true,
+        showToggles: false,
+        showDots: false,
+        views: [
+            new Element<HTMLDivElement>({
+                tagName: 'div',
+                props: {
+                    style: {
+                        padding: '20px',
+                    },
+                    children: [
+                        new Scroll({
+                            className: styles.scroll,
+                            children: [ nuvo.dom ],
+                        }).dom
+                    ],
+                },
+            }).dom, 
+            
+            new Scroll({
+                className: styles.scroll,
+                children: [ datewise.dom ],
+            }).dom                          
+        ],
+    });
+
     return (
         new App({
             name: 'Npm-packages',
@@ -16,41 +46,23 @@ function Npm_Packages(props?:AppProps) {
             isNative: true,
             window: new Window({
                 className: styles.root,
-                backgroundColor: 'rgba(0,0,0,0.9)',
                 children: [ 
+                    carousel.dom,
+                    
                     new Tabs({
                         tabs: [
-                            'Npm',
-                            'Datesize'
+                            new Typography({
+                                text: 'Nuvo', variant: 'body-emphasized', 
+                            }).dom,
+                            new Typography({
+                                text: 'Datesize', variant: 'body-emphasized', 
+                            }).dom 
                         ],
                         className: styles.tabs,
-                    }).dom,
-                    
-                    new Scroll({
-                        children: [
-
-                            // new Carousel({
-                            //     showToggles: false,
-                            //     views: [
-                            //         new Element<HTMLDivElement>({
-                            //             tagName: 'div',
-                            //             props: {
-                            //                 className: styles.view,
-                            //                 children: [ 'ad' ],
-                            //             },
-                            //         }).dom,
-
-                            //         new Element<HTMLDivElement>({
-                            //             tagName: 'div',
-                            //             props: {
-                            //                 className: styles.view,
-                            //                 children: [ 'ad' ],
-                            //             },
-                            //         }).dom
-                            //     ],
-                            // }).dom
-                        ],
-                    }).dom
+                    })
+                        .OnChangeSelection((v) => {
+                            carousel.SetOffset(v);
+                        }).dom
                 ],
                 width: props?.width,
                 height: props?.height,
@@ -58,8 +70,8 @@ function Npm_Packages(props?:AppProps) {
                 y: props?.y,
                 id: props?.id,
                 key: props?.key,
-                minWidth: 900,
-                minHeight: 500,
+                minWidth: 700,
+                minHeight: 400,
             }),
         })
     );

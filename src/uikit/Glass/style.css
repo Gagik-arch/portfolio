@@ -1,0 +1,69 @@
+.nuovo-liquid-glass,
+.nuvo-liquid-glass {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.055);
+
+    border: 1px solid rgba(255, 255, 255, 0.22);
+
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.16),
+        inset 0 1px 1px rgba(255, 255, 255, 0.35),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.08);
+
+    --glass-highlight: 0.8;
+    --glass-edge-highlight: 0.9;
+    --glass-highlight-angle: 135deg;
+}
+
+/* Main specular highlight */
+.nuvo-liquid-glass::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    border-radius: inherit;
+    pointer-events: none;
+
+    z-index: 1;
+
+    background:
+        linear-gradient(var(--glass-highlight-angle),
+            rgba(255, 255, 255, 0.42),
+            rgba(255, 255, 255, 0.04) 25%,
+            transparent 45%,
+            transparent 72%,
+            rgba(255, 255, 255, 0.16));
+
+    opacity: var(--glass-highlight);
+}
+
+/* Edge reflection */
+.nuvo-liquid-glass::after {
+    content: "";
+
+    position: absolute;
+    inset: 1px;
+
+    border-radius: inherit;
+    pointer-events: none;
+
+    z-index: 2;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.35),
+        inset 0 -1px 2px rgba(255, 255, 255, 0.1);
+
+    opacity: var(--glass-edge-highlight);
+}
+
+/* Keep content above the reflection layers */
+.nuvo-liquid-glass>* {
+    position: relative;
+    z-index: 3;
+}
