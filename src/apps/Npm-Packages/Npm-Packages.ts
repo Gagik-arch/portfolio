@@ -17,25 +17,36 @@ function Npm_Packages(props?: AppProps) {
         showToggles: false,
         showDots: false,
         views: [
-            new Element<HTMLDivElement>({
-                tagName: 'div',
-                props: {
-                    style: {
-                        padding: '20px',
-                    },
-                    children: [
-                        new Scroll({
-                            className: styles.scroll,
-                            children: [ nuvo.dom ],
-                        }).dom
-                    ],
-                },
-            }).dom, 
-            
-            new Scroll({
-                className: styles.scroll,
-                children: [ datewise.dom ],
-            }).dom                          
+
+            // new Element<HTMLDivElement>({
+            //     tagName: 'div',
+            //     props: {
+            //         style: {
+
+            //             // padding: '20px',
+            //         },
+            //         children: [
+            //             'asd'
+
+            //             // new Scroll({
+            //             //     className: styles.scroll,
+            //             //     children: [ nuvo.dom ],
+            //             // }).dom
+            //         ],
+            //     },
+            // }).dom, 
+
+            '1',
+            '2'
+
+            // new Scroll({
+            //     className: styles.scroll,
+            //     children: [ nuvo.dom ],
+            // }).dom,
+            // new Scroll({
+            //     className: styles.scroll,
+            //     children: [ datewise.dom ],
+            // }).dom                          
         ],
     });
 
@@ -43,26 +54,26 @@ function Npm_Packages(props?: AppProps) {
         new App({
             name: 'Npm-packages',
             appIcon: APP_IMAGES['Npm-packages'],
-            isNative: true,
+            isNative: false,
             window: new Window({
                 className: styles.root,
                 children: [ 
-                    carousel.dom,
+                    carousel.dom
                     
-                    new Tabs({
-                        tabs: [
-                            new Typography({
-                                text: 'Nuvo', variant: 'body-emphasized', 
-                            }).dom,
-                            new Typography({
-                                text: 'Datesize', variant: 'body-emphasized', 
-                            }).dom 
-                        ],
-                        className: styles.tabs,
-                    })
-                        .OnChangeSelection((v) => {
-                            carousel.SetOffset(v);
-                        }).dom
+                    // new Tabs({
+                    //     tabs: [
+                    //         new Typography({
+                    //             text: 'Nuvo', variant: 'body-emphasized', 
+                    //         }).dom,
+                    //         new Typography({
+                    //             text: 'Datesize', variant: 'body-emphasized', 
+                    //         }).dom 
+                    //     ],
+                    //     className: styles.tabs,
+                    // })
+                    //     .OnChangeSelection((v) => {
+                    //         carousel.SetOffset(v);
+                    //     }).dom
                 ],
                 width: props?.width,
                 height: props?.height,
@@ -70,8 +81,6 @@ function Npm_Packages(props?: AppProps) {
                 y: props?.y,
                 id: props?.id,
                 key: props?.key,
-                minWidth: 700,
-                minHeight: 400,
             }),
         })
     );
