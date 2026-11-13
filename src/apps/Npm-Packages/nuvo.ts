@@ -14,6 +14,11 @@ export default new Element<HTMLDivElement>({
                 props: {
                     className: clsx(styles.row),
                     children: [
+                        new Element<HTMLDivElement>({
+                            tagName: 'div',
+                            props: {},
+                        }).dom,
+                        
                         new Typography({
                             className: clsx(styles.center, styles.title),
                             text: 'Nuvo',
@@ -23,10 +28,7 @@ export default new Element<HTMLDivElement>({
                         new Button({
                             children: [ 'View npm' ],
                             variant: 'primary',
-                            style: {
-                                position: 'absolute',
-                                right: '0',
-                            },     
+                              
                             events: {
                                 onclick: () => {
                                     window.open('https://www.npmjs.com/package/@nuvo-js/core', '_blank');

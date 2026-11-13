@@ -18,6 +18,11 @@ export default new Element<HTMLDivElement>({
                     children: [
                         new Element<HTMLDivElement>({
                             tagName: 'div',
+                            props: {},
+                        }).dom,
+                        
+                        new Element<HTMLDivElement>({
+                            tagName: 'div',
                             props: {
                                 style: {
                                     display: 'flex',
@@ -47,10 +52,6 @@ export default new Element<HTMLDivElement>({
                         new Button({
                             children: [ 'View npm' ],
                             variant: 'primary',
-                            style: {
-                                position: 'absolute',
-                                right: '0',
-                            },
                             events: {
                                 onclick: () => {
                                     window.open('https://www.npmjs.com/package/datewise', '_blank');
