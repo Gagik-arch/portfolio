@@ -1,12 +1,11 @@
  .root {
-     display: flex;
      padding: 20px;
  }
 
  .content {
      flex: 1;
      max-width: 800px;
-     margin: 0 auto
+     margin: 0 auto;
  }
 
  .header {
