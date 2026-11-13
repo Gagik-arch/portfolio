@@ -27,9 +27,6 @@
     text-align: center
 }
 
-.nuvo_root,
-.datewise_root {}
-
 .datewise_root {
     height: 100%;
 }
@@ -39,6 +36,7 @@
     display: flex;
     margin-bottom: 10px;
     position: relative;
+    justify-content: space-between
 }
 
 .title {

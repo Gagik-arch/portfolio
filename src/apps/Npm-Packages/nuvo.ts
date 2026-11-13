@@ -3,6 +3,7 @@ import styles from './style.module.css';
 import { clsx } from '$utils/clsx';
 import Typography from '$uikit/Typography';
 import Button from '$uikit/Button';
+import Link from '$uikit/Link';
 
 export default new Element<HTMLDivElement>({
     tagName: 'div',
@@ -14,24 +15,27 @@ export default new Element<HTMLDivElement>({
                 props: {
                     className: clsx(styles.row),
                     children: [
+                        new Element<HTMLDivElement>({
+                            tagName: 'div',
+                            props: {},
+                        }).dom,
+
                         new Typography({
                             className: clsx(styles.center, styles.title),
                             text: 'Nuvo',
                             variant: 'title2-emphasized',
                         }).dom,
 
-                        new Button({
-                            children: [ 'View npm' ],
-                            variant: 'primary',
-                            style: {
-                                position: 'absolute',
-                                right: '0',
-                            },     
-                            events: {
-                                onclick: () => {
-                                    window.open('https://www.npmjs.com/package/@nuvo-js/core', '_blank');
-                                },
-                            },
+                        new Link({
+                            href: 'https://www.npmjs.com/package/@nuvo-js/core',
+                            target: '_blank',
+                            children: [
+                                new Button({
+                                    children: [ 'View npm' ],
+                                    variant: 'primary',
+                           
+                                }).dom
+                            ],
                         }).dom
                     ],
                 },
