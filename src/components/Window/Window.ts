@@ -15,6 +15,7 @@ import dockIconsStore, { type IconType } from '$store/dockIcons.store';
 import { clsx } from '$utils/clsx';
 import WindowManager from './WindowManager';
 import { ANCHORS } from './constants';
+import isFocusableElement from '$utils/isFocusableElement';
 
 class Window extends Element<HTMLDivElement> {
     private readonly scale = getCssVariable<number>('--scale', document.body) || 1;
@@ -176,11 +177,11 @@ class Window extends Element<HTMLDivElement> {
     }
 
     private readonly onMove = (e: MouseEvent) => {
-        if (document.activeElement !== this.dom) return;
+        if (desktopStore.GetState().focusedAppId !== this.dom.id) return;
         
         const desktop = document.getElementById('desktop')
             ?.getBoundingClientRect();
-
+      
         if (this.manager.isMouseDowned) {
             if (this.dom.dataset.resizing === 'false') { 
                 this.dom.classList.add('grabbing');
@@ -205,21 +206,22 @@ class Window extends Element<HTMLDivElement> {
 
     private readonly onMouseDown = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
+        const targetWindow = target.closest('.' + styles.root); 
+        
         if (e.button !== 0 || target.closest(`.${styles.traffic_light}`)) return; 
 
         if ( target.closest(`.${styles.root}`) !== this.dom ) { 
             desktopStore.setFocusApp(undefined);
             return;
         }
+        if (targetWindow && isFocusableElement(target)) return; 
 
-        this.manager.SetIsMouseDowned(this.dom === target.closest('.' + styles.root));
+        this.manager.SetIsMouseDowned(this.dom === targetWindow);
         this.manager.SetResizeAnchor(this.detectAnchorSide(e));
         
         if (this.manager.isMouseDowned) {
             desktopStore.setFocusApp(this.dom.id);
             this.SetProps({ 'data-resizing': !!this.manager.resizeAnchor + '' });
-        
-            this.dom.focus();
         }
     };
 
