@@ -65,14 +65,10 @@ function Preview(props?: AppProps) {
                                                 className: styles.header,
                                                 children: [
                                                     new Link({
+                                                        variant: 'primary',
                                                         href: cvFile,
                                                         download: 'gagik-chilingaryan-cv',
-                                                        children: [
-                                                            new Button({
-                                                                variant: 'primary',
-                                                                children: [ 'Download' ],
-                                                            }).dom
-                                                        ],
+                                                        children: [ 'Download' ],
                                                     }).dom
                                                 ],
                                             },
