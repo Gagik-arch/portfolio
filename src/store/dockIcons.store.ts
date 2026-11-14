@@ -7,7 +7,7 @@ export interface IconType {
 
 const initialState: IconType[] = [
     {
-        title: 'Npm-packages',
+        title: 'Preview',
     }
 ];
 

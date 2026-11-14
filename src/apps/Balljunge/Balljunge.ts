@@ -5,9 +5,9 @@ import styles from './style.module.css';
 import { Element } from '@nuvo-js/core';
 import Typography from '$uikit/Typography';
 import Scroll from '$uikit/Scroll/Scroll';
-import Button from '$uikit/Button';
 import { APP_IMAGES } from '$utils/constants';
 import { clsx } from '$utils/clsx';
+import Link from '$uikit/Link';
 
 function Balljunge(props?:AppProps) { 
     return (
@@ -72,14 +72,11 @@ function Balljunge(props?:AppProps) {
                                             props: {
                                                 className: styles.toggle_container,
                                                 children: [
-                                                    new Button({
-                                                        children: [ 'View' ],
+                                                    new Link({
                                                         variant: 'primary',
-                                                        events: {
-                                                            onclick: () => {
-                                                                window.open('https://beewebsystems.com/work/Balljunge', '_blank');
-                                                            },
-                                                        },
+                                                        children: [ 'View' ],
+                                                        href: 'https://beewebsystems.com/work/Balljunge',
+                                                        target: '_blank',
                                                     }).dom
                                                 ],
                                             },

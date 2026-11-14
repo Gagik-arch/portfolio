@@ -31,6 +31,11 @@ const initialState: (DesktopIconType & { icon: string; })[] = [
     },
     {
         index: 5,
+        title: 'Lorobanking',
+        icon: 'Lorobanking',
+    },
+    {
+        index: 6,
         title: 'Axis',
         icon: 'Axis',
     }
