@@ -9,7 +9,6 @@ import { getCssVariable } from '$utils/index';
 import Icon from '$uikit/Icon';
 import Scroll from '$uikit/Scroll';
 import Link from '$uikit/Link';
-import Button from '$uikit/Button';
 import linkedinImage from '$assets/images/linkedin.avif';
 import githubImage from '$assets/images/github.avif';
 import Image from '$uikit/Image';
@@ -65,14 +64,10 @@ function Preview(props?: AppProps) {
                                                 className: styles.header,
                                                 children: [
                                                     new Link({
+                                                        variant: 'primary',
                                                         href: cvFile,
                                                         download: 'gagik-chilingaryan-cv',
-                                                        children: [
-                                                            new Button({
-                                                                variant: 'primary',
-                                                                children: [ 'Download' ],
-                                                            }).dom
-                                                        ],
+                                                        children: [ 'Download' ],
                                                     }).dom
                                                 ],
                                             },
