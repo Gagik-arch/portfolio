@@ -9,7 +9,6 @@ import { getCssVariable } from '$utils/index';
 import Icon from '$uikit/Icon';
 import Scroll from '$uikit/Scroll';
 import Link from '$uikit/Link';
-import Button from '$uikit/Button';
 import linkedinImage from '$assets/images/linkedin.avif';
 import githubImage from '$assets/images/github.avif';
 import Image from '$uikit/Image';
