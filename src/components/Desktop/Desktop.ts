@@ -23,7 +23,7 @@ function Desktop() {
             .activeApps.find(e => e.name === title);
      
         if (existsInDock) {
-            desktopStore.setFocusApp( existsInDock.window.dom.id);
+            desktopStore.setFocusWindow( existsInDock.window.dom.id);
             return;
         }  
 

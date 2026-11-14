@@ -59,6 +59,31 @@
     }
 }
 
+.focused {
+    z-index: 2 !important;
+
+    &::before {
+        backdrop-filter: blur(4px) saturate(50%);
+    }
+
+    .anchor {
+        background-color: transparent;
+        display: block
+    }
+
+    .close:not(:disabled) {
+        background-color: #FF736A;
+    }
+
+    .minimize:not(:disabled) {
+        background-color: #FEBC2E;
+    }
+
+    .maximize:not(:disabled) {
+        background-color: #19C332;
+    }
+}
+
 .traffic_light_container {
     display: inline-flex;
     position: absolute;

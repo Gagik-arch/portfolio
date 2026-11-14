@@ -268,10 +268,8 @@ export default new Element<HTMLDivElement>({
             new Link({
                 href: 'https://example-ten-opal.vercel.app/',
                 target: '_blank',
-                variant: 'primary',
-                style: {
-                    marginLeft: '4px',
-                },
+                style: { marginLeft: '4px' },
+                variant: 'secondary',
                 children: [ 'View demo' ],
             }).dom
         ],

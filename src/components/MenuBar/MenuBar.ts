@@ -49,6 +49,7 @@ function MenuBar() {
                                             .OnMount((e) => {
                                                 desktopStore.Subscribe((state) => {
                                                     const app = state.activeApps.find(a => a.window.dom.id === state.focusedAppId);
+                                                 
                                                     e.SetProps({
                                                         children: [ app?.name.replace('-', ' ') || 'Finder' ],
                                                     });

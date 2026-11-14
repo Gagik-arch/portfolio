@@ -24,7 +24,7 @@ function Balljunge(props?:AppProps) {
                                 new Scroll({
                                     children: [
                                         new Typography({
-                                            text: 'Balljunge', variant: 'title1-regular', className: styles.title,
+                                            text: 'Balljunge', variant: 'title2-emphasized', className: styles.title,
                                         }).dom,
 
                                         new Typography({

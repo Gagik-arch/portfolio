@@ -68,17 +68,20 @@ class Window extends Element<HTMLDivElement> {
         this.createdAt = new Date()
             .getTime();
         
+        const controls = Controls({
+            isResizable,
+            onClose: this.onClose,
+            onMinimize: this.onMinimize,
+            onMaximize: this.onMaximize,
+        });
+        
         this.SetProps({
             'data-is-resizable': isResizable.toString(),
             id: id || genRandomNumber(1_000_000, 90_000_000)
                 .toString(),
             children: [
-                Controls({
-                    isResizable,
-                    onClose: this.onClose,
-                    onMinimize: this.onMinimize,
-                    onMaximize: this.onMaximize,
-                }),
+                controls.dom,
+
                 ...(isResizable
                     ? [
                         new Element<HTMLSpanElement>({
@@ -163,21 +166,34 @@ class Window extends Element<HTMLDivElement> {
         this.dom.style.setProperty('--width', scaledWidth + 'px');
         this.dom.style.setProperty('--height', scaledHeight + 'px');
         
+        let subscriber:(() => void ) | undefined;
+
         this.OnMount(() => {
             desktop?.addEventListener('mousedown', this.onMouseDown);
             window.addEventListener('mousemove', this.onMove);
             window.addEventListener('mouseup', this.onMouseUp);
+
+            subscriber = desktopStore.Effect((state) => {
+                if (state.focusedAppId === this.dom.id) {
+                    controls.dom.classList.add(styles.focused);
+                } else { 
+                    controls.dom.classList.remove(styles.focused);
+                }
+            });
         });
 
         this.OnUnMount(() => {
             desktop?.removeEventListener('mousedown', this.onMouseDown);
             window.removeEventListener('mousemove', this.onMove);
             window.removeEventListener('mouseup', this.onMouseUp);
+            subscriber?.();
         });
     }
 
     private readonly onMove = (e: MouseEvent) => {
-        if (desktopStore.GetState().focusedAppId !== this.dom.id) return;
+        const focusedAppId = desktopStore.GetState().focusedAppId;
+        
+        if (focusedAppId !== this.dom.id) return;
         
         const desktop = document.getElementById('desktop')
             ?.getBoundingClientRect();
@@ -193,8 +209,9 @@ class Window extends Element<HTMLDivElement> {
         if (!this.manager.isMouseDowned || !desktop) return;
 
         this.onResize(e);
-       
+
         if (this.manager.resizeAnchor) return; 
+  
         const rect = this.dom.getBoundingClientRect();
 
         this.x = Math.round(clamp(rect.x + e.movementX, 0, window.innerWidth - rect.width));
@@ -209,18 +226,19 @@ class Window extends Element<HTMLDivElement> {
         const targetWindow = target.closest('.' + styles.root); 
         
         if (e.button !== 0 || target.closest(`.${styles.traffic_light}`)) return; 
-
-        if ( target.closest(`.${styles.root}`) !== this.dom ) { 
-            desktopStore.setFocusApp(undefined);
+     
+        if (!target.closest(`.${styles.root}`) ) { 
+            desktopStore.setFocusWindow(undefined);
             return;
         }
-        if (targetWindow && isFocusableElement(target)) return; 
 
+        if (!targetWindow && isFocusableElement(target)) return; 
+        
         this.manager.SetIsMouseDowned(this.dom === targetWindow);
         this.manager.SetResizeAnchor(this.detectAnchorSide(e));
         
         if (this.manager.isMouseDowned) {
-            desktopStore.setFocusApp(this.dom.id);
+            desktopStore.setFocusWindow(this.dom.id);
             this.SetProps({ 'data-resizing': !!this.manager.resizeAnchor + '' });
         }
     };
@@ -345,7 +363,7 @@ class Window extends Element<HTMLDivElement> {
 
     private readonly changeCursorAnchorHover = (e:MouseEvent, hoveredAnchor:TResizeAnchor | undefined) => {
         const target = (e.target as HTMLElement).closest(`.${styles.root}`);
-        
+
         if (target !== this.dom) return; 
         
         const anchor = hoveredAnchor || this.detectAnchorSide(e);

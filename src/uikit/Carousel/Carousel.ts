@@ -15,7 +15,6 @@ class Carousel extends Element<HTMLDivElement> {
         images,
         timeout = 5000,
         views = [],
-        togglesClassName,
         onChange,
         stopAutoSlide = false,
         showDots = true,
@@ -143,7 +142,7 @@ class Carousel extends Element<HTMLDivElement> {
                                     ? new Element<HTMLDivElement>({
                                         tagName: 'div',
                                         props: {
-                                            className: clsx(styles.toggles, togglesClassName),
+                                            className: clsx(styles.toggles),
                                             children: [
                                                 new Button({
                                                     className: styles.left,

@@ -60,7 +60,7 @@ function Controls({
                     }).dom
                 ],
             },
-        }).dom
+        })
     );
 }
 
