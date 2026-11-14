@@ -15,7 +15,6 @@ class Carousel extends Element<HTMLDivElement> {
         images,
         timeout = 5000,
         views = [],
-        togglesClassName,
         onChange,
         stopAutoSlide = false,
         showDots = true,
@@ -131,50 +130,58 @@ class Carousel extends Element<HTMLDivElement> {
             props: {
                 className: styles.root,
                 children: [ 
-                    line.dom,
-                    dots?.dom,
+                    new Element({
+                        tagName: 'div',
+                        props: {
+                            className: styles.content,
+                            children: [
+                                line.dom,
+                                dots?.dom,
 
-                    (showToggles
-                        ? new Element<HTMLDivElement>({
-                            tagName: 'div',
-                            props: {
-                                className: clsx(styles.toggles, togglesClassName),
-                                children: [
-                                    new Button({
-                                        className: styles.left,
-                                        children: [
-                                            new Icon('ChevronLeft', {
-                                                size: 50,
-                                                stroke: 'rgba(255,255,255,0.6)',
-                                            }).dom 
-                                        ],
-                                        events: {
-                                            onclick: () => {
-                                                onLeft();
-                                                loop();
-                                            },
-                                        },
-                                    }).dom,
+                                (showToggles
+                                    ? new Element<HTMLDivElement>({
+                                        tagName: 'div',
+                                        props: {
+                                            className: clsx(styles.toggles),
+                                            children: [
+                                                new Button({
+                                                    className: styles.left,
+                                                    children: [
+                                                        new Icon('ChevronLeft', {
+                                                            size: 50,
+                                                            stroke: 'rgba(255,255,255,0.6)',
+                                                        }).dom 
+                                                    ],
+                                                    events: {
+                                                        onclick: () => {
+                                                            onLeft();
+                                                            loop();
+                                                        },
+                                                    },
+                                                }).dom,
 
-                                    new Button({
-                                        className: styles.right,
-                                        children: [
-                                            new Icon('ChevronRight', {
-                                                size: 50,
-                                                stroke: 'rgba(255,255,255,0.6)',
-                                            }).dom 
-                                        ],
-                                        events: {
-                                            onclick: () => {
-                                                onRight();
-                                                loop();
-                                            },
+                                                new Button({
+                                                    className: styles.right,
+                                                    children: [
+                                                        new Icon('ChevronRight', {
+                                                            size: 50,
+                                                            stroke: 'rgba(255,255,255,0.6)',
+                                                        }).dom 
+                                                    ],
+                                                    events: {
+                                                        onclick: () => {
+                                                            onRight();
+                                                            loop();
+                                                        },
+                                                    },
+                                                }).dom
+                                            ],
                                         },
                                     }).dom
-                                ],
-                            },
-                        }).dom
-                        : null )
+                                    : null )
+                            ],
+                        },
+                    }).dom
                 ],
             },
         });

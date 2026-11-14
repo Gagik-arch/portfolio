@@ -7,13 +7,19 @@ class Link extends Element<HTMLAnchorElement> {
     public constructor({
         type = 'button',
         className = '',
+        variant = 'default',
         ...props
     }: LinkProps) {
 
         super({
             tagName: 'a',
             props: {
-                className: clsx(styles.root, className),
+                className: clsx(
+                    'pointer',
+                    styles.root,
+                    className,
+                    styles[`root_${variant}`]
+                ),
                 type,
                 ...props,
             },

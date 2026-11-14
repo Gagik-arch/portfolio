@@ -2,7 +2,6 @@ import { Element } from '@nuvo-js/core';
 import styles from './style.module.css';
 import { clsx } from '$utils/clsx';
 import Typography from '$uikit/Typography';
-import Button from '$uikit/Button';
 import Image from '$uikit/Image';
 import logo from '$assets/images/app-icons/datewise.avif';
 import Link from '$uikit/Link';
@@ -53,13 +52,8 @@ export default new Element<HTMLDivElement>({
                         new Link({
                             href: 'https://www.npmjs.com/package/datewise',
                             target: '_blank',
-                            children: [
-                                new Button({
-                                    children: [ 'View npm' ],
-                                    variant: 'primary',
-                           
-                                }).dom
-                            ],
+                            variant: 'primary',
+                            children: [ 'View npm' ],
                         }).dom
                     ],
                 },
@@ -245,17 +239,9 @@ export default new Element<HTMLDivElement>({
             new Link({
                 href: 'https://datewise-khaki.vercel.app',
                 target: '_blank',
-                style: {
-                    marginTop: '20px',
-                    marginLeft: '4px',
-                },
-                children: [
-                    new Button({
-                        children: [ 'View demo' ],
-                        variant: 'primary',
-                           
-                    }).dom
-                ],
+                style: { marginLeft: '4px' },
+                variant: 'secondary',
+                children: [ 'View demo' ],
             }).dom
         ],
     },

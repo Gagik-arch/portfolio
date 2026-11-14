@@ -21,8 +21,7 @@ function Npm_Packages(props?: AppProps) {
                 tagName: 'div',
                 props: {
                     style: {
-
-                        padding: '10px',
+                        padding: '20px',
                     },
                     children: [
                         new Scroll({
@@ -37,7 +36,7 @@ function Npm_Packages(props?: AppProps) {
                 tagName: 'div',
                 props: {
                     style: {
-                        padding: '10px',
+                        padding: '20px',
                     },
                     children: [
                         new Scroll({

@@ -14,10 +14,11 @@
     height: var(--height);
     user-select: none;
     -webkit-user-drag: none;
-    z-index: 1;
+    /* z-index: 1; */
     outline: none;
     overflow: hidden;
     box-sizing: border-box;
+    z-index: 1;
 
     &::before {
         content: '';
@@ -59,6 +60,31 @@
     }
 }
 
+.focused {
+    z-index: 2 !important;
+
+    &::before {
+        backdrop-filter: blur(4px) saturate(50%);
+    }
+
+    .anchor {
+        background-color: transparent;
+        display: block
+    }
+
+    .close:not(:disabled) {
+        background-color: #FF736A;
+    }
+
+    .minimize:not(:disabled) {
+        background-color: #FEBC2E;
+    }
+
+    .maximize:not(:disabled) {
+        background-color: #19C332;
+    }
+}
+
 .traffic_light_container {
     display: inline-flex;
     position: absolute;
@@ -91,6 +117,7 @@
     left: 0;
     top: 0;
     border-radius: 20px 0 0 0;
+    background-color: blue
 }
 
 .left_bottom {

@@ -114,7 +114,7 @@ function Dock() {
        
         if (!app) return; 
 
-        desktopStore.setFocusApp(app.window.dom.id);
+        desktopStore.setFocusWindow(app.window.dom.id);
     };
 
     const onOpenAnimationEnd = (e: AnimationEvent, appName: keyof typeof APPS) => {
@@ -125,7 +125,7 @@ function Dock() {
         });
 
         desktopStore.addApp(app);
-        desktopStore.setFocusApp(app.window.dom.id);
+        desktopStore.setFocusWindow(app.window.dom.id);
     };
 
     const subscribers: (() => void)[] = [];
@@ -389,6 +389,7 @@ function Dock() {
                     className: `${styles.button} not-allowed`,
                     tabIndex: -1,
                     key: 'Trash',
+                    id: 'Trash',
                     children: [
                         new Image({
                             src: Trash,

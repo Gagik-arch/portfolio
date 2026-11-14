@@ -1,6 +1,8 @@
 import { Element } from '@nuvo-js/core';
 import styles from './styles.module.css';
-import type { WindowDimension, WindowProps } from './types';
+import type {
+    TResizeAnchor, WindowDimension, WindowProps 
+} from './types';
 import Controls from './Controls';
 import {
     genRandomNumber, getCssVariable,  
@@ -11,12 +13,13 @@ import desktopStore from '$store/desktop.store';
 import dockStyles from '../Dock/style.module.css';
 import dockIconsStore, { type IconType } from '$store/dockIcons.store';
 import { clsx } from '$utils/clsx';
+import WindowManager from './WindowManager';
+import { ANCHORS } from './constants';
+import isFocusableElement from '$utils/isFocusableElement';
 
 class Window extends Element<HTMLDivElement> {
     private readonly scale = getCssVariable<number>('--scale', document.body) || 1;
 
-    private isMouseDowned = false;
-    private resizeAnchor: 'top' | 'left' | 'right' | 'bottom' | 'right-bottom' | 'right-top' | 'left-top' | 'left-bottom' | undefined = undefined;
     private readonly borderSize = Math.round(6 * this.scale);
     private readonly width: number;
     private readonly height: number;
@@ -25,7 +28,8 @@ class Window extends Element<HTMLDivElement> {
     private x = 0;
     private y = 0;
     public createdAt: number;
-
+    private readonly manager = new WindowManager();
+    
     public constructor({ 
         children,
         width,
@@ -64,44 +68,62 @@ class Window extends Element<HTMLDivElement> {
         this.createdAt = new Date()
             .getTime();
         
+        const controls = Controls({
+            isResizable,
+            onClose: this.onClose,
+            onMinimize: this.onMinimize,
+            onMaximize: this.onMaximize,
+        });
+        
         this.SetProps({
             'data-is-resizable': isResizable.toString(),
             id: id || genRandomNumber(1_000_000, 90_000_000)
                 .toString(),
             children: [
-                Controls({
-                    isResizable,
-                    onClose: this.onClose,
-                    onMinimize: this.onMinimize,
-                    onMaximize: this.onMaximize,
-                }),
+                controls.dom,
+
                 ...(isResizable
                     ? [
                         new Element<HTMLSpanElement>({
                             tagName: 'span',
                             props: {
-                                className: `${styles.left_top} nw-resize ${styles.anchor}`,
+                                className: clsx(
+                                    styles.left_top,
+                                    'nw-resize',
+                                    styles.anchor
+                                ),
                             },
                         }).dom,
                         new Element<HTMLSpanElement>({
                             tagName: 'span',
                             props: {
-                                className: `${styles.left_bottom} ne-resize ${styles.anchor}`,
+                                className: clsx(
+                                    styles.left_bottom,
+                                    'ne-resize',
+                                    styles.anchor
+                                ),
                             },
                         }).dom,
                         new Element<HTMLSpanElement>({
                             tagName: 'span',
                             props: {
-                                className: `${styles.right_top} ne-resize ${styles.anchor}`,
+                                className: clsx(
+                                    styles.right_top,
+                                    'ne-resize',
+                                    styles.anchor
+                                ),
                             },
                         }).dom,
                         new Element<HTMLSpanElement>({
                             tagName: 'span',
                             props: {
-                                className: `${styles.right_bottom} nw-resize ${styles.anchor}`,
+                                className: clsx(
+                                    styles.right_bottom,
+                                    'nw-resize',
+                                    styles.anchor
+                                ),
                             },
                         }).dom
-
                     ]
                     : []),
                 ...(children ?? [])
@@ -144,36 +166,52 @@ class Window extends Element<HTMLDivElement> {
         this.dom.style.setProperty('--width', scaledWidth + 'px');
         this.dom.style.setProperty('--height', scaledHeight + 'px');
         
+        let subscriber:(() => void ) | undefined;
+
         this.OnMount(() => {
             desktop?.addEventListener('mousedown', this.onMouseDown);
             window.addEventListener('mousemove', this.onMove);
             window.addEventListener('mouseup', this.onMouseUp);
+
+            subscriber = desktopStore.Effect((state) => {
+                if (state.focusedAppId === this.dom.id) {
+                    controls.dom.classList.add(styles.focused);
+                } else { 
+                    controls.dom.classList.remove(styles.focused);
+                }
+            });
         });
 
         this.OnUnMount(() => {
             desktop?.removeEventListener('mousedown', this.onMouseDown);
             window.removeEventListener('mousemove', this.onMove);
             window.removeEventListener('mouseup', this.onMouseUp);
+            subscriber?.();
         });
     }
 
     private readonly onMove = (e: MouseEvent) => {
-        const desktop = document.getElementById( 'desktop')
+        const focusedAppId = desktopStore.GetState().focusedAppId;
+        
+        if (focusedAppId !== this.dom.id) return;
+        
+        const desktop = document.getElementById('desktop')
             ?.getBoundingClientRect();
-            
-        if (document.activeElement !== this.dom) return;
-        this.changeCursorAnchorHover(e);
-        const target = e.target as HTMLElement;
-        
-        if (target !== this.dom) { 
-            this.dom.classList.remove('n-resize', 'e-resize', 'grabbing');
+      
+        if (this.manager.isMouseDowned) {
+            if (this.dom.dataset.resizing === 'false') { 
+                this.dom.classList.add('grabbing');
+            }
+        } else { 
+            this.changeCursorAnchorHover(e, this.manager.resizeAnchor);
         }
-        
-        if (!this.isMouseDowned || !desktop) return;
+
+        if (!this.manager.isMouseDowned || !desktop) return;
 
         this.onResize(e);
-   
-        if (this.resizeAnchor) return; 
+
+        if (this.manager.resizeAnchor) return; 
+  
         const rect = this.dom.getBoundingClientRect();
 
         this.x = Math.round(clamp(rect.x + e.movementX, 0, window.innerWidth - rect.width));
@@ -185,45 +223,46 @@ class Window extends Element<HTMLDivElement> {
 
     private readonly onMouseDown = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
-        if (e.button !== 0 || target.closest(`.${styles.traffic_light}`)) return; 
+        const targetWindow = target.closest('.' + styles.root); 
 
-        if ( target === e.currentTarget ) { 
-            desktopStore.setFocusApp(undefined);
+        if (e.button !== 0 || target.closest(`.${styles.traffic_light}`) ) return; 
+
+        if (!targetWindow) {
+            desktopStore.setFocusWindow(undefined);
             return;
+        } else { 
+            if (isFocusableElement(target)) { 
+                return; 
+            }
         }
 
-        this.resizeAnchor = this.detectAnchorSide(e);
-        this.isMouseDowned = this.dom === target.closest('.' + styles.root);
-  
-        if (this.isMouseDowned) {
-            desktopStore.setFocusApp(this.dom.id);
-            this.SetProps({ 'data-resizing': !!this.resizeAnchor + '' });
+        this.manager.SetIsMouseDowned(this.dom === targetWindow);
+        this.manager.SetResizeAnchor(this.detectAnchorSide(e));
         
-            this.dom.focus();
+        if (this.manager.isMouseDowned) {
+            desktopStore.setFocusWindow(this.dom.id);
+            this.SetProps({ 'data-resizing': !!this.manager.resizeAnchor + '' });
         }
-
-        if (this.resizeAnchor) return; 
     };
 
     private readonly onMouseUp = () => {
-        this.resizeAnchor = undefined;
-        this.isMouseDowned = false;
-
-        this.dom.classList.remove('n-resize', 'e-resize', 'grabbing');
+        this.manager.SetResizeAnchor(undefined);
+        this.manager.SetIsMouseDowned(false);
+     
+        this.dom.classList.remove(...Object.values(ANCHORS), 'grabbing');
         this.SetProps({ 'data-resizing': 'false' });
     };
 
     private readonly onResize = (e: MouseEvent) => {
-        const scaledWidth = this.minWidth * this.scale;
-        const scaledHeight = this.minHeight * this.scale;
-        
         const desktop = document.getElementById( 'desktop')
             ?.getBoundingClientRect();
     
-        if (!this.resizeAnchor || !desktop || this.dom.dataset.resizing === 'false') return;
+        if (!this.manager.resizeAnchor || !desktop || this.dom.dataset.resizing === 'false') return;
         
         const rect = this.dom.getBoundingClientRect();
-       
+        const scaledWidth = this.minWidth * this.scale;
+        const scaledHeight = this.minHeight * this.scale;
+
         const onTop = () => {
             const height = (rect.height) - e.movementY;
 
@@ -248,8 +287,6 @@ class Window extends Element<HTMLDivElement> {
 
             setCSSVariable('--width', width + 'px', this.dom);
             setCSSVariable('--left', this.x + 'px', this.dom);
-
-            this.dom.classList.add('e-resize');
         };
 
         const onBottom = () => { 
@@ -264,7 +301,7 @@ class Window extends Element<HTMLDivElement> {
             setCSSVariable('--width', `${width}px`, this.dom);
         };
     
-        switch (this.resizeAnchor) {
+        switch (this.manager.resizeAnchor) {
                 case 'top':
                     onTop();
                     break;
@@ -298,53 +335,61 @@ class Window extends Element<HTMLDivElement> {
         }
     };
 
-    private readonly detectAnchorSide = (e: MouseEvent) => {
+    private readonly detectAnchorSide = (e: MouseEvent):TResizeAnchor => {
         const rect = this.dom.getBoundingClientRect();
    
-        const target = e.target as HTMLElement;
-        if (target.dataset.isResizable === 'false') return undefined; 
+        const target = (e.target as HTMLElement);
+
+        const currentTarget = (e.target as HTMLElement).closest(`.${styles.root}`) as HTMLElement | undefined;
+
+        const x = Math.floor(rect.x);
+        const y = Math.floor(rect.y);
+
+        if (currentTarget?.dataset.isResizable === 'false') return undefined;
         
         if ( target.classList.contains(styles.right_bottom)) return 'right-bottom';
         if ( target.classList.contains(styles.right_top)) return 'right-top';
         if ( target.classList.contains(styles.left_top)) return 'left-top';
         if ( target.classList.contains(styles.left_bottom)) return 'left-bottom';
-
-        if (!target.classList.contains(styles.root)) return undefined;
-
-        if (e.offsetX < this.borderSize) return 'left';
+     
+        if (e.clientX >= x && e.clientX <= x + this.borderSize) return 'left';
         
-        if (e.offsetX > rect.width - this.borderSize) return 'right';
+        if (e.clientX >= rect.right - this.borderSize && e.clientX <= rect.right ) return 'right';
         
-        if (e.offsetY < this.borderSize) return 'top';
+        if (e.clientY >= y && e.clientY <= y + this.borderSize) return 'top';
         
-        if (e.offsetY > rect.height - this.borderSize) return 'bottom';
+        if (e.clientY >= rect.bottom - this.borderSize && e.clientY <= rect.bottom ) return 'bottom';
         
         return undefined;
     };
 
-    private readonly changeCursorAnchorHover = (e:MouseEvent) => {
-        const anchor = this.detectAnchorSide(e);
-
-        const target = e.target as HTMLElement;
+    private readonly changeCursorAnchorHover = (e:MouseEvent, hoveredAnchor:TResizeAnchor | undefined) => {
+        const target = (e.target as HTMLElement).closest(`.${styles.root}`);
 
         if (target !== this.dom) return; 
+        
+        const anchor = hoveredAnchor || this.detectAnchorSide(e);
 
         switch (anchor) {
                 case 'right':
                 case 'left':
-                    this.dom.classList.add('e-resize');
+                    this.dom.classList.add(ANCHORS.vertical);
                     break;
                 case 'top':
                 case 'bottom':
-                    this.dom.classList.add('n-resize');
+                    this.dom.classList.add(ANCHORS.horizontal);
                     break;
+                case 'left-bottom':
+                case 'right-top':
+                    this.dom.classList.add(ANCHORS.ne);
+                    break;
+                case 'left-top':
+                case 'right-bottom':
+                    this.dom.classList.add(ANCHORS.nw);
+                    break;
+            
                 default:
-                    this.dom.classList.remove('n-resize');
-                    this.dom.classList.remove('e-resize');
-
-                    if (this.isMouseDowned ) {
-                        this.dom.classList.add('grabbing');
-                    }
+                    this.dom.classList.remove(...Object.values(ANCHORS));
                     break;
         }
     };

@@ -10,6 +10,7 @@ import Music from './Music';
 import Balljunge from './Balljunge';
 import Axis from './Axis';
 import Npm_Packages from './Npm-Packages';
+import Lorobanking from './Lorobanking';
     
 const APPS = {
     Calculator,
@@ -24,6 +25,7 @@ const APPS = {
     Balljunge,
     Axis,
     'Npm-packages': Npm_Packages,
+    Lorobanking,
 } as const;
     
 export default APPS;

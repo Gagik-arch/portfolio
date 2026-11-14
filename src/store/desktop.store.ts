@@ -31,6 +31,11 @@ const initialState: (DesktopIconType & { icon: string; })[] = [
     },
     {
         index: 5,
+        title: 'Lorobanking',
+        icon: 'Lorobanking',
+    },
+    {
+        index: 6,
         title: 'Axis',
         icon: 'Axis',
     }
@@ -62,7 +67,7 @@ class DesktopStore extends Store<AppsState> {
         }));
     }
 
-    public setFocusApp(id: AppsState['focusedAppId'] | undefined) { 
+    public setFocusWindow(id: AppsState['focusedAppId'] | undefined) { 
         this.SetState((state) => {
             const result:App[] = [];
             let target; 
