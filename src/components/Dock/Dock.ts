@@ -389,6 +389,7 @@ function Dock() {
                     className: `${styles.button} not-allowed`,
                     tabIndex: -1,
                     key: 'Trash',
+                    id: 'Trash',
                     children: [
                         new Image({
                             src: Trash,

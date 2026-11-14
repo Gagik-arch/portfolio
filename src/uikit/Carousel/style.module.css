@@ -1,13 +1,19 @@
 .root {
-    flex: 1;
+    display: grid;
+    z-index: -1;
     height: 100%;
+}
+
+.content {
     position: relative;
     overflow: hidden;
-    z-index: 2;
+    height: 100%;
+    z-index: -1;
 }
 
 .line {
     --offset: 0;
+
     display: grid;
     height: 100%;
     transition: all 260ms linear;
@@ -28,7 +34,7 @@
     grid-template-columns: repeat(2, 1fr);
 
     &>button {
-        z-index: 1;
+        z-index: 0;
         opacity: 0;
         transition: all 200ms ease-in;
 
@@ -54,7 +60,7 @@
     left: 0;
     right: 0;
     column-gap: 10px;
-    z-index: 1;
+    z-index: 0;
 
     &>button {
         width: 20px;

@@ -16,9 +16,9 @@ export type WindowProps = ElementPropsType & {
 
 export interface ControlProps {
     isResizable?: boolean;
-    onClose?: ()=>void;
-    onMinimize?: ()=>void;
-    onMaximize?: ()=>void;
+    onClose?: () => void;
+    onMinimize?: () => void;
+    onMaximize?: () => void;
 }
 
 export interface WindowDimension {
@@ -30,3 +30,5 @@ export interface WindowDimension {
     isResizable: WindowProps['isResizable'];
     createdAt: number;
 }
+
+export type TResizeAnchor = 'top' | 'left' | 'right' | 'bottom' | 'right-bottom' | 'right-top' | 'left-top' | 'left-bottom' | undefined; 
