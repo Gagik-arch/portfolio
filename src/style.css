@@ -39,10 +39,7 @@ body {
     flex-direction: column
 }
 
-a {
-    user-select: none;
-    -webkit-user-drag: none;
-}
+
 
 svg {
     pointer-events: none

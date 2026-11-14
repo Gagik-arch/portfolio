@@ -344,11 +344,11 @@ class Window extends Element<HTMLDivElement> {
     };
 
     private readonly changeCursorAnchorHover = (e:MouseEvent, hoveredAnchor:TResizeAnchor | undefined) => {
-        const anchor = hoveredAnchor || this.detectAnchorSide(e);
-
         const target = (e.target as HTMLElement).closest(`.${styles.root}`);
-
+        
         if (target !== this.dom) return; 
+        
+        const anchor = hoveredAnchor || this.detectAnchorSide(e);
 
         switch (anchor) {
                 case 'right':
@@ -365,7 +365,7 @@ class Window extends Element<HTMLDivElement> {
                     break;
                 case 'left-top':
                 case 'right-bottom':
-                    this.dom.classList.add(ANCHORS.ne);
+                    this.dom.classList.add(ANCHORS.nw);
                     break;
             
                 default:

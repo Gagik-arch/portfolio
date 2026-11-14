@@ -16,7 +16,7 @@ class Button extends Element<HTMLButtonElement> {
                 className: clsx(
                     'pointer',
                     styles.root,
-                    typeof className === 'function' ? undefined : className,
+                    className,
                     styles[`root_${variant}`]
                 ),
                 type,
