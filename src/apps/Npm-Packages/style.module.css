@@ -34,7 +34,13 @@
     display: flex;
     margin-bottom: 10px;
     position: relative;
-    justify-content: space-between
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    &>a {
+        position: absolute;
+        right: 0
+    }
 }
 
 .title {

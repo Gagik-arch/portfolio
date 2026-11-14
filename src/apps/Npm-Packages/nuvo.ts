@@ -2,7 +2,6 @@ import { Element } from '@nuvo-js/core';
 import styles from './style.module.css';
 import { clsx } from '$utils/clsx';
 import Typography from '$uikit/Typography';
-import Button from '$uikit/Button';
 import Link from '$uikit/Link';
 
 export default new Element<HTMLDivElement>({

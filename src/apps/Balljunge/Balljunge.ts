@@ -7,6 +7,7 @@ import Typography from '$uikit/Typography';
 import Scroll from '$uikit/Scroll/Scroll';
 import Button from '$uikit/Button';
 import { APP_IMAGES } from '$utils/constants';
+import { clsx } from '$utils/clsx';
 
 function Balljunge(props?:AppProps) { 
     return (
@@ -24,7 +25,9 @@ function Balljunge(props?:AppProps) {
                                 new Scroll({
                                     children: [
                                         new Typography({
-                                            text: 'Balljunge', variant: 'title2-emphasized', className: styles.title,
+                                            className: clsx( styles.title),
+                                            text: 'Balljunge',
+                                            variant: 'title2-emphasized',
                                         }).dom,
 
                                         new Typography({

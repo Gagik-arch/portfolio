@@ -224,16 +224,18 @@ class Window extends Element<HTMLDivElement> {
     private readonly onMouseDown = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
         const targetWindow = target.closest('.' + styles.root); 
-        
-        if (e.button !== 0 || target.closest(`.${styles.traffic_light}`)) return; 
-     
-        if (!target.closest(`.${styles.root}`) ) { 
+
+        if (e.button !== 0 || target.closest(`.${styles.traffic_light}`) ) return; 
+
+        if (!targetWindow) {
             desktopStore.setFocusWindow(undefined);
             return;
+        } else { 
+            if (isFocusableElement(target)) { 
+                return; 
+            }
         }
 
-        if (!targetWindow && isFocusableElement(target)) return; 
-        
         this.manager.SetIsMouseDowned(this.dom === targetWindow);
         this.manager.SetResizeAnchor(this.detectAnchorSide(e));
         
