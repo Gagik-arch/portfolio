@@ -16,4 +16,23 @@ export default defineConfig({
             $pages: resolve(__dirname, './src/pages'),
         },
     },
+    build: {
+    target: 'es2022',
+    minify: 'esbuild', // Fast and compact; or install 'terser' for slightly smaller output
+    sourcemap: false,  // Ensures no .map files bloat your dist/ folder
+    cssMinify: true,
+    assetsInlineLimit: 4096, // Inline assets smaller than 4KB as base64 to save HTTP requests
+    rollupOptions: {
+      output: {
+        // Split vendor libraries (@nuvo-js/core, datewise) into a separate cacheable chunk
+        manualChunks: {
+          vendor: ['@nuvo-js/core', 'datewise'],
+        },
+      },
+    },
+  },
+  esbuild: {
+    // Strip console logs and debugger statements in production builds
+    drop: ['console', 'debugger'],
+  },
 });
