@@ -83,29 +83,26 @@ function Desktop() {
 
     };
     
-    const desktopContainer = new Element<HTMLDivElement>({
-        tagName: 'div',
-        props: {
-            id: 'desktop',
-            className: styles.root,
-            events: {
-                onmousedown: (e) => {
-                    clearTimeout(timeout);
+    const desktopContainer = new Element<HTMLDivElement>('div', {
+        id: 'desktop',
+        className: styles.root,
+        events: {
+            onmousedown: (e) => {
+                clearTimeout(timeout);
 
-                    const target = (e.target as HTMLElement).closest('.' + styles.app_icon) as HTMLButtonElement | undefined;
+                const target = (e.target as HTMLElement).closest('.' + styles.app_icon) as HTMLButtonElement | undefined;
 
-                    if (!target) return; 
-                    const index = +(target.dataset.index || 0);
+                if (!target) return; 
+                const index = +(target.dataset.index || 0);
 
-                    target.classList.remove(styles.transition);
+                target.classList.remove(styles.transition);
              
-                    const app:DesktopIconType | undefined = desktopStore.GetState().appIcons
-                        .find(a => a.index === index);
+                const app:DesktopIconType | undefined = desktopStore.GetState().appIcons
+                    .find(a => a.index === index);
          
-                    if (!app) return; 
+                if (!app) return; 
                         
-                    appIcon = app;
-                },
+                appIcon = app;
             },
         },
     })

@@ -16,60 +16,54 @@ function Lorobanking(props?:AppProps) {
             window: new Window({
                 className: styles.root,
                 children: [ 
-                    new Element<HTMLDivElement>({
-                        tagName: 'div',
-                        props: {
-                            className: styles.content,
-                            children: [ 
-                                new Scroll({
-                                    children: [
-                                        new Typography({
-                                            className: clsx( styles.title),
-                                            text: 'Lorobanking',
-                                            variant: 'title2-emphasized',
-                                        }).dom,
+                    new Element<HTMLDivElement>('div', {
+                        className: styles.content,
+                        children: [ 
+                            new Scroll({
+                                children: [
+                                    new Typography({
+                                        className: clsx( styles.title),
+                                        text: 'Lorobanking',
+                                        variant: 'title2-emphasized',
+                                    }).dom,
 
-                                        new Typography({
-                                            text: 'Contributed to a SWIFT-based international transaction processing system for banking operations.', variant: 'title3-regular',
-                                            className: styles.subtitle,
-                                        }).dom,
+                                    new Typography({
+                                        text: 'Contributed to a SWIFT-based international transaction processing system for banking operations.', variant: 'title3-regular',
+                                        className: styles.subtitle,
+                                    }).dom,
 
-                                        new Element<HTMLDivElement>({
-                                            tagName: 'div',
-                                            props: {
-                                                style: {
-                                                    margin: '10px 0',
-                                                },
-                                                children: [
-                                                    new Typography({
-                                                        text: 'Used technologies: ', 
-                                                        isInline: true,
-                                                        variant: 'body-emphasized',
-                                                    }).dom,
-                                                    new Typography({
-                                                        text: 'Type script, React, Tailwind,', 
-                                                        isInline: true,
-                                                    }).dom
-                                                ],
-                                            },
-                                        }).dom,
+                                    new Element<HTMLDivElement>('div', {
+                                        style: {
+                                            margin: '10px 0',
+                                        },
+                                        children: [
+                                            new Typography({
+                                                text: 'Used technologies: ', 
+                                                isInline: true,
+                                                variant: 'body-emphasized',
+                                            }).dom,
+                                            new Typography({
+                                                text: 'Type script, React, Tailwind,', 
+                                                isInline: true,
+                                            }).dom
+                                        ],
+                                    }).dom,
                                 
-                                        new Typography({
-                                            text: 'Key contributions', 
-                                            variant: 'body-emphasized',
-                                            style: {
-                                                margin: '20px 0 10px 0', color: 'var(--accents-blue)', 
-                                            },
-                                        }).dom,
+                                    new Typography({
+                                        text: 'Key contributions', 
+                                        variant: 'body-emphasized',
+                                        style: {
+                                            margin: '20px 0 10px 0', color: 'var(--accents-blue)', 
+                                        },
+                                    }).dom,
 
-                                        new Typography({
-                                            text: ' Implemented MT message parsing, validation, and routing functionality within the transaction workflow.', 
-                                        }).dom
+                                    new Typography({
+                                        text: ' Implemented MT message parsing, validation, and routing functionality within the transaction workflow.', 
+                                    }).dom
                                        
-                                    ],
-                                }).dom
-                            ],
-                        },
+                                ],
+                            }).dom
+                        ],
                     }).dom
 
                 ],

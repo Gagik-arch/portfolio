@@ -5,24 +5,18 @@ import type { SVGElementPropsType } from '@nuvo-js/core/types';
 
 function ChevronRight(props: SVGElementPropsType) {
     return (
-        new SVGElement({
-            tagName: 'svg',
-            props: {
-                viewBox: '0 0 16 16',
-                stroke: 'currentColor',
-                xmlns: 'http://www.w3.org/2000/svg',
-                strokeLinecap: 'round',
-                strokeLinejoin: 'round',
-                ...props,
-                children: [
-                    new SVGElement<SVGPathElement>({
-                        tagName: 'path',
-                        props: {
-                            d: 'M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z',
-                        },
-                    }).dom
-                ],
-            },
+        new SVGElement('svg', {
+            viewBox: '0 0 16 16',
+            stroke: 'currentColor',
+            xmlns: 'http://www.w3.org/2000/svg',
+            strokeLinecap: 'round',
+            strokeLinejoin: 'round',
+            ...props,
+            children: [
+                new SVGElement<SVGPathElement>('path', {
+                    d: 'M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z',
+                }).dom
+            ],
         }).dom
     );
 }

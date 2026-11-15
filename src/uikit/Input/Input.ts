@@ -8,17 +8,14 @@ class Input extends Element<HTMLInputElement> {
         className,
         ...props
     }: InputProps) {
-        super({
-            tagName: 'input',
-            props: {
-                className: [
-                    'input_base',
-                    className
-                ].join(' '),
-                type,
-                autocomplete,
-                ...props,
-            },
+        super('input', {
+            className: [
+                'input_base',
+                className
+            ].join(' '),
+            type,
+            autocomplete,
+            ...props,
         });
     }
 }

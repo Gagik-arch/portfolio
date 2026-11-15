@@ -29,17 +29,17 @@ export const generateCalendarAppIcon = async () => {
     const width = 256, 
             height = 256;
 
-    const canvas = new Element<HTMLCanvasElement>({
-        rootElement: document.body,
-        tagName: 'canvas',
-        props: {
+    const canvas = new Element<HTMLCanvasElement>(
+        'canvas',
+        {
             id: 'fake-canvas',
             style: {
                 display: 'none',
                 backgroundColor: 'transparent',
             },
         },
-    });
+        document.body
+    );
         
     canvas.dom.width = width;
     canvas.dom.height = height;

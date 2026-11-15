@@ -22,52 +22,43 @@ class Carousel extends Element<HTMLDivElement> {
         const stack = images || views;
         let timer: number | undefined;
     
-        const line = new Element<HTMLDivElement>({
-            tagName: 'div',
-            props: {
-                className: styles.line,
-                style: {
-                    gridTemplateColumns: `repeat(${stack.length}, 100%)`,
-                },
-                children: images
-                    ? images.map(img => {
-                        return (
-                            new Element<HTMLDivElement>({
-                                tagName: 'div',
-                                props: {
-                                    children: [
-                                        new Image({
-                                            className: styles.image,
-                                            src: img,
-                                        }).dom
-                                    ],
-                                },
-                            }).dom
-                        );
-               
-                    })
-                    : views.map(view => view),
+        const line = new Element<HTMLDivElement>('div', {
+            className: styles.line,
+            style: {
+                gridTemplateColumns: `repeat(${stack.length}, 100%)`,
             },
+            children: images
+                ? images.map(img => {
+                    return (
+                        new Element<HTMLDivElement>('div', {
+                            children: [
+                                new Image({
+                                    className: styles.image,
+                                    src: img,
+                                }).dom
+                            ],
+                        }).dom
+                    );
+               
+                })
+                : views.map(view => view),
         });
 
         const dots = showDots
-            ? new Element<HTMLDivElement>({
-                tagName: 'div',
-                props: {
-                    className: styles.dots,
-                    children: stack.map((_, index) => {
-                        return (
-                            new Button({
-                                className: index === 0 ? styles.active : undefined,
-                                events: {
-                                    onclick: () => {
-                                        setCSSVariable('--offset', index.toString(), line.dom);
-                                    },
+            ? new Element<HTMLDivElement>('div', {
+                className: styles.dots,
+                children: stack.map((_, index) => {
+                    return (
+                        new Button({
+                            className: index === 0 ? styles.active : undefined,
+                            events: {
+                                onclick: () => {
+                                    setCSSVariable('--offset', index.toString(), line.dom);
                                 },
-                            }).dom
-                        );
-                    }),
-                },
+                            },
+                        }).dom
+                    );
+                }),
             })
             : undefined; 
   
@@ -125,65 +116,56 @@ class Carousel extends Element<HTMLDivElement> {
                 mutation();
             });
 
-        super({
-            tagName: 'div',
-            props: {
-                className: styles.root,
-                children: [ 
-                    new Element({
-                        tagName: 'div',
-                        props: {
-                            className: styles.content,
-                            children: [
-                                line.dom,
-                                dots?.dom,
+        super('div', {
+            className: styles.root,
+            children: [ 
+                new Element('div', {
+                    className: styles.content,
+                    children: [
+                        line.dom,
+                        dots?.dom,
 
-                                (showToggles
-                                    ? new Element<HTMLDivElement>({
-                                        tagName: 'div',
-                                        props: {
-                                            className: clsx(styles.toggles),
-                                            children: [
-                                                new Button({
-                                                    className: styles.left,
-                                                    children: [
-                                                        new Icon('ChevronLeft', {
-                                                            size: 50,
-                                                            stroke: 'rgba(255,255,255,0.6)',
-                                                        }).dom 
-                                                    ],
-                                                    events: {
-                                                        onclick: () => {
-                                                            onLeft();
-                                                            loop();
-                                                        },
-                                                    },
-                                                }).dom,
+                        (showToggles
+                            ? new Element<HTMLDivElement>('div', {
+                                className: clsx(styles.toggles),
+                                children: [
+                                    new Button({
+                                        className: styles.left,
+                                        children: [
+                                            new Icon('ChevronLeft', {
+                                                size: 50,
+                                                stroke: 'rgba(255,255,255,0.6)',
+                                            }).dom 
+                                        ],
+                                        events: {
+                                            onclick: () => {
+                                                onLeft();
+                                                loop();
+                                            },
+                                        },
+                                    }).dom,
 
-                                                new Button({
-                                                    className: styles.right,
-                                                    children: [
-                                                        new Icon('ChevronRight', {
-                                                            size: 50,
-                                                            stroke: 'rgba(255,255,255,0.6)',
-                                                        }).dom 
-                                                    ],
-                                                    events: {
-                                                        onclick: () => {
-                                                            onRight();
-                                                            loop();
-                                                        },
-                                                    },
-                                                }).dom
-                                            ],
+                                    new Button({
+                                        className: styles.right,
+                                        children: [
+                                            new Icon('ChevronRight', {
+                                                size: 50,
+                                                stroke: 'rgba(255,255,255,0.6)',
+                                            }).dom 
+                                        ],
+                                        events: {
+                                            onclick: () => {
+                                                onRight();
+                                                loop();
+                                            },
                                         },
                                     }).dom
-                                    : null )
-                            ],
-                        },
-                    }).dom
-                ],
-            },
+                                ],
+                            }).dom
+                            : null )
+                    ],
+                }).dom
+            ],
         });
     }
 

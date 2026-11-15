@@ -19,11 +19,8 @@ class Tabs extends Element<HTMLDivElement> {
     }: TabsProps) {
         let effect: (() => void) | undefined;
 
-        const selected = new Element<HTMLDivElement>({
-            tagName: 'div',
-            props: {
-                className: styles.selected,
-            },
+        const selected = new Element<HTMLDivElement>('div', {
+            className: styles.selected,
         })
             .OnMount(() => {
                 effect = this.index.Effect(val => {
@@ -53,30 +50,27 @@ class Tabs extends Element<HTMLDivElement> {
             this.index.SetState(Number(target.dataset.index));
         };
 
-        super({
-            tagName: 'div',
-            props: {
-                className: clsx(
-                    styles.root,
-                    className
-                ),
-                events: {
-                    onclick: onPress,
-                },
-                children: [
-                    selected.dom,
-                         
-                    ...tabs.map((tab, index) => {
-                        return (
-                            new Button({
-                                className: styles.tab,
-                                ['data-index']: index.toString(),
-                                children: [ tab ],
-                            }).dom
-                        );
-                    })
-                ],
+        super('div', {
+            className: clsx(
+                styles.root,
+                className
+            ),
+            events: {
+                onclick: onPress,
             },
+            children: [
+                selected.dom,
+                         
+                ...tabs.map((tab, index) => {
+                    return (
+                        new Button({
+                            className: styles.tab,
+                            ['data-index']: index.toString(),
+                            children: [ tab ],
+                        }).dom
+                    );
+                })
+            ],
         });
 
         this.index.SetState(defaultSelected);

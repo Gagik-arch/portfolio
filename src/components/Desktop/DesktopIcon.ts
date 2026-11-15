@@ -25,29 +25,23 @@ function DesktopIcon({
             onmousedown: onMouseDown, 
         },
         children: [
-            new Element<HTMLDivElement>({
-                tagName: 'div',
-                props: {
-                    className: styles.image_container,
-                    children: [
-                        new Image({
-                            src: getAppIcon(title),
-                        }).dom
-                    ],
-                },
+            new Element<HTMLDivElement>('div', {
+                className: styles.image_container,
+                children: [
+                    new Image({
+                        src: getAppIcon(title),
+                    }).dom
+                ],
             }).dom,
-            new Element<HTMLDivElement>({
-                tagName: 'div',
-                props: {
-                    className: styles.title_wrapper,
-                    children: [
-                        new Typography({
-                            text: title.replace('-', ' '),
-                            className: styles.title,
-                            variant: 'caption2-emphasized',
-                        }).dom
-                    ],
-                },
+            new Element<HTMLDivElement>('div', {
+                className: styles.title_wrapper,
+                children: [
+                    new Typography({
+                        text: title.replace('-', ' '),
+                        className: styles.title,
+                        variant: 'caption2-emphasized',
+                    }).dom
+                ],
             }).dom
         ],
     });

@@ -10,18 +10,15 @@ class Button extends Element<HTMLButtonElement> {
         className = '',
         ...props
     }: ButtonProps) {
-        super({
-            tagName: 'button',
-            props: {
-                className: clsx(
-                    'pointer',
-                    styles.root,
-                    className,
-                    styles[`root_${variant}`]
-                ),
-                type,
-                ...props,
-            },
+        super('button', {
+            className: clsx(
+                'pointer',
+                styles.root,
+                className,
+                styles[`root_${variant}`]
+            ),
+            type,
+            ...props,
         });
     }
 }

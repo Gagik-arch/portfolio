@@ -13,37 +13,31 @@ class Scroll extends Element<HTMLDivElement> {
     }: ScrollProps) {
         let timeout: number | undefined;
         
-        super({
-            tagName: 'div',
-            props: {
-                className: clsx(className, styles.root),
-                children: [
-                    new Element<HTMLDivElement>({
-                        tagName: 'div',
-                        props: {
-                            id: styles.scroll,
-                            events: {
-                                onmouseleave: (e) => {
-                                    const target = e.currentTarget as HTMLDivElement;
+        super('div', {
+            className: clsx(className, styles.root),
+            children: [
+                new Element<HTMLDivElement>('div', {
+                    id: styles.scroll,
+                    events: {
+                        onmouseleave: (e) => {
+                            const target = e.currentTarget as HTMLDivElement;
                 
-                                    timeout = setTimeout(() => {
-                                        target.classList.remove(styles.visible);
-                                    }, 2000);
-                                },
-                                onmouseenter: (e) => { 
-                                    clearTimeout(timeout);
-
-                                    const target = e.currentTarget as HTMLDivElement;
-
-                                    target.classList.add(styles.visible);
-                                },
-                            },
-                            children,
+                            timeout = setTimeout(() => {
+                                target.classList.remove(styles.visible);
+                            }, 2000);
                         },
-                    }).dom
-                ],
-                ...props,
-            },
+                        onmouseenter: (e) => { 
+                            clearTimeout(timeout);
+
+                            const target = e.currentTarget as HTMLDivElement;
+
+                            target.classList.add(styles.visible);
+                        },
+                    },
+                    children,
+                }).dom
+            ],
+            ...props,
         });
     }
 }

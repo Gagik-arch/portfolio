@@ -17,17 +17,14 @@ class Typography extends Element<HTMLDivElement> {
     }:TypographyProps) {
         const size = variants[variant.split('-')[0] as Size];
  
-        super({
-            tagName: isInline ? 'span' : 'div',
-            props: {
-                children: [ text ],
-                className: clsx(
-                    className,
-                    variant.split('-')[0],
-                    size[variant.split('-')[1] as keyof typeof size]
-                ),
-                style,
-            },
+        super(isInline ? 'span' : 'div', {
+            children: [ text ],
+            className: clsx(
+                className,
+                variant.split('-')[0],
+                size[variant.split('-')[1] as keyof typeof size]
+            ),
+            style,
         });
     }
 }

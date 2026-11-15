@@ -24,141 +24,133 @@ function MenuBar() {
         .format(date);
     
     return (
-        new Element<HTMLDivElement>({
+        new Element<HTMLDivElement>('div', {
             tagName: 'div',
-            props: {
-                className: styles.root,
-                children: [
-                    new Element<HTMLDivElement>({
-                        tagName: 'div',
-                        props: {
-                            className: styles.group_leading,
+            className: styles.root,
+            children: [
+                new Element<HTMLDivElement>('div', {
+                    className: styles.group_leading,
+                    children: [
+                        new Button({
+                            className: `not-allowed ${styles.item}`,
+                            children: [ new Icon('MinLogo').dom ],
+                        }).dom,
+
+                        new Button({
+                            className: `not-allowed ${styles.item}`,
                             children: [
-                                new Button({
-                                    className: `not-allowed ${styles.item}`,
-                                    children: [ new Icon('MinLogo').dom ],
-                                }).dom,
-
-                                new Button({
-                                    className: `not-allowed ${styles.item}`,
-                                    children: [
-                                        new Typography({
-                                            text: 'Finder',
-                                            variant: 'headline-regular',
-                                        })
-                                            .OnMount((e) => {
-                                                desktopStore.Subscribe((state) => {
-                                                    const app = state.activeApps.find(a => a.window.dom.id === state.focusedAppId);
-                                                 
-                                                    e.SetProps({
-                                                        children: [ app?.name.replace('-', ' ') || 'Finder' ],
-                                                    });
-                                                });
-                                            }).dom 
-                                    ],
-                                }).dom,
-
-                                new Button({
-                                    className: `not-allowed ${styles.item}`,
-                                    children: [
-                                        new Typography({
-                                            text: 'Edit', variant: 'body-emphasized',
-                                        }).dom 
-                                    ],
-                                }).dom,
-
-                                new Button({
-                                    className: `not-allowed ${styles.item}`,
-                                    children: [
-                                        new Typography({
-                                            text: 'View', variant: 'body-emphasized',
-                                        }).dom 
-                                    ],
-                                }).dom,
-
-                                new Button({
-                                    className: `not-allowed ${styles.item}`,
-                                    children: [
-                                        new Typography({
-                                            text: 'Window', variant: 'body-emphasized',
-                                        }).dom 
-                                    ],
-                                }).dom,
-
-                                new Button({
-                                    className: `not-allowed ${styles.item}`,
-                                    children: [
-                                        new Typography({
-                                            text: 'Help', variant: 'body-emphasized',
-                                        }).dom 
-                                    ],
-                                }).dom
-                            ],
-                        },
-                    }).dom,
-
-                    new Element<HTMLDivElement>({
-                        tagName: 'div',
-                        props: {
-                            className: styles.group_trailing,
-                            children: [
-                                new Button({
-                                    className: `not-allowed ${styles.item}`,
-                                    children: [ new Icon('Wifi', { size: 18 } ).dom ],
-                                }).dom,
-
-                                new Button({
-                                    className: `not-allowed ${styles.item}`,
-                                    children: [ new Icon('Search', { size: 18 } ).dom ],
-                                }).dom,
-
-                                new Button({
-                                    className: `not-allowed ${styles.item}`,
-                                    children: [ new Icon('UserCircle', { size: 18 } ).dom ],
-                                }).dom,
-
-                                new Button({
-                                    className: `not-allowed ${styles.item}`,
-                                    children: [ new Icon('ControlCenter', { size: 20 } ).dom ],
-                                }).dom,
-
-                                new Button({
-                                    className: `not-allowed ${styles.item} `,
-                                    children: [
-
-                                        new Typography({
-                                            text: gbDateTime,
-                                            variant: 'body-emphasized',
-                                            children: [ a.toString() ],
-                                        })
-                                            .OnMount((e) => {
-                                                const check = () => {
-                                                    timeout = setTimeout(() => {
-                                                   
-                                                        e.SetProps({
-                                                            children: [
-                                                                format
-                                                                    .format(new Date())
-                                                            ],
-                                                        });
-                                                        
-                                                        check();
-                                                    }, 60 * 10);
-                                                };
-
-                                                check();
-                                            })
-                                            .OnUnMount(() => {
-                                                clearTimeout(timeout);
-                                            }).dom 
-                                    ],
+                                new Typography({
+                                    text: 'Finder',
+                                    variant: 'headline-regular',
                                 })
-                                    .dom
+                                    .OnMount((e) => {
+                                        desktopStore.Subscribe((state) => {
+                                            const app = state.activeApps.find(a => a.window.dom.id === state.focusedAppId);
+                                                 
+                                            e.SetProps({
+                                                children: [ app?.name.replace('-', ' ') || 'Finder' ],
+                                            });
+                                        });
+                                    }).dom 
                             ],
-                        },
-                    }).dom
-                ],
-            },
+                        }).dom,
+
+                        new Button({
+                            className: `not-allowed ${styles.item}`,
+                            children: [
+                                new Typography({
+                                    text: 'Edit', variant: 'body-emphasized',
+                                }).dom 
+                            ],
+                        }).dom,
+
+                        new Button({
+                            className: `not-allowed ${styles.item}`,
+                            children: [
+                                new Typography({
+                                    text: 'View', variant: 'body-emphasized',
+                                }).dom 
+                            ],
+                        }).dom,
+
+                        new Button({
+                            className: `not-allowed ${styles.item}`,
+                            children: [
+                                new Typography({
+                                    text: 'Window', variant: 'body-emphasized',
+                                }).dom 
+                            ],
+                        }).dom,
+
+                        new Button({
+                            className: `not-allowed ${styles.item}`,
+                            children: [
+                                new Typography({
+                                    text: 'Help', variant: 'body-emphasized',
+                                }).dom 
+                            ],
+                        }).dom
+                    ],
+                }).dom,
+
+                new Element<HTMLDivElement>('div', {
+                    className: styles.group_trailing,
+                    children: [
+                        new Button({
+                            className: `not-allowed ${styles.item}`,
+                            children: [ new Icon('Wifi', { size: 18 } ).dom ],
+                        }).dom,
+
+                        new Button({
+                            className: `not-allowed ${styles.item}`,
+                            children: [ new Icon('Search', { size: 18 } ).dom ],
+                        }).dom,
+
+                        new Button({
+                            className: `not-allowed ${styles.item}`,
+                            children: [ new Icon('UserCircle', { size: 18 } ).dom ],
+                        }).dom,
+
+                        new Button({
+                            className: `not-allowed ${styles.item}`,
+                            children: [ new Icon('ControlCenter', { size: 20 } ).dom ],
+                        }).dom,
+
+                        new Button({
+                            className: `not-allowed ${styles.item} `,
+                            children: [
+
+                                new Typography({
+                                    text: gbDateTime,
+                                    variant: 'body-emphasized',
+                                    children: [ a.toString() ],
+                                })
+                                    .OnMount((e) => {
+                                        const check = () => {
+                                            timeout = setTimeout(() => {
+                                                   
+                                                e.SetProps({
+                                                    children: [
+                                                        format
+                                                            .format(new Date())
+                                                    ],
+                                                });
+                                                        
+                                                check();
+                                            }, 60 * 10);
+                                        };
+
+                                        check();
+                                    })
+                                    .OnUnMount(() => {
+                                        clearTimeout(timeout);
+                                    }).dom 
+                            ],
+                        })
+                            .dom
+                    ],
+                }).dom
+            ],
         })
             .dom
     );
