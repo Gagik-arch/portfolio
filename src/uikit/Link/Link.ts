@@ -11,18 +11,15 @@ class Link extends Element<HTMLAnchorElement> {
         ...props
     }: LinkProps) {
 
-        super({
-            tagName: 'a',
-            props: {
-                className: clsx(
-                    'pointer',
-                    styles.root,
-                    className,
-                    styles[`root_${variant}`]
-                ),
-                type,
-                ...props,
-            },
+        super('a', {
+            className: clsx(
+                'pointer',
+                styles.root,
+                className,
+                styles[`root_${variant}`]
+            ),
+            type,
+            ...props,
         });
     }
 }

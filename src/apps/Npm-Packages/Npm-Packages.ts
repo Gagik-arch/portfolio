@@ -17,34 +17,28 @@ function Npm_Packages(props?: AppProps) {
         showToggles: false,
         showDots: false,
         views: [
-            new Element<HTMLDivElement>({
-                tagName: 'div',
-                props: {
-                    style: {
-                        padding: '20px',
-                    },
-                    children: [
-                        new Scroll({
-                            className: styles.scroll,
-                            children: [ nuvo.dom ],
-                        }).dom
-                    ],
+            new Element<HTMLDivElement>('div', {
+                style: {
+                    padding: '20px',
                 },
+                children: [
+                    new Scroll({
+                        className: styles.scroll,
+                        children: [ nuvo.dom ],
+                    }).dom
+                ],
             }).dom, 
 
-            new Element<HTMLDivElement>({
-                tagName: 'div',
-                props: {
-                    style: {
-                        padding: '20px',
-                    },
-                    children: [
-                        new Scroll({
-                            className: styles.scroll,
-                            children: [ datewise.dom ],
-                        }).dom  
-                    ],
+            new Element<HTMLDivElement>('div', {
+                style: {
+                    padding: '20px',
                 },
+                children: [
+                    new Scroll({
+                        className: styles.scroll,
+                        children: [ datewise.dom ],
+                    }).dom  
+                ],
             }).dom 
                                 
         ],

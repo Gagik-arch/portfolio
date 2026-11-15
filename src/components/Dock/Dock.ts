@@ -130,17 +130,14 @@ function Dock() {
 
     const subscribers: (() => void)[] = [];
 
-    const dock = new Element<HTMLDivElement>({
-        tagName: 'div',
-        props: {
-            id: 'dock',
-            events: {
-                onmousemove: onMouseMove,
-                onmouseleave: onMouseLeave,
-                onmouseenter: onMouseEnter,
-            },
-            className: `${styles.root} dock`,
+    const dock = new Element<HTMLDivElement>('div', {
+        id: 'dock',
+        events: {
+            onmousemove: onMouseMove,
+            onmouseleave: onMouseLeave,
+            onmouseenter: onMouseEnter,
         },
+        className: `${styles.root} dock`,
     })
         .OnMount(e => {
             setCSSVariable(

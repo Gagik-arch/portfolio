@@ -20,16 +20,13 @@ function App() {
 
     return (
         [
-            new Element<HTMLDivElement>({
-                tagName: 'div',
-                props: {
-                    id: 'container',
-                    children: [
-                        MenuBar(),
-                        Desktop(),
-                        Dock()
-                    ],
-                },
+            new Element<HTMLDivElement>('div', {
+                id: 'container',
+                children: [
+                    MenuBar(),
+                    Desktop(),
+                    Dock()
+                ],
             }).dom
         ]
     );

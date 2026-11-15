@@ -17,74 +17,66 @@ function Balljunge(props?:AppProps) {
             window: new Window({
                 className: styles.root,
                 children: [ 
-                    new Element<HTMLDivElement>({
+                    new Element<HTMLDivElement>('div', {
                         tagName: 'div',
-                        props: {
-                            className: styles.content,
-                            children: [ 
-                                new Scroll({
-                                    children: [
-                                        new Typography({
-                                            className: clsx( styles.title),
-                                            text: 'Balljunge',
-                                            variant: 'title2-emphasized',
-                                        }).dom,
+                        className: styles.content,
+                        children: [ 
+                            new Scroll({
+                                children: [
+                                    new Typography({
+                                        className: clsx( styles.title),
+                                        text: 'Balljunge',
+                                        variant: 'title2-emphasized',
+                                    }).dom,
 
-                                        new Typography({
-                                            text: 'Soccer players statistic collector app.', variant: 'title3-regular',
-                                            className: styles.subtitle,
-                                        }).dom,
+                                    new Typography({
+                                        text: 'Soccer players statistic collector app.', variant: 'title3-regular',
+                                        className: styles.subtitle,
+                                    }).dom,
 
-                                        new Element<HTMLDivElement>({
-                                            tagName: 'div',
-                                            props: {
-                                                style: {
-                                                    margin: '10px 0',
-                                                },
-                                                children: [
-                                                    new Typography({
-                                                        text: 'Used technologies: ', 
-                                                        isInline: true,
-                                                        variant: 'body-emphasized',
-                                                    }).dom,
-                                                    new Typography({
-                                                        text: 'Type script, React Native CLI ', 
-                                                        isInline: true,
-                                                    }).dom
-                                                ],
-                                            },
-                                        }).dom,
+                                    new Element<HTMLDivElement>('div', {
+                                        style: {
+                                            margin: '10px 0',
+                                        },
+                                        children: [
+                                            new Typography({
+                                                text: 'Used technologies: ', 
+                                                isInline: true,
+                                                variant: 'body-emphasized',
+                                            }).dom,
+                                            new Typography({
+                                                text: 'Type script, React Native CLI ', 
+                                                isInline: true,
+                                            }).dom
+                                        ],
+                                    }).dom,
                                 
-                                        new Typography({
-                                            text: 'Key contributions', 
-                                            variant: 'body-emphasized',
-                                            style: {
-                                                margin: '20px 0 10px 0', color: 'var(--accents-blue)', 
-                                            },
-                                        }).dom,
+                                    new Typography({
+                                        text: 'Key contributions', 
+                                        variant: 'body-emphasized',
+                                        style: {
+                                            margin: '20px 0 10px 0', color: 'var(--accents-blue)', 
+                                        },
+                                    }).dom,
 
-                                        new Typography({
-                                            text: 'Balljunge is an app the target of which are football clubs and trainers. The trainers or the invited assistants can record the match actions and get the effectiveness statistics of the team both per player and per game. The uniqueness of the app is also the subscription plans (3 subscription plans-Bambini, Junior, Pro). Each plan has a different UI engaging more actions for recording than the previous one. This makes the app usage wider from law class clubs to professional football clubs and trainers.', 
-                                        }).dom,
+                                    new Typography({
+                                        text: 'Balljunge is an app the target of which are football clubs and trainers. The trainers or the invited assistants can record the match actions and get the effectiveness statistics of the team both per player and per game. The uniqueness of the app is also the subscription plans (3 subscription plans-Bambini, Junior, Pro). Each plan has a different UI engaging more actions for recording than the previous one. This makes the app usage wider from law class clubs to professional football clubs and trainers.', 
+                                    }).dom,
 
-                                        new Element<HTMLDivElement>({
-                                            tagName: 'div',
-                                            props: {
-                                                className: styles.toggle_container,
-                                                children: [
-                                                    new Link({
-                                                        variant: 'primary',
-                                                        children: [ 'View' ],
-                                                        href: 'https://beewebsystems.com/work/Balljunge',
-                                                        target: '_blank',
-                                                    }).dom
-                                                ],
-                                            },
-                                        }).dom
-                                    ],
-                                }).dom
-                            ],
-                        },
+                                    new Element<HTMLDivElement>('div', {
+                                        className: styles.toggle_container,
+                                        children: [
+                                            new Link({
+                                                variant: 'primary',
+                                                children: [ 'View' ],
+                                                href: 'https://beewebsystems.com/work/Balljunge',
+                                                target: '_blank',
+                                            }).dom
+                                        ],
+                                    }).dom
+                                ],
+                            }).dom
+                        ],
                     }).dom
 
                 ],

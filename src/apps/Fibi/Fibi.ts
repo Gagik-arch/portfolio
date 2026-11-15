@@ -27,209 +27,176 @@ function Fibi(props?: AppProps) {
                 className: styles.root,
                 backgroundColor: 'rgba(0,0,0,0.9)',
                 children: [ 
-                    new Element<HTMLDivElement>({
-                        tagName: 'div',
-                        props: {
-                            className: styles.carousel,
-                            children: [
-                                new Carousel({
-                                    images: [
-                                        i1,
-                                        i2,
-                                        i3,
-                                        i4,
-                                        i5,
-                                        i6,
-                                        i7,
-                                        i8,
-                                        i9
-                                    ],
-                                }).dom
-                            ],
-                        },
+                    new Element<HTMLDivElement>('div', {
+                        className: styles.carousel,
+                        children: [
+                            new Carousel({
+                                images: [
+                                    i1,
+                                    i2,
+                                    i3,
+                                    i4,
+                                    i5,
+                                    i6,
+                                    i7,
+                                    i8,
+                                    i9
+                                ],
+                            }).dom
+                        ],
                     }).dom,
 
-                    new Element<HTMLDivElement>({
-                        tagName: 'div',
-                        props: {
-                            className: styles.content,
-                            children: [ 
-                                new Scroll({
-                                    children: [
-                                        new Typography({
-                                            text: 'Fibi', variant: 'title1-regular', className: styles.title,
-                                        }).dom,
+                    new Element<HTMLDivElement>('div', {
+                        className: styles.content,
+                        children: [ 
+                            new Scroll({
+                                children: [
+                                    new Typography({
+                                        text: 'Fibi', variant: 'title1-regular', className: styles.title,
+                                    }).dom,
 
-                                        new Typography({
-                                            text: 'React Native Engineer — Video Streaming Platform', variant: 'title3-regular',
-                                            className: styles.subtitle,
-                                        }).dom,
+                                    new Typography({
+                                        text: 'React Native Engineer — Video Streaming Platform', variant: 'title3-regular',
+                                        className: styles.subtitle,
+                                    }).dom,
 
-                                        new Typography({
-                                            text: 'Android · iOS · WebOS · TizenOS', variant: 'headline-regular',
-                                            className: styles.subtitle,
-                                        }).dom,
+                                    new Typography({
+                                        text: 'Android · iOS · WebOS · TizenOS', variant: 'headline-regular',
+                                        className: styles.subtitle,
+                                    }).dom,
                                 
-                                        new Element<HTMLDivElement>({
-                                            tagName: 'div',
-                                            props: {
-                                                style: {
-                                                    margin: '10px 0',
-                                                },
+                                    new Element<HTMLDivElement>('div', {
+                                        style: {
+                                            margin: '10px 0',
+                                        },
+                                        children: [
+                                            new Typography({
+                                                text: 'Used technologies: ', 
+                                                isInline: true,
+                                                variant: 'body-emphasized',
+                                            }).dom,
+                                            new Typography({
+                                                text: 'React Native Expo, Type script.', 
+                                                isInline: true,
+                                            }).dom
+                                        ],
+                                    }).dom,
+
+                                    new Typography({
+                                        text: 'Built and maintained a fully cross-platform video streaming application using React Native, delivering a smooth, high-performance experience across (Android/Apple) and smart TVs (LG WebOS, Samsung Tizen).', 
+                                    }).dom,
+                                
+                                    new Typography({
+                                        text: 'Key contributions', 
+                                        variant: 'body-emphasized',
+                                        style: {
+                                            margin: '20px 0 10px 0', color: 'var(--accents-blue)', 
+                                        },
+                                    }).dom,
+                                
+                                    new Element<HTMLUListElement>('ul', {
+                                        className: styles.list,
+                                        children: [
+                                            new Element<HTMLLIElement>('li', {
                                                 children: [
                                                     new Typography({
-                                                        text: 'Used technologies: ', 
+                                                        text: 'Advanced Video Playback: ', 
                                                         isInline: true,
                                                         variant: 'body-emphasized',
                                                     }).dom,
                                                     new Typography({
-                                                        text: 'React Native Expo, Type script.', 
+                                                        text: 'Implemented custom video players with HLS/DASH, DRM support, adaptive streaming, and reliable offline playback.', 
                                                         isInline: true,
                                                     }).dom
                                                 ],
-                                            },
-                                        }).dom,
-
-                                        new Typography({
-                                            text: 'Built and maintained a fully cross-platform video streaming application using React Native, delivering a smooth, high-performance experience across (Android/Apple) and smart TVs (LG WebOS, Samsung Tizen).', 
-                                        }).dom,
-                                
-                                        new Typography({
-                                            text: 'Key contributions', 
-                                            variant: 'body-emphasized',
-                                            style: {
-                                                margin: '20px 0 10px 0', color: 'var(--accents-blue)', 
-                                            },
-                                        }).dom,
-                                
-                                        new Element<HTMLUListElement>({
-                                            tagName: 'ul',
-                                            props: {
-                                                className: styles.list,
+                                            }).dom,
+                                            new Element<HTMLLIElement>('li', {
                                                 children: [
-                                                    new Element<HTMLLIElement>({
-                                                        tagName: 'li',
-                                                        props: {
-                                                            children: [
-                                                                new Typography({
-                                                                    text: 'Advanced Video Playback: ', 
-                                                                    isInline: true,
-                                                                    variant: 'body-emphasized',
-                                                                }).dom,
-                                                                new Typography({
-                                                                    text: 'Implemented custom video players with HLS/DASH, DRM support, adaptive streaming, and reliable offline playback.', 
-                                                                    isInline: true,
-                                                                }).dom
-                                                            ],
-                                                        },
+                                                    new Typography({
+                                                        text: 'Native Integrations: ', 
+                                                        isInline: true,
+                                                        variant: 'body-emphasized',
                                                     }).dom,
-                                                    new Element<HTMLLIElement>({
-                                                        tagName: 'li',
-                                                        props: {
-                                                            children: [
-                                                                new Typography({
-                                                                    text: 'Native Integrations: ', 
-                                                                    isInline: true,
-                                                                    variant: 'body-emphasized',
-                                                                }).dom,
-                                                                new Typography({
-                                                                    text: 'Developed platform-specific native modules to enhance performance, ensure compatibility, and unlock device-level features.', 
-                                                                    isInline: true,
-                                                                }).dom
-                                                            ],
-                                                        },
+                                                    new Typography({
+                                                        text: 'Developed platform-specific native modules to enhance performance, ensure compatibility, and unlock device-level features.', 
+                                                        isInline: true,
+                                                    }).dom
+                                                ],
+                                            }).dom,
+                                            new Element<HTMLLIElement>('li', {
+                                                children: [
+                                                    new Typography({
+                                                        text: 'User Interface Execution: ', 
+                                                        isInline: true,
+                                                        variant: 'body-emphasized',
                                                     }).dom,
-                                                    new Element<HTMLLIElement>({
-                                                        tagName: 'li',
-                                                        props: {
-                                                            children: [
-                                                                new Typography({
-                                                                    text: 'User Interface Execution: ', 
-                                                                    isInline: true,
-                                                                    variant: 'body-emphasized',
-                                                                }).dom,
-                                                                new Typography({
-                                                                    text: 'Worked closely with designers to deliver clean, responsive, and visually appealing UIs optimized for large screens.', 
-                                                                    isInline: true,
-                                                                }).dom
-                                                            ],
-                                                        },
+                                                    new Typography({
+                                                        text: 'Worked closely with designers to deliver clean, responsive, and visually appealing UIs optimized for large screens.', 
+                                                        isInline: true,
+                                                    }).dom
+                                                ],
+                                            }).dom,
+                                            new Element<HTMLLIElement>('li', {
+                                                children: [
+                                                    new Typography({
+                                                        text: 'TV UI/UX: ', 
+                                                        isInline: true,
+                                                        variant: 'body-emphasized',
                                                     }).dom,
-                                                    new Element<HTMLLIElement>({
-                                                        tagName: 'li',
-                                                        props: {
-                                                            children: [
-                                                                new Typography({
-                                                                    text: 'TV UI/UX: ', 
-                                                                    isInline: true,
-                                                                    variant: 'body-emphasized',
-                                                                }).dom,
-                                                                new Typography({
-                                                                    text: 'Designed intuitive, remote-friendly TV interfaces with smooth focus management, directional navigation, and layouts optimized for large screens.', 
-                                                                    isInline: true,
-                                                                }).dom
-                                                            ],
-                                                        },
-                                                    }).dom,
+                                                    new Typography({
+                                                        text: 'Designed intuitive, remote-friendly TV interfaces with smooth focus management, directional navigation, and layouts optimized for large screens.', 
+                                                        isInline: true,
+                                                    }).dom
+                                                ],
+                                            }).dom,
 
-                                                    new Element<HTMLLIElement>({
-                                                        tagName: 'li',
-                                                        props: {
-                                                            children: [
-                                                                new Typography({
-                                                                    text: 'Backend Collaboration: ', 
-                                                                    isInline: true,
-                                                                    variant: 'body-emphasized',
-                                                                }).dom,
-                                                                new Typography({
-                                                                    text: 'Integrated REST APIs for authentication, personalized recommendations, session management, and analytics tracking.', 
-                                                                    isInline: true,
-                                                                }).dom
-                                                            ],
-                                                        },
+                                            new Element<HTMLLIElement>('li', {
+                                                children: [
+                                                    new Typography({
+                                                        text: 'Backend Collaboration: ', 
+                                                        isInline: true,
+                                                        variant: 'body-emphasized',
                                                     }).dom,
+                                                    new Typography({
+                                                        text: 'Integrated REST APIs for authentication, personalized recommendations, session management, and analytics tracking.', 
+                                                        isInline: true,
+                                                    }).dom
+                                                ],
+                                            }).dom,
 
-                                                    new Element<HTMLLIElement>({
-                                                        tagName: 'li',
-                                                        props: {
-                                                            children: [
-                                                                new Typography({
-                                                                    text: 'Performance Optimization: ', 
-                                                                    isInline: true,
-                                                                    variant: 'body-emphasized',
-                                                                }).dom,
-                                                                new Typography({
-                                                                    text: 'Reduced app startup time, improved memory usage, and resolved critical production issues to boost stability on all supported devices.', 
-                                                                    isInline: true,
-                                                                }).dom
-                                                            ],
-                                                        },
+                                            new Element<HTMLLIElement>('li', {
+                                                children: [
+                                                    new Typography({
+                                                        text: 'Performance Optimization: ', 
+                                                        isInline: true,
+                                                        variant: 'body-emphasized',
                                                     }).dom,
+                                                    new Typography({
+                                                        text: 'Reduced app startup time, improved memory usage, and resolved critical production issues to boost stability on all supported devices.', 
+                                                        isInline: true,
+                                                    }).dom
+                                                ],
+                                            }).dom,
                                                
-                                                    new Element<HTMLDivElement>({
-                                                        tagName: 'div',
-                                                        props: {
-                                                            className: styles.toggle_container,
-                                                            children: [
-                                                                new Button({
-                                                                    children: [ 'View' ],
-                                                                    variant: 'primary',
-                                                                    events: {
-                                                                        onclick: () => {
-                                                                            window.open('https://fibi.live', '_blank');
-                                                                        },
-                                                                    },
-                                                                }).dom
-                                                            ],
+                                            new Element<HTMLDivElement>('div', {
+                                                className: styles.toggle_container,
+                                                children: [
+                                                    new Button({
+                                                        children: [ 'View' ],
+                                                        variant: 'primary',
+                                                        events: {
+                                                            onclick: () => {
+                                                                window.open('https://fibi.live', '_blank');
+                                                            },
                                                         },
                                                     }).dom
                                                 ],
-                                            },
-                                        }).dom
-                                    ],
-                                }).dom
-                            ],
-                        },
+                                            }).dom
+                                        ],
+                                    }).dom
+                                ],
+                            }).dom
+                        ],
                     }).dom
 
                 ],

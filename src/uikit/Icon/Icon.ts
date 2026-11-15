@@ -14,22 +14,19 @@ class Icon extends Element<HTMLSpanElement> {
             size: 24, ...props, 
         };
 
-        super({
-            tagName: 'span',
-            props: {
-                className: styles.root,
-                style: {
-                    width: `${size}px`,
-                    height: `${size}px`,
-                },
-                children: [
-                    Icons[name]({
-                        width: size,
-                        height: size,
-                        ..._props,
-                    })
-                ],
+        super('span', {
+            className: styles.root,
+            style: {
+                width: `${size}px`,
+                height: `${size}px`,
             },
+            children: [
+                Icons[name]({
+                    width: size,
+                    height: size,
+                    ..._props,
+                })
+            ],
         });
     }
 }

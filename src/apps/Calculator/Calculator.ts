@@ -48,18 +48,12 @@ function Calculator(props?: AppProps) {
 
     let backspaceTimer: number | undefined;
 
-    const text = new Element<HTMLDivElement>({
-        tagName: 'div',
-        props: {
-            className: `regular ${styles.text}`,
-        },
+    const text = new Element<HTMLDivElement>('div', {
+        className: `regular ${styles.text}`,
     });
 
-    const resultContainer = new Element<HTMLDivElement>({
-        tagName: 'div',
-        props: {
-            className: `regular ${styles.result}`,
-        },
+    const resultContainer = new Element<HTMLDivElement>('div', {
+        className: `regular ${styles.result}`,
     });
 
     const isOperator = (char?: string) => !!char && operators.includes(char);
@@ -382,136 +376,133 @@ function Calculator(props?: AppProps) {
                         })
                         .dom,
 
-                    new Element<HTMLDivElement>({
-                        tagName: 'div',
-                        props: {
-                            events: {
-                                onclick: onClickWrapper,
-                            },
-                            className: styles.buttons,
-                            children: [
-                                new Button({
-                                    className: styles.button,
-                                    'data-name': 'backspace',
-                                    events: {
-                                        onmousedown: backspaceLongHold,
-                                        onmouseup: clearLongPressTimer,
-                                        onmouseleave: clearLongPressTimer,
-                                    },
-                                    children: [
-                                        new Icon('Backdrop', {
-                                            size: 30,
-                                            color: 'white',
-                                        }).dom
-                                    ],
-                                }).dom,
-
-                                new Button({
-                                    className: `${styles.button} title1 regular`,
-                                    'data-name': 'clear',
-                                    children: [ 'AC' ],
-                                }).dom,
-
-                                new Button({
-                                    className: `${styles.button} largeTitle regular`,
-                                    'data-name': '%',
-                                    children: [ '%' ],
-                                }).dom,
-
-                                new Button({
-                                    className: styles.button,
-                                    'data-name': '/',
-                                    children: [
-                                        new Icon('Divide', {
-                                            size: 30,
-                                            color: 'white',
-                                        }).dom
-                                    ],
-                                }).dom,
-
-                                ...[
-                                    '7',
-                                    '8',
-                                    '9' 
-                                ].map(num => new Button({
-                                    className: `${styles.button} largeTitle regular`,
-                                    'data-name': num,
-                                    children: [ num ],
-                                }).dom),
-
-                                new Button({
-                                    className: `${styles.button} title1 regular`,
-                                    'data-name': '*',
-                                    children: [ '✖' ],
-                                }).dom,
-
-                                ...[
-                                    '4',
-                                    '5',
-                                    '6' 
-                                ].map(num => new Button({
-                                    className: `${styles.button} largeTitle regular`,
-                                    'data-name': num,
-                                    children: [ num ],
-                                }).dom),
-
-                                new Button({
-                                    className: `${styles.button} largeTitle regular`,
-                                    'data-name': '-',
-                                    children: [
-                                        new Icon('Minus', {
-                                            size: 24,
-                                            color: 'white',
-                                        }).dom
-                                    ],
-                                }).dom,
-
-                                ...[
-                                    '1',
-                                    '2',
-                                    '3' 
-                                ].map(num => new Button({
-                                    className: `${styles.button} largeTitle regular`,
-                                    'data-name': num,
-                                    children: [ num ],
-                                }).dom),
-
-                                new Button({
-                                    className: `${styles.button} largeTitle regular`,
-                                    'data-name': '+',
-                                    children: [ '+' ],
-                                }).dom,
-
-                                new Button({
-                                    className: `${styles.button} largeTitle regular`,
-                                    'data-name': 'plusSlashMinus',
-                                    children: [
-                                        new Icon('PlusSlashMinus', {
-                                            color: 'white',
-                                            size: 50,
-                                        }).dom
-                                    ],
-                                }).dom,
-
-                                new Button({
-                                    className: `${styles.button} largeTitle regular`,
-                                    'data-name': '0',
-                                    children: [ '0' ],
-                                }).dom,
-
-                                new Button({
-                                    className: `${styles.button} largeTitle regular`,
-                                    'data-name': '.',
-                                    children: [ '.' ],
-                                }).dom,
-
-                                new Button({
-                                    className: `${styles.button} largeTitle regular`,
-                                    'data-name': '=',
-                                    children: [ '=' ],
-                                }).dom
-                            ],
+                    new Element<HTMLDivElement>('div', {
+                        events: {
+                            onclick: onClickWrapper,
                         },
+                        className: styles.buttons,
+                        children: [
+                            new Button({
+                                className: styles.button,
+                                'data-name': 'backspace',
+                                events: {
+                                    onmousedown: backspaceLongHold,
+                                    onmouseup: clearLongPressTimer,
+                                    onmouseleave: clearLongPressTimer,
+                                },
+                                children: [
+                                    new Icon('Backdrop', {
+                                        size: 30,
+                                        color: 'white',
+                                    }).dom
+                                ],
+                            }).dom,
+
+                            new Button({
+                                className: `${styles.button} title1 regular`,
+                                'data-name': 'clear',
+                                children: [ 'AC' ],
+                            }).dom,
+
+                            new Button({
+                                className: `${styles.button} largeTitle regular`,
+                                'data-name': '%',
+                                children: [ '%' ],
+                            }).dom,
+
+                            new Button({
+                                className: styles.button,
+                                'data-name': '/',
+                                children: [
+                                    new Icon('Divide', {
+                                        size: 30,
+                                        color: 'white',
+                                    }).dom
+                                ],
+                            }).dom,
+
+                            ...[
+                                '7',
+                                '8',
+                                '9' 
+                            ].map(num => new Button({
+                                className: `${styles.button} largeTitle regular`,
+                                'data-name': num,
+                                children: [ num ],
+                            }).dom),
+
+                            new Button({
+                                className: `${styles.button} title1 regular`,
+                                'data-name': '*',
+                                children: [ '✖' ],
+                            }).dom,
+
+                            ...[
+                                '4',
+                                '5',
+                                '6' 
+                            ].map(num => new Button({
+                                className: `${styles.button} largeTitle regular`,
+                                'data-name': num,
+                                children: [ num ],
+                            }).dom),
+
+                            new Button({
+                                className: `${styles.button} largeTitle regular`,
+                                'data-name': '-',
+                                children: [
+                                    new Icon('Minus', {
+                                        size: 24,
+                                        color: 'white',
+                                    }).dom
+                                ],
+                            }).dom,
+
+                            ...[
+                                '1',
+                                '2',
+                                '3' 
+                            ].map(num => new Button({
+                                className: `${styles.button} largeTitle regular`,
+                                'data-name': num,
+                                children: [ num ],
+                            }).dom),
+
+                            new Button({
+                                className: `${styles.button} largeTitle regular`,
+                                'data-name': '+',
+                                children: [ '+' ],
+                            }).dom,
+
+                            new Button({
+                                className: `${styles.button} largeTitle regular`,
+                                'data-name': 'plusSlashMinus',
+                                children: [
+                                    new Icon('PlusSlashMinus', {
+                                        color: 'white',
+                                        size: 50,
+                                    }).dom
+                                ],
+                            }).dom,
+
+                            new Button({
+                                className: `${styles.button} largeTitle regular`,
+                                'data-name': '0',
+                                children: [ '0' ],
+                            }).dom,
+
+                            new Button({
+                                className: `${styles.button} largeTitle regular`,
+                                'data-name': '.',
+                                children: [ '.' ],
+                            }).dom,
+
+                            new Button({
+                                className: `${styles.button} largeTitle regular`,
+                                'data-name': '=',
+                                children: [ '=' ],
+                            }).dom
+                        ],
                     }).dom
                 ],
                 className: styles.root,

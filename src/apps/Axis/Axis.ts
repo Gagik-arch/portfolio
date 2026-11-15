@@ -22,190 +22,151 @@ function Axis(props?:AppProps) {
                 className: styles.root,
                 backgroundColor: 'rgba(0,0,0,0.9)',
                 children: [ 
-                    new Element<HTMLDivElement>({
-                        tagName: 'div',
-                        props: {
-                            className: styles.carousel,
-                            children: [
-                                new Carousel({
-                                    images: [
-                                        f1,
-                                        f3,
-                                        f4
-                                    ],
-                                }).dom
-                            ],
-                        },
+                    new Element<HTMLDivElement>('div', {
+                        className: styles.carousel,
+                        children: [
+                            new Carousel({
+                                images: [
+                                    f1,
+                                    f3,
+                                    f4
+                                ],
+                            }).dom
+                        ],
                     }).dom,
           
-                    new Element<HTMLDivElement>({
-                        tagName: 'div',
-                        props: {
-                            className: styles.content,
-                            children: [ 
-                                new Scroll({
-                                    children: [
-                                        new Typography({
-                                            text: 'Axis', variant: 'title1-regular', className: styles.title,
-                                        }).dom,
+                    new Element<HTMLDivElement>('div', {
+                        className: styles.content,
+                        children: [ 
+                            new Scroll({
+                                children: [
+                                    new Typography({
+                                        text: 'Axis', variant: 'title1-regular', className: styles.title,
+                                    }).dom,
                                 
-                                        new Typography({
-                                            text: '2D graphics engine from scratch using HTML Canvas + TypeScript', variant: 'title3-regular',
-                                            className: styles.subtitle,
-                                        }).dom,
+                                    new Typography({
+                                        text: '2D graphics engine from scratch using HTML Canvas + TypeScript', variant: 'title3-regular',
+                                        className: styles.subtitle,
+                                    }).dom,
 
-                                        new Typography({
-                                            text: 'Desktop browser', variant: 'headline-regular',
-                                            className: styles.subtitle,
-                                        }).dom,
+                                    new Typography({
+                                        text: 'Desktop browser', variant: 'headline-regular',
+                                        className: styles.subtitle,
+                                    }).dom,
                                 
-                                        new Element<HTMLDivElement>({
-                                            tagName: 'div',
-                                            props: {
-                                                style: {
-                                                    margin: '10px 0',
-                                                },
+                                    new Element<HTMLDivElement>('div', {
+                                        style: {
+                                            margin: '10px 0',
+                                        },
+                                        children: [
+                                            new Typography({
+                                                text: 'Used technologies: ', 
+                                                isInline: true,
+                                                variant: 'body-emphasized',
+                                            }).dom,
+                                            new Typography({
+                                                text: 'NuvoJS, Typescript', 
+                                                isInline: true,
+                                            }).dom
+                                        ],
+                                    }).dom,
+
+                                    new Typography({
+                                        text: 'After spending time working on graphics programming, I created my own 2D engine focused on interactive editing and rendering.', 
+                                    }).dom,
+                                
+                                    new Typography({
+                                        text: 'Key contributions', 
+                                        variant: 'body-emphasized',
+                                        style: {
+                                            margin: '20px 0 10px 0', color: 'var(--accents-blue)', 
+                                        },
+                                    }).dom,
+                                
+                                    new Element<HTMLUListElement>('ul', {
+                                        className: styles.list,
+                                        children: [
+                                            new Element<HTMLLIElement>('li', {
                                                 children: [
                                                     new Typography({
-                                                        text: 'Used technologies: ', 
-                                                        isInline: true,
-                                                        variant: 'body-emphasized',
-                                                    }).dom,
-                                                    new Typography({
-                                                        text: 'NuvoJS, Typescript', 
-                                                        isInline: true,
+                                                        text: 'Custom virtual canvas with camera system.', 
                                                     }).dom
                                                 ],
-                                            },
-                                        }).dom,
+                                            }).dom,
 
-                                        new Typography({
-                                            text: 'After spending time working on graphics programming, I created my own 2D engine focused on interactive editing and rendering.', 
-                                        }).dom,
-                                
-                                        new Typography({
-                                            text: 'Key contributions', 
-                                            variant: 'body-emphasized',
-                                            style: {
-                                                margin: '20px 0 10px 0', color: 'var(--accents-blue)', 
-                                            },
-                                        }).dom,
-                                
-                                        new Element<HTMLUListElement>({
-                                            tagName: 'ul',
-                                            props: {
-                                                className: styles.list,
+                                            new Element<HTMLLIElement>('li', {
                                                 children: [
-                                                    new Element<HTMLLIElement>({
-                                                        tagName: 'li',
-                                                        props: {
-                                                            children: [
-                                                                new Typography({
-                                                                    text: 'Custom virtual canvas with camera system.', 
-                                                                }).dom
-                                                            ],
-                                                        },
-                                                    }).dom,
-
-                                                    new Element<HTMLLIElement>({
-                                                        tagName: 'li',
-                                                        props: {
-                                                            children: [
-                                                                new Typography({
-                                                                    text: 'Zooming and panning with world coordinates.', 
-                                                                }).dom
-                                                            ],
-                                                        },
-                                                    }).dom,
-
-                                                    new Element<HTMLLIElement>({
-                                                        tagName: 'li',
-                                                        props: {
-                                                            children: [
-                                                                new Typography({
-                                                                    text: 'Shape rendering system (Rectangle, Polygon, Ellipse.', 
-                                                                }).dom
-                                                            ],
-                                                        },
-                                                    }).dom,
-
-                                                    new Element<HTMLLIElement>({
-                                                        tagName: 'li',
-                                                        props: {
-                                                            children: [
-                                                                new Typography({
-                                                                    text: 'Object selection and manipulation.', 
-                                                                }).dom
-                                                            ],
-                                                        },
-                                                    }).dom,
-
-                                                    new Element<HTMLLIElement>({
-                                                        tagName: 'li',
-                                                        props: {
-                                                            children: [
-                                                                new Typography({
-                                                                    text: 'Resizing with anchors and rotated shapes support.', 
-                                                                }).dom
-                                                            ],
-                                                        },
-                                                    }).dom,
-
-                                                    new Element<HTMLLIElement>({
-                                                        tagName: 'li',
-                                                        props: {
-                                                            children: [
-                                                                new Typography({
-                                                                    text: 'Coordinate transformations and vector mathematics.', 
-                                                                }).dom
-                                                            ],
-                                                        },
-                                                    }).dom,
-
-                                                    new Element<HTMLLIElement>({
-                                                        tagName: 'li',
-                                                        props: {
-                                                            children: [
-                                                                new Typography({
-                                                                    text: 'Snapping and ruler system.', 
-                                                                }).dom
-                                                            ],
-                                                        },
-                                                    }).dom,
-
-                                                    new Element<HTMLLIElement>({
-                                                        tagName: 'li',
-                                                        props: {
-                                                            children: [
-                                                                new Typography({
-                                                                    text: 'Custom rendering pipeline without external graphics libraries.', 
-                                                                }).dom
-                                                            ],
-                                                        },
+                                                    new Typography({
+                                                        text: 'Zooming and panning with world coordinates.', 
                                                     }).dom
+                                                ],
+                                            }).dom,
+
+                                            new Element<HTMLLIElement>('li', {
+                                                children: [
+                                                    new Typography({
+                                                        text: 'Shape rendering system (Rectangle, Polygon, Ellipse.', 
+                                                    }).dom
+                                                ],
+                                            }).dom,
+
+                                            new Element<HTMLLIElement>('li', {
+                                                children: [
+                                                    new Typography({
+                                                        text: 'Object selection and manipulation.', 
+                                                    }).dom
+                                                ],
+                                            }).dom,
+
+                                            new Element<HTMLLIElement>('li', {
+                                                children: [
+                                                    new Typography({
+                                                        text: 'Resizing with anchors and rotated shapes support.', 
+                                                    }).dom
+                                                ],
+                                            }).dom,
+
+                                            new Element<HTMLLIElement>('li', {
+                                                children: [
+                                                    new Typography({
+                                                        text: 'Coordinate transformations and vector mathematics.', 
+                                                    }).dom
+                                                ],
+                                            }).dom,
+
+                                            new Element<HTMLLIElement>('li', {
+                                                children: [
+                                                    new Typography({
+                                                        text: 'Snapping and ruler system.', 
+                                                    }).dom
+                                                ],
+                                            }).dom,
+
+                                            new Element<HTMLLIElement>('li', {
+                                                children: [
+                                                    new Typography({
+                                                        text: 'Custom rendering pipeline without external graphics libraries.', 
+                                                    }).dom
+                                                ],
+                                            }).dom
                                                   
-                                                ],
-                                            },
-                                        }).dom,
+                                        ],
+                                    }).dom,
 
-                                        new Element<HTMLDivElement>({
-                                            tagName: 'div',
-                                            props: {
-                                                className: styles.toggle_container,
-                                                children: [
-                                                    new Link({
-                                                        variant: 'primary',
-                                                        href: 'https://axis-demo-app.netlify.app/',
-                                                        target: '_blank',
-                                                        children: [ 'View' ],
-                                                    }).dom
-                                                ],
-                                            },
-                                        }).dom
-                                    ],
-                                }).dom
-                            ],
-                        },
+                                    new Element<HTMLDivElement>('div', {
+                                        className: styles.toggle_container,
+                                        children: [
+                                            new Link({
+                                                variant: 'primary',
+                                                href: 'https://axis-demo-app.netlify.app/',
+                                                target: '_blank',
+                                                children: [ 'View' ],
+                                            }).dom
+                                        ],
+                                    }).dom
+                                ],
+                            }).dom
+                        ],
                     }).dom
 
                 ],

@@ -17,25 +17,22 @@ import { APP_IMAGES } from '$utils/constants';
 
 const Row = (left:string, right?:string, isSubtitle = false) => {
     return (
-        new Element<HTMLDivElement>({
-            tagName: 'div',
-            props: {
-                className: styles.row,
-                children: [
-                    new Typography({
-                        text: left,
-                        variant: isSubtitle ? 'callout-emphasized' : 'callout-regular',
-                    }).dom,
+        new Element<HTMLDivElement>('div', {
+            className: styles.row,
+            children: [
+                new Typography({
+                    text: left,
+                    variant: isSubtitle ? 'callout-emphasized' : 'callout-regular',
+                }).dom,
 
-                    right
-                        ? new Typography({
-                            text: right,
-                            className: isSubtitle ? styles.subtitle : undefined,
-                            variant: isSubtitle ? 'callout-emphasized' : 'callout-regular',
-                        }).dom
-                        : undefined
-                ],
-            },
+                right
+                    ? new Typography({
+                        text: right,
+                        className: isSubtitle ? styles.subtitle : undefined,
+                        variant: isSubtitle ? 'callout-emphasized' : 'callout-regular',
+                    }).dom
+                    : undefined
+            ],
         }).dom
     );
 };
@@ -53,459 +50,349 @@ function Preview(props?: AppProps) {
                 children: [ 
                     new Scroll({
                         children: [
-                            new Element<HTMLDivElement>({
-                                tagName: 'div',
-                                props: {
-                                    className: styles.content,
-                                    children: [
-                                        new Element<HTMLDivElement>({
-                                            tagName: 'div',
-                                            props: {
-                                                className: styles.header,
-                                                children: [
-                                                    new Link({
-                                                        variant: 'primary',
-                                                        href: cvFile,
-                                                        download: 'gagik-chilingaryan-cv',
-                                                        children: [ 'Download' ],
-                                                    }).dom
-                                                ],
-                                            },
-                                        }).dom,
+                            new Element<HTMLDivElement>('div', {
+                                className: styles.content,
+                                children: [
+                                    new Element<HTMLDivElement>('div', {
+                                        className: styles.header,
+                                        children: [
+                                            new Link({
+                                                variant: 'primary',
+                                                href: cvFile,
+                                                download: 'gagik-chilingaryan-cv',
+                                                children: [ 'Download' ],
+                                            }).dom
+                                        ],
+                                    }).dom,
                                         
-                                        new Typography({
-                                            className: styles.text_center,
-                                            text: json.basics.name,
-                                            variant: 'title1-emphasized',
-                                        }).dom,
+                                    new Typography({
+                                        className: styles.text_center,
+                                        text: json.basics.name,
+                                        variant: 'title1-emphasized',
+                                    }).dom,
 
-                                        new Typography({
-                                            className: styles.text_center,
-                                            style: { margin: '8px 0' },
-                                            text: json.basics.headline,
-                                        }).dom,
+                                    new Typography({
+                                        className: styles.text_center,
+                                        style: { margin: '8px 0' },
+                                        text: json.basics.headline,
+                                    }).dom,
 
-                                        new Element<HTMLDivElement>({
-                                            tagName: 'div',
-                                            props: {
-                                                className: styles.contacts,
-                                                children: [
-                                                    new Icon('Map', {
-                                                        stroke: 'var(--accents-blue)',
-                                                        size: 12,
-                                                        className: styles.icon,
-                                                    }).dom,
+                                    new Element<HTMLDivElement>('div', {
+                                        className: styles.contacts,
+                                        children: [
+                                            new Icon('Map', {
+                                                stroke: 'var(--accents-blue)',
+                                                size: 12,
+                                                className: styles.icon,
+                                            }).dom,
 
-                                                    new Typography({
-                                                        text: json.basics.location,
-                                                    }).dom,
+                                            new Typography({
+                                                text: json.basics.location,
+                                            }).dom,
 
-                                                    new Icon('Phone', {
-                                                        stroke: 'var(--accents-blue)',
-                                                        size: 12,
-                                                        className: styles.icon,
-                                                    }).dom,
+                                            new Icon('Phone', {
+                                                stroke: 'var(--accents-blue)',
+                                                size: 12,
+                                                className: styles.icon,
+                                            }).dom,
 
-                                                    new Typography({
-                                                        text: json.basics.phone,
-                                                    }).dom,
+                                            new Typography({
+                                                text: json.basics.phone,
+                                            }).dom,
                                             
-                                                    new Typography({
-                                                        text: '@',
-                                                        style: { color: 'var(--accents-blue)' },
-                                                        variant: 'subheadline-emphasized',
-                                                    }).dom,
+                                            new Typography({
+                                                text: '@',
+                                                style: { color: 'var(--accents-blue)' },
+                                                variant: 'subheadline-emphasized',
+                                            }).dom,
 
-                                                    new Typography({
-                                                        text: json.basics.email,
+                                            new Typography({
+                                                text: json.basics.email,
+                                            }).dom
+                                        ],
+                                    }).dom,
+
+                                    new Element<HTMLHRElement>('hr', {
+                                        className: styles.separator,
+                                    }).dom,
+
+                                    new Element<HTMLDivElement>('div', {
+                                        children: [
+                                            new Element<HTMLDivElement>('div', {
+                                                className: styles.segment,
+                                                children: [
+                                                    new Element<HTMLDivElement>('div', {
+                                                        children: [
+                                                            new Typography({
+                                                                text: json.sections.summary.name,
+                                                                variant: 'callout-emphasized', 
+                                                            }).dom
+                                                        ],
+                                                    }).dom,
+                                                                
+                                                    new Element<HTMLDivElement>('div', {
+                                                        children: [
+                                                            new Typography({
+                                                                text: json.sections.summary.description,
+                                                                variant: 'callout-regular', 
+                                                            }).dom
+                                                        ],
                                                     }).dom
                                                 ],
-                                            },
-                                        }).dom,
+                                            }).dom
+                                        ],
+                                    }).dom,
 
-                                        new Element<HTMLHRElement>({
-                                            tagName: 'hr',
-                                            props: {
-                                                className: styles.separator,
-                                            },
-                                        }).dom,
+                                    new Element<HTMLHRElement>('hr', {
+                                        className: styles.separator,
+                                    }).dom,
 
-                                        new Element<HTMLDivElement>({
-                                            tagName: 'div',
-                                            props: {
+                                    new Element<HTMLDivElement>('div', {
+                                        children: [
+                                            new Element<HTMLDivElement>('div', {
+                                                tagName: 'div',
+                                                className: styles.segment,
                                                 children: [
-                                                    new Element<HTMLDivElement>({
+                                                    new Element<HTMLDivElement>('div', {
                                                         tagName: 'div',
-                                                        props: {
-                                                            className: styles.segment,
-                                                            children: [
-                                                                new Element<HTMLDivElement>({
-                                                                    tagName: 'div',
-                                                                    props: {
-                                                                        children: [
-                                                                            new Typography({
-                                                                                text: json.sections.summary.name,
-                                                                                variant: 'callout-emphasized', 
-                                                                            }).dom
-                                                                        ],
-                                                                    },
-                                                                }).dom,
+                                                        children: [
+                                                            new Typography({
+                                                                text: json.sections.profiles.name,
+                                                                variant: 'callout-emphasized', 
+                                                            }).dom
+                                                        ],
+                                                    }).dom,
                                                                 
-                                                                new Element<HTMLDivElement>({
-                                                                    tagName: 'div',
-                                                                    props: {
+                                                    new Element<HTMLDivElement>('div', {
+                                                        children: [
+                                                            new Element<HTMLDivElement>('div', {
+                                                                style: {
+                                                                    marginBottom: '10px',
+                                                                },
+                                                                children: [
+                                                                    new Link({
+                                                                        className: styles.profile,
+                                                                        href: json.sections.profiles.items[0].url.href,
+                                                                        target: '_blank',
                                                                         children: [
+                                                                            new Image({
+                                                                                src: linkedinImage,
+                                                                            }).dom,
                                                                             new Typography({
-                                                                                text: json.sections.summary.description,
+                                                                                text: json.sections.profiles.items[0].username,
                                                                                 variant: 'callout-regular', 
                                                                             }).dom
                                                                         ],
-                                                                    },
-                                                                }).dom
-                                                            ],
-                                                        },
-                                                    }).dom
-                                                ],
-                                            },
-                                        }).dom,
+                                                                    }).dom
+                                                                ],
+                                                            }).dom,
 
-                                        new Element<HTMLHRElement>({
-                                            tagName: 'hr',
-                                            props: {
-                                                className: styles.separator,
-                                            },
-                                        }).dom,
-
-                                        new Element<HTMLDivElement>({
-                                            tagName: 'div',
-                                            props: {
-                                                children: [
-                                                    new Element<HTMLDivElement>({
-                                                        tagName: 'div',
-                                                        props: {
-                                                            className: styles.segment,
-                                                            children: [
-                                                                new Element<HTMLDivElement>({
-                                                                    tagName: 'div',
-                                                                    props: {
+                                                            new Element<HTMLDivElement>('div', {
+                                                                tagName: 'div',
+                                                                children: [
+                                                                    new Link({
+                                                                        className: styles.profile,
+                                                                        href: json.sections.profiles.items[1].url.href,
+                                                                        target: '_blank',
                                                                         children: [
-                                                                            new Typography({
-                                                                                text: json.sections.profiles.name,
-                                                                                variant: 'callout-emphasized', 
-                                                                            }).dom
-                                                                        ],
-                                                                    },
-                                                                }).dom,
-                                                                
-                                                                new Element<HTMLDivElement>({
-                                                                    tagName: 'div',
-                                                                    props: {
-                                                                        children: [
-                                                                            new Element<HTMLDivElement>({
-                                                                                tagName: 'div',
-                                                                                props: {
-                                                                                    style: {
-                                                                                        marginBottom: '10px',
-                                                                                    },
-                                                                                    children: [
-                                                                                        new Link({
-                                                                                            className: styles.profile,
-                                                                                            href: json.sections.profiles.items[0].url.href,
-                                                                                            target: '_blank',
-                                                                                            children: [
-                                                                                                new Image({
-                                                                                                    src: linkedinImage,
-                                                                                                }).dom,
-                                                                                                new Typography({
-                                                                                                    text: json.sections.profiles.items[0].username,
-                                                                                                    variant: 'callout-regular', 
-                                                                                                }).dom
-                                                                                            ],
-                                                                                        }).dom
-                                                                                    ],
-                                                                                },
+                                                                            new Image({
+                                                                                src: githubImage,
                                                                             }).dom,
-
-                                                                            new Element<HTMLDivElement>({
-                                                                                tagName: 'div',
-                                                                                props: {
-                                                                                    children: [
-                                                                                        new Link({
-                                                                                            className: styles.profile,
-                                                                                            href: json.sections.profiles.items[1].url.href,
-                                                                                            target: '_blank',
-                                                                                            children: [
-                                                                                                new Image({
-                                                                                                    src: githubImage,
-                                                                                                }).dom,
-                                                                                                new Typography({
-                                                                                                    text: json.sections.profiles.items[1].username,
-                                                                                                    variant: 'callout-regular', 
-                                                                                                }).dom
-                                                                                            ],
-                                                                                        }).dom
-                                                                                    ],
-                                                                                },
+                                                                            new Typography({
+                                                                                text: json.sections.profiles.items[1].username,
+                                                                                variant: 'callout-regular', 
                                                                             }).dom
                                                                         ],
-                                                                    },
-                                                                }).dom
-                                                            ],
-                                                        },
+                                                                    }).dom
+                                                                ],
+                                                            }).dom
+                                                        ],
                                                     }).dom
                                                 ],
-                                            },
-                                        }).dom,
+                                            }).dom
+                                        ],
+                                    }).dom,
 
-                                        new Element<HTMLHRElement>({
-                                            tagName: 'hr',
-                                            props: {
-                                                className: styles.separator,
-                                            },
-                                        }).dom,
+                                    new Element<HTMLHRElement>('hr', {
+                                        className: styles.separator,
+                                    }).dom,
 
-                                        new Element<HTMLDivElement>({
-                                            tagName: 'div',
-                                            props: {
+                                    new Element<HTMLDivElement>('div', {
+                                        children: [
+                                            new Element<HTMLDivElement>('div', {
+                                                className: styles.segment,
                                                 children: [
-                                                    new Element<HTMLDivElement>({
-                                                        tagName: 'div',
-                                                        props: {
-                                                            className: styles.segment,
-                                                            children: [
-                                                                new Element<HTMLDivElement>({
-                                                                    tagName: 'div',
-                                                                    props: {
-                                                                        children: [
-                                                                            new Typography({
-                                                                                text: json.sections.experience.name,
-                                                                                variant: 'callout-emphasized', 
-                                                                            }).dom
-                                                                        ],
-                                                                    },
-                                                                }).dom,
-                                                                new Element<HTMLDivElement>({
-                                                                    tagName: 'div',
-                                                                    props: {
-                                                                        children: json.sections.experience.items.map(item => {
-                                                                            return (
-                                                                                new Element<HTMLDivElement>({
-                                                                                    tagName: 'div',
-                                                                                    props: {
-                                                                                        className: styles.block,
-                                                                                        children: [
-                                                                                            Row(item.company, item.date, true),
+                                                    new Element<HTMLDivElement>('div', {
+                                                        children: [
+                                                            new Typography({
+                                                                text: json.sections.experience.name,
+                                                                variant: 'callout-emphasized', 
+                                                            }).dom
+                                                        ],
+                                                    }).dom,
+
+                                                    new Element<HTMLDivElement>('div', {
+                                                        children: json.sections.experience.items.map(item => {
+                                                            return (
+                                                                new Element<HTMLDivElement>('div', {
+                                                                    className: styles.block,
+                                                                    children: [
+                                                                        Row(item.company, item.date, true),
                                                                                                         
-                                                                                            Row(item.position, item.location),
+                                                                        Row(item.position, item.location),
 
-                                                                                            item.url.href && new Element<HTMLDivElement>({
-                                                                                                tagName: 'div',
-                                                                                                props: {
-                                                                                                    className: styles.link,
-                                                                                                    children: [
-                                                                                                        new Icon('Link', {
-                                                                                                            className: styles.link_icon,
-                                                                                                            size: 12,
-                                                                                                            color: 'var(--accents-blue)',
-                                                                                                        }).dom,
+                                                                        item.url.href && new Element<HTMLDivElement>('div', {
+                                                                            className: styles.link,
+                                                                            children: [
+                                                                                new Icon('Link', {
+                                                                                    className: styles.link_icon,
+                                                                                    size: 12,
+                                                                                    color: 'var(--accents-blue)',
+                                                                                }).dom,
 
-                                                                                                        new Link({
-                                                                                                            href: item.url.href,
-                                                                                                            target: '_blank',
-                                                                                                            children: [
-                                                                                                                new Typography({
-                                                                                                                    text: item.url.href,
-                                                                                                                    variant: 'callout-regular', 
-                                                                                                                }).dom
-                                                                                                            ],
-                                                                                                        }).dom
-                                                                                                    ],
-                                                                                                },
-                                                                                            }).dom,
-
-                                                                                            new Element<HTMLDivElement>({
-                                                                                                tagName: 'div',
-                                                                                                props: {
-                                                                                                    innerHTML: item.summary,
-                                                                                                },
-                                                                                            }).dom
-                                                                                        ],             
-                                                                                    },
+                                                                                new Link({
+                                                                                    href: item.url.href,
+                                                                                    target: '_blank',
+                                                                                    children: [
+                                                                                        new Typography({
+                                                                                            text: item.url.href,
+                                                                                            variant: 'callout-regular', 
+                                                                                        }).dom
+                                                                                    ],
                                                                                 }).dom
-                                                                            );
-                                                                        }),
-                                                                    },
+                                                                            ],
+                                                                        }).dom,
+
+                                                                        new Element<HTMLDivElement>('div', {
+                                                                            innerHTML: item.summary,
+                                                                        }).dom
+                                                                    ],             
                                                                 }).dom
-                                                            ],
-                                                        },
-                                                    }).dom,
-
-                                                    new Element<HTMLHRElement>({
-                                                        tagName: 'hr',
-                                                        props: {
-                                                            className: styles.separator,
-                                                        },
-                                                    }).dom,
-
-                                                    new Element<HTMLDivElement>({
-                                                        tagName: 'div',
-                                                        props: {
-                                                            children: [
-                                                                new Element<HTMLDivElement>({
-                                                                    tagName: 'div',
-                                                                    props: {
-                                                                        className: styles.segment,
-                                                                        children: [
-                                                                            new Element<HTMLDivElement>({
-                                                                                tagName: 'div',
-                                                                                props: {
-                                                                                    children: [
-                                                                                        new Typography({
-                                                                                            text: json.sections.education.name,
-                                                                                            variant: 'callout-emphasized', 
-                                                                                        }).dom
-                                                                                    ],
-                                                                                },
-                                                                            }).dom,
-                                                                
-                                                                            new Element<HTMLDivElement>({
-                                                                                tagName: 'div',
-                                                                                props: {
-                                                                                    children: [
-                                                                                        new Element<HTMLDivElement>({
-                                                                                            tagName: 'div',
-                                                                                            props: {
-                                                                                                className: styles.block,
-                                                                                                children: [
-                                                                                                    Row(
-                                                                                                        json.sections.education.items[0].institution,
-                                                                                                        json.sections.education.items[0].date,
-                                                                                                        true
-                                                                                                    ),
-                                                                                                    
-                                                                                                    Row(
-                                                                                                        json.sections.education.items[0].area,
-                                                                                                        json.sections.education.items[0].studyType
-                                                                                                    ),
-
-                                                                                                    new Element<HTMLDivElement>({
-                                                                                                        tagName: 'div',
-                                                                                                        props: {
-                                                                                                            className: styles.link,
-                                                                                                            children: [
-                                                                                                                new Icon('Link', {
-                                                                                                                    className: styles.link_icon,
-                                                                                                                    size: 12,
-                                                                                                                    color: 'var(--accents-blue)',
-                                                                                                                }).dom,
-
-                                                                                                                new Link({
-                                                                                                                    href: json.sections.education.items[0].url.href,
-                                                                                                                    target: '_blank',
-                                                                                                                    children: [
-                                                                                                                        new Typography({
-                                                                                                                            text: json.sections.education.items[0].url.href,
-                                                                                                                            variant: 'callout-regular', 
-                                                                                                                        }).dom
-                                                                                                                    ],
-                                                                                                                }).dom
-                                                                                                            ],
-                                                                                                        },
-                                                                                                    }).dom
-                                                                                                ],             
-                                                                                            },
-                                                                                        }).dom
-                                                                                    ],
-                                                                                },
-                                                                            }).dom
-                                                                        ],
-                                                                    },
-                                                                }).dom
-                                                            ],
-                                                        },
-                                                    }).dom,
-
-                                                    new Element<HTMLHRElement>({
-                                                        tagName: 'hr',
-                                                        props: {
-                                                            className: styles.separator,
-                                                        },
-                                                    }).dom,
-
-                                                    new Element<HTMLDivElement>({
-                                                        tagName: 'div',
-                                                        props: {
-                                                            children: [
-                                                                new Element<HTMLDivElement>({
-                                                                    tagName: 'div',
-                                                                    props: {
-                                                                        className: styles.segment,
-                                                                        children: [
-                                                                            new Element<HTMLDivElement>({
-                                                                                tagName: 'div',
-                                                                                props: {
-                                                                                    children: [
-                                                                                        new Typography({
-                                                                                            text: json.sections.skills.name,
-                                                                                            variant: 'callout-emphasized', 
-                                                                                        }).dom
-                                                                                    ],
-                                                                                },
-                                                                            }).dom,
-                                                                
-                                                                            new Element<HTMLDivElement>({
-                                                                                tagName: 'div',
-                                                                                props: {
-                                                                                    className: styles.skill_container,
-                                                                                    children: json.sections.skills.items.map(item => {
-                                                                                        return (
-                                                                                            new Element<HTMLDivElement>({
-                                                                                                tagName: 'div',
-                                                                                                props: {
-                                                                                                    className: styles.skill_block,
-                                                                                                    children: [
-                                                                                                        new Typography({
-                                                                                                            text: item.name,
-                                                                                                            variant: 'callout-emphasized', 
-                                                                                                        }).dom,
-
-                                                                                                        new Element<HTMLDivElement>({
-                                                                                                            tagName: 'div',
-                                                                                                            props: {
-                                                                                                                className: styles.circle_container,
-                                                                                                                children: Array.from({ length: 5 })
-                                                                                                                    .map((_, index) => { 
-                                                                                                                        return (
-                                                                                                                            new Element<HTMLSpanElement>({
-                                                                                                                                tagName: 'span',
-                                                                                                                                props: {
-                                                                                                                                    style: {
-                                                                                                                                        backgroundColor: index + 1 <= item.level ? 'var(--accents-blue)' : undefined,  
-                                                                                                                                    },
-                                                                                                                                },
-                                                                                                                            }).dom
-                                                                                                                        );
-                                                                                                                    }),
-                                                                                                            },
-                                                                                                        }).dom
-                                                                                                    ],             
-                                                                                                },
-                                                                                            }).dom
-                                                                                        );
-                                                                                    }),
-                                                                                },
-                                                                            }).dom
-                                                                        ],
-                                                                    },
-                                                                }).dom
-                                                            ],
-                                                        },
+                                                            );
+                                                        }),
                                                     }).dom
                                                 ],
-                                            },
-                                        }).dom
-                                    ],
-                                },
+                                            }).dom,
+
+                                            new Element<HTMLHRElement>('hr', {
+                                                className: styles.separator,
+                                            }).dom,
+
+                                            new Element<HTMLDivElement>('div', {
+                                                children: [
+                                                    new Element<HTMLDivElement>('div', {
+                                                        className: styles.segment,
+                                                        children: [
+                                                            new Element<HTMLDivElement>('div', {
+                                                                children: [
+                                                                    new Typography({
+                                                                        text: json.sections.education.name,
+                                                                        variant: 'callout-emphasized', 
+                                                                    }).dom
+                                                                ],
+                                                            }).dom,
+                                                                
+                                                            new Element<HTMLDivElement>('div', {
+                                                                children: [
+                                                                    new Element<HTMLDivElement>('div', {
+                                                                        className: styles.block,
+                                                                        children: [
+                                                                            Row(
+                                                                                json.sections.education.items[0].institution,
+                                                                                json.sections.education.items[0].date,
+                                                                                true
+                                                                            ),
+                                                                                                    
+                                                                            Row(
+                                                                                json.sections.education.items[0].area,
+                                                                                json.sections.education.items[0].studyType
+                                                                            ),
+
+                                                                            new Element<HTMLDivElement>('div', {
+                                                                                className: styles.link,
+                                                                                children: [
+                                                                                    new Icon('Link', {
+                                                                                        className: styles.link_icon,
+                                                                                        size: 12,
+                                                                                        color: 'var(--accents-blue)',
+                                                                                    }).dom,
+
+                                                                                    new Link({
+                                                                                        href: json.sections.education.items[0].url.href,
+                                                                                        target: '_blank',
+                                                                                        children: [
+                                                                                            new Typography({
+                                                                                                text: json.sections.education.items[0].url.href,
+                                                                                                variant: 'callout-regular', 
+                                                                                            }).dom
+                                                                                        ],
+                                                                                    }).dom
+                                                                                ],
+                                                                            }).dom
+                                                                        ],             
+                                                                    }).dom
+                                                                ],
+                                                            }).dom
+                                                        ],
+                                                    }).dom
+                                                ],
+                                            }).dom,
+
+                                            new Element<HTMLHRElement>('hr', {
+                                                className: styles.separator,
+                                            }).dom,
+
+                                            new Element<HTMLDivElement>('div', {
+                                                children: [
+                                                    new Element<HTMLDivElement>('div', {
+                                                        className: styles.segment,
+                                                        children: [
+                                                            new Element<HTMLDivElement>('div', {
+                                                                children: [
+                                                                    new Typography({
+                                                                        text: json.sections.skills.name,
+                                                                        variant: 'callout-emphasized', 
+                                                                    }).dom
+                                                                ],
+                                                            }).dom,
+                                                                
+                                                            new Element<HTMLDivElement>('div', {
+                                                                className: styles.skill_container,
+                                                                children: json.sections.skills.items.map(item => {
+                                                                    return (
+                                                                        new Element<HTMLDivElement>('div', {
+                                                                            className: styles.skill_block,
+                                                                            children: [
+                                                                                new Typography({
+                                                                                    text: item.name,
+                                                                                    variant: 'callout-emphasized', 
+                                                                                }).dom,
+
+                                                                                new Element<HTMLDivElement>('div', {
+                                                                                    className: styles.circle_container,
+                                                                                    children: Array.from({ length: 5 })
+                                                                                        .map((_, index) => { 
+                                                                                            return (
+                                                                                                new Element<HTMLSpanElement>('span', {
+                                                                                                    style: {
+                                                                                                        backgroundColor: index + 1 <= item.level ? 'var(--accents-blue)' : undefined,  
+                                                                                                    },
+                                                                                                }).dom
+                                                                                            );
+                                                                                        }),
+                                                                                }).dom
+                                                                            ],             
+                                                                        }).dom
+                                                                    );
+                                                                }),
+                                                            }).dom
+                                                        ],
+                                                    }).dom
+                                                ],
+                                            }).dom
+                                        ],
+                                    }).dom
+                                ],
                             }).dom
                         ],
                     }).dom

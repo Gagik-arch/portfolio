@@ -45,24 +45,21 @@ class Window extends Element<HTMLDivElement> {
         events,
         ...props
     }: WindowProps) {
-        super({
-            tagName: 'div',
-            props: {
-                className: clsx(
-                    'window',
-                    'default',
-                    styles.root,
-                    typeof className === 'function' ? undefined : className   
-                ),
-                style: {
-                    backgroundColor: backgroundColor || 'rgba(255,255,255,0.9)',
-                },
-                tabIndex: 0,
-                events: {
-                    ...events,
-                },
-                ...props,
+        super('div', {
+            className: clsx(
+                'window',
+                'default',
+                styles.root,
+                typeof className === 'function' ? undefined : className   
+            ),
+            style: {
+                backgroundColor: backgroundColor || 'rgba(255,255,255,0.9)',
             },
+            tabIndex: 0,
+            events: {
+                ...events,
+            },
+            ...props,
         });
 
         this.createdAt = new Date()
@@ -84,45 +81,33 @@ class Window extends Element<HTMLDivElement> {
 
                 ...(isResizable
                     ? [
-                        new Element<HTMLSpanElement>({
-                            tagName: 'span',
-                            props: {
-                                className: clsx(
-                                    styles.left_top,
-                                    'nw-resize',
-                                    styles.anchor
-                                ),
-                            },
+                        new Element<HTMLSpanElement>('span', {
+                            className: clsx(
+                                styles.left_top,
+                                'nw-resize',
+                                styles.anchor
+                            ),
                         }).dom,
-                        new Element<HTMLSpanElement>({
-                            tagName: 'span',
-                            props: {
-                                className: clsx(
-                                    styles.left_bottom,
-                                    'ne-resize',
-                                    styles.anchor
-                                ),
-                            },
+                        new Element<HTMLSpanElement>('span', {
+                            className: clsx(
+                                styles.left_bottom,
+                                'ne-resize',
+                                styles.anchor
+                            ),
                         }).dom,
-                        new Element<HTMLSpanElement>({
-                            tagName: 'span',
-                            props: {
-                                className: clsx(
-                                    styles.right_top,
-                                    'ne-resize',
-                                    styles.anchor
-                                ),
-                            },
+                        new Element<HTMLSpanElement>('span', {
+                            className: clsx(
+                                styles.right_top,
+                                'ne-resize',
+                                styles.anchor
+                            ),
                         }).dom,
-                        new Element<HTMLSpanElement>({
-                            tagName: 'span',
-                            props: {
-                                className: clsx(
-                                    styles.right_bottom,
-                                    'nw-resize',
-                                    styles.anchor
-                                ),
-                            },
+                        new Element<HTMLSpanElement>('span', {
+                            className: clsx(
+                                styles.right_bottom,
+                                'nw-resize',
+                                styles.anchor
+                            ),
                         }).dom
                     ]
                     : []),

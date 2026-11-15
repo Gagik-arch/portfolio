@@ -5,21 +5,15 @@ import type { SVGElementPropsType } from '@nuvo-js/core/types';
 
 function Minus(props: SVGElementPropsType) {
     return (
-        new SVGElement({
-            tagName: 'svg',
-            props: {
-                viewBox: '0 0 14 14',
-                stroke: 'currentColor',
-                ...props,
-                children: [
-                    new SVGElement<SVGPathElement>({
-                        tagName: 'path',
-                        props: {
-                            d: 'M2 7H12', 
-                        },
-                    }).dom
-                ],
-            },
+        new SVGElement('svg', {
+            viewBox: '0 0 14 14',
+            stroke: 'currentColor',
+            ...props,
+            children: [
+                new SVGElement<SVGPathElement>('path', {
+                    d: 'M2 7H12', 
+                }).dom
+            ],
         }).dom
     );
 }
