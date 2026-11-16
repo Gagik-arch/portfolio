@@ -1,6 +1,6 @@
 import type { ElementPropsType } from '@nuvo-js/core/types';
 
-export type WindowProps = ElementPropsType & {
+export type WindowProps = Omit<ElementPropsType, 'events'> & {
     width?: number;
     height?: number;
     backgroundColor?: string;

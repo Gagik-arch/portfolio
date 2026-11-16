@@ -128,8 +128,6 @@ function Dock() {
         desktopStore.setFocusWindow(app.window.dom.id);
     };
 
-    const subscribers: (() => void)[] = [];
-
     const dock = new Element<HTMLDivElement>('div', {
         id: 'dock',
         events: {
@@ -137,7 +135,11 @@ function Dock() {
             onmouseleave: onMouseLeave,
             onmouseenter: onMouseEnter,
         },
-        className: `${styles.root} dock`,
+        className: clsx(styles.root, 'dock', 'glass'),
+        'data-config': JSON.stringify({
+            blurAmount: 0.25,
+            cornerRadius: 30,
+        }),
     })
         .OnMount(e => {
             setCSSVariable(
@@ -145,11 +147,6 @@ function Dock() {
                 'width 90ms ease-in-out, height 90ms ease-in-out',
                 e.dom
             );
-        })
-        .OnUnMount(() => {
-            subscribers.forEach(item => {
-                item(); 
-            });
         });
     
     desktopStore.Effect(async ({

@@ -23,5 +23,6 @@ export default tseslint.config({
         './eslint-configs/*',
         './vite.config.ts',
         '**/*.config.*',
+        "packages/**"
     ],
 });
