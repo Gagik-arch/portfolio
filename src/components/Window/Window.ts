@@ -49,14 +49,12 @@ class Window extends Element<HTMLDivElement> {
                 'window',
                 'default',
                 styles.root,
-                typeof className === 'function' ? undefined : className,
-                'glass'
+                className
             ),
             style: {
                 backgroundColor: backgroundColor || 'rgba(255,255,255,0.9)',
             },
             tabIndex: 0,
-    
             ...props,
         });
 

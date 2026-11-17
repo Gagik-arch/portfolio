@@ -135,11 +135,7 @@ function Dock() {
             onmouseleave: onMouseLeave,
             onmouseenter: onMouseEnter,
         },
-        className: clsx(styles.root, 'dock', 'glass'),
-        'data-config': JSON.stringify({
-            blurAmount: 0.25,
-            cornerRadius: 30,
-        }),
+        className: clsx(styles.root, 'dock'),
     })
         .OnMount(e => {
             setCSSVariable(

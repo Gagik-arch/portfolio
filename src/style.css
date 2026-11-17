@@ -39,8 +39,6 @@ body {
     flex-direction: column
 }
 
-
-
 svg {
     pointer-events: none
 }
@@ -88,4 +86,12 @@ hr {
 /* Style the scrollbar corner (where horizontal and vertical scrollbars meet) */
 ::-webkit-scrollbar-corner {
     background-color: transparent;
+}
+
+#container {
+    position: relative;
+}
+
+.glass {
+    z-index: 1;
 }

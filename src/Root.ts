@@ -27,7 +27,10 @@ function App() {
                     Desktop(),
                     Dock()
                 ],
-            }).dom
+            })
+                .OnUnMount(() => {
+                    window.removeEventListener('contextmenu', onContextmenu);
+                }).dom
         ]
     );
 }
