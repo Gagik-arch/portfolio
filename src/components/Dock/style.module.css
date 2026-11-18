@@ -109,7 +109,7 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
 .on_open_animate {
     transform: scale(1.2);
     animation-name: open;
-    animation-duration: 900ms;
+    animation-duration: 800ms;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     animation-timing-function: cubic-bezier(0.46, 0.03, 0.52, 0.96);
@@ -157,5 +157,4 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     height: 100%;
     width: 1.6px;
     margin: 0 16px;
-    transition: all 300ms linear
 }
