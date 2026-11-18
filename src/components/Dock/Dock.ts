@@ -334,13 +334,20 @@ function Dock() {
                 })
                     .dom,
                 
+                new Element<HTMLDivElement>('div', {
+                    key: 'separator',
+                    className: styles.separator,
+                }).dom,
+
                 ...appIcons
                     .map(icon => {
                         return (
                             new Button({
-                                className: clsx(styles.button,
+                                className: clsx(
+                                    styles.button,
                                     styles.on_open_animate,
-                                    activeApps.findIndex(i => i.name === icon.title) > -1 ? styles.is_opened : ''),
+                                    activeApps.findIndex(i => i.name === icon.title) > -1 ? styles.is_opened : ''
+                                ),
                                 key: icon.title,
                                 id: icon.title,
                                 tabIndex: -1,
