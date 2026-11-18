@@ -19,30 +19,12 @@
     box-sizing: border-box;
     z-index: 1;
 
-    &::before {
-        content: '';
-        transition: all 100ms linear;
-        position: absolute;
-        background-color: transparent;
-        inset: 0;
-        z-index: -1;
-    }
-
-    @supports (corner-shape: squircle) {
-        corner-shape: squircle;
-        border-radius: 60px;
-    }
-
     &:focus-within {
         z-index: 2 !important;
-
-        &::before {
-            backdrop-filter: blur(4px) saturate(50%);
-        }
+        backdrop-filter: blur(4px) saturate(50%);
 
         .anchor {
-            background-color: transparent;
-            display: block
+            display: inline-flex;
         }
 
         .close:not(:disabled) {
@@ -61,14 +43,10 @@
 
 .focused {
     z-index: 2 !important;
-
-    &::before {
-        backdrop-filter: blur(4px) saturate(50%);
-    }
+    backdrop-filter: blur(4px) saturate(50%);
 
     .anchor {
-        background-color: transparent;
-        display: block
+        display: inline-flex;
     }
 
     .close:not(:disabled) {
@@ -109,42 +87,38 @@
             background-color: #19C332;
         }
     }
-
 }
 
 .left_top {
-    left: 0;
-    top: 0;
-    /* border-radius: 20px 0 0 0; */
+    left: -4px;
+    top: -4px;
 }
 
 .left_bottom {
-    left: 0px;
-    bottom: 0px;
-    /* border-radius: 0 0 0 20px; */
+    left: -4px;
+    bottom: -4px;
 }
 
 .right_top {
-    right: 0;
-    top: 0;
-    /* border-radius: 0 20px 0 0; */
+    right: -4px;
+    top: -4px;
 }
 
 .right_bottom {
-    right: 0;
-    bottom: 0;
-    /* border-radius: 0 0 20px 0; */
+    right: -4px;
+    bottom: -4px;
 }
 
 .anchor {
-    width: 16px;
-    height: 16px;
+    width: 30px;
+    height: 30px;
     position: absolute;
     user-select: none;
     -webkit-user-drag: none;
     background-color: transparent;
     display: none;
     z-index: 55;
+    border-radius: 20px;
 }
 
 .traffic_light {

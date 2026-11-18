@@ -137,7 +137,7 @@ function Dock() {
             onmouseleave: onMouseLeave,
             onmouseenter: onMouseEnter,
         },
-        className: clsx(styles.root, 'dock'),
+        className: clsx(styles.root, 'dock', 'squircle_36'),
     })
         .OnMount(e => {
             setCSSVariable(
@@ -301,7 +301,8 @@ function Dock() {
 
                 new Button({
                     className: clsx(styles.button,
-                        activeApps.findIndex(i => i.name === 'Settings') > -1 ? styles.is_opened : ''),
+                        activeApps.findIndex(i => i.name === 'Settings') > -1 ? styles.is_opened : '',
+                        styles.on_open_animate),
                     key: 'Settings',
                     id: 'Settings',
                     tabIndex: -1,

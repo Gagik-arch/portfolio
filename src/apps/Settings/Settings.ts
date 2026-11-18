@@ -3,6 +3,8 @@ import Window from '$components/Window';
 import styles from './style.module.css';
 import type { AppProps } from '$apps/types';
 import { APP_IMAGES } from '$utils/constants';
+import Glass from '$uikit/Glass';
+import { Element } from '@nuvo-js/core';
 
 function Settings(props?:AppProps) { 
     return (
@@ -12,7 +14,13 @@ function Settings(props?:AppProps) {
             isNative: true,
             window: new Window({
                 className: styles.root,
-                children: [ 'Macos Settings app coming soon.' ],
+                children: [
+                    new Glass({
+                        children: [ ],
+                    }).dom,
+
+                    new Element<HTMLDivElement>('div').dom
+                ],
                 width: props?.width,
                 height: props?.height,
                 x: props?.x,
