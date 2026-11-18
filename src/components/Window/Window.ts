@@ -42,7 +42,6 @@ class Window extends Element<HTMLDivElement> {
         x,
         y,
         id,
-        events,
         ...props
     }: WindowProps) {
         super('div', {
@@ -50,15 +49,12 @@ class Window extends Element<HTMLDivElement> {
                 'window',
                 'default',
                 styles.root,
-                typeof className === 'function' ? undefined : className   
+                className
             ),
             style: {
                 backgroundColor: backgroundColor || 'rgba(255,255,255,0.9)',
             },
             tabIndex: 0,
-            events: {
-                ...events,
-            },
             ...props,
         });
 

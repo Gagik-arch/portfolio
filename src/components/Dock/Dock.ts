@@ -26,10 +26,12 @@ const {
 
 function Dock() {
     const globalScale = getCssVariable<number>('--scale') || 1;
+
     let animationFrame = 0,
             mouseX = 0,
             dockIcons: DockIcon[] = [],
-            mouseMoveTimeout: number | undefined = undefined;
+            mouseMoveTimeout: number | undefined = undefined,
+            unsubscribe: (() => void) | undefined;
     
     const refreshDockIcons = (dock: HTMLDivElement) => {
         dockIcons = [ ...dock.getElementsByClassName(styles.button) ]
@@ -128,8 +130,6 @@ function Dock() {
         desktopStore.setFocusWindow(app.window.dom.id);
     };
 
-    const subscribers: (() => void)[] = [];
-
     const dock = new Element<HTMLDivElement>('div', {
         id: 'dock',
         events: {
@@ -137,7 +137,7 @@ function Dock() {
             onmouseleave: onMouseLeave,
             onmouseenter: onMouseEnter,
         },
-        className: `${styles.root} dock`,
+        className: clsx(styles.root, 'dock'),
     })
         .OnMount(e => {
             setCSSVariable(
@@ -147,12 +147,10 @@ function Dock() {
             );
         })
         .OnUnMount(() => {
-            subscribers.forEach(item => {
-                item(); 
-            });
+            unsubscribe?.();
         });
     
-    desktopStore.Effect(async ({
+    unsubscribe = desktopStore.Effect(async ({
         activeApps, focusedAppId,
     }) => {
         const dockIcons = [ ...dock.dom.children ];
@@ -176,7 +174,7 @@ function Dock() {
         });
     });
 
-    dockIconsStore.Effect((appIcons) => {
+    unsubscribe = dockIconsStore.Effect((appIcons) => {
         const calendar = localStorage.getItem('calendarIcon') as string;
         const activeApps = desktopStore.GetState().activeApps;
    
@@ -338,11 +336,11 @@ function Dock() {
                 
                 ...appIcons
                     .map(icon => {
-                 
                         return (
                             new Button({
                                 className: clsx(styles.button,
-                                    activeApps.findIndex(i => i.name === icon.title) > -1 ? `${styles.on_open_animate} ${styles.is_opened}` : ''),
+                                    styles.on_open_animate,
+                                    activeApps.findIndex(i => i.name === icon.title) > -1 ? styles.is_opened : ''),
                                 key: icon.title,
                                 id: icon.title,
                                 tabIndex: -1,
@@ -360,24 +358,6 @@ function Dock() {
                                     Tooltip(icon.title.replace('-', ' '))
                                 ],
                             })
-                                .OnMount((e) => {
-                                    const target = e.dom;
-                                    const appIsExists = desktopStore.GetState().activeApps.find(item => item.name === target.id);
-
-                                    if (!appIsExists) {
-                                        e.SetProps({
-                                            className: (cx) => {
-                                                cx.add(styles.on_open_animate);
-                                            },
-                                        });
-                                    } else { 
-                                        e.SetProps({
-                                            className: (cx) => {
-                                                cx.add(styles.is_opened);
-                                            },
-                                        });
-                                    }
-                                })
                                 .dom
                         );
                     }),

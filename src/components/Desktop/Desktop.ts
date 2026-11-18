@@ -13,10 +13,8 @@ import type APPS from '$apps/index';
 import dockIconsStore from '$store/dockIcons.store';
 
 function Desktop() {
-    const stack = new Store<(keyof typeof APPS)[]>([]);
-    let appIcon:DesktopIconType | null = null, 
-            timeout: number | undefined = undefined,
-            stackTimeout : number | undefined = undefined;
+    let appIcon: DesktopIconType | null = null,
+            timeout: number | undefined = undefined;
 
     const onDoubleClickAppIcon = (title: keyof typeof APPS) => {
         const existsInDock = desktopStore.GetState()
@@ -27,43 +25,15 @@ function Desktop() {
             return;
         }  
 
-        stack.SetState(prev => ([
+        const app = {
+            title, image: getAppIcon(title) || '', 
+        };
+
+        dockIconsStore.SetState(prev => [
             ...prev,
-            title 
-        ]));
+            app
+        ]);
     };
-
-    stack.Subscribe((state) => {
-        clearTimeout(stackTimeout);
-
-        if (state.length === 0) {
-            stackTimeout = undefined;
-            return;
-        }
-
-        stackTimeout = setTimeout(() => {
-            stackTimeout = undefined;
-
-            const titles = stack.GetState();
-
-            if (titles.length === 0) return;
-            stack.SetState([]);
-
-            const apps = titles.map((title) => ({
-                title, image: getAppIcon(title) || '', 
-            }));
-
-            dockIconsStore.SetState(prev => [
-                ...prev,
-                ...apps.map(({
-                    title, image, 
-                }) => ({
-                    title,
-                    image,
-                }))
-            ]);
-        }, 800);
-    });
 
     const calculateIconPlace = (item:DesktopIconType, dom:HTMLElement) => {
         const virtual = convertIndexToVirtual(item.index, dom.getBoundingClientRect());

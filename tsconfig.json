@@ -55,12 +55,15 @@
             "$apps/*": [
                 "./src/apps/*"
             ],
+            "$packages/*": [
+                "packages/*"
+            ],
         },
     },
     "include": [
         "src",
         "./declarations.d.ts",
-        "lib",
+        "./packages"
     ],
     "references": [
         {

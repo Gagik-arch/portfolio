@@ -40,7 +40,7 @@ const Row = (left:string, right?:string, isSubtitle = false) => {
 function Preview(props?: AppProps) { 
     const scale = getCssVariable<number>('--scale') || 1;
     const width = scale === 1 ? 800 : 600;
-    
+
     return (
         new App({
             name: 'Preview',

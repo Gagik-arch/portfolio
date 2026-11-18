@@ -1,19 +1,19 @@
 import './style.css';
 import Root from './Root';
 import { createRoot } from '@nuvo-js/core';
-import { generateCalendarAppIcon } from './utils';
+import generateCalendarAppIcon from './utils/generateCalendarAppIcon';
 
-void (async() => {
+void (async () => {
+    const root = document.getElementById('root');
+
+    if (!root) return; 
+    
     try {
+
         await generateCalendarAppIcon();
     } catch (error) {
         console.error(error);
     } finally { 
-        const root = document.getElementById('app');
-
-        if (root) {
-            createRoot(root, Root());
-        }
+        createRoot(root, Root());
     }
 })();
-
