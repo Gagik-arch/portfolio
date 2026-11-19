@@ -301,8 +301,7 @@ function Dock() {
 
                 new Button({
                     className: clsx(styles.button,
-                        activeApps.findIndex(i => i.name === 'Settings') > -1 ? styles.is_opened : '',
-                        styles.on_open_animate),
+                        activeApps.findIndex(i => i.name === 'Settings') > -1 ? styles.is_opened : ''),
                     key: 'Settings',
                     id: 'Settings',
                     tabIndex: -1,
