@@ -137,7 +137,7 @@ function Dock() {
             onmouseleave: onMouseLeave,
             onmouseenter: onMouseEnter,
         },
-        className: clsx(styles.root, 'dock'),
+        className: clsx(styles.root, 'dock', 'squircle_36'),
     })
         .OnMount(e => {
             setCSSVariable(

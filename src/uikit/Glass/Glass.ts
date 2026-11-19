@@ -1,34 +1,20 @@
 import { Element } from '@nuvo-js/core';
 import styles from './style.module.css';
 import { clsx } from '$utils/clsx';
-import { LiquidGlass } from '$packages/LiquidGlass';
 import type { GlassProps } from './types';
 
 class Glass extends Element<HTMLDivElement> {
-    
-    public constructor({
-        className,    
-        ...props
-    }: GlassProps) { 
+    public constructor(props?: GlassProps) { 
+        const {
+            className,
+            squircle = 'squircle_16',
+            ..._props
+        } = props ?? {};
+
         super('div', {
-            className: clsx(className, styles.glass, 'glass-view'),
-            'data-config': JSON.stringify({
-                brightness: -0.3,
-                blurAmount: 0.25,
-                cornerRadius: 50,
-            }),
-            ...props,
+            className: clsx(className, styles.root, squircle ),
+            ..._props,
         });
-    }
-
-    public async Init(root: HTMLElement) {
-        const instance = await LiquidGlass.init({
-            root,
-            glassElements: root.querySelectorAll('.glass-view'),
-        });
-        console.log(instance);
-
-        // instance?.destroy();
     }
 }
  

@@ -14,16 +14,10 @@
     transition: all 300ms linear;
     background-color: oklab(97.315% 0 -0.00011 / 0.36);
     filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.5));
-    border-radius: 36px;
     backdrop-filter: blur(100px);
     border: 2px solid rgba(235, 235, 235, 0.1);
     transition: all 120ms linear;
     box-sizing: border-box;
-
-    @supports (corner-shape: squircle) {
-        corner-shape: squircle;
-        border-radius: 50px;
-    }
 }
 
 div:has([data-resizing="true"], [data-dragging="true"]) .root {
@@ -143,7 +137,7 @@ div:has([data-resizing="true"], [data-dragging="true"]) .root {
     }
 
     img {
-        filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.2));
+        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
     }
 }
 

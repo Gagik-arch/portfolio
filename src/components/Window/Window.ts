@@ -49,7 +49,8 @@ class Window extends Element<HTMLDivElement> {
                 'window',
                 'default',
                 styles.root,
-                className
+                className,
+                'squircle_36'
             ),
             style: {
                 backgroundColor: backgroundColor || 'rgba(255,255,255,0.9)',
@@ -199,7 +200,8 @@ class Window extends Element<HTMLDivElement> {
         this.y = Math.round(clamp((rect.y - desktop.top) + e.movementY, 0, desktop.height - rect.height));
 
         this.dom.style.setProperty( '--left', this.x + 'px');
-        this.dom.style.setProperty( '--top', this.y + 'px');
+        this.dom.style.setProperty('--top', this.y + 'px');
+        
     };
 
     private readonly onMouseDown = (e: MouseEvent) => {
@@ -350,6 +352,8 @@ class Window extends Element<HTMLDivElement> {
         if (target !== this.dom) return; 
         
         const anchor = hoveredAnchor || this.detectAnchorSide(e);
+
+        this.dom.classList.remove(...Object.values(ANCHORS));
 
         switch (anchor) {
                 case 'right':

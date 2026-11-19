@@ -1,9 +1,10 @@
 @import url('./styles/colors.css');
 @import url('./styles/cursors.css');
 @import url('./styles/text.css');
+@import url('./styles/squircle.css');
 
 :root {
-    font-family: SFProText, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, SFProText;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -86,12 +87,4 @@ hr {
 /* Style the scrollbar corner (where horizontal and vertical scrollbars meet) */
 ::-webkit-scrollbar-corner {
     background-color: transparent;
-}
-
-#container {
-    position: relative;
-}
-
-.glass {
-    z-index: 1;
 }
