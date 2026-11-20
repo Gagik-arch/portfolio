@@ -9,7 +9,6 @@ void (async () => {
     if (!root) return; 
     
     try {
-
         await generateCalendarAppIcon();
     } catch (error) {
         console.error(error);

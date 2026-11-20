@@ -22,7 +22,8 @@ const generateCalendarAppIcon = async () => {
     if (!ctx) return; 
 
     const date = new Date();
-    const month = date.toLocaleDateString('default', { weekday: 'short' });
+    const weekday = date.toLocaleDateString('default', { weekday: 'short' });
+
     await document.fonts.load('500 1px SFProText');
 
     ctx.beginPath();
@@ -34,16 +35,16 @@ const generateCalendarAppIcon = async () => {
     ctx.textAlign = 'center'; 
     ctx.textBaseline = 'middle';
     
-    ctx.font = '500 24px SFProText'; 
+    ctx.font = '500 24px -apple-system, BlinkMacSystemFont, SFProText'; 
     ctx.fillStyle = 'rgb(254 96 88)'; 
     
-    ctx.fillText(month, canvas.dom.width / 2, 30);
+    ctx.fillText(weekday, canvas.dom.width / 2, 30);
 
-    ctx.font = '500 48px SFProText'; 
+    ctx.font = '500 46px -apple-system, BlinkMacSystemFont, SFProText'; 
     ctx.fillStyle = 'rgba(20,20,20,0.8)'; 
 
     ctx.fillText(date.getDate()
-        .toString(), canvas.dom.width / 2, canvas.dom.width / 2 + 20);
+        .toString(), canvas.dom.width / 2, canvas.dom.width / 2 + 16);
        
     const imageDataURL = canvas.dom.toDataURL(imageType);
 
