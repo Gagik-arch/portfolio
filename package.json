@@ -19,7 +19,10 @@
         "vite": "^7.1.7"
     },
     "dependencies": {
-        "@nuvo-js/core": "^1.1.16",
-        "datewise": "^3.0.5"
+        "@nuvo-js/core": "^1.1.19",
+        "datewise": "^3.0.9"
+    },
+    "allowScripts": {
+        "esbuild@0.28.2": true
     }
 }
