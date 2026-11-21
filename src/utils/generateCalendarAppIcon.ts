@@ -35,10 +35,10 @@ const generateCalendarAppIcon = async () => {
     ctx.textAlign = 'center'; 
     ctx.textBaseline = 'middle';
     
-    ctx.font = '500 24px -apple-system, BlinkMacSystemFont, SFProText'; 
+    ctx.font = '500 22px -apple-system, BlinkMacSystemFont, SFProText'; 
     ctx.fillStyle = 'rgb(254 96 88)'; 
     
-    ctx.fillText(weekday, canvas.dom.width / 2, 30);
+    ctx.fillText(weekday, canvas.dom.width / 2, 26);
 
     ctx.font = '500 46px -apple-system, BlinkMacSystemFont, SFProText'; 
     ctx.fillStyle = 'rgba(20,20,20,0.8)'; 
