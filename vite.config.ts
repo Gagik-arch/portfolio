@@ -30,6 +30,9 @@ export default defineConfig(({ mode }) => {
                         vendor: ['@nuvo-js/core', 'datewise'],
                     },
                 },
+                external: [
+                    './assets/screenshot.png'          
+                ]
             },
         },
         esbuild: {

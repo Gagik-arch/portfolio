@@ -1,0 +1,1 @@
+<img src="path/to/image.png" alt="Alt text" width="100%" height="auto" />

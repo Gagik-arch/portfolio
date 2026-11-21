@@ -12,7 +12,7 @@ class Glass extends Element<HTMLDivElement> {
         } = props ?? {};
 
         super('div', {
-            className: clsx(className, styles.root, squircle ),
+            className: clsx(className, styles.root, squircle),
             ..._props,
         });
     }

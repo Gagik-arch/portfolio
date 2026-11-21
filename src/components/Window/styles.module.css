@@ -129,8 +129,8 @@
     width: calc(14px * var(--scale));
     height: calc(14px * var(--scale));
     border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    background-color: rgba(135, 135, 135, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    background-color: rgba(135, 135, 135, 0.3);
 
 
     svg {
