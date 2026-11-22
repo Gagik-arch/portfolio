@@ -8,6 +8,8 @@ class Button extends Element<HTMLButtonElement> {
         type = 'button',
         variant = 'default',
         className = '',
+        onPress,
+        events,
         ...props
     }: ButtonProps) {
         super('button', {
@@ -18,6 +20,13 @@ class Button extends Element<HTMLButtonElement> {
                 styles[`root_${variant}`]
             ),
             type,
+            events: {
+                ...events,
+                onclick: (e) => {
+                    onPress?.(e);
+                    events?.onclick?.(e);
+                },
+            },
             ...props,
         });
     }

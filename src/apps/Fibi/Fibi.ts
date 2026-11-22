@@ -17,6 +17,7 @@ import Typography from '$uikit/Typography';
 import Scroll from '$uikit/Scroll';
 import Button from '$uikit/Button';
 import { APP_IMAGES } from '$utils/constants';
+import Link from '$uikit/Link';
 
 function Fibi(props?: AppProps) { 
     return (
@@ -181,14 +182,11 @@ function Fibi(props?: AppProps) {
                                             new Element<HTMLDivElement>('div', {
                                                 className: styles.toggle_container,
                                                 children: [
-                                                    new Button({
+                                                    new Link({
                                                         children: [ 'View' ],
                                                         variant: 'primary',
-                                                        events: {
-                                                            onclick: () => {
-                                                                window.open('https://fibi.live', '_blank');
-                                                            },
-                                                        },
+                                                        target: '_blank',
+                                                        href: 'https://fibi.live',
                                                     }).dom
                                                 ],
                                             }).dom

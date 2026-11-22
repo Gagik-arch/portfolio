@@ -1,5 +1,5 @@
 
-export const getCssVariable = <T extends string | number>(
+export const getCssVariable = <T extends (string | number) = string>(
     key: string,
     element: HTMLElement = document.body,
     defaultValue?:undefined | T
@@ -18,7 +18,7 @@ export const getCssVariable = <T extends string | number>(
     return +variable as T;
 };
 
-export const setCSSVariable = (key:string, value:string, element: HTMLElement = document.body ) => {
+export const setCSSVariable = (key:string, value:string, element: (HTMLElement | SVGAElement) = document.body ) => {
     element.style.setProperty(key, value);
 };
 

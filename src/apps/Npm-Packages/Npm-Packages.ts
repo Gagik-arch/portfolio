@@ -44,6 +44,22 @@ function Npm_Packages(props?: AppProps) {
         ],
     });
 
+    const tabs = new Tabs({
+        tabs: [
+            new Typography({
+                text: 'Nuvo', variant: 'body-emphasized', 
+            }).dom,
+            new Typography({
+                text: 'Datewize', variant: 'body-emphasized', 
+            }).dom 
+        ],
+        className: styles.tabs,
+    });
+    
+    const unsubscribe = tabs.OnChangeSelection((v) => {
+        carousel.SetOffset(v);
+    });
+    
     return (
         new App({
             name: 'Npm-packages',
@@ -54,20 +70,8 @@ function Npm_Packages(props?: AppProps) {
                 children: [ 
                     carousel.dom,
                     
-                    new Tabs({
-                        tabs: [
-                            new Typography({
-                                text: 'Nuvo', variant: 'body-emphasized', 
-                            }).dom,
-                            new Typography({
-                                text: 'Datewize', variant: 'body-emphasized', 
-                            }).dom 
-                        ],
-                        className: styles.tabs,
-                    })
-                        .OnChangeSelection((v) => {
-                            carousel.SetOffset(v);
-                        }).dom
+                    tabs
+                        .dom
                 ],
                 width: props?.width,
                 height: props?.height,
@@ -77,7 +81,10 @@ function Npm_Packages(props?: AppProps) {
                 key: props?.key,
                 minWidth: 600,
                 minHeight: 400,
-            }),
+            })
+                .OnUnMount(() => {
+                    unsubscribe();
+                }),
         })
     );
 }
