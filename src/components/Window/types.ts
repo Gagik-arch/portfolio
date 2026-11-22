@@ -1,14 +1,12 @@
 import type { ElementPropsType } from '@nuvo-js/core/types';
 
-export type WindowProps = Omit<ElementPropsType, 'events' | 'className'> & {
+export type WindowProps = Omit<ElementPropsType<HTMLDivElement>, 'className'> & {
     width?: number;
     height?: number;
     backgroundColor?: string;
     isResizable?: boolean;
-    children: ElementPropsType<HTMLDivElement>['children'];
     x?: number;
     y?: number;
-    id?: string;
     minWidth?: number;
     minHeight?: number;
     className?: string;

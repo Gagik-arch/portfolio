@@ -42,9 +42,12 @@ class Window extends Element<HTMLDivElement> {
         x,
         y,
         id,
+        style,
+        events,
         ...props
     }: WindowProps) {
         super('div', {
+            role: 'window',
             className: clsx(
                 'window',
                 'default',
@@ -53,9 +56,11 @@ class Window extends Element<HTMLDivElement> {
                 'squircle_36'
             ),
             style: {
+                ...style,
                 backgroundColor: backgroundColor || 'rgba(255,255,255,0.9)',
             },
             tabIndex: 0,
+            events,
             ...props,
         });
 
