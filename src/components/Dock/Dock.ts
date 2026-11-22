@@ -132,6 +132,7 @@ function Dock() {
 
     const dock = new Element<HTMLDivElement>('div', {
         id: 'dock',
+        role: 'dock',
         events: {
             onmousemove: onMouseMove,
             onmouseleave: onMouseLeave,

@@ -180,6 +180,7 @@ function Advelit(props?:AppProps) {
                                                 className: styles.toggle_container,
                                                 children: [
                                                     new Button({
+                                                        accessKey: 'View',
                                                         children: [ 'View' ],
                                                         variant: 'primary',
                                                         events: {

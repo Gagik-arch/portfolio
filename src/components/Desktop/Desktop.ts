@@ -56,6 +56,7 @@ function Desktop() {
     const desktopContainer = new Element<HTMLDivElement>('div', {
         id: 'desktop',
         className: styles.root,
+        role: 'desktop',
         events: {
             onmousedown: (e) => {
                 clearTimeout(timeout);

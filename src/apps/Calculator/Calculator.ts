@@ -514,6 +514,7 @@ function Calculator(props?: AppProps) {
                 y: props?.y,
                 id: props?.id,
                 key: props?.key,
+
             }),
         })
     );

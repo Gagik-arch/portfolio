@@ -27,6 +27,7 @@ function MenuBar() {
         new Element<HTMLDivElement>('div', {
             tagName: 'div',
             className: styles.root,
+            role: 'menu-bar',
             children: [
                 new Element<HTMLDivElement>('div', {
                     className: styles.group_leading,
