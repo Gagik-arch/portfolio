@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
-/* https://vitejs.dev/config/ */
 export default defineConfig(({ mode }) => {
     return ({
         resolve: {
@@ -36,7 +35,6 @@ export default defineConfig(({ mode }) => {
             },
         },
         esbuild: {
-            // Strip console logs and debugger statements in production builds
             drop: mode === 'production' ? ['console', 'debugger'] : [],
         },
     })
